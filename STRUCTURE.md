@@ -10,6 +10,9 @@ lumia_island_wiki/
 ├── docs/                           제품 요구와 운영 기준
 │   ├── 프로젝트 목표와 범위.md     제품 목표·범위·품질과 공개 조건
 │   ├── 하네스 운영 기준.md         운영 기준의 적용 범위와 읽기 안내
+│   ├── Git 작업 기준.md            브랜치·커밋·PR·병합 기준
+│   ├── GitHub 저장소 설정 기준.md   GitHub 옵션의 기준값과 기능 지원 범위
+│   ├── GitHub 라벨 기준.md          라벨 이름·설명·색상과 적용 규칙
 │   ├── details/                    주제별 상세 기준·요구
 │   │   ├── operations/             권한·검증과 전체 평가·검수·실패·개선
 │   │   └── product/                제품 주제별 상세 요구
@@ -22,7 +25,8 @@ lumia_island_wiki/
 │   ├── 공용 절차.md                요청부터 수행·확인·결과 반환까지
 │   ├── 작업별 절차.md              계획·변경·리뷰 등 작업 종류별 행동
 │   ├── 문서 관리.md                문서·기록의 작성·갱신·복구 절차
-│   └── templates/                  Phase·Issue·Task 양식
+│   ├── Git 작업 절차.md            브랜치·커밋·PR·병합 수행
+│   └── templates/                  로컬 Phase·Issue·Task, GitHub 게시, PR 양식
 └── work/                           실제 계획·진행·작업 근거
     ├── README.md                   기록 탐색과 사용 안내
     ├── 현황.md                     현재 작업과 예정의 조회
