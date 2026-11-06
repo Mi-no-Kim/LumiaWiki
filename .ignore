@@ -1,0 +1,3 @@
+# Preserve design/tool archives while excluding them from ordinary rg searches.
+/harness-design/
+/.harness-state/

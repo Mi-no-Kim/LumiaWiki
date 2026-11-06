@@ -1,0 +1,5 @@
+# Local recovery material; never replace with automatic commits or staging.
+/.harness-state/doc-generation/
+__pycache__/
+/.tmp/
+/harness-design/
