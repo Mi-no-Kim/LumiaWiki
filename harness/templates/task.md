@@ -26,6 +26,7 @@ GitHub에 반영할 때는 [GitHub Task 게시 양식](<github-task.md>)을 사�
 
 - 준비/선행 조건·미정:
 - 수행 계획:
+- 화면 디자인·구현 순서와 검증 흐름(제품 기능): [화면 기준](<../../docs/details/operations/검증과 완료.md#screen-first>)에 따라 사용할 화면·위치와 선행 작업을 연결한다.
 - 확인할 결과/방법·필요한 별도 검수:
 
 <a id="conditional-guidance"></a>

@@ -30,6 +30,7 @@ GitHub에 반영할 때는 [GitHub Issue 게시 양식](<github-issue.md>)을 �
 
 - 준비/계획:
 - 의존·착수 조건:
+- 화면 디자인·구현 순서와 검증 흐름(제품 기능): [화면 기준](<../../docs/details/operations/검증과 완료.md#screen-first>)에 따라 사용할 화면·위치와 선행 작업을 연결한다.
 - 예정 확인:
 
 <a id="conditional-guidance"></a>
