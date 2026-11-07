@@ -6,7 +6,7 @@
 - 실제 GitHub Issue: [Mi-no-Kim/LumiaWiki #1](https://github.com/Mi-no-Kim/LumiaWiki/issues/1)
 - 상태: 완료
 - 현재 진행 위치: 기존 문서 17개와 담당 기록의 정비·수용 검수를 마쳤다.
-- 다음 행동: 확인한 18개 파일을 같은 목적의 커밋·PR로 반영하고 실제 결과를 확인한다.
+- 다음 행동: [후속 Issue #3](../issue-3/issue.md)에서 기록 경로 정정의 제출·반영 결과를 확인한다.
 - 작업 관계: 소속 Phase 없이 `issue/1`에서 직접 수행한다. 제품 작업 현황의 표시 대상이 아니다.
 
 <a id="goal"></a>
@@ -21,7 +21,7 @@ AI가 Git·GitHub 작업을 시작해 기록·커밋·PR·병합·정리·재개
   - 로컬 원본과 GitHub의 번호·상태·라벨·관계를 구별하고 기준·절차·양식의 역할이 중복되지 않는다.
   - Task 없는 직접 수행 Issue의 검증 기록과 기존 계획 없는 독립 Issue의 등록 초안 경로가 연결된다.
   - 자체·별도 검수의 지적을 해결하고 내부 참조·실제 제출 범위와 이 기록을 확인한다.
-- 기준 원천: [Git 작업 기준](<../../../docs/Git 작업 기준.md#current>), [기록 체계](<../../../docs/작업 기록 체계.md#current>), [기록 작성 기준](<../../../docs/작업 기록 작성 기준.md#current>).
+- 기준 원천: [Git 작업 기준](<../../../../docs/Git 작업 기준.md#current>), [기록 체계](<../../../../docs/작업 기록 체계.md#current>), [기록 작성 기준](<../../../../docs/작업 기록 작성 기준.md#current>).
 
 <a id="plan"></a>
 ## 해결 계획과 의존
@@ -33,23 +33,23 @@ AI가 Git·GitHub 작업을 시작해 기록·커밋·PR·병합·정리·재개
 
 | 문서 | 변경 내용 |
 |---|---|
-| [Git 작업 기준](<../../../docs/Git 작업 기준.md>) | 브랜치·커밋·PR·병합·상위 변경 반영·닫기·정리·재개 규칙 |
-| [GitHub 저장소 설정 기준](<../../../docs/GitHub 저장소 설정 기준.md>) | Free 공개 저장소의 옵션 기준값과 기능 지원 범위 |
-| [GitHub 라벨 기준](<../../../docs/GitHub 라벨 기준.md>) | 단위·상태 라벨의 정의와 적용 |
-| [Git 작업 절차](<../../../harness/Git 작업 절차.md>) | 시작·재개, 결과 제출, 상위 통합의 실행 흐름 |
-| [GitHub Phase 양식](<../../../harness/templates/github-phase.md>) | milestone 등록 정보와 설명 |
-| [GitHub Issue 양식](<../../../harness/templates/github-issue.md>) | Issue 등록 정보·본문과 번호 발급 전 초안 연결 |
-| [GitHub Task 양식](<../../../harness/templates/github-task.md>) | sub-issue 등록 정보와 수행·검증 본문 |
-| [PR 양식](<../../../harness/templates/pr.md>) | 단계별 제목과 결과·검증·연결·해당하는 잔여 구역 |
-| [AGENTS](../../../AGENTS.md) | Git 기준과 저장소 설정 기준의 진입 연결 |
-| [프로젝트 구조](../../../STRUCTURE.md) | 새 기준·절차·양식 위치 안내 |
-| [기록 작성 기준](<../../../docs/작업 기록 작성 기준.md>) | Task 없이 직접 수행하는 Issue의 검증 기록 위치 |
-| [기록 체계](<../../../docs/작업 기록 체계.md>) | 게시 양식 연결과 로컬·GitHub 상태 대응 |
-| [운영 기준 안내](<../../../docs/하네스 운영 기준.md>) | Git·저장소 설정 판단의 담당 원천 연결 |
-| [문서 관리 절차](<../../../harness/문서 관리.md>) | 실제 번호 발급·정식화·게시 갱신·재개·불일치 처리 |
-| [로컬 Phase 양식](<../../../harness/templates/phase.md>) | GitHub 게시 양식 연결 |
-| [로컬 Issue 양식](<../../../harness/templates/issue.md>) | GitHub 게시 양식 연결 |
-| [로컬 Task 양식](<../../../harness/templates/task.md>) | GitHub 게시 양식 연결 |
+| [Git 작업 기준](<../../../../docs/Git 작업 기준.md>) | 브랜치·커밋·PR·병합·상위 변경 반영·닫기·정리·재개 규칙 |
+| [GitHub 저장소 설정 기준](<../../../../docs/GitHub 저장소 설정 기준.md>) | Free 공개 저장소의 옵션 기준값과 기능 지원 범위 |
+| [GitHub 라벨 기준](<../../../../docs/GitHub 라벨 기준.md>) | 단위·상태 라벨의 정의와 적용 |
+| [Git 작업 절차](<../../../../harness/Git 작업 절차.md>) | 시작·재개, 결과 제출, 상위 통합의 실행 흐름 |
+| [GitHub Phase 양식](<../../../../harness/templates/github-phase.md>) | milestone 등록 정보와 설명 |
+| [GitHub Issue 양식](<../../../../harness/templates/github-issue.md>) | Issue 등록 정보·본문과 번호 발급 전 초안 연결 |
+| [GitHub Task 양식](<../../../../harness/templates/github-task.md>) | sub-issue 등록 정보와 수행·검증 본문 |
+| [PR 양식](<../../../../harness/templates/pr.md>) | 단계별 제목과 결과·검증·연결·해당하는 잔여 구역 |
+| [AGENTS](../../../../AGENTS.md) | Git 기준과 저장소 설정 기준의 진입 연결 |
+| [프로젝트 구조](../../../../STRUCTURE.md) | 새 기준·절차·양식 위치 안내 |
+| [기록 작성 기준](<../../../../docs/작업 기록 작성 기준.md>) | Task 없이 직접 수행하는 Issue의 검증 기록 위치 |
+| [기록 체계](<../../../../docs/작업 기록 체계.md>) | 게시 양식 연결과 로컬·GitHub 상태 대응 |
+| [운영 기준 안내](<../../../../docs/하네스 운영 기준.md>) | Git·저장소 설정 판단의 담당 원천 연결 |
+| [문서 관리 절차](<../../../../harness/문서 관리.md>) | 실제 번호 발급·정식화·게시 갱신·재개·불일치 처리 |
+| [로컬 Phase 양식](<../../../../harness/templates/phase.md>) | GitHub 게시 양식 연결 |
+| [로컬 Issue 양식](<../../../../harness/templates/issue.md>) | GitHub 게시 양식 연결 |
+| [로컬 Task 양식](<../../../../harness/templates/task.md>) | GitHub 게시 양식 연결 |
 
 이 기록을 포함해 18개 파일을 같은 변경 목적으로 제출한다.
 
@@ -77,6 +77,14 @@ AI가 Git·GitHub 작업을 시작해 기록·커밋·PR·병합·정리·재개
 - 기존 전체 검수의 두 지적은 기록 작성 기준의 Task 없는 Issue 예외, 등록 절차·Issue 양식의 기존 계획 없는 초안 경로 보완으로 해결했다. 새 문서나 가짜 Phase·Task를 만들지 않았다.
 - 실제 #1 등록과 브랜치 생성 결과를 확인한 뒤 이 기록을 작성했다. 소유하지 않는 제품 Phase 기록·현황과 로컬 보존 전용 브랜치는 변경·전송 대상에서 제외한다.
 - 이 기록과 최종 제출 범위의 자체·별도 검수를 마친 뒤 문서 정비의 자기 수용을 완료로 판단했다. 원격 반영 여부는 문서 완료 상태와 구별해 확인한다.
+
+### 2026-11-07 — 기록 분류와 경로 정정
+
+- 사용자 피드백을 반영해 독립 제품 Issue와 하네스 정비 Issue의 기록 위치를 분리했다. 기존 기준이 독립 Issue를 records 바로 아래에 두도록 명시했던 점을 정정했다.
+- 이 기록을 `work/records/issue-1/issue.md`에서 `work/records/harness/issue-1/issue.md`로 옮기고 상대 참조를 맞췄다. #1의 번호·완료 상태와 기존 검수 이력은 유지한다.
+- [이동 전 기록 원문](https://github.com/Mi-no-Kim/LumiaWiki/blob/411ee4f5764cdbd9bf65f2b0a31c8e3c4cedf5cb/work/records/issue-1/issue.md)과 PR #2의 커밋 고정 근거 링크는 보존한다.
+- 당시 로컬 수정 요청에서는 GitHub의 현재 원본 연결 갱신과 커밋·push를 수행하지 않았다.
+- 자체·별도 검수에서 기록 분류와 이동 전 이력의 보존을 확인했고, Markdown 44개·내부 링크 438개 검사를 통과했다. PR #2의 고정 근거와 원문 파일은 원격 읽기 조회로도 확인했다.
 
 <a id="result"></a>
 ## 결과와 미해결
