@@ -31,6 +31,9 @@ lumia_island_wiki/
     ├── README.md                   기록 탐색과 사용 안내
     ├── 현황.md                     현재 작업과 예정의 조회
     └── records/                    실제 계획과 작업 기록
+        ├── phase-001/…             제품 Phase와 소속 Issue·Task
+        ├── issues/                 독립 제품 Issue
+        └── harness/                독립 하네스 정비 Issue
 ```
 
 | 세부 위치 | 역할 |

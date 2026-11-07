@@ -24,9 +24,9 @@ Phase에 속한 작업은 `main ← phase ← issue ← task`, 독립 Issue는 `
 <a id="independent-issues"></a>
 ### 독립 Issue·하네스 정비·긴급 수정
 
-독립 Issue는 위의 Issue 이름을 그대로 사용하며, 작은 수정은 Issue 브랜치에서 직접 완결할 수 있다. Task를 두면 `task → issue`로 squash한 뒤 Issue를 `main`에 merge commit으로 통합한다. 기록은 [독립 Issue 경로](<작업 기록 체계.md#paths>)를 사용하고 가짜 Phase·milestone을 붙이지 않는다.
+독립 Issue는 위의 Issue 이름을 그대로 사용하며, 작은 수정은 Issue 브랜치에서 직접 완결할 수 있다. Task를 두면 `task → issue`로 squash한 뒤 Issue를 `main`에 merge commit으로 통합한다. 기록은 [목적·소속에 따른 경로](<작업 기록 체계.md#paths>)를 사용하고 가짜 Phase·milestone을 붙이지 않는다.
 
-독립적인 하네스 정비는 독립 Issue 경로를 사용하고, 제품 작업에 수반하는 하네스 수정은 해당 제품 작업 브랜치와 PR에 함께 포함한다. 현황 표시는 [작업 목적에 따른 기존 범위](<작업 기록 체계.md#ownership>)를 따른다.
+독립적인 하네스 정비는 main 기준 독립 Issue의 브랜치 경로를 사용하고, 제품 작업에 수반하는 하네스 수정은 해당 제품 작업 브랜치와 PR에 함께 포함한다. 현황 표시는 [작업 목적에 따른 기존 범위](<작업 기록 체계.md#ownership>)를 따른다.
 
 긴급 수정은 main에 있는 문제를 즉시 고쳐야 할 때 main 기준의 독립 Issue로 처리한다. 아직 main에 없는 Phase 내부 문제는 해당 Phase 경로를 유지한다. 긴급 수정 PR에는 main 기준으로 필요한 변경만 포함하고, 미완성 변경이 섞인 Phase·Issue 브랜치 전체를 main에 보내지 않는다. 하네스 정비·긴급 수정에도 기존 브랜치 이름과 커밋·검수 규칙을 적용한다.
 
