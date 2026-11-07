@@ -6,9 +6,9 @@
 - 제목: v1.0.0 아이템 기준 자료 등록과 최소 기능 작동
 - 구상상 구분: P1
 - GitHub milestone: [Mi-no-Kim/LumiaWiki #1](https://github.com/Mi-no-Kim/LumiaWiki/milestone/1)
-- 상태: 예정
-- 현재 진행 위치: 제품 요구와 단계 계획의 역할에 맞춰 범위·참조를 정리했다. 기능 구현에는 착수하지 않았다.
-- 다음 판단/행동: 진입 또는 관련 Issue 착수 전에 등록 정보·구조와 최소 옵션·기본 루트 범위를 확정한다.
+- 상태: 진행 중
+- 현재 진행 위치: 첫 Issue에서 Phase 범위와 실행 계획을 구체화하고 있다. 기능 구현에는 착수하지 않았다.
+- 다음 판단/행동: [Issue #15](<issue-15/issue.md#summary>)에서 Task 구성을 정한 뒤 최소 완성 범위·수용 조건을 논의한다.
 
 <a id="goal"></a>
 ## 목표와 범위 및 수용 조건
@@ -90,7 +90,7 @@
 <a id="owned-issues"></a>
 ## 보유 Issue
 
-등록된 Issue 없음.
+- [Issue #15: Phase 001 구체화 및 Issue·Task 실행 계획 수립](<issue-15/issue.md#summary>)
 
 <a id="related-issues"></a>
 ## 관련 Issue
