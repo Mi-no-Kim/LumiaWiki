@@ -7,6 +7,7 @@ lumia_island_wiki/
 ├── AGENTS.md                       AI 작업 지침과 문서 진입점
 ├── README.md                       프로젝트 소개와 시작 안내
 ├── STRUCTURE.md                    주요 경로와 역할
+├── .agents/skills/                 요청 판단·검수·응답 형식의 AI 스킬
 ├── docs/                           제품 요구와 운영 기준
 │   ├── 프로젝트 목표와 범위.md     제품 목표·범위·품질과 공개 조건
 │   ├── 하네스 운영 기준.md         운영 기준의 적용 범위와 읽기 안내
