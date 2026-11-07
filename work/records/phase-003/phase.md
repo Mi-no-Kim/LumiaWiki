@@ -5,6 +5,7 @@
 
 - 제목: 내부용 딜 계산기 Beta와 수식 처리 기반
 - 구상상 구분: P3
+- GitHub milestone: [Mi-no-Kim/LumiaWiki #3](https://github.com/Mi-no-Kim/LumiaWiki/milestone/3)
 - 상태: 예정
 - 현재 진행 위치: 제품 요구와 단계 계획의 역할에 맞춰 범위·참조를 정리했다. 기능 구현에는 착수하지 않았다.
 - 다음 판단/행동: 내부 Beta의 지원/미지원 범위·기준 버전·실제 규칙의 근거를 확정한 뒤 수식/계산 설계를 구체화한다.
