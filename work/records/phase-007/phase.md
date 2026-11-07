@@ -5,6 +5,7 @@
 
 - 제목: 공개용 딜 계산기 완성
 - 구상상 구분: P7
+- GitHub milestone: [Mi-no-Kim/LumiaWiki #7](https://github.com/Mi-no-Kim/LumiaWiki/milestone/7)
 - 상태: 예정
 - 현재 진행 위치: 제품 요구와 단계 계획의 역할에 맞춰 범위·참조를 정리했다. 기능 구현에는 착수하지 않았다.
 - 다음 판단/행동: 공개 계산의 제품 요구를 합의하고, 내부 기반의 확장 범위·자료 준비와 검증 방법을 구체화한다.

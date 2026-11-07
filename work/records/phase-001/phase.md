@@ -5,6 +5,7 @@
 
 - 제목: v1.0.0 아이템 기준 자료 등록과 최소 기능 작동
 - 구상상 구분: P1
+- GitHub milestone: [Mi-no-Kim/LumiaWiki #1](https://github.com/Mi-no-Kim/LumiaWiki/milestone/1)
 - 상태: 예정
 - 현재 진행 위치: 제품 요구와 단계 계획의 역할에 맞춰 범위·참조를 정리했다. 기능 구현에는 착수하지 않았다.
 - 다음 판단/행동: 진입 또는 관련 Issue 착수 전에 등록 정보·구조와 최소 옵션·기본 루트 범위를 확정한다.

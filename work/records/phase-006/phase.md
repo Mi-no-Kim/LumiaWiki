@@ -5,6 +5,7 @@
 
 - 제목: 최신 버전까지의 자료 반영과 AI 패치노트 변환 도입
 - 구상상 구분: P6
+- GitHub milestone: [Mi-no-Kim/LumiaWiki #6](https://github.com/Mi-no-Kim/LumiaWiki/milestone/6)
 - 상태: 예정
 - 현재 진행 위치: 제품 요구와 단계 계획의 역할에 맞춰 범위·참조를 정리했다. 기능 구현에는 착수하지 않았다.
 - 다음 판단/행동: 최신까지 반영할 패치/대상 범위와 AI 입력·변환·관리자 검토/적용 절차를 구체화한다.
