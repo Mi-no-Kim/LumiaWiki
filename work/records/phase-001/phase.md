@@ -8,7 +8,7 @@
 - GitHub milestone: [Mi-no-Kim/LumiaWiki #1](https://github.com/Mi-no-Kim/LumiaWiki/milestone/1)
 - 상태: 진행 중
 - 현재 진행 위치: 첫 Issue에서 Phase 범위와 실행 계획을 구체화하고 있다. 기능 구현에는 착수하지 않았다.
-- 다음 판단/행동: [Issue #15](<issue-15/issue.md#summary>)에서 Task 구성을 정한 뒤 최소 완성 범위·수용 조건을 논의한다.
+- 다음 판단/행동: [Issue #15](<issue-15/issue.md#summary>)의 [Task 001](<issue-15/task-001.md#summary>)에서 등록 대상·지원 기능·완료 기준 논의를 준비한다.
 
 <a id="goal"></a>
 ## 목표와 범위 및 수용 조건
