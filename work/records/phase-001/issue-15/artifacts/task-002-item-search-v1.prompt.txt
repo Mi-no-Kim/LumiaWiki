@@ -1,0 +1,19 @@
+Mode: built-in image_gen
+Purpose: Task 002 item search discussion mockup; layout/colors are proposals; item names/rarities/stats are fictional examples.
+
+Use case: ui-mockup.
+Create ONE polished, realistic desktop website UI screenshot for an early Korean game-information wiki called "루미아 아일랜드 위키". This is the FIRST ITEM SEARCH SCREEN design for discussion, not a functioning app or marketing illustration. Wide landscape approximately 16:10, high-resolution, flat front-on screenshot without a device frame or browser chrome. Strong legibility of Korean UI typography. Restrained neutral wiki styling, ample readable spacing, subtle lines and hierarchy, functional and calm. No hero, photographic backdrop or decorative dashboard charts.
+
+All required behavior and content below are agreed and must be preserved:
+- Simple top navigation: "아이템" active and "루트 계산". The item detail page is reached through items, not a third unrelated feature.
+- Noninteractive text badge "시즌 1 · v1.0.0". NO version picker.
+- Main heading "아이템 검색".
+- On initial entry a list is already visible. An empty name input with placeholder "아이템 이름을 입력하세요" and magnifying-glass icon. A small secondary "초기화" button. NO search/submit/apply button. Brief helper text "이름과 필터를 바꾸면 자동으로 반영됩니다".
+- Always visible equipment part chips: "전체", "무기", "옷", "머리", "장식", "다리". "전체" selected.
+- Below, a COLLAPSED disclosure row labelled "추가 필터 · 능력치 / 아이템 스킬" with an expansion chevron. Do not show expanded advanced controls.
+- Compact item list/table: each row displays ONLY generic illustrative item thumbnail, item name, rarity, type/equipment part. Column labels can be "아이템", "등급", "종류 / 부위". Do NOT display stats or skill description inline in list rows. No extra rarity/type filters, sorting, pagination or account/admin controls, because these choices are not decided.
+- Display six clearly fictional example rows: "예시 무기 A" (일반, 무기), "예시 무기 B" (고급, 무기), "예시 방어구 A" (희귀, 옷), "예시 방어구 B" (고급, 머리), "예시 장식 A" (영웅, 장식), "예시 장비 A" (희귀, 다리). Generic small item illustrations only, not actual game assets. Rarity values are illustrative.
+- Show a subtle cursor hovering the first item and ONE compact floating preview near that row, without covering the name search or filter controls. Preview title "예시 무기 A", section "능력치" with "공격력 +10", section "아이템 스킬" with "예시 효과 설명". These values are deliberately fictional. This popup demonstrates hover information; clicking a list item will lead to its detail page.
+- No blank search state, no actual game statistics research, no new functions.
+- In a small caption BELOW the UI mockup, outside the application surface, write "검토용 시안 · 아이템명·등급·수치는 예시". Make the distinction from real game facts explicit.
+The screenshot should be convincing as a usable interface, with precise alignment and clear Korean text, and faithfully emphasize searching and browsing. Layout and colors are proposals rather than final decisions.

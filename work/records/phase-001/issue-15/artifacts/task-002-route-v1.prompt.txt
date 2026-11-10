@@ -1,0 +1,36 @@
+Mode: built-in image_gen, new route mockup with visual style reference
+Reference: task-002-item-search-v2.png (style only)
+Purpose: Five equipment slots, partial equipment calculation, limits and results on one page. Values are fictional; defaults, calculation trigger and detailed layout remain proposals.
+
+Use case: ui-mockup. Create a NEW Korean desktop ROUTE CALCULATOR page using the attached item-search screenshot ONLY as a visual style reference. Keep the restrained navy header, light surface, compact Korean typography and practical spacing. One flat front-facing complete page screenshot, landscape around 4:3. This is a discussion mockup, NOT an implemented app. All items, numbers, limits, regions and results are fictional examples.
+
+Shared header: "루미아 아일랜드 위키", navigation "아이템" and active "루트 계산", noninteractive badge "시즌 1 · v1.0.0". No version dropdown.
+Main heading "루트 계산". Input and results must be on the SAME page.
+
+Top section "제작할 장비":
+Five equally clear compact slots labelled EXACTLY "무기", "옷", "머리", "장식", "다리".
+무기 slot contains generic sword thumbnail and "예시 무기 A"; 옷 slot contains generic armor thumbnail and "예시 옷 A". These two populated slots have small "교체" and "해제" controls.
+머리, 장식, 다리 slots are empty and show a subtle plus with "장비 선택".
+Helper text "선택한 부위의 장비만 계산합니다". Each slot is a clickable selection target; choosing/replacing uses an in-page picker, not a separate navigation page. Do not show the picker open in this screenshot.
+NO candidate-pool optimization, numeric stat filter, character selection requirement, or editable starting inventory. Those are outside this P1 screen.
+A quiet line "최초 보유 구성은 기준 버전에 따라 적용" indicates fixed starting inventory, not an editable form.
+
+Next compact section "계산 조건":
+A numeric field "최대 방문 지역 수" showing 2, another "최대 배달 횟수" showing 1. These are ONLY sample inputs, not decided defaults.
+One clear button "계산하기". This trigger is a design proposal and not yet an agreed interaction.
+Do not add a delivery-price budget, optimization cost or route start/end controls.
+
+Below section "계산 결과":
+A compact sort dropdown with visible choice "지역 수 적은 순" and nearby "배달 횟수 적은 순" as another possible sorting choice. The shown default is illustrative.
+One result panel with small summary "지역 2개 · 배달 1회".
+Inside, heading "방문 지역 · 순서 없음", with two equal unordered chips "예시 지역 A" and "예시 지역 B". Absolutely NO arrows, numbered visit steps, path map or implied travel order.
+Show material groups:
+"수집할 재료" with compact rows:
+"예시 지역 A  기초 재료 A ×2 · 기초 재료 B ×1"
+"예시 지역 B  기초 재료 D ×1 · 기초 재료 E ×1".
+"배달할 재료" with "기초 재료 C ×1 · 1회".
+"장비 기본 능력치" with "공격력 +10", "방어력 +5". No skill formula effects or detailed damage calculations.
+Keep selected equipment and limits visible above the results.
+
+No account/upload/management/save/share or extra menu features, no actual game data research, no heroic illustrations. Maintain legible labels and information density consistent with the chosen search style. At the bottom outside the application surface, write "검토용 시안 · 아이템·지역·한도값·계산 결과는 예시".
+All required agreed behavior is preserved. Fine layout/colors, limit defaults, calculation trigger and sorting default are still proposals.
