@@ -1,0 +1,20 @@
+Mode: built-in image_gen, referenced-image edit
+Reference: task-002-item-search-v1.png
+Purpose: Compare higher simultaneous item visibility; grid arrangement/count/style remain proposals, examples are fictional.
+
+Use case: ui-mockup revision, alternative 2.
+Edit the referenced Korean wiki item-search screenshot into a MUCH DENSER, useful desktop browsing alternative. Keep its recognizable restrained navy header/light content style and Korean labels, but replace the sparse six full-width rows with a compact multi-column item grid. This is a comparison design, NOT final approval.
+
+CRITICAL CHANGE: Fit approximately EIGHT columns by SIX rows of small item tiles (48 example items) in the same landscape desktop viewport. The overall screenshot should be around 16:10 landscape with clear readable text. Each tile is short and compact, not a tall product card: small generic item thumbnail on the left, a short readable name beside it, then tiny rarity label and type/equipment-part below. Use minimal padding, thin light separators, no large blank card areas. The majority of screen height belongs to the item grid, not heading or filters. Reduce header, page title, filter heights and oversized whitespace substantially. Do NOT merely shrink the existing long table or add three tall cards.
+
+Preserve agreed functions:
+- header "루미아 아일랜드 위키", active navigation "아이템", "루트 계산", noninteractive "시즌 1 · v1.0.0".
+- Heading "아이템 검색" at a normal compact heading size, not a hero.
+- Empty search input placeholder "아이템 이름을 입력하세요", small "초기화" button, small helper "이름과 필터를 바꾸면 자동으로 반영됩니다". No search/apply button.
+- Visible part filter chips "전체", "무기", "옷", "머리", "장식", "다리", with "전체" selected.
+- Collapsed single-line disclosure "추가 필터 · 능력치 / 아이템 스킬".
+- All item tiles show ONLY thumbnail, name, rarity and type/equipment-part. No stats or descriptions in tiles. Use clearly fictional short sample names such as "예시 무기 01", "예시 무기 02", "예시 옷 03", "예시 머리 04", "예시 장식 05", "예시 신발 06" with varied small generic equipment icons, continuing through many rows. All numbers/rarities are examples; not actual game data.
+- This image shows the normal browsing state, with NO open hover popup, to make the increased simultaneous item visibility easy to compare. Hover previews containing stats/skill description still exist as agreed behavior, just not open in this screenshot. Clicking an item still leads to detail.
+- Do not add pagination, sorting, account, upload, management, version dropdown, or any other unagreed controls.
+- Small caption outside the application surface at bottom: "검토용 시안 · 아이템명·등급은 예시".
+Prioritize seeing MANY items simultaneously while reading their names comfortably. The image must demonstrate a materially different density, not an unchanged table.

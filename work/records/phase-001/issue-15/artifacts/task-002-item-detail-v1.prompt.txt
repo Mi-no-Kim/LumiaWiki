@@ -1,0 +1,23 @@
+Mode: built-in image_gen, new detail mockup with visual style reference
+Reference: task-002-item-search-v2.png (style only)
+Purpose: Three continuous detail sections and complete recursive crafting tree. All sample items, recipes and values are fictional; layout remains a proposal.
+
+Use case: ui-mockup, NEW item DETAIL page using the referenced SEARCH screenshot only as visual style reference. Produce one polished front-facing Korean desktop wiki page screenshot, around 4:3 landscape, enough height to show the whole page. Keep its restrained navy header, light content surface, compact readable spacing and typography. Do not reproduce the search grid. All game data in this image is fictional sample content.
+
+Agreed page structure: ONE continuous page, NO content tabs. Three visible consecutive sections: core item information, crafting relations, supporting acquisition/delivery information. No version dropdown or extra features.
+Shared header: "루미아 아일랜드 위키", "아이템" active, "루트 계산", noninteractive "시즌 1 · v1.0.0".
+Above item information: two quiet separate controls "뒤로" and "목록으로". Back means the previous item detail, while list returns to the original search state.
+Core information section: generic sword thumbnail, title "예시 무기 A", sample badges "희귀", "무기". Beside the compact identity block show "능력치" with "공격력 +10", and "아이템 스킬" with "예시 효과 설명". This is not real game data.
+
+The central crafting section is the visual priority. Heading "제작 관계", subheading "하위 조합법". Show a COMPLETE recursive tree, FULLY VISIBLE at initial entry. NO fold chevrons, hidden branches, expand buttons or '모두 펼치기'. Use a clear top-down branching diagram with icons, labels, quantities, and visible connection lines. EXACT tree:
+root "예시 무기 A ×1"
+root has two children: "중간 재료 A ×1" and "중간 재료 B ×1"
+중간 재료 A has two leaf children: "기초 재료 A ×1" and "기초 재료 B ×1"
+중간 재료 B has two leaf children: "기초 재료 A ×1" and "기초 재료 C ×1".
+Every recipe consumes one of each child and produces one parent. Both occurrences of 기초 재료 A must be visible in different branches. All seven nodes must be visible.
+Below the tree, a compact summary labelled "최하위 재료 합계": "기초 재료 A ×2", "기초 재료 B ×1", "기초 재료 C ×1".
+Within crafting relations, show "직접 상위 아이템" with two small example item links/tiles "예시 상위 A" and "예시 상위 B". These are clickable item-detail destinations, not another recursive ancestor tree.
+
+Final supporting section heading "획득 · 배달 정보", smaller visual emphasis than stats/skill/crafting. Display short example rows: "획득 지역  예시 지역 A", "획득 방법  채집", "배달  가능 · 회당 1개", "배달 비용  100 (예시)". No actual game-map research or invented currency name.
+At the bottom outside the app surface, caption exactly "검토용 시안 · 아이템·조합·수치는 예시".
+Keep the full recursive tree legible. No collapsed views, no skill calculations, no search form, no management/upload/account features, no patch history interface in this P1 image. Layout and colors remain a design proposal, not an implemented website.
