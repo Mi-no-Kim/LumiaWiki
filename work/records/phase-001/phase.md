@@ -7,8 +7,8 @@
 - 구상상 구분: P1
 - GitHub milestone: [Mi-no-Kim/LumiaWiki #1](https://github.com/Mi-no-Kim/LumiaWiki/milestone/1)
 - 상태: 진행 중
-- 현재 진행 위치: Issue #15의 Task 001~003은 통합·종료했고 Task 004는 자료·교정·검증 방향의 합의와 자체·별도 검수 후 PR #40 생성·GitHub 완료 표시를 확인했다. 부모 Issue 통합은 아직이다. Task 005는 예정이며 자료 처리·제품 구현에는 착수하지 않았다.
-- 다음 판단/행동: [Task 004](<issue-15/task-004.md#summary>) PR #40의 검토·부모 통합과 Task 브랜치 정리가 남아 있다. 이번 요청의 PR 생성 범위까지 수행했다. 실제 자료 조사·확보·처리 보류는 유지한다.
+- 현재 진행 위치: Issue #15의 Task 001~004는 통합·종료했다. Task 004는 PR #40의 부모 Issue 통합·내용 보존과 Task 브랜치 정리를 확인했다. Task 005는 예정이며 자료 처리·제품 구현에는 착수하지 않았다.
+- 다음 판단/행동: [Task 004](<issue-15/task-004.md#verification>)의 종료 결과를 반환한다. 후속 실행 계획은 Task 005에서 구체화할 예정이며 실제 자료 조사·확보·처리 보류는 유지한다.
 
 <a id="goal"></a>
 ## 목표와 범위 및 수용 조건
