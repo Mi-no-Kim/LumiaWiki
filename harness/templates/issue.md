@@ -31,6 +31,7 @@ GitHub에 반영할 때는 [GitHub Issue 게시 양식](<github-issue.md>)을 �
 - 준비/계획:
 - 의존·착수 조건:
 - 화면 디자인·구현 순서와 검증 흐름(제품 기능): [화면 기준](<../../docs/details/operations/검증과 완료.md#screen-first>)에 따라 사용할 화면·위치와 선행 작업을 연결한다.
+- 직접 수행하는 기능·동작의 사용자 확인 목록·구현 전 공유: [기준](<../../docs/details/operations/검증과 완료.md#user-verification>)에 따라 준비 조건·조작·기대 결과와 공유 여부/미정을 적는다. Task에 배정한 경우 담당 계획을 연결하고 목록을 중복 관리하지 않는다.
 - 예정 확인:
 
 <a id="conditional-guidance"></a>
@@ -60,6 +61,7 @@ GitHub에 반영할 때는 [GitHub Issue 게시 양식](<github-issue.md>)을 �
 
 - 자기 수용 조건별 판정·근거:
 - 미확인·확인 범위/한계:
+- 직접 수행한 사전 목록별 자동 검사·AI 직접 조작·사용자 확인 결과/미확인·근거와 실제 실행/접속 방법·대상 버전/자료·확인 요청(해당 시):
 
 <a id="activity"></a>
 ## 주요 논의와 판정 근거
