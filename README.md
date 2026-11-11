@@ -14,9 +14,9 @@
 
 ## 현재 상태
 
-요구사항과 7개 Phase의 계획을 문서로 정리한 단계다. 제품 기능 구현에는 아직 착수하지 않았다.
+요구사항과 7개 Phase의 계획을 정리하고 웹·API 서버·개발 DB의 실행 기반을 구축하고 있다. 게임 자료와 검색·계산 등 제품 기능은 아직 구현하지 않았다.
 
-현재 진행 상황과 다음 작업은 [작업 현황](<work/현황.md#current>)에서 확인한다. 기술 구성과 설치·실행·테스트 방법은 실제 구현에 맞춰 추가한다.
+현재 진행 상황과 다음 작업은 [작업 현황](<work/현황.md#current>)에서 확인한다. 기반 구축의 검증 결과와 남은 확인은 [Task 42-001](<work/records/phase-001/issue-42/task-001.md#implementation>)에 기록한다.
 
 ## 프로젝트 구성
 
@@ -27,6 +27,11 @@
 | `docs/` | 제품 요구사항과 프로젝트 운영 기준 |
 | `harness/` | 작업 절차와 문서·기록 양식 |
 | `work/` | 계획, 진행 현황, 실제 논의·작업·검증 기록 |
+| `backend/` | Java 21·Spring Boot API 서버와 Gradle Wrapper |
+| `frontend/` | React·TypeScript·Vite 시작 화면 |
+| `db/migration/` | Flyway 공용 SQL 원천. 현재 게임 스키마는 미등록 |
+| `compose.yaml` | PostgreSQL 로컬 개발 환경 |
+| `scripts/` | 서버 실행기와 격리 기반 검증 도구 |
 | `harness-design/` | 별도로 관리하는 하네스 설계 도구. 아래 접근 제한 적용 |
 
 <a id="start"></a>
@@ -56,3 +61,38 @@ AI와 작업할 때는 원하는 결과와 대상, 허용 범위를 전달한다
 - 새 위키 개발·운영 기록은 `work/`에서 관리한다.
 
 관련 `.harness-state/`도 명시적으로 허용된 범위에서만 접근한다. 상세 기준은 [원천과 보존 경계](<docs/문서 관리 기준.md#harness-design-boundary>)를 따른다.
+
+<a id="local-development"></a>
+## 로컬 실행
+
+JDK 21, Node.js 24 LTS, npm과 실행 중인 Docker Desktop의 Linux 엔진이 필요하다. Java는 기존 설치를 사용하고 Gradle은 저장소 Wrapper 9.9.1로 실행한다. 웹 직접 의존성은 manifest와 잠금 파일의 버전으로 설치한다.
+
+1. `.env.example`을 루트 `.env`로 복사하고 `DB_PASSWORD`를 개인 값으로 바꾼다. `$` 등 특별 문자가 들어간 값은 작은따옴표로 감싸 Node와 Compose에서 동일하게 읽도록 한다. 비밀번호를 채팅·문서·Git에 넣지 않는다. `.env`는 자동 생성하거나 덮어쓰지 않는다.
+2. `npm --prefix frontend ci`로 웹 의존성을 설치한다.
+3. 다음 DB 명령을 실행한 뒤 API와 웹 명령을 각각 별도 터미널에서 실행한다.
+
+```text
+docker compose -p lumiawiki up -d --wait --wait-timeout 90 db
+node --env-file=.env scripts/dev-api.mjs
+npm --prefix frontend run dev
+```
+
+웹은 `http://localhost:5173/`, API 서버는 `http://127.0.0.1:8080`, DB는 `127.0.0.1:5432`를 사용한다. 현재 웹은 실행 확인용 정적 시작 화면이며 API 기능 경로는 후속 Task에서 마련한다. 포트가 이미 사용 중이면 기존 서비스를 종료하거나 임의 포트로 바꾸지 않고 실패한다. DB 포트는 `.env`의 `DB_PORT`, 서버 포트는 실행 환경의 `SERVER_PORT`로 조정할 수 있다. 개인 DB 환경값을 웹 프로세스에 전달하지 않는다.
+
+서버 실행기는 Node의 기본 env-file 기능으로 접속값을 읽고 local 프로필을 명시한다. 누락/예제 비밀번호·잘못된 포트는 Java 시작 전에 거부한다. `JAVA_HOME`이 필요하면 기존 JDK 21 설치 경로로 지정한다. common/local/test 설정을 구분하며 테스트 전용 DB 연결·테스트/hook 환경은 Task 002의 담당이다.
+
+## 빌드와 기반 확인
+
+```text
+npm --prefix frontend run typecheck
+npm --prefix frontend run build
+npm --prefix frontend run preview
+node --test scripts/dev-api.test.mjs
+node scripts/verify-bootstrap.mjs
+```
+
+빌드 화면은 `http://127.0.0.1:4173/`에서 확인한다. Windows 서버 빌드는 `backend\gradlew.bat -p backend bootJar`, 다른 환경에서는 `sh backend/gradlew -p backend bootJar`다. 생성 JAR는 `backend/build/libs/lumiawiki-api-0.0.1-SNAPSHOT.jar`다. 서버 단위/DB 테스트의 실행·자동 검사는 Task 002에서 연결하며 bootJar 통과가 테스트 완료를 뜻하지 않는다.
+
+기반 검증 도구는 `.tmp/issue-42/task-001/`의 격리 복제본에만 합성 SQL을 만들어 JAR 포함·Flyway 적용·앱/DB 재시작 보존·잘못된 암호·실제 env-file/bootRun을 확인한다. 개발 DB에 합성 테이블을 만들지 않는다. 성공하면 소유를 확인한 임시 컨테이너/볼륨을 정리하고 비밀값 없는 결과·입력 지문을 남긴다. 실패하면 안내한 실행별 임시 경로와 재현 리소스를 유지한다. 실제 제품 SQL은 `db/migration/`에서 한 번만 관리하고 Gradle이 빌드 리소스에 포함한다.
+
+일반 DB 종료는 `docker compose -p lumiawiki down`이며 named volume과 데이터를 보존한다. 볼륨을 삭제하는 초기화 명령은 일상 종료에 사용하지 않는다. 중요한 데이터를 삭제·초기화하기 전에는 별도 백업이 필요하다.

@@ -7,8 +7,8 @@
 - 구상상 구분: P1
 - GitHub milestone: [Mi-no-Kim/LumiaWiki #1](https://github.com/Mi-no-Kim/LumiaWiki/milestone/1)
 - 상태: 진행 중
-- 현재 진행 위치: 계획 Issue #15의 Task 001~005 결과·원천 반영·후속 배정을 전체 검수하고 PR #49로 Phase에 통합했다. 내용/이력 보존과 Issue 브랜치 정리를 확인해 계획 Issue의 종료 처리를 마쳤다. Issue #42는 실행 준비를 진행해 하위 Task 001~004(GitHub #50~#53)를 예정으로 등록했다. Issue #43~#48은 예정이며 자료 처리·제품 구현은 미수행이다. Phase의 여섯 실제 기능/자료 수용 조건은 아직 충족 판정하지 않았다.
-- 다음 판단/행동: [Issue #42 준비 결과의 검수·커밋](<issue-42/issue.md#preparation-review>) 뒤 [Task 42-001](<issue-42/task-001.md#summary>) 작업 브랜치로 전환한다. 이번 요청은 전환까지이며 구현은 미착수다. 실제 자료 조사·확보·처리 보류를 유지한다.
+- 현재 진행 위치: 계획 Issue #15의 Task 001~005 결과·원천 반영·후속 배정을 전체 검수하고 PR #49로 Phase에 통합했다. 내용/이력 보존과 Issue 브랜치 정리를 확인해 계획 Issue의 종료 처리를 마쳤다. Issue #42는 실행 준비를 진행해 하위 Task 001~004(GitHub #50~#53)를 예정으로 등록했다. Issue #43~#48은 예정이며 Task 42-001의 실행 기반 구현·검증을 완료했다. 게임 자료 처리와 검색·계산 등 제품 기능 구현은 미수행이다. Phase의 여섯 실제 기능/자료 수용 조건은 아직 충족 판정하지 않았다.
+- 다음 판단/행동: [Issue #42 준비 결과](<issue-42/issue.md#preparation-review>)는 `d8133e3`으로 커밋했고 [Task 42-001](<issue-42/task-001.md#implementation-decisions>) 브랜치에서 해당 Task 세부 설계를 확정했다. 현재 Task 42-001의 웹/서버/DB 실행 기반과 새 개발 DB 인증·재시작 보존·시작 화면 확인을 완료했다. Task 1을 [PR #54](https://github.com/Mi-no-Kim/LumiaWiki/pull/54)로 부모 Issue #42에 통합하고 결과/정리를 확인한다. Task 002~004는 예정으로 유지한다. 실제 자료 조사·확보·처리 보류를 유지한다.
 
 <a id="goal"></a>
 ## 목표와 범위 및 수용 조건
