@@ -7,8 +7,8 @@
 - 구상상 구분: P1
 - GitHub milestone: [Mi-no-Kim/LumiaWiki #1](https://github.com/Mi-no-Kim/LumiaWiki/milestone/1)
 - 상태: 진행 중
-- 현재 진행 위치: Issue #15의 Task 001~004는 통합·종료했다. Task 004는 PR #40의 부모 Issue 통합·내용 보존과 Task 브랜치 정리를 확인했다. Task 005는 예정이며 자료 처리·제품 구현에는 착수하지 않았다.
-- 다음 판단/행동: [Task 004](<issue-15/task-004.md#verification>)의 종료 결과를 반환한다. 후속 실행 계획은 Task 005에서 구체화할 예정이며 실제 자료 조사·확보·처리 보류는 유지한다.
+- 현재 진행 위치: Issue #15의 Task 001~004는 통합·종료했고 Task 005의 후속 구성 계획은 합의·내용 수용을 마쳤다. 실제 후속 Issue #42~#48을 예정 상태로 등록하고 정식 파일을 연결했다. Task 생성·자료 처리·제품 구현은 수행하지 않았다.
+- 다음 판단/행동: [보유 Issue](<#owned-issues>)의 등록 결과를 확인하고 계획 Issue #15 결과의 제출·통합·자체 수용을 진행한다. 실제 자료 조사·확보·처리 보류를 유지하며 Task 생성과 구현은 담당 Issue 준비 때 진행한다.
 
 <a id="goal"></a>
 ## 목표와 범위 및 수용 조건
@@ -88,11 +88,13 @@
 
 범위·수용 조건과 후속 실행 계획을 먼저 정하고, 실제 자료 등록과 기능 구현으로 이어간다. 자료 제공·검증 준비는 아래 착수 조건을 따른다.
 
+Task 005에서 합의한 큰 순서는 실행 기반·DB 저장/조회 준비→자료 확인용 검색·기본 상세→실제 자료 등록·화면 대조→제작·루트 등 나머지 기능·화면 완성→통합 확인이다. DB 코드 개발과 실제 자료 등록·교정은 별도 Issue로 두며 일곱 Issue의 경계·Task 구성·수용 조건과 필요한 선행 결과는 [합의한 실행 계획](<issue-15/artifacts/task-005-issue-outline.md#issues>)을 따른다. 실제 자료 작업 보류는 유지한다.
+
 <a id="tdd-readiness"></a>
 ### 첫 기능 구현 전 테스트·TDD 자동화 준비
 
 - [Task 003](<issue-15/task-003.md#tdd-automation-handoff>)에서 TDD 규칙과 최소 hook 검사·예외·근거·비용 기준을 정한다.
-- [Task 005](<issue-15/task-005.md#goal>)는 첫 기반 구축 Issue에 테스트 환경·최소 TDD hook 연결·실제 동작 검증을 필수 범위와 수용 조건으로 배정하고 실제 등록 과제를 이 위치에 연결한다. 현재 실행 담당 Issue는 발급 전이다.
+- [Task 005](<issue-15/task-005.md#goal>)가 테스트 환경·최소 TDD hook 연결·실제 동작 검증을 [Issue #42 실행·개발·검증 기반](<issue-42/issue.md#foundation>)의 필수 범위·수용 조건으로 배정했다. 실제 hook 구현·검증과 담당 Task 등록은 해당 Issue에서 수행한다.
 - 계획 Issue #15의 종료 후 첫 기반 구축 과제 초반, 프로젝트 골격과 테스트 실행 명령을 마련한 직후 hook을 연결·검증한다. 이 결과는 해당 기반 과제의 필수 완료 조건이다.
 - 첫 제품 기능의 동작 구현은 위 자동화 연결·검증이 완료된 뒤 시작한다. 미완료·미확인이면 기능 구현의 선행 조건이 충족되지 않은 것으로 처리한다.
 
@@ -122,3 +124,11 @@
 ## 보유 Issue
 
 - [Issue #15: Phase 001 구체화 및 Issue·Task 실행 계획 수립](<issue-15/issue.md#summary>)
+
+- [Issue #42: 실행·개발·검증 기반](<issue-42/issue.md#summary>)
+- [Issue #43: 시즌·아이템 DB 구조와 저장·조회 코드 구현](<issue-43/issue.md#summary>)
+- [Issue #44: 검색·기본 상세와 자료 확인 화면](<issue-44/issue.md#summary>)
+- [Issue #45: 실제 자료 등록·교정과 기준값 확인](<issue-45/issue.md#summary>)
+- [Issue #46: 제작 관계와 재료 수량](<issue-46/issue.md#summary>)
+- [Issue #47: 기본 루트 계산](<issue-47/issue.md#summary>)
+- [Issue #48: P1 통합 확인과 잔여 정리](<issue-48/issue.md#summary>)
