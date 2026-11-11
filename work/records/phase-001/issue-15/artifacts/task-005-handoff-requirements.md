@@ -40,20 +40,20 @@
 
 | 배정할 내용 | 담당 계획서·역할 | 결정·확인 시점 |
 |---|---|---|
-| 골격·선택 버전·환경/DB 분리·로그·공통 오류·API 문서 | [실행 기반](<task-005-proposal-foundation.md#foundation>) | 기반 구성·실행 검증 때. 운영 환경별 노출/권한은 실제 적용 전에 별도 결정 |
-| 테스트 환경·TDD hook·예외/근거/비용·검사/포맷·CI | [실행 기반](<task-005-proposal-foundation.md#foundation>)이 연결·실제 통과/실패 검증, 각 기능이 TDD·후속 PR 검증 재사용 | hook은 골격/테스트 명령 직후·첫 기능 동작 구현 전, CI는 로컬 명령 준비 후·기반 완료 전 |
-| 공통 Router/조회·API 연결·정적 이미지 제공 | [실행 기반](<task-005-proposal-foundation.md#foundation>)의 기술 골격, [검색·상세](<task-005-proposal-search-detail.md#search-detail>)의 공통 시각 표현 | 기술 골격 뒤 화면 검토·기능 구현 전. 실제 이미지 확보/Git 취급은 자료 과제 |
-| 시즌/패치·지역·분류/등급·무기 종류·아이템과 관계 | [DB 개발](<task-005-proposal-database.md#database>)의 스키마·키·참조·저장/조회, [자료](<task-005-proposal-data-registration.md#data>)의 실제 값/출처 | 스키마/검증 구현 전 필요한 입력 확인, 실제 등록은 기본 화면 준비 뒤 |
-| ID·날짜/시각·수치 정밀도/API 표현·스킬 JSON | [DB 개발](<task-005-proposal-database.md#database>)의 매핑·검사·왕복, [자료](<task-005-proposal-data-registration.md#data>)의 실제 입력 확인 | 실제 허용 범위·미확인 값 허용·JSON 필수 내용은 해당 구현/등록 전에 결정 |
-| 유효 버전·삭제 시점·종류 이력·스킬 동시 참조·원본/캐시 | [DB 개발](<task-005-proposal-database.md#database>)의 조회/기본 수정·일치 보장, [자료](<task-005-proposal-data-registration.md#ownership>)의 교정 실행 | 저장·조회/수정 구현 전 설계하고 등록/교정 시 검증. 과거 보존 유지 |
-| 원자료·변환 결과·이미지·최초 보유 구성·사냥/임시 아이템 사실 | [자료](<task-005-proposal-data-registration.md#data>)의 제공 입력/출처·테이블별 등록·보존 | 보류 해제 후 실제 자료 확인. 부족·충돌은 영향 범위만 보류 |
-| Java/Spring 교정·독립 DB 수정 예외·정정 기록·실패 복구 | [자료](<task-005-proposal-data-registration.md#ownership>)가 실행, [DB 개발](<task-005-proposal-database.md#database>)이 기본 수정·참조/캐시 처리 제공 | 최초 등록/교정 실행 전 구체 수단 결정. 자료 과제에서 선행 코드·기본 화면 보완 허용 |
-| 공통 디자인·검색/필터·미리보기·기본 상세·복귀/빈 상태 | [검색·기본 상세](<task-005-proposal-search-detail.md#search-detail>) | 필요한 실제 옵션을 받아 구현 전 결정·화면 검토. 등록 전 확인 화면 준비 |
-| 제작 트리·직접 상위·수율/반복/잔여·순환/누락·합산표 | [제작](<task-005-proposal-crafting.md#crafting>) | 화면 검토 뒤 기능 개발 때 반복 실험·선택. 관련 교정 후 관계/총량 확인 |
-| 장비 선택·지역 집합·배달·기본 능력치·루트 캐시/임시 아이템 | [루트](<task-005-proposal-route.md#route>) | 실제 최초 보유·제작/획득/배달 입력과 화면을 준비해 구현 전 세부 결정. 정정 후 계산 확인 |
-| 사용자 확인 목록·화면/내부 검증·실제 자료 연결 | 각 기능이 [공통 기준](<task-005-issue-outline.md#common>)과 사례를 실행하고 [통합 확인](<task-005-proposal-integration.md#integration>)이 전체 연결/잔여 판정 | 동작 구현 전 목록 공유, 구현 후 AI 확인·사용자 자료 대조, 최종 실제 v1.0.0 입력으로 대조 |
-| 독립 정보 관리 전환·버전 선택기·이력/변경 관리·수식 | [통합 확인](<task-005-proposal-integration.md#integration>)이 [Task 001의 후속 담당/시점](<task-001-discussion-details.md#handoff-decisions>)에 연결 | 독립 전환은 불편이 커질 때, 수식은 딜량 계산기 작업 때. P1 선행 조건으로 추가하지 않음 |
-| 자료 적용 환경·API 노출·SPA fallback·권한/로그/백업·S3 검토 조건 | [통합 확인](<task-005-proposal-integration.md#integration>)이 필요한 적용/후속 운영 과제에 연결 | 실제 해당 환경 적용/이미지 전환 전에 결정. P1 공개 운영 기능 전체를 추가하지 않음 |
+| 골격·선택 버전·환경/DB 분리·로그·공통 오류·API 문서 | [실행 기반](<../../issue-42/issue.md#foundation>) | 기반 구성·실행 검증 때. 운영 환경별 노출/권한은 실제 적용 전에 별도 결정 |
+| 테스트 환경·TDD hook·예외/근거/비용·검사/포맷·CI | [실행 기반](<../../issue-42/issue.md#foundation>)이 연결·실제 통과/실패 검증, 각 기능이 TDD·후속 PR 검증 재사용 | hook은 골격/테스트 명령 직후·첫 기능 동작 구현 전, CI는 로컬 명령 준비 후·기반 완료 전 |
+| 공통 Router/조회·API 연결·정적 이미지 제공 | [실행 기반](<../../issue-42/issue.md#foundation>)의 기술 골격, [검색·상세](<../../issue-44/issue.md#search-detail>)의 공통 시각 표현 | 기술 골격 뒤 화면 검토·기능 구현 전. 실제 이미지 확보/Git 취급은 자료 과제 |
+| 시즌/패치·지역·분류/등급·무기 종류·아이템과 관계 | [DB 개발](<../../issue-43/issue.md#database>)의 스키마·키·참조·저장/조회, [자료](<../../issue-45/issue.md#data>)의 실제 값/출처 | 스키마/검증 구현 전 필요한 입력 확인, 실제 등록은 기본 화면 준비 뒤 |
+| ID·날짜/시각·수치 정밀도/API 표현·스킬 JSON | [DB 개발](<../../issue-43/issue.md#database>)의 매핑·검사·왕복, [자료](<../../issue-45/issue.md#data>)의 실제 입력 확인 | 실제 허용 범위·미확인 값 허용·JSON 필수 내용은 해당 구현/등록 전에 결정 |
+| 유효 버전·삭제 시점·종류 이력·스킬 동시 참조·원본/캐시 | [DB 개발](<../../issue-43/issue.md#database>)의 조회/기본 수정·일치 보장, [자료](<../../issue-45/issue.md#ownership>)의 교정 실행 | 저장·조회/수정 구현 전 설계하고 등록/교정 시 검증. 과거 보존 유지 |
+| 원자료·변환 결과·이미지·최초 보유 구성·사냥/임시 아이템 사실 | [자료](<../../issue-45/issue.md#data>)의 제공 입력/출처·테이블별 등록·보존 | 보류 해제 후 실제 자료 확인. 부족·충돌은 영향 범위만 보류 |
+| Java/Spring 교정·독립 DB 수정 예외·정정 기록·실패 복구 | [자료](<../../issue-45/issue.md#ownership>)가 실행, [DB 개발](<../../issue-43/issue.md#database>)이 기본 수정·참조/캐시 처리 제공 | 최초 등록/교정 실행 전 구체 수단 결정. 자료 과제에서 선행 코드·기본 화면 보완 허용 |
+| 공통 디자인·검색/필터·미리보기·기본 상세·복귀/빈 상태 | [검색·기본 상세](<../../issue-44/issue.md#search-detail>) | 필요한 실제 옵션을 받아 구현 전 결정·화면 검토. 등록 전 확인 화면 준비 |
+| 제작 트리·직접 상위·수율/반복/잔여·순환/누락·합산표 | [제작](<../../issue-46/issue.md#crafting>) | 화면 검토 뒤 기능 개발 때 반복 실험·선택. 관련 교정 후 관계/총량 확인 |
+| 장비 선택·지역 집합·배달·기본 능력치·루트 캐시/임시 아이템 | [루트](<../../issue-47/issue.md#route>) | 실제 최초 보유·제작/획득/배달 입력과 화면을 준비해 구현 전 세부 결정. 정정 후 계산 확인 |
+| 사용자 확인 목록·화면/내부 검증·실제 자료 연결 | 각 기능이 [공통 기준](<task-005-issue-outline.md#common>)과 사례를 실행하고 [통합 확인](<../../issue-48/issue.md#integration>)이 전체 연결/잔여 판정 | 동작 구현 전 목록 공유, 구현 후 AI 확인·사용자 자료 대조, 최종 실제 v1.0.0 입력으로 대조 |
+| 독립 정보 관리 전환·버전 선택기·이력/변경 관리·수식 | [통합 확인](<../../issue-48/issue.md#integration>)이 [Task 001의 후속 담당/시점](<task-001-discussion-details.md#handoff-decisions>)에 연결 | 독립 전환은 불편이 커질 때, 수식은 딜량 계산기 작업 때. P1 선행 조건으로 추가하지 않음 |
+| 자료 적용 환경·API 노출·SPA fallback·권한/로그/백업·S3 검토 조건 | [통합 확인](<../../issue-48/issue.md#integration>)이 필요한 적용/후속 운영 과제에 연결 | 실제 해당 환경 적용/이미지 전환 전에 결정. P1 공개 운영 기능 전체를 추가하지 않음 |
 
 <a id="phase-acceptance"></a>
 ## P1 여섯 수용 조건의 배정

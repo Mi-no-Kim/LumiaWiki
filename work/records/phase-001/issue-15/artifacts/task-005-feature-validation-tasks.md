@@ -10,22 +10,22 @@
 <a id="search-detail"></a>
 ## 검색·기본 상세와 자료 확인 화면
 
-[합의한 Task 구성·수용 조건](<task-005-proposal-search-detail.md#search-detail>)
+[합의한 Task 구성·수용 조건](<../../issue-44/issue.md#search-detail>)
 
 <a id="crafting"></a>
 ## 제작 관계와 재료 수량
 
-[합의한 Task 구성·수용 조건](<task-005-proposal-crafting.md#crafting>)
+[합의한 Task 구성·수용 조건](<../../issue-46/issue.md#crafting>)
 
 <a id="route"></a>
 ## 기본 루트 계산
 
-[합의한 Task 구성·수용 조건](<task-005-proposal-route.md#route>)
+[합의한 Task 구성·수용 조건](<../../issue-47/issue.md#route>)
 
 <a id="integration"></a>
 ## P1 통합 확인과 잔여 정리
 
-[합의한 Task 구성·수용 조건](<task-005-proposal-integration.md#integration>)
+[합의한 Task 구성·수용 조건](<../../issue-48/issue.md#integration>)
 
 <a id="handoff"></a>
 ## 사례와 후속 배정

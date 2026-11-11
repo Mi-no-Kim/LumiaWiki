@@ -5,19 +5,19 @@
 <a id="foundation"></a>
 ## 실행·개발·검증 기반
 
-[합의한 Task 구성·수용 조건](<task-005-proposal-foundation.md#foundation>)
+[합의한 Task 구성·수용 조건](<../../issue-42/issue.md#foundation>)
 
 <a id="database"></a>
 ## 시즌·아이템 DB 구조와 저장·조회 코드 구현
 
-[합의한 Task 구성·수용 조건](<task-005-proposal-database.md#database>)
+[합의한 Task 구성·수용 조건](<../../issue-43/issue.md#database>)
 
 <a id="data"></a>
 ## 실제 자료 등록·교정과 기준값 확인
 
-[합의한 Task 구성·수용 조건](<task-005-proposal-data-registration.md#data>)
+[합의한 Task 구성·수용 조건](<../../issue-45/issue.md#data>)
 
 <a id="ownership"></a>
 ## 책임 배정
 
-[합의한 주담당과 선행 결과 보완](<task-005-proposal-data-registration.md#ownership>)
+[합의한 주담당과 선행 결과 보완](<../../issue-45/issue.md#ownership>)
