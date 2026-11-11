@@ -7,8 +7,13 @@
 - 구상상 구분: P1
 - GitHub milestone: [Mi-no-Kim/LumiaWiki #1](https://github.com/Mi-no-Kim/LumiaWiki/milestone/1)
 - 상태: 진행 중
-- 현재 진행 위치: 계획 Issue #15의 Task 001~005 결과·원천 반영·후속 배정을 전체 검수하고 PR #49로 Phase에 통합했다. 내용/이력 보존과 Issue 브랜치 정리를 확인해 계획 Issue의 종료 처리를 마쳤다. Issue #42는 실행 준비를 진행해 하위 Task 001~004(GitHub #50~#53)를 예정으로 등록했다. Issue #43~#48은 예정이며 Task 42-001의 실행 기반 구현·검증을 완료했다. 게임 자료 처리와 검색·계산 등 제품 기능 구현은 미수행이다. Phase의 여섯 실제 기능/자료 수용 조건은 아직 충족 판정하지 않았다.
-- 다음 판단/행동: [Issue #42 준비 결과](<issue-42/issue.md#preparation-review>)는 `d8133e3`으로 커밋했고 [Task 42-001](<issue-42/task-001.md#implementation-decisions>) 브랜치에서 해당 Task 세부 설계를 확정했다. 현재 Task 42-001의 웹/서버/DB 실행 기반과 새 개발 DB 인증·재시작 보존·시작 화면 확인을 완료했다. Task 1을 [PR #54](https://github.com/Mi-no-Kim/LumiaWiki/pull/54)로 부모 Issue #42에 통합하고 결과/정리를 확인한다. Task 002~004는 예정으로 유지한다. 실제 자료 조사·확보·처리 보류를 유지한다.
+- 현재 진행 위치: 계획 Issue #15를 PR #49로 통합·정리했다. Issue #42의 Task 001은 PR #54로 Issue 브랜치에 통합·정리했고 Task 002~004의 실행 설계를 확정했다. 후속 Task·Issue #43~#48은 예정이며 게임 자료 작업은 보류다. Phase의 실제 기능/자료 수용 조건은 아직 충족 판정하지 않았다.
+- 다음 판단/행동: [Issue #42의 남은 Task 결정](<issue-42/issue.md#remaining-task-decisions>)을 기준으로 구현 요청 시 Task 002부터 진행한다. Node 24.22.3 적용·테스트/hook·공통 연결·품질/CI의 실제 검증은 남아 있다. 실제 자료 조사·확보·처리 보류를 유지한다.
+
+<a id="ci-manual-followup"></a>
+### main 통합 뒤 CI 수동 실행 확인
+
+[Task 42-004의 CI 계약](<issue-42/task-004.md#implementation-decisions>)은 PR·부모 브랜치·수동 실행을 사용한다. 기본 브랜치 main에 workflow가 등록되기 전에는 수동 실행 활성화를 완료로 표시하지 않는다. Phase → main 통합 뒤 실제 수동 전체 검사 run·대상 commit·판정을 확인한다. 그전 Task 004의 실제 CI 성공/실패 검증은 PR·부모 push로 수행하며 이 조건 때문에 main 선행 병합을 추가하지 않는다.
 
 <a id="goal"></a>
 ## 목표와 범위 및 수용 조건
