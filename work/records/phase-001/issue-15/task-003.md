@@ -6,7 +6,7 @@
 - GitHub sub-issue: [Mi-no-Kim/LumiaWiki #23](https://github.com/Mi-no-Kim/LumiaWiki/issues/23)
 - 상태: 완료
 - 현재 진행 위치: 일곱 완료 조건을 충족한 Task 003 결과를 [PR #39](https://github.com/Mi-no-Kim/LumiaWiki/pull/39)로 부모 `issue/15-phase-planning`에 squash 병합했다. 검수한 문서 30개와 실제 반영 내용의 일치 및 기존 변경 보존을 확인했고 Task 브랜치를 로컬·원격에서 정리했다. 실제 구현·자료 처리는 미수행이다.
-- 다음 행동: 이번 병합·종료 기록을 부모 브랜치에 반영하고 결과를 반환한다. 실제 CI 구현·다음 Task 착수는 하지 않는다. 사용자가 예고한 Task 001·002의 문서·실제 반영 조사도 이번 요청에서는 착수하지 않았다.
+- 다음 행동: 이 Task의 통합·종료 처리는 마쳤다. 실제 구현과 CI·hook 연결/검증은 [Issue #42](<../issue-42/issue.md#foundation>) 및 [후속 담당 목록](<artifacts/task-005-handoff-requirements.md#allocation>)에서 준비하며 부모 Issue의 계획을 따른다.
 
 <a id="goal"></a>
 ## 목적과 허용 범위 및 완료 조건
@@ -97,7 +97,7 @@
 
 검사 시점·조건·예외·비용과 원자료 비교는 [채택한 최소 TDD hook 기준](<artifacts/task-003-tdd-hook-proposal.md>)에 정리했다. 최초 검수 보완 뒤 자체·별도 재검수에서 필수 문제가 없음을 확인해 채택했다. 도구 기능은 공식 문서 확인이며 현재 환경에 연결해 실행한 검증 결과는 아니다.
 
-현재 실제 번호가 있는 배정 담당은 [Task 005](<task-005.md#goal>)다. 첫 기반 구축 Issue 번호는 아직 발급 전이므로 임의 번호를 만들지 않고, Task 005가 등록할 때 담당 기록과 [Phase 착수 조건](<../phase.md#tdd-readiness>)에 실제 과제를 연결한다. 이 기록상의 완료·착수 조건과 실제 hook이 동작하는 상태는 구별한다.
+Task 003 종료 당시에는 [Task 005](<task-005.md#goal>)가 첫 기반 구축 과제의 배정·등록을 맡았고 해당 Issue 번호는 발급 전이었다. 현재는 [Issue #42](<../issue-42/issue.md#foundation>)에 테스트 환경·최소 hook·CI의 구현/검증 범위를 배정하고 [Phase 착수 조건](<../phase.md#tdd-readiness>)에 연결했다. 이 계획·착수 조건의 연결을 실제 hook 동작 검증 완료로 보지 않는다.
 
 <a id="tdd-hook-review"></a>
 ### 최초 hook 검수

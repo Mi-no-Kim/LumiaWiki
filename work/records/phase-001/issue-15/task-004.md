@@ -6,7 +6,7 @@
 - GitHub sub-issue: [Mi-no-Kim/LumiaWiki #24](https://github.com/Mi-no-Kim/LumiaWiki/issues/24)
 - 상태: 완료
 - 현재 진행 위치: 자료·교정·검증 방향과 여섯 완료 조건을 자체·별도 검수하고 [PR #40](https://github.com/Mi-no-Kim/LumiaWiki/pull/40)을 부모 Issue에 squash 병합했다. 실제 내용 보존·GitHub 완료 표시와 Task 브랜치의 로컬·원격 정리를 확인했다. 실제 자료 작업 보류는 유지한다.
-- 다음 행동: 이 Task의 통합·종료·브랜치 정리는 완료했다. 후속 진행은 부모 Issue 계획을 따르며 Task 005는 예정으로 유지한다.
+- 다음 행동: 이 Task의 통합·종료 처리는 마쳤다. 자료·교정·검증 인계는 [Task 005](<task-005.md#summary>)와 [정식 후속 Issue](<artifacts/task-005-issue-outline.md#issues>)에 연결했으며 실제 자료 작업 보류는 유지한다.
 
 <a id="goal"></a>
 ## 목적과 허용 범위 및 완료 조건
