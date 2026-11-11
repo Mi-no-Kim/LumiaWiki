@@ -8,7 +8,7 @@
 - 소속 Phase: [Phase 001](<../phase.md#summary>)
 - 상태: 진행 중
 - 현재 진행 위치: 하위 Task 001~004(GitHub #50~#53)를 등록했고 Task 001의 실행 기반 구현·검증을 완료했다. Task 002~004는 예정이며 실제 게임 자료 작업과 후속 Task 구현은 수행하지 않았다.
-- 다음 판단/행동: [Task 001 결과](<task-001.md#result>)를 반환한다. 이번 제출은 Task 001의 검수·로컬 커밋 범위이며 원격 공유와 후속 Task 착수는 수행하지 않는다. Issue 전체 수용은 아직 충족 판정하지 않았다.
+- 다음 판단/행동: [Task 001 결과](<task-001.md#result>)를 반환한다. Task 001 구현 `95cafce`와 준비 `d8133e3`을 push했고 [PR #54](https://github.com/Mi-no-Kim/LumiaWiki/pull/54)로 이 Issue에 통합한다. 후속 Task는 예정으로 유지한다. Issue 전체 수용은 아직 충족 판정하지 않았다.
 - 작성 근거: [Task 005](<../issue-15/task-005.md#summary>) · [전체 실행 순서](<../issue-15/artifacts/task-005-issue-outline.md#sequence>). 실제 자료 작업 보류를 유지한다.
 
 <a id="goal"></a>
