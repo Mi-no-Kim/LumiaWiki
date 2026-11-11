@@ -1,0 +1,7 @@
+# Task 002 supplies the isolated Testcontainers connection.
+# No development DB fallback is allowed in this profile.
+spring:
+  datasource:
+    url: jdbc:postgresql://127.0.0.1:1/test_connection_not_configured
+    username: test_connection_not_configured
+    password: test_connection_not_configured
