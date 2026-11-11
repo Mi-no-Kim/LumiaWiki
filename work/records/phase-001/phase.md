@@ -7,8 +7,8 @@
 - 구상상 구분: P1
 - GitHub milestone: [Mi-no-Kim/LumiaWiki #1](https://github.com/Mi-no-Kim/LumiaWiki/milestone/1)
 - 상태: 진행 중
-- 현재 진행 위치: 계획 Issue #15의 Task 001~005 결과·원천 반영·후속 배정을 전체 검수하고 PR #49로 Phase에 통합했다. 내용/이력 보존과 Issue 브랜치 정리를 확인해 계획 Issue의 종료 처리를 마쳤다. 후속 Issue #42~#48은 예정이며 실제 Task 생성·자료 처리·제품 구현은 미수행이다. Phase의 여섯 실제 기능/자료 수용 조건은 아직 충족 판정하지 않았다.
-- 다음 판단/행동: [Issue #15 종료 결과](<issue-15/issue.md#merge-close>)를 반환한다. 다음 작업은 첫 실행 기반 Issue #42의 준비와 Task 구체화이며 이번에는 착수하지 않는다. 실제 자료 조사·확보·처리 보류를 유지한다.
+- 현재 진행 위치: 계획 Issue #15의 Task 001~005 결과·원천 반영·후속 배정을 전체 검수하고 PR #49로 Phase에 통합했다. 내용/이력 보존과 Issue 브랜치 정리를 확인해 계획 Issue의 종료 처리를 마쳤다. Issue #42는 실행 준비를 진행해 하위 Task 001~004(GitHub #50~#53)를 예정으로 등록했다. Issue #43~#48은 예정이며 자료 처리·제품 구현은 미수행이다. Phase의 여섯 실제 기능/자료 수용 조건은 아직 충족 판정하지 않았다.
+- 다음 판단/행동: [Issue #42 준비 결과의 검수·커밋](<issue-42/issue.md#preparation-review>) 뒤 [Task 42-001](<issue-42/task-001.md#summary>) 작업 브랜치로 전환한다. 이번 요청은 전환까지이며 구현은 미착수다. 실제 자료 조사·확보·처리 보류를 유지한다.
 
 <a id="goal"></a>
 ## 목표와 범위 및 수용 조건
@@ -94,7 +94,7 @@ Task 005에서 합의한 큰 순서는 실행 기반·DB 저장/조회 준비→
 ### 첫 기능 구현 전 테스트·TDD 자동화 준비
 
 - [Task 003](<issue-15/task-003.md#tdd-automation-handoff>)에서 TDD 규칙과 최소 hook 검사·예외·근거·비용 기준을 정한다.
-- [Task 005](<issue-15/task-005.md#goal>)가 테스트 환경·최소 TDD hook 연결·실제 동작 검증을 [Issue #42 실행·개발·검증 기반](<issue-42/issue.md#foundation>)의 필수 범위·수용 조건으로 배정했다. 실제 hook 구현·검증과 담당 Task 등록은 해당 Issue에서 수행한다.
+- [Task 005](<issue-15/task-005.md#goal>)가 테스트 환경·최소 TDD hook 연결·실제 동작 검증을 [Issue #42 실행·개발·검증 기반](<issue-42/issue.md#foundation>)의 필수 범위·수용 조건으로 배정했다. 실제 hook 구현·검증은 등록한 [Task 42-002](<issue-42/task-002.md#summary>)(GitHub #51)가 맡는다. 현재는 예정이며 실제 구현·검증은 미수행이다.
 - 계획 Issue #15의 종료 후 첫 기반 구축 과제 초반, 프로젝트 골격과 테스트 실행 명령을 마련한 직후 hook을 연결·검증한다. 이 결과는 해당 기반 과제의 필수 완료 조건이다.
 - 첫 제품 기능의 동작 구현은 위 자동화 연결·검증이 완료된 뒤 시작한다. 미완료·미확인이면 기능 구현의 선행 조건이 충족되지 않은 것으로 처리한다.
 
