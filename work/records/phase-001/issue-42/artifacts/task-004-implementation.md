@@ -28,7 +28,7 @@
 
 - GitHub Actions `.github/workflows/quality.yml`, runner **ubuntu-24.04**, Node **24.22.3**·npm **11.19.1**, Temurin **21**, Python **3.14.2**, 저장소 Gradle Wrapper를 사용한다. 로컬 Oracle JDK를 교체하지 않는다. 루트/frontend는 각각 잠금 파일과 `npm ci`를 사용한다.
 - 사용자 선택: PR `opened/synchronize/reopened`(대상 `main`, `phase/**`, `issue/**`), 해당 부모 브랜치 `push`, `workflow_dispatch`. Task 브랜치의 모든 push에는 실행하지 않는다. 수동 실행은 전체 영역 검사다.
-- 기본 브랜치는 `main`이며 현재 workflow가 없다. GitHub의 수동 실행은 workflow가 기본 브랜치에도 있어야 활성화된다. Task 004에서는 트리거 선언과 PR/부모 push의 실제 실행을 검증하고, 수동 실행 실측은 [Phase의 main 통합 뒤 확인](../phase.md#ci-manual-followup)으로 연결한다. 수동 실행을 위해 main에 선행 병합하는 범위는 이번 계획에 추가하지 않는다.
+- 기본 브랜치는 `main`이며 현재 workflow가 없다. GitHub의 수동 실행은 workflow가 기본 브랜치에도 있어야 활성화된다. Task 004에서는 트리거 선언과 PR/부모 push의 실제 실행을 검증하고, 수동 실행 실측은 [Phase의 main 통합 뒤 확인](../../phase.md#ci-manual-followup)으로 연결한다. 수동 실행을 위해 main에 선행 병합하는 범위는 이번 계획에 추가하지 않는다.
 - workflow 전체의 paths 필터는 사용하지 않는다. `changes` → `tools`/`docs`/`frontend`/`backend` → 항상 실행하는 `quality` 집계 job으로 구성한다. 집계는 필요한 job의 성공과 의도한 skip만 허용하고 실패/취소/분류 오류를 성공으로 바꾸지 않는다. 수동 실행·비교 기준 누락·분류 불능은 전체 검사한다.
 - PR은 base/head 차이, push는 before/after 차이를 사용하고 rename/delete의 양쪽 경로를 반영한다. 경로 분류 전에 보존 영역을 제외한다. frontend 변경은 frontend, backend·db 변경은 backend, docs/harness/work·현재 안내는 docs, 공통 scripts·hook·품질/CI/루트 설정·잠금 변경은 tools와 관련 양쪽 검사를 실행한다. 미분류 경로는 전체 검사한다. 프로젝트 검사에는 해당 영역 전체 테스트·빌드를 포함한다.
 - CI는 위 로컬 명령을 독립 실행한다. 로컬 worktree의 임시 TDD 근거·개인 `.env`를 요구하거나 가짜 Red를 만들지 않는다. TDD 제출 근거 확인은 기존 로컬/PR 검수 절차를 유지한다. CI에서 커밋 hook은 설치하지 않는다.
