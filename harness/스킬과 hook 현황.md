@@ -16,7 +16,7 @@
 
 현재 main 기준에는 프로젝트 Codex hook 정의가 없다. Task 42-002의 정의·검증은 해당 Task 브랜치에 보존돼 있으며 이 브랜치에서 적용된 것으로 표시하지 않는다. 개인·전역·외부 플러그인의 구성은 이 목록의 수집 대상이 아니다.
 
-Git hook의 정의·실행 확인과 각 작업 환경의 설치 여부는 별개다. 실제 로컬 설치 상태는 아래 `--status`로 확인한다. CI 정의는 추가했지만 실제 원격 정상/실패 run과 병합 필수 지정은 확인하지 않았다. 관련 진행·근거와 한계는 [Issue #55](<../work/records/harness/issue-55/issue.md#verification>)에서 확인한다.
+Git hook의 정의·실행 확인과 각 작업 환경의 설치 여부는 별개다. 실제 로컬 설치 상태는 아래 `--status`로 확인한다. GitHub Actions의 Windows·Ubuntu에서 정상 통과·의도한 원천 불일치 거부·정상 복구 후 통과를 확인했다. Ubuntu에서는 Windows junction 전용 사례가 제외됐다. 병합 필수 상태 검사로 지정하지는 않았다. 실제 실행 근거와 한계는 [Issue #55](<../work/records/harness/issue-55/issue.md#remote-ci>)에서 확인한다.
 
 <a id="maintenance"></a>
 ## 변경과 제출 전 확인
@@ -54,7 +54,7 @@ python -B -X utf8 scripts/install-harness-hooks.py --remove
 
 여러 설치기가 중첩되면 바깥 wrapper부터 해제한다. Task 42-002의 TDD wrapper가 기존 hook이면 그 원형과 metadata를 보존한다. 안쪽 TDD 설치기로 바깥 wrapper를 덮어쓰거나 해제하지 않는다. 현황 검사기와 현황 문서가 작업 폴더와 실제 index에 모두 없는 과거 브랜치는 기존 hook을 실행한 뒤 이 검사 단계만 생략한다. index에 구성이 남아 있거나 일부만 누락되면 거부한다. 임의 셸/IDE 편집의 사전 차단이나 로컬 hook의 우회 방지를 보장하지 않는다.
 
-CI도 명시 commit을 같은 검사기로 대조한다. 현재 CI 실행 정의와 로컬 hook 설치는 GitHub의 병합 필수 설정이 아니며 실제 원격 실행·필수 지정은 별도로 확인한다.
+CI도 명시 commit을 같은 검사기로 대조한다. 실제 원격 정상·실패·복구를 확인했으며, 현재 CI와 로컬 hook 설치는 GitHub의 병합 필수 설정이 아니다. 필수 지정은 별도의 권한·설정 확인 대상이다.
 
 <details>
 <summary>관리 데이터 — 표·원천 지문과 마지막 확인</summary>
@@ -82,9 +82,9 @@ CI도 명시 commit을 같은 검사기로 대조한다. 현재 CI 실행 정의
         "status": "verified",
         "sourceDigest": "c3f93d83a554fd8bb5e471f4d278b5c0aca6840555369640a4e1f8e53526a9ef",
         "date": "2026-11-12",
-        "environment": "Windows / Python 3.14.2 / 실제 저장소와 격리 Git 저장소",
-        "scope": "로컬 후보·설치/복원·새 hook 실행과 31개 회귀·50개 skill 규모 검사; 원격 CI·다른 OS 실행은 미확인",
-        "evidence": "work/records/harness/issue-55/issue.md#final-commit-review"
+        "environment": "Windows 로컬 Python 3.14.2 / GitHub Actions Windows·Ubuntu Python 3.14.10",
+        "scope": "로컬 후보·설치/복원·실제 hook·50개 skill 규모 검사; 원격 정상/불일치 거부/정상 복구·도구 31개와 기존 5개 회귀(Ubuntu의 Windows junction 1개 제외); 각 사용자 환경의 설치·병합 필수 지정은 별도",
+        "evidence": "work/records/harness/issue-55/issue.md#remote-ci"
       }
     },
     {
