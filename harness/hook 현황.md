@@ -25,7 +25,7 @@
       "title": "현황 검사 · Git pre-commit",
       "purpose": "스킬·hook 현황 누락·불일치 시 커밋 차단",
       "when": "Git 커밋 전; 기존 hook 성공 후",
-      "verification": {"status": "verified", "sourceDigest": "38db9a0467e81b67290a91f6dfb395a9f6f4554645a493aa67689a65318243ef", "date": "2026-11-12", "environment": "Windows / Python 3.14.2", "scope": "로컬 후보·34개 회귀·실제 Git hook 정상/거부·설치/복원", "evidence": "work/records/harness/issue-55/issue.md#catalog-split"}
+      "verification": {"status": "verified", "sourceDigest": "38db9a0467e81b67290a91f6dfb395a9f6f4554645a493aa67689a65318243ef", "date": "2026-11-12", "environment": "Windows 로컬 Python 3.14.2 / CI Windows·Ubuntu Python 3.14.10", "scope": "후보 검사·Git hook 실행·설치/복원", "evidence": "work/records/harness/issue-55/issue.md#catalog-split"}
     }
   ]
 }
