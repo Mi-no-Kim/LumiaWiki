@@ -7,9 +7,9 @@
 - 제목: 실행·개발·검증 기반
 - 실제 GitHub Issue: [Mi-no-Kim/LumiaWiki #42](https://github.com/Mi-no-Kim/LumiaWiki/issues/42)
 - 소속 Phase: [Phase 001](../phase.md#summary)
-- 상태: 진행 중
-- 현재 진행 위치: Task 001~004는 자기 수용을 완료했다. 부모 통합 결과는 [PR #54](https://github.com/Mi-no-Kim/LumiaWiki/pull/54)·[PR #59](https://github.com/Mi-no-Kim/LumiaWiki/pull/59)·[PR #62](https://github.com/Mi-no-Kim/LumiaWiki/pull/62)·[PR #63](https://github.com/Mi-no-Kim/LumiaWiki/pull/63)의 실제 상태를 따른다. Task 004의 통합 검토에서 필수 결함을 발견하지 못했다. 실제 게임 자료 작업은 보류다.
-- 다음 판단/행동: Task 004의 실제 부모 반영과 push CI를 확인한 뒤 Issue 전체 수용을 별도로 판단한다.
+- 상태: 완료
+- 현재 진행 위치: Task 001~004의 실제 부모 반영과 결합 결과를 대조해 [Issue 전체 수용](#acceptance-result)을 완료했다. 실행·DB·공통 골격·테스트/hook·품질/CI의 필수 조건을 충족했다. 실제 게임 자료 작업 보류를 유지한다.
+- 다음 판단/행동: [PR #66](https://github.com/Mi-no-Kim/LumiaWiki/pull/66)의 실제 Phase 반영과 CI·브랜치 정리를 확인한 뒤 [Issue #43](../issue-43/issue.md#summary)의 입력·설계 준비 범위를 검토한다. Phase 전체 수용과 main 통합은 별도다.
 - 작성 근거: [Task 005](../issue-15/task-005.md#summary) · [전체 실행 순서](../issue-15/artifacts/task-005-issue-outline.md#sequence). 실제 자료 작업 보류를 유지한다.
 
 <a id="goal"></a>
@@ -49,6 +49,26 @@
 - 로컬 검사·테스트·빌드 및 CI 독립 실행을 확인한다. 정상 통과와 통제한 실패가 CI 결과에 반영되고 TypeScript 호환 검사·문서/일괄/자동 포맷·제출 후보 검사가 연결된다.
 
 테이블 설계·게임 자료 등록과 실제 제품 기능은 이 Issue의 완료로 판정하지 않는다. 기반은 위 네 Task와 공통 골격의 범위로 구성한다.
+
+<a id="acceptance-result"></a>
+
+### 전체 수용 결과와 Phase 통합
+
+기준은 결합 commit `355b9dba09e98d3f8d5fb1109fba44166dd545bd`와 위 세 수용 조건이다. [PR #54](https://github.com/Mi-no-Kim/LumiaWiki/pull/54)·[PR #59](https://github.com/Mi-no-Kim/LumiaWiki/pull/59)·[PR #62](https://github.com/Mi-no-Kim/LumiaWiki/pull/62)·[PR #63](https://github.com/Mi-no-Kim/LumiaWiki/pull/63)의 실제 squash 반영을 모두 포함하며 하위 완료 개수 대신 다음 근거로 판정했다.
+
+| 수용 조건                     | 실제 결과·근거                                                                                                                                                                                                                                                                        |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 실행·DB 분리·공통 골격        | [Task 001 실행·재시작 보존](task-001.md#result), [Task 003 실제 프록시/API·화면·오류/로그·이미지·문서 검증](task-003.md#verification)을 대조했다. 현재 환경 설정·DB 격리와 후속 사용 계약을 확인했다. 충족                                                                            |
+| 테스트·hook·첫 기능 착수 조건 | [Task 002의 실제 거부→Red 후 허용→Green 후 거부](artifacts/task-002-verification.md#host-acceptance), 정식 근거·예외·부분 후보·Windows/worktree·비용 및 [최종 hook 결합](artifacts/task-004-implementation.md#verification)을 확인했다. 충족                                          |
+| 독립 검사·CI·형식/타입 연결   | [Task 004 정상/통제 실패 CI](artifacts/task-004-implementation.md#remote-ci)와 [실제 자동 포맷](artifacts/task-004-implementation.md#host-verification), 현재 결합 commit의 [부모 push CI 6개 성공](https://github.com/Mi-no-Kim/LumiaWiki/actions/runs/43232746756)을 확인했다. 충족 |
+
+구현·테스트·도구·CI 원천은 검증한 `86569c6` 이후 같고 현재 hook 지문도 실제 호스트 근거와 일치해 기존 실행·화면·자체/별도 검수를 재사용했다. 사용자 직접 조작은 Task 001의 확인과 다른 Task의 미확인을 구별한다. CI 수동 실행 실측은 합의한 [Phase의 main 통합 뒤 확인](../phase.md#ci-manual-followup)이며 Issue 필수 잔여로 바꾸지 않는다. 실제 게임 자료·제품 기능·운영 적용의 후속 경계는 유지한다.
+
+필수 근거는 각 Task의 정식 기록에 보존했다. 남아 있던 Task 003의 생성 화면 캡처는 내용·소속과 보존된 관찰을 대조한 뒤 해당 파일과 빈 Task 002·003 임시 디렉터리만 정리했다. 기존 Task 001 Gradle 캐시와 공용 품질 도구 상태는 재사용 대상으로 유지하며 개인 설정·개발 DB·다른 작업 자료는 정리 대상으로 삼지 않았다.
+
+자체 검수와 읽기 전용 별도 검토자 `/root/review_quality_ci`는 `355b9db` 대비 제출 문서 3개를 세 수용 조건·Task별 근거·현재 원천의 동일성·완료/후속 경계와 대조해 필수 결함을 발견하지 못했다. 기존 실행·화면 검증을 새 실행으로 표시하지 않았으며 실제 번호·검수 결과 요약 추가는 자체 확인한다.
+
+사용자가 수용 결과·현황 반영과 완료·Phase 통합을 요청했다. 현재 main `2992008`을 포함하고 이미 이 Issue에서 검수한 Phase 부모 `513bad5`를 원격에 맞췄다. 최종 head/base·수용 근거·검사와 필수 지적을 대조해 [PR #66](https://github.com/Mi-no-Kim/LumiaWiki/pull/66)을 Issue → Phase merge commit으로 통합하며 실제 반영 결과를 확인한다. Phase·main을 완료하거나 실제 자료 작업을 재개하는 요청으로 확대하지 않는다.
 
 <a id="pending"></a>
 
