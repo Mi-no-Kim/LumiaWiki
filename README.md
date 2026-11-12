@@ -45,6 +45,7 @@ AI와 작업할 때는 원하는 결과와 대상, 허용 범위를 전달한다
 - AI 작업 지침: [AGENTS.md](<AGENTS.md>)
 - 공통 작업 절차: [공용 절차](<harness/공용 절차.md#entry>)
 - 애플리케이션 개발 기준: [공통 개발 기준](<docs/개발 기준.md#current>)
+- 프로젝트 구성: [스킬 현황](<harness/스킬 현황.md#current>) · [hook 현황](<harness/hook 현황.md#current>)
 
 작업 결과와 변경 내용, 확인 범위·한계, 미해결 사항과 다음 행동은 대화와 담당 작업 기록에서 확인한다.
 

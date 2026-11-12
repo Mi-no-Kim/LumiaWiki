@@ -1,0 +1,48 @@
+name: Harness inventory
+
+"on":
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inventory:
+    name: Inventory (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /.agents/skills/
+            /.codex/
+            /.github/workflows/harness-inventory.yml
+            /scripts/
+            /harness/
+            /docs/
+            /work/
+            /AGENTS.md
+            /README.md
+            /STRUCTURE.md
+            /.gitignore
+            !/harness-design/
+            !/.harness-state/
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.14'
+      - name: Check exact committed inventory
+        run: python -B -X utf8 scripts/check-harness-inventory.py --candidate HEAD
+      - name: Candidate and hook behavior
+        run: python -B -X utf8 -m unittest discover -s scripts/tests -v
+      - name: Existing review tool regression
+        run: python -B -X utf8 -m unittest discover -s .agents/skills/review-work/scripts -p "test_*.py" -v

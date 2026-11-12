@@ -13,7 +13,13 @@ lumia_island_wiki/
 ├── db/migration/                   backend 밖에서 관리하는 공용 Flyway SQL
 ├── compose.yaml                    PostgreSQL 로컬 개발 환경
 ├── .env.example                    비밀값 없는 개인 설정 양식 (.env는 Git 제외)
-├── scripts/                        서버 실행·격리 기반 검증 도구
+├── .github/workflows/             하네스 현황 후보 검사·격리 테스트의 CI 정의
+├── scripts/                       서버 실행·하네스 현황 검사·Git hook 설치·격리 검증 도구
+│   ├── check-harness-inventory.py 실제 work/index/commit 원천과 현황 대조(읽기 전용)
+│   ├── harness_inventory.py       후보·경계·등록·지문·확인 상태 판독
+│   ├── install-harness-hooks.py   기존 Git hook 보존·중복 설치·복원
+│   ├── hooks/pre-commit           프로젝트 관리 Git hook 정의
+│   └── tests/                    정상/누락·부분 후보·경계·hook 공존 테스트
 ├── docs/                           제품 요구와 운영 기준
 │   ├── 프로젝트 목표와 범위.md     제품 목표·범위·품질과 공개 조건
 │   ├── 개발 기준.md                기술·검증 기준 진입점과 서버·데이터 공통 기준
@@ -35,6 +41,8 @@ lumia_island_wiki/
 │   ├── 공용 절차.md                요청부터 수행·확인·결과 반환까지
 │   ├── 작업별 절차.md              계획·변경·리뷰 등 작업 종류별 행동
 │   ├── 문서 관리.md                문서·기록의 작성·갱신·복구 절차
+│   ├── 스킬 현황.md               등록된 스킬·적용 조건·원천
+│   ├── hook 현황.md               등록된 hook·실행 조건·원천
 │   ├── Git 작업 절차.md            브랜치·커밋·PR·병합 수행
 │   └── templates/                  로컬 Phase·Issue·Task, GitHub 게시, PR 양식
 └── work/                           실제 계획·진행·작업 근거
