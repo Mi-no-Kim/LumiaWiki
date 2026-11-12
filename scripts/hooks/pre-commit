@@ -1,0 +1,21 @@
+#!/bin/sh
+# lumia-harness-inventory-v1
+# inventory-dependencies: ["scripts/check-harness-inventory.py", "scripts/harness_inventory.py", "scripts/install-harness-hooks.py", "scripts/install-hooks.py", "scripts/tdd-check.py", "scripts/tdd_core.py"]
+hook_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd) || exit 2
+if [ -f "$hook_dir/pre-commit.harness-original" ]; then
+  "$hook_dir/pre-commit.harness-original" "$@" || exit $?
+fi
+root=$(git rev-parse --show-toplevel) || exit 2
+checker="$root/scripts/check-harness-inventory.py"
+if [ ! -f "$checker" ]; then
+  candidate_markers=$(git ls-files --stage -- 'scripts/check-harness-inventory.py' 'harness/스킬 현황.md' 'harness/hook 현황.md' 'harness/스킬과 hook 현황.md') || exit 2
+  if [ -f "$root/harness/스킬 현황.md" ] || [ -f "$root/harness/hook 현황.md" ] || [ -f "$root/harness/스킬과 hook 현황.md" ] || [ -n "$candidate_markers" ]; then
+    echo 'Inventory checker is missing; restore the complete configuration.' >&2
+    exit 2
+  fi
+  exit 0
+fi
+if [ "$OS" = 'Windows_NT' ]; then
+  exec python -B -X utf8 "$checker" --candidate index
+fi
+exec python3 -B -X utf8 "$checker" --candidate index
