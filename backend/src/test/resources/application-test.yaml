@@ -7,3 +7,8 @@ spring:
     password: test_connection_not_configured
   flyway:
     locations: classpath:db/migration,classpath:db/test-migration
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true

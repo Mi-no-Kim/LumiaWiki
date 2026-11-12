@@ -6,9 +6,9 @@
 - 제목: 공통 웹·API·이미지 제공 골격
 - GitHub sub-issue: [Mi-no-Kim/LumiaWiki #52](https://github.com/Mi-no-Kim/LumiaWiki/issues/52)
 - 부모 Issue: [Issue #42](<issue.md#summary>)
-- 상태: 진행 중
-- 현재 진행 위치: Task 001·002의 부모 통합을 확인했고 최신 main의 기록 검사와 기존 TDD hook을 부모 경로에 결합하고 있다. 확인 화면과 공통 동작은 아직 구현하지 않았다.
-- 다음 행동: 부모 결합 검수 후 Task 브랜치에서 확인 화면을 먼저 마련하고 검토한 다음 공통 동작을 구현한다. 실제 게임 자료 작업 보류를 유지한다.
+- 상태: 완료
+- 현재 진행 위치: 화면 선행·공통 골격 구현과 자동 검사·실제 IAB 브라우저 확인, 제출 후보의 자체·별도 검수를 마쳐 자기 수용을 완료했다. 부모 통합과 GitHub 반영은 아직 수행하지 않았다.
+- 다음 행동: 검수한 로컬 결과의 원격 제출·부모 통합과 GitHub #52·부모 진행 표시 반영을 처리한다. 실제 게임 자료 작업 보류를 유지한다.
 
 <a id="goal"></a>
 ## 목적과 허용 범위 및 완료 조건
@@ -38,16 +38,16 @@
 | 잘못된 입력·없는 대상·통제한 서버 실패 | 400/404/500 ProblemDetail과 안전한 안내. 서버 로그와 응답 대조 |
 | 예제 상대 이미지·누락 이미지 표시, 로컬 API 문서 접속 | 경로 조합·대체 표시·교체 전후 경로 동시 제공·문서 확인. 실제 게임 자료 사용 없음 |
 
-실제 진입 주소·화면과 요청 계약은 구현 전에 공유한다. AI 자동/직접 조작·사용자 결과를 분리해 기록하며 현재는 모두 미수행이다. 커밋 전 [자체·별도 검수](<../../../../.agents/skills/review-work/SKILL.md#before-commit>)를 수행한다.
+진입 주소·화면과 요청 계약을 구현 전에 공유했다. AI 자동 검사·IAB 브라우저 조작·사용자 결과는 아래에서 구분한다. 커밋 전 [자체·별도 검수](<../../../../.agents/skills/review-work/SKILL.md#before-commit>)를 수행한다.
 
 <a id="implementation-decisions"></a>
 ## 확정한 구현 세부 사항
 
-이 구역은 #42의 실행 준비에서 정한 설계다. 제품 범위·시각 디자인을 추가하지 않았고, 결정 당시 설치·구현·커밋은 수행하지 않았다.
+아래 확정 계약을 현재 구현에 적용한다. 제품 시각 디자인과 실제 게임 자료 작업은 후속 범위로 유지한다.
 
 ### 웹·확인 화면
 
-- `react-router-dom` **7.18.5**, `@tanstack/react-query` **5.107.1**을 정확히 고정한다. Node 기준은 **24.22.3**이다. Task 001의 React·Vite·TypeScript는 유지하며 실제 설치/typecheck/build는 구현 때 검증한다.
+- `react-router-dom` **7.18.5**, `@tanstack/react-query` **5.107.1**을 정확히 설치·잠금했다. Node **24.22.3**·npm **11.19.1**에서 기존 React·Vite·TypeScript를 유지하며 타입·빌드를 확인했다.
 - `createBrowserRouter`의 공통 레이아웃 아래 `ScrollRestoration`·오류 경계를 두고 QueryClientProvider는 앱에 한 번 연결한다. HTTP 호출/오류 변환은 공통 fetch 모듈, 화면 상태는 Query, 임시 입력은 React 상태로 나눈다. loader에서 같은 조회를 반복하지 않는다.
 - 로컬 진입점은 `http://localhost:5173/__dev/foundation`이다. `import.meta.env.DEV` 분기 안의 lazy import로 확인 화면과 경로를 제품 빌드에서 제외한다. 화면은 두 개의 이동 링크, 정상/지연/빈 응답/오류 선택, 조회 버튼, 결과 영역, 예제/누락 이미지로 구성한다. 상태·입력·출력을 먼저 검토한 뒤 API를 연결한다.
 - 공통 fetch는 상대 `/api/v1`만 호출하며 JSON 성공과 ProblemDetail 오류를 구분한다. AbortSignal·10초 제한을 지원하고 취소·통신 실패·시간 초과는 HTTP 업무 오류와 구별한다. Vite `/api` 프록시는 `http://127.0.0.1:8080`으로 접두사를 유지해 전달한다.
@@ -72,11 +72,14 @@
 - 자동 검사는 fetch 정상/ProblemDetail/비JSON 실패/취소·시간 초과, Query 상태 격리·입력 변경, Router 이동, 이미지 대체, MVC 200/400/404/500·내부정보 비노출·문서 프로필을 다룬다. 브라우저 확인은 위 사용자 목록과 실제 프록시 왕복을 사용한다. Chrome 자동 조작은 사용하지 않으며 AI가 직접 확인하지 못하면 그 범위를 밝히고 사용자 확인과 구별한다.
 - 운영 API 문서 노출·SPA fallback·권한/로그 보관·백업·S3 전환은 Issue #48이 필요한 적용/운영 담당에 연결한다. 제품 공통 디자인·검색 복귀 완성은 Issue #44다. 이들 후속 결정을 이번 Task의 미정으로 남기거나 로컬 골격으로 운영 완료를 주장하지 않는다.
 
-선택 사항은 위와 같이 정했으며 설치·HTTP/브라우저·테스트 결과는 아직 없다. 근거: [React Router Data Mode](https://reactrouter.com/start/data/installation) · [TanStack Query 기본값](https://tanstack.com/query/latest/docs/framework/react/guides/important-defaults) · [공통 API 기준](<../../../../docs/details/development/기술 구성.md#api-common>). 패치 버전/peer 조건은 실행 준비에서 npm registry로 확인했다.
+후속 사용·실행 안내는 [README](<../../../../README.md#foundation-check>), 계약의 기준은 [공통 API 기준](<../../../../docs/details/development/기술 구성.md#api-common>)을 따른다. 합성 응답 서비스는 DB를 조회하지 않으며 실제 조회의 트랜잭션·DTO 매핑은 해당 기능의 책임이다.
 
 <a id="verification"></a>
 ## 현재 결과와 검증 범위
 
-- 사용자 요청에 따라 기존 Task 003을 재사용해 확인 화면부터 진행한다. Task 001·002의 부모 통합 결과를 입력으로 사용한다.
-- 구현 전 진입 주소와 이동·정상/지연/빈 상태·오류·이미지 확인 목록을 공유했다. 사용자 직접 확인은 미확인이다.
-- [TDD 실행 입력과 정식 근거](artifacts/task-003-tdd.md)에 부모 결합 확인과 이후 동작별 실제 실행을 연결한다. 화면·API 구현 완료를 뜻하지 않는다.
+- 원본 기준은 부모 결합 `21dd44f`이며 [TDD 정식 근거](artifacts/task-003-tdd.md)의 실행 ID·명령·파일 지문으로 검증한 후보를 식별한다. 정적 디자인·무동작 시그니처 준비는 등록된 예외, HTTP/이미지 8개·화면 3개·서버 7개는 실제 assertion Red→Green이다. 최종 프런트는 현재 공통 설정과 타입 정정을 포함한 13개 검사로 다시 대응시켰다.
+- 자동 검사: 프런트 13개·타입·제품 빌드, 서버 계약 7개·기존 DB 비의존 2개·격리 DB 통합 1개·bootJar 통과. 제품 JS/CSS에 확인 화면·경로·확인 API 문자열이 없는 것을 확인했다. 부모 결합에서는 기존 TDD와 현황·기록 검사를 보존하고 영향 검사·자체·별도 검수를 마쳤다.
+- AI 브라우저: Chrome을 조작하지 않고 IAB의 실제 화면에서 정상·1초 로딩·빈 결과·400/404/500과 요청 ID, 이동→뒤로 가기, 기존/교체 이미지 동시 로드·미등록/실패 대체 표시, Swagger UI의 확인 API·DTO 스키마를 확인했다. 500 응답의 요청 ID `178254f9-8662-42db-8023-d9b6c5177cb0`와 서버의 안전한 진단 로그를 대조했다.
+- 사용자 직접 확인은 미확인이다. 위 사전 목록과 README의 명령·주소로 같은 합성 입력을 확인할 수 있다. 제품 목록 복귀의 완성, 실제 DB 조회/자료 등록, 운영 배포와 원격 CI는 이번 결과로 수용하지 않는다.
+- 자체 대조와 읽기 전용 별도 검토자 `/root/review_parent_updates`가 실제 후보·합의 계약·테스트/receipt·안내·화면 캡처를 검수했으며 필수 결함을 발견하지 못했다. 같은 코드와 수용 조건에 따른 완료·부모 표시 갱신은 자체 확인하고 이 근거를 재사용한다.
+- 이 Task의 구현·검증 수용은 완료다. GitHub 본문·상태/라벨, push·PR·부모 병합은 미반영이며 Issue #42·Phase 001의 완료를 뜻하지 않는다.

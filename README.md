@@ -80,9 +80,22 @@ node --env-file=.env scripts/dev-api.mjs
 npm --prefix frontend run dev
 ```
 
-웹은 `http://localhost:5173/`, API 서버는 `http://127.0.0.1:8080`, DB는 `127.0.0.1:5432`를 사용한다. 현재 웹은 실행 확인용 정적 시작 화면이며 API 기능 경로는 후속 Task에서 마련한다. 포트가 이미 사용 중이면 기존 서비스를 종료하거나 임의 포트로 바꾸지 않고 실패한다. DB 포트는 `.env`의 `DB_PORT`, 서버 포트는 실행 환경의 `SERVER_PORT`로 조정할 수 있다. 개인 DB 환경값을 웹 프로세스에 전달하지 않는다.
+웹은 `http://localhost:5173/`, API 서버는 `http://127.0.0.1:8080`, DB는 `127.0.0.1:5432`를 사용한다. 시작 화면과 아래 공통 연결 확인 화면을 제공한다. 포트가 이미 사용 중이면 기존 서비스를 종료하거나 임의 포트로 바꾸지 않고 실패한다. DB 포트는 `.env`의 `DB_PORT`, 서버 포트는 실행 환경의 `SERVER_PORT`로 조정할 수 있다. 개인 DB 환경값을 웹 프로세스에 전달하지 않는다.
 
 서버 실행기는 Node의 기본 env-file 기능으로 접속값을 읽고 local 프로필을 명시한다. 누락/예제 비밀번호·잘못된 포트는 Java 시작 전에 거부한다. `JAVA_HOME`이 필요하면 기존 JDK 21 설치 경로로 지정한다. common/local/test 설정을 구분하며 테스트 전용 DB 연결·테스트/hook 환경은 Task 002의 담당이다.
+
+<a id="foundation-check"></a>
+## 공통 연결 확인과 후속 사용
+
+위 DB·API·웹 실행 후 `http://localhost:5173/__dev/foundation`에 접속한다. 실제 게임 자료 없이 합성 응답과 이미지로 확인한다.
+
+- 응답 상황을 선택하고 **조회하기**를 누른다. 정상 항목, 1초 로딩, 빈 결과, 400·404·500 안내와 오류 요청 ID를 확인할 수 있다. 선택만으로 조회하지 않으며 입력 변경은 이전 요청을 취소한다.
+- **이동 확인**으로 이동한 뒤 브라우저 뒤로 가기를 사용한다. 아래 이미지 영역에는 기존·교체 경로와 미등록·실패 대체 표시가 함께 있다.
+- 로컬 API 문서는 `http://127.0.0.1:8080/swagger-ui/index.html`이다. 확인 API `GET /api/v1/_dev/foundation?scenario=...`는 `ok`, `slow`, `empty`, `bad-input`, `missing`, `failure`를 지원하며 local/test 프로필에만 등록된다. 문서도 공통 설정에서는 꺼지고 local/test에서 활성화된다. 확인 화면과 경로는 제품 빌드에서 제외된다.
+
+후속 화면은 `frontend/src/app/App.tsx`의 Data Router와 단일 QueryClient를 사용한다. 공통 `apiGet`은 상대 `/api/v1` JSON 조회·ProblemDetail 오류·취소·10초 제한을 처리하고 Vite가 `/api` 접두사를 유지해 서버로 전달한다. Query 기본값은 재시도 없음·staleTime 0·gcTime 5분·focus/reconnect 재조회 없음이며 기능별 정책은 해당 기능에서 정한다. `CommonImage`에는 이미지 루트 아래의 상대 파일 경로와 대체 텍스트를 전달한다.
+
+서버는 DTO를 반환하며 실제 DB 조회·DTO 구성은 서비스 트랜잭션 안에서 마쳐야 한다. 합성 확인 서비스는 DB를 조회하지 않는다. 업무 오류는 `ApiFailure`, 공통 MVC 오류는 `ApiExceptionAdvice`가 안전한 ProblemDetail로 변환한다. 서버 발급 `X-Request-ID`로 응답·오류·로그를 연결하며 예상 못한 실패 로그에는 예외 종류와 stack 위치를 남기고 원문 메시지·cause·요청 값은 기록하지 않는다. 제품 기능·운영 배포의 완료는 [담당 Task의 범위와 한계](work/records/phase-001/issue-42/task-003.md#verification)를 따른다.
 
 ## 빌드와 기반 확인
 

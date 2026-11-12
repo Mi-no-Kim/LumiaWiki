@@ -10,6 +10,16 @@ spring:
   sql:
     init:
       mode: never
+  mvc:
+    problemdetails:
+      enabled: true
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false
 logging:
   level:
     root: INFO
+    org.hibernate.SQL: OFF
+    org.hibernate.orm.jdbc.bind: OFF
