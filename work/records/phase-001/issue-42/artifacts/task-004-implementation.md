@@ -48,7 +48,7 @@
 | gradle/actions/setup-gradle | v6.4.1 | `8da46b539cd8fe6ab27ca75128919a18d757604c` |
 | actions/upload-artifact     | v7.0.2 | `cf430e030ddbb5b0abf93d22962f4752f3646cd9` |
 
-선택할 도구·실행 시점·명령·범위는 정했다. 실제 TS API 병행·부분 후보·자동 포맷/복원·비용·CI 성공/실패는 구현 시 확인한다. 근거: [GitHub 이벤트·수동 실행 조건](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#workflow_dispatch) · [Spotless Gradle](https://github.com/diffplug/spotless/tree/main/plugin-gradle) · [google-java-format 2.0.0](https://github.com/google/google-java-format/tree/v2.0.0) · [기존 품질 기준](<../../../../docs/details/development/코드 품질.md#current>). npm/Maven/공식 action 태그 조회는 실행 성공 근거와 구별한다.
+선택할 도구·실행 시점·명령·범위는 정했다. 실제 TS API 병행·부분 후보·자동 포맷/복원·비용·CI 성공/실패는 구현 시 확인한다. 근거: [GitHub 이벤트·수동 실행 조건](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#workflow_dispatch) · [Spotless Gradle](https://github.com/diffplug/spotless/tree/main/plugin-gradle) · [google-java-format 2.0.0](https://github.com/google/google-java-format/tree/v2.0.0) · [기존 품질 기준](<../../../../../docs/details/development/코드 품질.md#current>). npm/Maven/공식 action 태그 조회는 실행 성공 근거와 구별한다.
 
 <a id="verification"></a>
 ## 현재 확인과 잔여
