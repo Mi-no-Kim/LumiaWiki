@@ -6,12 +6,16 @@ import { appRoutes } from './app/App';
 import { createAppQueryClient } from './app/queryClient';
 import './style.css';
 
-const devRoutes = import.meta.env.DEV ? (await import('./dev/routes')).foundationRoutes : [];
+const devRoutes = import.meta.env.DEV
+  ? (await import('./dev/routes')).foundationRoutes
+  : [];
 const router = createBrowserRouter(appRoutes(devRoutes));
 const queryClient = createAppQueryClient();
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <QueryClientProvider client={queryClient}><RouterProvider router={router} /></QueryClientProvider>
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>
   </StrictMode>,
 );

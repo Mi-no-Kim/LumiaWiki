@@ -6,11 +6,11 @@
 
 ## 제목
 
-| 단계 | 형식 |
-|---|---|
-| task → issue | `task(<부모 Issue 번호>-<Task 순번>): <Task 결과 요약>` |
-| issue → phase / main | `issue(<Issue 번호>): <Issue 결과 요약>` |
-| phase → main | `phase(<Phase 순번>): <Phase 결과 요약>` |
+| 단계                 | 형식                                                    |
+| -------------------- | ------------------------------------------------------- |
+| task → issue         | `task(<부모 Issue 번호>-<Task 순번>): <Task 결과 요약>` |
+| issue → phase / main | `issue(<Issue 번호>): <Issue 결과 요약>`                |
+| phase → main         | `phase(<Phase 순번>): <Phase 결과 요약>`                |
 
 ## 본문 틀
 

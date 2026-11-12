@@ -1,12 +1,13 @@
 # Phase [순번] — [제목]
 
-주석을 포함한 원문으로 읽고 [작성 기준](<#guide>)을 따른다. 생성 때 아는 정보부터 채우고 계획·수용 조건은 착수 전에 준비한다. 나머지는 실제 판단·사건·검증·종료 시점에 작성한다.
+주석을 포함한 원문으로 읽고 [작성 기준](#guide)을 따른다. 생성 때 아는 정보부터 채우고 계획·수용 조건은 착수 전에 준비한다. 나머지는 실제 판단·사건·검증·종료 시점에 작성한다.
 
-GitHub에 반영할 때는 [GitHub Phase 게시 양식](<github-phase.md>)을 사용한다.
+GitHub에 반영할 때는 [GitHub Phase 게시 양식](github-phase.md)을 사용한다.
 
 ## 기본 계획
 
 <a id="summary"></a>
+
 ### 현재 요약
 
 - GitHub milestone 저장소·번호·URL(실제 연결 시):
@@ -16,6 +17,7 @@ GitHub에 반영할 때는 [GitHub Phase 게시 양식](<github-phase.md>)을 �
 - 막힌 조건·근거(해당 시):
 
 <a id="goal"></a>
+
 ### 목표·범위·수용 조건
 
 - 공동 목표·기대 결과:
@@ -26,6 +28,7 @@ GitHub에 반영할 때는 [GitHub Phase 게시 양식](<github-phase.md>)을 �
 - 기준 원천:
 
 <a id="plan"></a>
+
 ### 계획
 
 - 준비·수행 순서:
@@ -35,9 +38,11 @@ GitHub에 반영할 때는 [GitHub Phase 게시 양식](<github-phase.md>)을 �
 ## 해당 시 작성
 
 <a id="conditional-guidance"></a>
+
 ### 조건부 항목
 
 <!-- 조건·기록 위치/시점은 아래 공통 작성 기준을 따른다. 모르는 조건은 해당 없음이 아니다. -->
+
 - 항목:
   - 구체적 적용 조건·기준 원천:
   - 확인 대상·시점:
@@ -45,6 +50,7 @@ GitHub에 반영할 때는 [GitHub Phase 게시 양식](<github-phase.md>)을 �
   - 판단 근거(활동 사건 링크):
 
 <a id="pending"></a>
+
 ### 미정·제안·후속
 
 - 항목:
@@ -52,11 +58,13 @@ GitHub에 반영할 때는 [GitHub Phase 게시 양식](<github-phase.md>)을 �
   - 결정 시점 또는 관련 원천:
 
 <a id="owned-issues"></a>
+
 ### 보유 Issue
 
 - Issue: <!-- 실제 자식이 생길 때 설명 있는 기록 링크 등록 -->
 
 <a id="related-issues"></a>
+
 ### 관련 Issue
 
 - Issue 기록 링크:
@@ -65,6 +73,7 @@ GitHub에 반영할 때는 [GitHub Phase 게시 양식](<github-phase.md>)을 �
 ## 실제 사건이 생겼을 때 작성
 
 <a id="activity"></a>
+
 ### 주요 논의·판단 근거
 
 #### [사건]
@@ -74,6 +83,7 @@ GitHub에 반영할 때는 [GitHub Phase 게시 양식](<github-phase.md>)을 �
 - 근거:
 
 <a id="verification"></a>
+
 ### 수용 판단·검증 근거
 
 - 수용 조건:
@@ -82,6 +92,7 @@ GitHub에 반영할 때는 [GitHub Phase 게시 양식](<github-phase.md>)을 �
 - 미확인 사항·확인 범위·한계:
 
 <a id="result"></a>
+
 ### 결과·미해결
 
 - 종료 구분(정상 완료/취소/미완료 인계):
@@ -91,6 +102,7 @@ GitHub에 반영할 때는 [GitHub Phase 게시 양식](<github-phase.md>)을 �
 - 취소 이유·실제 부분 효과·남은 처리(취소 시):
 
 <a id="guide"></a>
+
 ## 작성 기준
 
 실제 공동 목표가 있을 때 복사하고 최종 저장 위치에서 링크를 정비한다. 기존 기록은 덮어쓰지 않으며 사건 없는 칸에 긴 없음·승인/성공 기본값을 채우지 않는다.

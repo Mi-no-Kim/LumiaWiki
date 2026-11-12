@@ -1,6 +1,18 @@
 {
-  "description": "Local read-only TDD evidence guard; review and trust this definition before use.",
+  "description": "Read-only TDD guard before edits and scoped formatting after edits; review and trust new handlers before use.",
   "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "^apply_patch$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node -e \"const c=require('node:child_process'),p=require('node:path');const r=c.execFileSync('git',['rev-parse','--show-toplevel'],{encoding:'utf8'}).trim();const x=c.spawnSync(process.execPath,[p.join(r,'scripts/quality/post-edit.mjs')],{stdio:'inherit'});process.exit(x.status??2)\"",
+            "timeout": 90
+          }
+        ]
+      }
+    ],
     "PreToolUse": [
       {
         "matcher": "^apply_patch$",

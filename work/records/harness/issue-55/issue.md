@@ -1,6 +1,7 @@
 # 스킬·hook 현황 관리와 갱신 누락 방지
 
 <a id="summary"></a>
+
 ## 현재 요약
 
 - GitHub: [Issue #55](https://github.com/Mi-no-Kim/LumiaWiki/issues/55)
@@ -9,6 +10,7 @@
 - 다음 행동: PR·main 반영은 별도 허용 후 진행한다.
 
 <a id="goal"></a>
+
 ## 목표와 범위
 
 프로젝트 skill·Codex/Git hook의 목록·역할·적용 조건·원천·확인 범위를 관리하고, 추가·변경·삭제 후 현황 갱신 누락을 제출 전에 발견한다. 개인·전역 설정·외부 플러그인과 보존 영역은 수집하지 않는다.
@@ -26,13 +28,14 @@
 
 ## 상세 기록
 
-| 문서 | 담당 내용 |
-|---|---|
-| [구현과 운영 계약](implementation.md#implementation-contract) | 관리 대상·후보·설치/복원 계약과 의존 관계 |
-| [현황 검사와 hook 검증](verification.md#verification) | 로컬·원격 실행, 누락 탐지·보존/복원·문서 정리 근거 |
-| [스킬 수행 검증](skill-verification.md#skill-verification) | 대표 요청 9사례, 인코딩 보완과 원천/근거 대응 |
+| 문서                                                          | 담당 내용                                          |
+| ------------------------------------------------------------- | -------------------------------------------------- |
+| [구현과 운영 계약](implementation.md#implementation-contract) | 관리 대상·후보·설치/복원 계약과 의존 관계          |
+| [현황 검사와 hook 검증](verification.md#verification)         | 로컬·원격 실행, 누락 탐지·보존/복원·문서 정리 근거 |
+| [스킬 수행 검증](skill-verification.md#skill-verification)    | 대표 요청 9사례, 인코딩 보완과 원천/근거 대응      |
 
 <a id="related"></a>
+
 ## 관계와 후속
 
 - 독립 하네스 Issue다. 브랜치는 `main → issue/55-skill-hook-inventory`이며 Phase·milestone·자식 Task는 없다.
