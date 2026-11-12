@@ -1,0 +1,18 @@
+{
+  "description": "Local read-only TDD evidence guard; review and trust this definition before use.",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "^apply_patch$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -B -X utf8 -c \"import pathlib,runpy,subprocess,sys; p=pathlib.Path(subprocess.check_output(['git','rev-parse','--show-toplevel'],text=True).strip())/'scripts'/'tdd-check.py'; sys.path.insert(0,str(p.parent)); sys.argv=[str(p),'--hook']; runpy.run_path(str(p),run_name='__main__')\"",
+            "commandWindows": "python -B -X utf8 -c \"import pathlib,runpy,subprocess,sys; p=pathlib.Path(subprocess.check_output(['git','rev-parse','--show-toplevel'],text=True).strip())/'scripts'/'tdd-check.py'; sys.path.insert(0,str(p.parent)); sys.argv=[str(p),'--hook']; runpy.run_path(str(p),run_name='__main__')\"",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}

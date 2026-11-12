@@ -18,6 +18,8 @@
 
 현재 진행 상황과 다음 작업은 [작업 현황](<work/현황.md#current>)에서 확인한다. 기반 구축의 검증 결과와 남은 확인은 [Task 42-001](<work/records/phase-001/issue-42/task-001.md#implementation>)에 기록한다.
 
+테스트·TDD 도구의 구현 결과와 실제 Codex 편집 hook의 검증 결과는 [Task 42-002](<work/records/phase-001/issue-42/task-002.md#handoff>)에서 확인한다. 사용자 신뢰와 실제 편집 차단 검증은 구별하며 필수 연결 확인 전 첫 제품 기능에 착수하지 않는다.
+
 ## 프로젝트 구성
 
 | 위치 | 내용 |
@@ -66,7 +68,7 @@ AI와 작업할 때는 원하는 결과와 대상, 허용 범위를 전달한다
 <a id="local-development"></a>
 ## 로컬 실행
 
-JDK 21, Node.js 24 LTS, npm과 실행 중인 Docker Desktop의 Linux 엔진이 필요하다. Java는 기존 설치를 사용하고 Gradle은 저장소 Wrapper 9.9.1로 실행한다. 웹 직접 의존성은 manifest와 잠금 파일의 버전으로 설치한다.
+JDK 21, Node.js 24.22.3 LTS, npm 11.19.1과 실행 중인 Docker Desktop의 Linux 엔진이 필요하다. Java는 기존 설치를 사용하고 Gradle은 저장소 Wrapper 9.9.1로 실행한다. 웹 직접 의존성은 manifest와 잠금 파일의 버전으로 설치한다. TDD 도구에는 Python 3.14 계열 표준 라이브러리를 사용한다.
 
 1. `.env.example`을 루트 `.env`로 복사하고 `DB_PASSWORD`를 개인 값으로 바꾼다. `$` 등 특별 문자가 들어간 값은 작은따옴표로 감싸 Node와 Compose에서 동일하게 읽도록 한다. 비밀번호를 채팅·문서·Git에 넣지 않는다. `.env`는 자동 생성하거나 덮어쓰지 않는다.
 2. `npm --prefix frontend ci`로 웹 의존성을 설치한다.
@@ -92,8 +94,49 @@ node --test scripts/dev-api.test.mjs
 node scripts/verify-bootstrap.mjs
 ```
 
-빌드 화면은 `http://127.0.0.1:4173/`에서 확인한다. Windows 서버 빌드는 `backend\gradlew.bat -p backend bootJar`, 다른 환경에서는 `sh backend/gradlew -p backend bootJar`다. 생성 JAR는 `backend/build/libs/lumiawiki-api-0.0.1-SNAPSHOT.jar`다. 서버 단위/DB 테스트의 실행·자동 검사는 Task 002에서 연결하며 bootJar 통과가 테스트 완료를 뜻하지 않는다.
+빌드 화면은 `http://127.0.0.1:4173/`에서 확인한다. Windows 서버 빌드는 `backend\gradlew.bat -p backend bootJar`, 다른 환경에서는 `sh backend/gradlew -p backend bootJar`다. 생성 JAR는 `backend/build/libs/lumiawiki-api-0.0.1-SNAPSHOT.jar`다. bootJar 통과가 테스트 완료를 뜻하지 않는다.
 
 기반 검증 도구는 `.tmp/issue-42/task-001/`의 격리 복제본에만 합성 SQL을 만들어 JAR 포함·Flyway 적용·앱/DB 재시작 보존·잘못된 암호·실제 env-file/bootRun을 확인한다. 개발 DB에 합성 테이블을 만들지 않는다. 성공하면 소유를 확인한 임시 컨테이너/볼륨을 정리하고 비밀값 없는 결과·입력 지문을 남긴다. 실패하면 안내한 실행별 임시 경로와 재현 리소스를 유지한다. 실제 제품 SQL은 `db/migration/`에서 한 번만 관리하고 Gradle이 빌드 리소스에 포함한다.
 
 일반 DB 종료는 `docker compose -p lumiawiki down`이며 named volume과 데이터를 보존한다. 볼륨을 삭제하는 초기화 명령은 일상 종료에 사용하지 않는다. 중요한 데이터를 삭제·초기화하기 전에는 별도 백업이 필요하다.
+
+<a id="testing"></a>
+## 테스트 실행
+
+```text
+npm --prefix frontend run test
+npm --prefix frontend run test:watch
+backend\gradlew.bat -p backend test
+backend\gradlew.bat -p backend integrationTest
+python -X utf8 -m unittest discover -s scripts/tests -v
+```
+
+다른 환경에서는 Gradle 명령 앞을 `sh backend/gradlew`로 바꾼다. `test`는 DB 없는 JUnit·Mockito·MockMvc 테스트, `integrationTest`는 test 프로필의 전용 PostgreSQL 18.6·Flyway·JDBC 테스트다. 후자만 Docker가 필요하고 개발 `.env`·고정 포트·개발 볼륨을 사용하지 않는다. 테스트 전용 반복 SQL과 합성 테이블은 제품 JAR에 포함되지 않는다. 메모리가 부족한 환경에서는 Gradle에 `--max-workers=2 "-Dorg.gradle.jvmargs=-Xms64m -Xmx256m -XX:MaxMetaspaceSize=256m"`를 추가한다.
+
+프런트는 Vitest·jsdom·React Testing Library를 사용하고 매 테스트 뒤 DOM을 정리한다. TanStack Query는 Task 003에서 도입하며 해당 테스트는 QueryClient도 독립시킨다. 현재 시작 화면에 제품 기능을 추가한 것은 아니다.
+
+<a id="tdd-tools"></a>
+## TDD 기록과 hook
+
+담당 Task에서 연결한 artifacts의 TDD 실행 입력 문서에 있는 `<!-- tdd-plan -->` 다음 JSON 블록에 작은 동작 식별자, 기대 결과, 정확한 대상/테스트/설정 경로, 명령 인수 배열, 결과 adapter와 예상 실패 테스트를 선언한다. 실제 예와 초기 도구 연결 근거는 [Task 42-002](<work/records/phase-001/issue-42/artifacts/task-002-verification.md#implementation>)에서 확인한다. 별도 Python 패키지 설치는 필요하지 않다.
+
+```text
+python -X utf8 scripts/tdd-run.py --task <실행 입력 경로> --activate
+python -X utf8 scripts/tdd-run.py --task <실행 입력 경로> --cycle <식별자> --phase red
+python -X utf8 scripts/tdd-run.py --task <실행 입력 경로> --cycle <식별자> --phase green --export
+python -X utf8 scripts/tdd-check.py --task <실행 입력 경로> --candidate index
+python -X utf8 scripts/tdd-check.py --task <실행 입력 경로> --candidate <제출 commit> --base <비교 commit>
+python -X utf8 scripts/install-hooks.py
+python -X utf8 scripts/install-hooks.py --status
+python -X utf8 scripts/install-hooks.py --remove
+```
+
+명령을 `--` 뒤에 직접 쓰면 선언한 인수 배열과 정확히 같아야 한다. `{root}`·`{report}`·`{run_id}`는 실행기가 채운다. 결과 형식은 `unittest`(test-python.py), `vitest` JSON, `junit`(Gradle·Node)이다. Gradle에는 `-PtddReportDir={report}`를 붙여 task별 새 보고서를 강제한다. 기존 보고서·실행 생략·테스트 0개·환경 오류는 Red가 아니다. 실행기 종료 0은 해당 단계의 유효한 결과 기록을 뜻하며 Red의 실제 테스트 프로세스 종료 1과 구별한다.
+
+Red는 현재 worktree에서만 편집을 허용하고 Green 뒤 닫힌다. 새 동작에는 새 사이클을 선언한다. 테스트/설정이 바뀌면 관련 이전 근거는 무효다. 순수 리팩터링은 이유를 적고 `--phase before`로 기존 테스트 통과를 기록한 뒤 `--phase verify`로 다시 확인한다. 초기 환경·정정은 이유 있는 예외 사이클의 `verify`를 쓰며 실행 근거 없이 제출하지 않는다. 환경 예외로 런타임 동작을 숨길 수 없다. 최초 검사기 연결의 bootstrap 근거는 이 Task에서만 초기 실제 실행 기록과 함께 검수하며 제품 기능에 자동 면제하지 않는다.
+
+진행 상태는 Git 제외 `.tmp/`의 Task/worktree별 위치, 활성 Task 포인터는 `.tmp/tdd-active.json`이다. `--export`는 끝난 최소 실행·파일 지문을 같은 실행 입력 문서에 보존한다. 임시 자료 정리나 worktree 통합 전에 export·후보 검사를 수행한다. 부분 스테이징은 작업 파일 대신 실제 index 내용으로 확인한다. 다른 worktree·squash 후보도 보존 근거와 내용이 같으면 재검증할 수 있지만 진행 중 Red는 공유하지 않는다. 의존성/결합 내용이 바뀌면 관련 회귀 실행이 필요하다.
+
+Git 설치기는 기존 pre-commit을 먼저 실행한 뒤 같은 읽기 전용 검사기를 연결한다. 중복 설치는 무변경이고, 해제는 설치한 wrapper와 백업이 그대로일 때만 복원한다. 전역 core.hooksPath·기존 사용자/플러그인 hook·Codex 신뢰 설정은 변경하지 않는다.
+
+Codex 정의는 [.codex/hooks.json](<.codex/hooks.json>)의 `PreToolUse`/`apply_patch` 한 지점이다. 실제 적용에는 프로젝트와 해당 정의의 사용자 신뢰 승인이 필요하며 CLI에서는 `/hooks`에서 검토한다. [공식 hook 문서](https://learn.chatgpt.com/docs/hooks)를 따른다. 성공은 무출력, 거부는 이유·다음 행동을 짧게 알린다. 내부 판정 제한은 3초, 외부 제한은 5초다. Codex 자체 실패/시간 초과는 편집이 실행될 수 있으므로 차단 성공으로 간주하지 않는다. 모든 셸/IDE 쓰기를 사전 차단하는 장치가 아니며 실제 제출 검수는 유지한다. 포맷 PostToolUse·품질/CI 명령은 Task 004의 담당이다.

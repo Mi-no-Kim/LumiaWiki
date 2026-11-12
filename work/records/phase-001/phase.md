@@ -7,8 +7,8 @@
 - 구상상 구분: P1
 - GitHub milestone: [Mi-no-Kim/LumiaWiki #1](https://github.com/Mi-no-Kim/LumiaWiki/milestone/1)
 - 상태: 진행 중
-- 현재 진행 위치: 계획 Issue #15를 PR #49로 통합·정리했다. Issue #42의 Task 001은 PR #54로 Issue 브랜치에 통합·정리했고 Task 002~004의 실행 설계를 확정했다. 후속 Task·Issue #43~#48은 예정이며 게임 자료 작업은 보류다. Phase의 실제 기능/자료 수용 조건은 아직 충족 판정하지 않았다.
-- 다음 판단/행동: [Issue #42의 남은 Task 결정](<issue-42/issue.md#remaining-task-decisions>)을 기준으로 구현 요청 시 Task 002부터 진행한다. Node 24.22.3 적용·테스트/hook·공통 연결·품질/CI의 실제 검증은 남아 있다. 실제 자료 조사·확보·처리 보류를 유지한다.
+- 현재 진행 위치: 계획 Issue #15는 완료했고 Issue #42는 진행 중이다. Task 001·002의 자기 수용은 완료했으며 부모 통합은 각 PR의 실제 상태를 따른다. Task 003~004·Issue #43~#48은 예정이며 게임 자료 작업은 보류다. Phase의 실제 기능/자료 수용 조건은 남아 있다.
+- 다음 판단/행동: Issue #42의 공통 연결·품질/CI는 Task 003~004에 남아 있다. 실제 자료 조사·확보·처리 보류를 유지한다.
 
 <a id="ci-manual-followup"></a>
 ### main 통합 뒤 CI 수동 실행 확인
@@ -99,11 +99,11 @@ Task 005에서 합의한 큰 순서는 실행 기반·DB 저장/조회 준비→
 ### 첫 기능 구현 전 테스트·TDD 자동화 준비
 
 - [Task 003](<issue-15/task-003.md#tdd-automation-handoff>)에서 TDD 규칙과 최소 hook 검사·예외·근거·비용 기준을 정한다.
-- [Task 005](<issue-15/task-005.md#goal>)가 테스트 환경·최소 TDD hook 연결·실제 동작 검증을 [Issue #42 실행·개발·검증 기반](<issue-42/issue.md#foundation>)의 필수 범위·수용 조건으로 배정했다. 실제 hook 구현·검증은 등록한 [Task 42-002](<issue-42/task-002.md#summary>)(GitHub #51)가 맡는다. 현재는 예정이며 실제 구현·검증은 미수행이다.
+- [Task 005](<issue-15/task-005.md#goal>)가 테스트 환경·최소 TDD hook 연결·실제 동작 검증을 [Issue #42 실행·개발·검증 기반](<issue-42/issue.md#foundation>)의 필수 범위·수용 조건으로 배정했다. 실제 hook 구현·검증은 등록한 [Task 42-002](<issue-42/task-002.md#summary>)(GitHub #51)가 맡는다. 현재 구현·검증·검수와 자기 수용을 마쳤고 Task 브랜치의 결과 제출·부모 통합 절차는 구별한다.
 - 계획 Issue #15의 종료 후 첫 기반 구축 과제 초반, 프로젝트 골격과 테스트 실행 명령을 마련한 직후 hook을 연결·검증한다. 이 결과는 해당 기반 과제의 필수 완료 조건이다.
 - 첫 제품 기능의 동작 구현은 위 자동화 연결·검증이 완료된 뒤 시작한다. 미완료·미확인이면 기능 구현의 선행 조건이 충족되지 않은 것으로 처리한다.
 
-현재는 배정·순서·완료 기준을 정한 상태이며 실제 hook 구현·동작 확인을 완료한 것은 아니다. 제품 기능의 화면 설계 선행·화면을 통한 검증 기준은 함께 유지한다.
+현재 hook의 실제 편집 거부·허용은 [Task 42-002의 실행 근거](<issue-42/artifacts/task-002-verification.md#host-acceptance>)로 확인했고 자기 수용은 [검수·보존·정리 결과](<issue-42/artifacts/task-002-verification.md#submission-review>)에 따른다. 제품 기능의 화면 설계 선행·화면을 통한 검증 기준은 함께 유지한다.
 
 <a id="input-workflow"></a>
 ### 자료 확보·임시 변환 계획

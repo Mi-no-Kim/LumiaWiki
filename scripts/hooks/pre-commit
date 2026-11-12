@@ -1,6 +1,6 @@
 #!/bin/sh
 # lumia-harness-inventory-v1
-# inventory-dependencies: ["scripts/check-harness-inventory.py", "scripts/harness_inventory.py", "scripts/install-harness-hooks.py"]
+# inventory-dependencies: ["scripts/check-harness-inventory.py", "scripts/harness_inventory.py", "scripts/install-harness-hooks.py", "scripts/install-hooks.py", "scripts/tdd-check.py", "scripts/tdd_core.py"]
 hook_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd) || exit 2
 if [ -f "$hook_dir/pre-commit.harness-original" ]; then
   "$hook_dir/pre-commit.harness-original" "$@" || exit $?

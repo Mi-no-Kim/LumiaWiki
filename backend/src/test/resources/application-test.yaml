@@ -1,7 +1,9 @@
-# Task 002 supplies the isolated Testcontainers connection.
-# No development DB fallback is allowed in this profile.
+# ServiceConnection supplies the isolated Testcontainers connection.
+# Fail closed if an integration test forgets that configuration.
 spring:
   datasource:
     url: jdbc:postgresql://127.0.0.1:1/test_connection_not_configured
     username: test_connection_not_configured
     password: test_connection_not_configured
+  flyway:
+    locations: classpath:db/migration,classpath:db/test-migration
