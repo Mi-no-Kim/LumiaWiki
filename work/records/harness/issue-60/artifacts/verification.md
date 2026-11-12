@@ -19,7 +19,15 @@
 
 - `scripts/check-work-records.py`: SHA-256 `94590db6bb08d51e5dc0add9c8225f63ece2fb600dcca38c5becef5a0bc4690e`
 - `scripts/hooks/pre-commit`: SHA-256 `3f5aa2b620ec98713efb5629ebb5b3a41a2ca8e224731a8f00cd66d80ceadcc7`
-- `scripts/tests/test_work_records.py`: SHA-256 `6079316c232f76a093fad9454f3d1aa17cf222d804fa682410376df14a2bf942`
+- `scripts/tests/test_work_records.py`: SHA-256 `f0847497f2623b76ef727ca2c8d6ba34b830fd8de2b719e083703b3df2818c0f`
 - 기존 TDD wrapper SHA-256 `a82f6143429c4a98c3f6c3be39e73dccf9c8b56bc75075a4dc7d9229006413c7`; metadata 보존.
 - 자동 검사는 명시적 형식만 판정한다. 일반 문장의 의미·본문 이력 누적과 다른 날짜 표현은 기존 문서 검수에서 확인하며 코드 블록의 원본 여부를 자동 인증하지 않는다.
 - 스킬 원천·제품 코드는 변경하지 않았고 기존 스킬 검증·제품 테스트를 재실행하지 않았다.
+
+<a id="ci-preparation"></a>
+## PR CI의 비교 입력 준비
+
+- [초기 PR CI](https://github.com/Mi-no-Kim/LumiaWiki/actions/runs/43199673154)는 두 OS에서 부모 문서 blob이 없는 partial/sparse checkout 때문에 `AGENTS.md` 비교에 실패했다. 검사기의 읽기 전용 정책은 유지했다.
+- CI는 허용된 변경 문서의 부모측 blob 중 없는 객체만 한 번에 준비한다. 공개 origin을 확인했고 인증 저장·전수 checkout을 추가하지 않았다.
+- 새 회귀 사례 1개가 실제 depth 2·partial·sparse clone의 동일 실패, 실제 workflow 준비 코드 뒤 통과와 무관 blob 미취득을 확인했다. 기존 10개 테스트 메서드의 AST·검사기·hook은 같아 기존 근거를 재사용했다. 자체·별도 검수는 이 변경 영향만 대조했고 필수 지적은 없었다.
+- 원격 결과와 통합 상태는 [PR #61](https://github.com/Mi-no-Kim/LumiaWiki/pull/61)의 검사를 따른다.

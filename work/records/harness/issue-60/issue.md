@@ -28,5 +28,5 @@
 <a id="verification"></a>
 ## 수용 판단과 근거
 
-- 새 검사 10개·관련 hook 테스트 6개와 실제 설치 hook의 정상/경고/거부, 자체·별도 검수와 최종 후보 대조를 통과했다. 상세 범위·입력·한계는 [검증 근거](artifacts/verification.md#verification)에 연결한다.
-- 자동 검사는 일반 문장의 의미를 판정하지 않는다. 제품 테스트는 실행하지 않았으며 원격 CI 결과는 연결 PR의 검사를 따른다.
+- 새 검사 10개·관련 hook 테스트 6개와 실제 설치 hook의 정상/경고/거부, 자체·별도 검수와 최종 후보 대조를 통과했다. CI 비교 입력 준비의 회귀 사례 1개도 통과했다. 상세 범위·입력·한계는 [검증 근거](artifacts/verification.md#verification)에 연결한다.
+- 자동 검사는 일반 문장의 의미를 판정하지 않는다. 제품 테스트는 실행하지 않았으며 원격 CI 결과와 통합 상태는 [PR #61](https://github.com/Mi-no-Kim/LumiaWiki/pull/61)의 검사를 따른다.

@@ -1,10 +1,12 @@
 """Changed record candidates: narrow errors, non-blocking length warnings."""
 
 import importlib.util
+import os
 from pathlib import Path
 import subprocess
 import sys
 import tempfile
+import textwrap
 import unittest
 
 SCRIPTS = Path(__file__).resolve().parents[1]
@@ -115,6 +117,36 @@ class CandidateTests(unittest.TestCase):
         self.git('commit', '-qm', 'old long fixture')
         result = self.run_check()
         self.assertEqual((0, ''), (result.returncode, result.stderr))
+
+    def test_sparse_ci_prepares_missing_parent_documents_only(self):
+        self.git('config', 'uploadpack.allowFilter', 'true')
+        for value in ('prior', 'current'):
+            (self.root / 'AGENTS.md').write_text('# ' + value + '\n', encoding='utf-8')
+            (self.root / 'unrelated.txt').write_text(value + '\n', encoding='utf-8')
+            self.git('add', '--', 'AGENTS.md', 'unrelated.txt')
+            self.git('commit', '-qm', value + ' fixture')
+        clone = self.root / 'clone'
+        self.git('clone', '--filter=blob:none', '--no-checkout', '--depth=2', self.root.as_uri(), str(clone))
+        self.git('-C', str(clone), 'sparse-checkout', 'set', '--no-cone', '/AGENTS.md')
+        self.git('-C', str(clone), 'checkout', '-q', 'HEAD')
+        def check():
+            return subprocess.run([sys.executable, '-B', '-X', 'utf8', str(SCRIPT), '--candidate', 'HEAD'],
+                                  cwd=clone, capture_output=True, text=True, encoding='utf-8')
+        failed = check()
+        self.assertEqual(2, failed.returncode)
+        self.assertIn('Invalid or oversized source object: AGENTS.md', failed.stderr)
+        workflow = (SCRIPTS.parent / '.github/workflows/harness-inventory.yml').read_text(encoding='utf-8')
+        step = workflow.split('      - name: Prepare parent document blobs\n', 1)[1].split('\n      - name:', 1)[0]
+        code = textwrap.dedent(step.split('        run: |\n', 1)[1])
+        prepared = subprocess.run([sys.executable, '-B', '-X', 'utf8', '-c', code], cwd=clone,
+                                  capture_output=True, text=True, encoding='utf-8')
+        self.assertEqual(0, prepared.returncode, prepared.stderr)
+        self.assertEqual(0, check().returncode)
+        unrelated = self.git('-C', str(clone), 'rev-parse', 'HEAD^:unrelated.txt').stdout.strip()
+        objects = subprocess.run(['git', 'cat-file', '--batch-check'], cwd=clone,
+                                 input=unrelated + '\n', capture_output=True, text=True,
+                                 env={**os.environ, 'GIT_NO_LAZY_FETCH': '1'}, check=True)
+        self.assertIn(' missing', objects.stdout)
 
 
 if __name__ == '__main__':
