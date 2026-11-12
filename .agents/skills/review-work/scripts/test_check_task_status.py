@@ -1,7 +1,9 @@
 """Behavior checks with a disposable Git index; no project records are edited."""
 
 from pathlib import Path
+import os
 import subprocess
+import sys
 import tempfile
 import unittest
 
@@ -32,6 +34,22 @@ class StagedTaskStateTests(unittest.TestCase):
         before = self.path.read_bytes()
         self.assertEqual(staged_state(self.repo, TASK), "진행 중")
         self.assertEqual(self.path.read_bytes(), before)
+
+    def test_cli_status_is_readable_in_windows_default_encoding(self):
+        self.stage("- 상태: 완료\n")
+        before = (self.repo / ".git/index").read_bytes()
+        for expected, code, label in (("완료", 0, "일치:"), ("검증 중", 1, "불일치:")):
+            with self.subTest(expected=expected):
+                result = subprocess.run(
+                    [sys.executable, "-B", str(Path(__file__).with_name("check_task_status.py")),
+                     "--repo", str(self.repo), "--task", TASK, "--expect-state", expected],
+                    capture_output=True,
+                    env={**os.environ, "PYTHONIOENCODING": "cp949", "PYTHONUTF8": "0"},
+                )
+                self.assertEqual(result.returncode, code, result.stderr)
+                self.assertEqual(result.stderr, b"")
+                self.assertIn(label, result.stdout.decode("cp949"))
+                self.assertEqual((self.repo / ".git/index").read_bytes(), before)
 
     def test_completed_and_intentional_pause_are_distinct(self):
         for state in ("완료", "보류", "취소"):
