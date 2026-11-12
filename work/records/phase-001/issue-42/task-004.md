@@ -7,9 +7,9 @@
 - 제목: 코드·문서 검사·포맷·CI 연결
 - GitHub sub-issue: [Mi-no-Kim/LumiaWiki #53](https://github.com/Mi-no-Kim/LumiaWiki/issues/53)
 - 부모 Issue: [Issue #42](issue.md#summary)
-- 상태: 진행 중
-- 현재 진행 위치: 품질·포맷·후보 검사·CI를 구현하고 로컬·별도 검수·실제 PR/부모 패턴 push 정상 실행과 통제 실패 반영을 확인했다. [draft PR #63](https://github.com/Mi-no-Kim/LumiaWiki/pull/63)의 WIP 후보이며 새 PostToolUse의 실제 호스트 자동 실행 확인이 남아 있다.
-- 다음 행동: 새 PostToolUse를 검토·신뢰한 환경에서 실제 apply_patch 뒤 문서·Java 자동 포맷을 재확인한다. [근거와 잔여](artifacts/task-004-implementation.md#remote-ci)를 사용하며 Task 자기 수용은 진행 중으로 유지한다.
+- 상태: 완료
+- 현재 진행 위치: 품질·포맷·후보 검사·CI 구현과 로컬·별도 검수·실제 PR/부모 패턴 push 정상 실행·통제 실패 반영을 확인했다. 사용자 검토·신뢰 후 새 PostToolUse의 실제 문서·Java 자동 포맷도 확인하고 근거 보존·Task 임시 정리를 마쳐 자기 수용을 완료했다.
+- 다음 행동: [PR #63](https://github.com/Mi-no-Kim/LumiaWiki/pull/63)을 부모 Issue에 통합 검토한다. [실제 CI](artifacts/task-004-implementation.md#remote-ci)와 [실제 호스트 검증](artifacts/task-004-implementation.md#host-verification)을 사용하며 Issue 전체 수용은 별도로 판단한다.
 
 <a id="goal"></a>
 
@@ -44,7 +44,7 @@
 | 포맷 실패·중복 호출·시간 초과의 통제된 재현        | 조용한 성공·명확한 실패·임의 설치/수정/재시도 없음·기존 hook 유지 |
 | CI 정상 후보와 통제한 검사/테스트 실패 후보 실행   | 독립 설치/검사/테스트/빌드 성공과 해당 실패가 run에 반영          |
 
-실제 명령·트리거와 확인 목록을 공유했으며 실행 안내는 README, 후보는 PR #63이다. 자동 검사·AI 직접 실행·CI 결과는 아래 근거를 따르고 사용자 직접 확인은 미수행이다. 제출 전 [자체·별도 검수](../../../../.agents/skills/review-work/SKILL.md#before-commit)를 적용한다.
+실제 명령·트리거와 확인 목록을 공유했으며 실행 안내는 README, 후보는 PR #63이다. 사용자는 새 PostToolUse 검토·신뢰를 완료했다고 알렸고 실제 자동 포맷 검증은 AI가 수행했다. 자동 검사·AI 직접 실행·CI 결과는 아래 근거를 따르며 사용자 직접 편집 검증은 미수행이다. 제출 전 [자체·별도 검수](../../../../.agents/skills/review-work/SKILL.md#before-commit)를 적용한다.
 
 <a id="implementation-decisions"></a>
 
@@ -57,5 +57,5 @@
 ## 현재 결과와 잔여
 
 - 로컬 프런트 lint·13개 테스트·타입/빌드와 서버 포맷·단위/격리 DB 통합 테스트·bootJar를 확인했다. 최종 내용 대응·전체 로컬 명령과 자체/별도 검수를 통과했다. 실제 CI의 정상 통과와 통제 실패 반영도 확인했다.
-- 기존 TDD PreToolUse의 실제 거부·허용은 유지된다. 새 PostToolUse의 직접 실행은 검증했고, 현재 대화에서 편집 뒤 자동 실행되는 실제 호스트 확인은 미충족이다. 새 정의의 검토·신뢰와 재확인이 필요하다.
-- 새 PostToolUse 실제 호스트 확인 전에는 자기 수용·부모 Issue 완료를 판정하지 않는다. 사용자 직접 확인은 미수행이다.
+- 사용자 검토·신뢰 후 실제 apply_patch 네 호출로 문서·Java 생성/수정 자동 포맷과 포맷된 입력 반복 무변경을 확인했다. 패치 밖 두 대조 파일은 그대로였고 새 event receipt 4개·실패 marker 불변을 확인했다. 기존 TDD PreToolUse도 조건 없는 코드 편집을 실제 거부했다.
+- [근거 보존·임시 정리](artifacts/task-004-implementation.md#host-verification)를 마쳐 Task 자기 수용을 완료했다. PR #63의 부모 통합과 Issue 전체 수용은 남아 있으며 Phase의 main 통합 뒤 CI 수동 실행 확인 조건을 유지한다. 사용자 직접 편집 검증은 미수행이다.

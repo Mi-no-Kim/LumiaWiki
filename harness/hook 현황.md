@@ -6,7 +6,7 @@
 
 | 항목·원천                                                                    | 적용 조건                                                  | 동작                                                                | 확인 상태 |
 | ---------------------------------------------------------------------------- | ---------------------------------------------------------- | ------------------------------------------------------------------- | --------- |
-| [변경 파일 포맷 · Codex PostToolUse](../.codex/hooks.json)                   | PostToolUse / ^apply_patch$; 도구 사전 설치·정의 신뢰 필요 | 허용 변경 파일만 포맷; 실패는 제출 미확인으로 보존                  | 미확인    |
+| [변경 파일 포맷 · Codex PostToolUse](../.codex/hooks.json)                   | PostToolUse / ^apply_patch$; 도구 사전 설치·정의 신뢰 필요 | 허용 변경 파일만 포맷; 실패는 제출 미확인으로 보존                  | 확인      |
 | [편집 TDD 검사 · Codex PreToolUse](../.codex/hooks.json)                     | PreToolUse / ^apply_patch$; 프로젝트·hook 신뢰 필요        | 유효한 Red/예외 없는 apply_patch 편집 거부                          | 확인      |
 | [제출 TDD·현황·기록·형식 검사 · Git pre-commit](../scripts/hooks/pre-commit) | Git 커밋 전; TDD hook이 연결된 현재 구성                   | 기존 hook·TDD·현황·기록 검사 후 인덱스 실행기·내용·설정의 형식 확인 | 확인      |
 
@@ -105,11 +105,11 @@
       "purpose": "허용 변경 파일만 포맷; 실패는 제출 미확인으로 보존",
       "when": "PostToolUse / ^apply_patch$; 도구 사전 설치·정의 신뢰 필요",
       "verification": {
-        "status": "unverified",
-        "sourceDigest": null,
-        "environment": null,
-        "scope": null,
-        "evidence": null
+        "status": "verified",
+        "sourceDigest": "53386923de8863ae35e9ffdbeea95c39412407e85419759deac8fc8698daf9b6",
+        "environment": "Windows / current Codex apply_patch / Node 24.22.3 / prepared Gradle 9.9.1 / JDK 21",
+        "scope": "사용자 검토·신뢰 후 실제 apply_patch 네 호출로 JSON/Java 생성·수정·포맷된 입력 반복을 확인했다. 패치 밖 두 대조 파일 바이트 유지·새 event receipt 4개·실패 marker 불변·기존 TDD 실제 거부와 probe 제거를 확인했다.",
+        "evidence": "work/records/phase-001/issue-42/artifacts/task-004-implementation.md#host-verification"
       }
     }
   ]

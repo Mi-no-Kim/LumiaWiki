@@ -59,7 +59,7 @@
 - Java 범위 시험에서 spotlessFiles 속성은 설치 버전에서 다른 합성 파일까지 포맷했다. 공식 spotlessIdeHook의 절대 경로 목록으로 변경한 뒤 대상 포맷·다른 파일 바이트 보존·재실행 무변경을 확인했다. offline 준비 후 1개 파일 호출은 1455ms였다. 합성 Java 두 파일은 제거했다.
 - 루트 Prettier는 기존 checkout 줄바꿈을 존중하는 endOfLine auto와 proseWrap preserve·embeddedLanguageFormatting off를 사용한다. 최초 적용 중 한 TSX 체인의 두 번째 명시 포맷이 필요했고, 이후 전체 무변경 여부를 다시 확인한다.
 - 기존 하네스 CI의 부모 record blob 준비 코드는 의미를 보존해 scripts/quality/record-base.py로 추출했다. 새 품질 테스트에 필요한 Node·루트 잠금 설치와 선언된 backend 의존 경로를 기존 sparse checkout에 추가한다.
-- 기존 PreToolUse는 실제 apply_patch를 유효한 예외 입력이 없다는 이유로 거부했다. 입력을 갱신·활성화한 뒤 동일 편집을 허용했다. 새 PostToolUse는 실행기 직접/격리 시험과 현재 대화의 자동 실행을 구별한다. 실제 apply_patch의 합성 JSON은 자동 포맷되지 않았고 제거했으며, 새 정의의 검토·신뢰와 실제 호스트 재확인은 남아 있다. 기존 신뢰를 자동 수정하거나 우회하지 않는다.
+- 기존 PreToolUse는 실제 apply_patch를 유효한 예외 입력이 없다는 이유로 거부했다. 입력을 갱신·활성화한 뒤 동일 편집을 허용했다. 새 PostToolUse는 실행기 직접/격리 시험과 현재 대화의 자동 실행을 구별한다. 실제 apply_patch의 합성 JSON은 자동 포맷되지 않았고 제거했으며, 이는 검토·신뢰 전 관찰이며 이후 같은 지문의 실제 호스트 재확인은 아래 host-verification에서 확인했다. 기존 신뢰를 자동 수정하거나 우회하지 않았다.
 - 도구의 초기 Red 12개, 실제 hook 전달/시간 초과 Red 2개→Green과 현재 입력 회귀는 [정식 TDD 기록](task-004-tdd.md)에 보존한다. 완료하지 않은 호스트·원격 CI 확인은 성공으로 표시하지 않는다.
 
 ## 독립 검수와 제출
@@ -71,12 +71,13 @@
 - 인덱스의 staged 모듈·내용·설정으로 형식을 확인했고 원본 작업 파일을 고치지 않았다. 실제 설치 pre-commit은 정상 후보를 종료 0으로 허용했다(7957ms, TDD와 형식 포함). 별도 index의 README 포맷 위반은 파일을 식별해 종료 2로 거부했다. 실제 index SHA-256은 전후 같았고 선행 TDD wrapper SHA-256도 재설치 전후 같았다.
 - Git/Windows Wrapper 속성·Gradle/배치 파일 지문은 CRLF 동등성을 실제 Red→Green으로 확인했다. Java는 UNIX 줄바꿈을 명시해 Windows 작업 파일·인덱스·Linux의 후보 형식을 일치시켰다. `format:prepare`가 배포본을 명시적으로 준비하고 hook은 그 배포본만 직접 offline 실행한다. 미준비 fixture에서 Wrapper 미호출을 확인했다.
 - 기록·현황·공백 검사를 통과했다. 현재 source와 별도 검수의 코드·조건을 보존한 결과/한계 갱신은 자체 대조하고 검수 근거를 재사용한다.
-- 원격 정상/통제 실패 CI는 아래 근거로 확인했고 새 PostToolUse의 실제 호스트 자동 실행은 아직 미확인이다. WIP는 이 잔여를 보존해 실제 CI를 실행할 진행 후보이며 Task 자기 수용은 진행 중이다. 수동 실행 실측은 Phase의 main 통합 뒤 조건을 유지한다. 실제 CI 실행 URL·commit·job 판정은 수행 후 연결한다.
+- 호스트 검증 뒤 같은 검토자가 `ff6f3dd` 대비 staged 문서 6개를 검수했다. 원천 지문 7개·event receipt 4개·현황 지문, probe/Task 임시/해당 TDD 런타임 상태 부재, Task 자기 완료와 부모 진행 중의 구분을 대조해 필수 결함을 발견하지 못했다. 지문 정규화 기준과 거부 probe 경로를 보완했으며 실제 호스트 호출은 보존 관찰을 대조하고 재실행하지 않았다. 이 결과 요약 추가는 자체 확인한다.
+- 원격 정상/통제 실패 CI와 새 PostToolUse 실제 호스트 실행을 확인했다. 이전 WIP의 잔여는 아래 호스트 검증으로 해소했고 Task 자기 수용·임시 정리를 완료했다. 수동 실행 실측은 Phase의 main 통합 뒤 조건을 유지한다. 실제 CI 실행 URL·commit·job 판정은 아래 근거를 따른다.
 
 <a id="remote-ci"></a>
 ## 실제 CI와 현재 인계
 
-검증한 구현 commit은 `86569c684a632a2f69296dd0b6d2e287ad2e1fba`다. 후속 변경은 이 코드·설정·수용 조건을 보존한 관찰/기록 갱신이며 정상 결과로 자기 수용을 완료하지 않는다.
+원격 CI로 검증한 구현 commit은 `86569c684a632a2f69296dd0b6d2e287ad2e1fba`다. 후속 변경은 이 코드·설정·수용 조건을 보존한 관찰/기록 갱신이며, 마지막 필수였던 실제 호스트 검증과 근거 보존·임시 정리까지 마쳐 현재 Task 자기 수용을 완료했다.
 
 | 실제 입력·이벤트 | 실행·관찰·판정 |
 |---|---|
@@ -90,5 +91,99 @@
 - Linux tools job에서 상태 파일 symlink 보호 사례가 실제 통과했다. Windows의 같은 파일 symlink 권한 skip과 Linux의 Windows 대소문자 전용 skip은 환경별 조건과 구별한다.
 - PR #65의 별도 [Windows 회귀](https://github.com/Mi-no-Kim/LumiaWiki/actions/runs/43217677524)는 Git ls-files 조회가 남은 1.266초 제한을 초과해 한 사례가 실패했다. 같은 하네스 입력의 정상 PR·lint PR Windows 회귀는 통과했다. 재실행 API는 토큰 권한 부족으로 거부됐으며 그 실행을 성공으로 바꾸지 않는다. 품질 CI의 통제 assertion·집계 실패 확인과 이 별도 회귀의 시간 초과를 구별해 보존한다.
 - 비용은 TDD의 전체 구현 후보 검사 1300ms, 사전 준비된 Java 한 파일 포맷 1640ms, 설치 pre-commit 전체 7957ms였다. formatter 비용을 TDD 3초 목표에 합쳐 판정하지 않는다.
-- 남은 필수 확인: 앱에서 새 PostToolUse 정의를 검토·신뢰한 뒤 실제 apply_patch로 문서·Java 자동 포맷을 확인한다. 정의/직접 실행/기존 PreToolUse 거부·허용과 현재 대화의 자동 PostToolUse 실행은 별개다. 같은 합성 JSON의 실제 편집 뒤 자동 포맷되지 않은 것을 두 번 관찰했으며 원인은 신뢰/세션 적용 등으로 확정하지 않았다. 앱·전역 신뢰를 자동 변경하거나 우회하지 않았다.
-- Task는 진행 중이다. 작업·테스트 입력·준비 캐시·정식 receipt와 필요한 Git 제외 임시는 호스트 재개를 위해 유지한다. main·Phase·부모 Issue에 병합하거나 저장소 보호 설정을 바꾸지 않았다. 수동 실행 실측은 기존 Phase의 main 통합 뒤 조건으로 남긴다.
+- 마지막 필수였던 새 PostToolUse 실제 호스트 자동 포맷은 사용자 검토·신뢰 후 아래 사례로 충족했다. 이전 미적용 관찰은 이전 시점의 사실로 보존하며 그 원인을 한 가지로 확정하지 않는다.
+- 구현·검증 조건과 정식 근거 보존·Task 임시 자료 정리를 충족해 자기 완료를 판단했다. PR #63 부모 통합과 Issue 전체 수용은 별도 검토한다. main·Phase·부모 Issue에 병합하거나 저장소 보호 설정을 바꾸지 않았다. 수동 실행 실측은 기존 Phase의 main 통합 뒤 조건으로 남긴다.
+
+<a id="host-verification"></a>
+## 실제 호스트 자동 포맷 검증
+
+사용자가 새 PostToolUse를 검토·신뢰했다고 알린 뒤 같은 구현·설정 지문으로 실제 apply_patch를 실행했다. 실행기를 직접 호출해 대신한 결과가 아니라 현재 대화의 도구 호출 뒤 파일 바이트와 새 event receipt를 확인한 결과다.
+
+| 실제 조작 | 관찰·판정 |
+|---|---|
+| 미포맷 JSON 문서 생성 | 허용 문서만 Prettier 형식으로 바뀜 |
+| 문서 수정과 미포맷 Java 생성 | 문서와 Java 각각 자동 포맷, Java는 UNIX 줄바꿈 |
+| 미포맷 Java 수정 | 바뀐 값 2를 유지하며 google-java-format 형식 적용 |
+| 이미 포맷된 두 파일을 동일 내용으로 재편집 | 새 event receipt 생성·파일 SHA-256 무변경 |
+| 위 네 호출의 패치 밖 JSON/Java 대조 파일 | 원본 바이트 SHA-256 유지 |
+| 유효한 Red/예외 없는 별도 프런트 동작 probe | 실제 PreToolUse가 No current Red/exception으로 거부·파일 부재 |
+
+네 자동 포맷 호출 모두 추가 실패 안내가 없었고 실패 marker가 늘지 않았다. 실제 도구 왕복 시간은 문서 수정/Java 생성 4956ms, Java 수정 3744ms, 포맷된 입력 반복 4135ms였다. 이 수치는 PreToolUse·도구 처리·PostToolUse를 포함한다. formatter 단독 비용과 TDD 검사 비용은 위 별도 실측을 따른다. 대상 probe 네 파일은 실제 삭제 patch로 제거했고, 거부된 동작 probe도 부재를 확인했다. 보존 영역은 접근하지 않았다.
+
+아래 원천 지문·receipt·대조 파일 지문을 임시 원본과 대조해 보존했다. sourceManifest는 CRLF를 LF로 정규화한 SHA-256이며 대조/probe/receipt 지문은 원본 바이트 기준이다. `D:\my_project\lumia_island_wiki\.tmp\task-42-004`와 현재 Task/작업 트리의 TDD 실행 상태 디렉터리만 절대 경로·소속·링크 부재를 확인해 정리했다. 다른 작업 자료와 `.tmp/quality`의 준비 도구·실행 상태는 유지했다. 정리 후 정식 TDD 기록만으로 기준 `8a21c74` 대비 `ff6f3dd` 후보 검사도 통과했다. 첫 제한 환경 실행은 내부 시간 초과로 미확인이었으며 같은 후보의 독립 실행은 종료 0이었다.
+
+<!-- host-format-evidence -->
+```json
+{
+  "schema": 1,
+  "baselineCommit": "ff6f3dd174bacdb2ac234c0861cfa02b6b1f4ce6",
+  "sourceHashNormalization": "CRLF-to-LF",
+  "sourceManifest": {
+    ".codex/hooks.json": "816cb983d2faded1df2b58fc7da4b371c5990800df09768b324a8674448e31d4",
+    ".prettierrc.json": "458b8ede308826ada4423c881dc7d577e5155146dca4858e64b99c05737fc779",
+    "scripts/quality/paths.mjs": "1f38ff7aa54b3aaa1fdfcd2fa0ec8f75fb62134e80fe5d5ff54e8e31eaf0df53",
+    "scripts/quality/process.mjs": "4730a36d610fd0f9613bd242d3c124ebc20f8c4876662f192e75c5a2cc198a44",
+    "scripts/quality/format.mjs": "1629f118f91dad44f20ae7c37652984fe8f4154be8716bb8e15bc52ca9e49f70",
+    "scripts/quality/post-edit.mjs": "b7efaa6ca7089c133ba69c6340e5c09f47a17374fc8053bd5ddb395e817d9286",
+    "backend/build.gradle": "52b40fbbcdbb75b4ee5d5997811157a0ed61562cbd87c9eb6c3d859a88dd7960"
+  },
+  "controlsBeforeAndAfter": {
+    "docs/quality-host-untouched.json": "80fc6b1526424541533059400f9e7aa562d73aee66527df3a2de6e130cf59f83",
+    "backend/src/test/java/io/github/minokim/lumiawiki/QualityHostUntouched.java": "ecd435f00881aada522b76867b8ba7c3610aeea61575e00b739e85b328578e73"
+  },
+  "documentCreateSha256": "5d50cc493aaabd6cb941329490b41a0b63a6070c7d3c6128cb16c26f804321cd",
+  "finalProbeHashes": {
+    "docs/quality-host-probe.json": "298fc7e567182575f9653dc923dc0a20400943a26e6de96a16a03c780c860585",
+    "backend/src/test/java/io/github/minokim/lumiawiki/QualityHostProbe.java": "0c74389d16440eec7e2ef8fd190f687da1512d212d11b3e61f0d9f107ce1a23e"
+  },
+  "receipts": [
+    {
+      "file": "14f9edf4ffb3a0f0384fd55f180890073db616bf87d4523998045b6dfcfb37f3.json",
+      "sha256": "fd2dd8aa2399b26ce19ec18427afc74082af1690a4d99d0596d3d7195c347270",
+      "manifest": {
+        "backend/src/test/java/io/github/minokim/lumiawiki/qualityhostprobe.java": "8ebb95a6190c50c0a784726f7dbecfc4fc6360474ac559dacadb11ddbd5e98ab",
+        "docs/quality-host-probe.json": "298fc7e567182575f9653dc923dc0a20400943a26e6de96a16a03c780c860585"
+      }
+    },
+    {
+      "file": "88df73638b7888c6bbceea4690a359d44369780d3368c733e21d0e4fcf4a4cb8.json",
+      "sha256": "fcff2b10be136b47d573477ea459406c5e540a0707e49c838e1103d209d0a00c",
+      "manifest": {
+        "backend/src/test/java/io/github/minokim/lumiawiki/qualityhostprobe.java": "0c74389d16440eec7e2ef8fd190f687da1512d212d11b3e61f0d9f107ce1a23e"
+      }
+    },
+    {
+      "file": "9fe1685821990ff696bddc32473e0b816dcb25e698ad107db1177d878afdc408.json",
+      "sha256": "c1ca6b09b28141082715f5b221e7f9f289a4efe642c0802e4918b8c28d272da9",
+      "manifest": {
+        "docs/quality-host-probe.json": "5d50cc493aaabd6cb941329490b41a0b63a6070c7d3c6128cb16c26f804321cd"
+      }
+    },
+    {
+      "file": "dd5f5f2453e9ac876e4c25db06883aa40aa1ab6e7ea35da6ed50b4462d9b5a2b.json",
+      "sha256": "b97133d2afdac13bbb9153069309ef644292c43b675a577763b0c9c9e3b4f836",
+      "manifest": {
+        "backend/src/test/java/io/github/minokim/lumiawiki/qualityhostprobe.java": "0c74389d16440eec7e2ef8fd190f687da1512d212d11b3e61f0d9f107ce1a23e",
+        "docs/quality-host-probe.json": "298fc7e567182575f9653dc923dc0a20400943a26e6de96a16a03c780c860585"
+      }
+    }
+  ],
+  "guardBlocked": true,
+  "guardProbePath": "frontend/src/quality-host-tdd-guard-probe.ts",
+  "probesRemoved": true,
+  "toolCallCosts": [
+    {
+      "case": "document-update-and-java-create",
+      "elapsedMs": 4956
+    },
+    {
+      "case": "java-update",
+      "elapsedMs": 3744
+    },
+    {
+      "case": "formatted-input-repeat",
+      "elapsedMs": 4135
+    }
+  ]
+}
+```
