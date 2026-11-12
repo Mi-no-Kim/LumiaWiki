@@ -7,8 +7,8 @@
 - 구상상 구분: P1
 - GitHub milestone: [Mi-no-Kim/LumiaWiki #1](https://github.com/Mi-no-Kim/LumiaWiki/milestone/1)
 - 상태: 진행 중
-- 현재 진행 위치: 계획 Issue #15를 PR #49로 통합·정리했다. Issue #42의 Task 001은 PR #54로 Issue 브랜치에 통합·정리했고 Task 002~004의 실행 설계를 확정했다. Task 002는 구현·검증·검수·보존/정리를 마쳐 자기 수용을 완료했으며 부모 Issue로의 결과 통합은 남아 있다. Task 003~004·Issue #43~#48은 예정이며 게임 자료 작업은 보류다. Phase의 실제 기능/자료 수용 조건은 아직 충족 판정하지 않았다.
-- 다음 판단/행동: [Task 002의 검수 결과](<issue-42/artifacts/task-002-verification.md#submission-review>)를 현재 Task 브랜치에서 커밋·확인하고 이후 부모 통합·정리 절차를 따른다. 실제 편집 hook의 거부·허용과 Node·자동 테스트·Git hook은 검증했고 공통 연결·품질/CI는 Task 003~004에 남아 있다. 실제 자료 조사·확보·처리 보류를 유지한다.
+- 현재 진행 위치: 계획 Issue #15는 완료했고 Issue #42는 진행 중이다. Task 001·002의 자기 수용은 완료했으며 부모 통합은 각 PR의 실제 상태를 따른다. Task 003~004·Issue #43~#48은 예정이며 게임 자료 작업은 보류다. Phase의 실제 기능/자료 수용 조건은 남아 있다.
+- 다음 판단/행동: Issue #42의 공통 연결·품질/CI는 Task 003~004에 남아 있다. 실제 자료 조사·확보·처리 보류를 유지한다.
 
 <a id="ci-manual-followup"></a>
 ### main 통합 뒤 CI 수동 실행 확인

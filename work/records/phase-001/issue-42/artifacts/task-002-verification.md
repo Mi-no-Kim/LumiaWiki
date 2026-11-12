@@ -322,3 +322,12 @@
 - artifacts 입력의 index를 이전 Task 기준 `7d5cb73`과 대조한 TDD 검사가 통과했다. 실제 설치 Git hook은 정상 후보를 허용하고 원천 불일치를 종료 2로 거부했으며 실제 index는 같았다.
 - 실제 Codex apply_patch는 `frontend/src/tdd-artifact-probe.ts` 생성을 `No current Red/exception`으로 거부했고 파일은 없었다. 기존 테스트를 다시 실행한 결과가 아니라 입력 경로 이동에 대한 확인이다.
 - 별도 검수에서 Task의 역할·수용 조건 보존, 원문 데이터·참조·실행 입력 호환과 실제 제출 후보를 대조했고 필수 결함을 발견하지 못했다.
+
+<a id="pr-ci"></a>
+## PR 후보 회귀 확인
+
+- [초기 PR CI](https://github.com/Mi-no-Kim/LumiaWiki/actions/runs/43193311987)는 두 OS에서 inventory fixture의 TDD 의존 누락으로 실패했고, Windows에서는 임시 경로 표기와 mock 기준의 불일치도 확인했다.
+- 테스트 두 곳만 정정했다. 실제 wrapper가 선언한 TDD 의존 3개를 임시 저장소에 복제·등록하고, 경로 거부 테스트의 root를 먼저 정규화했다. 운영 코드·거부 assertion·예외 기대·skip은 바꾸지 않았다.
+- 로컬 69개가 실패/error/skip 0으로 통과했다. 제한 실행에서 발생한 junction·Git Bash 접근 거부는 정상 Windows 권한의 같은 실행으로 구분했으며 성공 근거로 사용하지 않았다. 새 `pr-fixture-correction` 완료 receipt를 기존 12개에 추가했다. 웹 2개·서버 4개·실제 호스트의 기존 근거는 동일 입력이므로 재사용했다.
+- 자체·읽기 전용 별도 검수는 두 테스트 변경과 실행 입력을 대조했다. 기존 테스트 메서드의 AST·assertion 보존과 운영 코드 불변을 확인했고 필수 결함은 없었다. 최종 후보와 정식 receipt도 대조했다.
+- 원격 회귀 결과와 부모 통합 상태는 [PR #59의 검사](https://github.com/Mi-no-Kim/LumiaWiki/pull/59/checks)와 PR 상태를 따른다.

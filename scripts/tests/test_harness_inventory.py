@@ -18,7 +18,8 @@ DOCUMENTS = (DOCUMENT, HOOK_DOCUMENT)
 SKILL = '.agents/skills/fixture/SKILL.md'
 HELPER = '.agents/skills/fixture/scripts/helper.py'
 TOOLS = ['scripts/check-harness-inventory.py', 'scripts/harness_inventory.py',
-         'scripts/install-harness-hooks.py']
+         'scripts/install-harness-hooks.py', 'scripts/install-hooks.py',
+         'scripts/tdd-check.py', 'scripts/tdd_core.py']
 
 
 def digest(root, files):

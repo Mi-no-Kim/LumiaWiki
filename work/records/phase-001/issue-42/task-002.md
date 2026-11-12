@@ -7,7 +7,7 @@
 - 부모: [Issue #42](issue.md#summary)
 - 상태: 완료
 - 결과: 테스트 환경·TDD 검사기와 실제 Codex/Git hook의 수용 조건을 충족했다. 상위 변경 반영과 현황·hook 결합도 확인했다.
-- 다음 행동: Task 결과의 부모 Issue 통합은 별도 허용 후 진행한다. push·PR은 하지 않는다.
+- 다음 행동: 부모 통합·브랜치 정리는 [PR #59](https://github.com/Mi-no-Kim/LumiaWiki/pull/59)의 실제 상태를 따른다. Task 003~004는 별도 작업이다.
 
 <a id="goal"></a>
 ## 목적과 허용 범위 및 완료 조건
@@ -29,11 +29,12 @@
 - [TDD 실행 계획·정식 receipt](artifacts/task-002-tdd.md#tdd-plan): 실행기의 `--task` 입력으로 사용한다.
 - [실제 Codex 편집 검증](artifacts/task-002-verification.md#host-acceptance)
 - [상위 반영·Git hook 결합 검증](artifacts/task-002-verification.md#parent-integration)
+- [PR 후보 회귀 확인](artifacts/task-002-verification.md#pr-ci)
 - [제출 후보 검수·근거 보존](artifacts/task-002-verification.md#submission-review)
 
 <a id="handoff"></a>
 ## 결과와 잔여
 
-- 도구·웹·서버 테스트와 실제 Codex 편집/Git 제출 경로를 확인했다. 상위 결합은 필요한 기존 테스트 5개와 실제 hook의 정상·거부 동작으로 확인했다.
+- PR 결합 후보의 도구 테스트 69개가 통과했다. 웹·서버와 실제 Codex 편집/Git 제출 경로는 동일 입력의 기존 검증 근거를 재사용했다.
 - 기존 실행 근거는 동일 입력에 한해 재사용했고, 임시 실행 상태 없이 정식 receipt로 제출 후보를 대조했다.
-- 사용자 직접 조작은 미수행이다. Task 완료는 부모 Issue 전체의 수용이나 Task 결과의 부모 통합을 뜻하지 않는다.
+- 사용자 직접 조작은 미수행이다. 부모 Issue 전체의 수용은 남아 있다.
