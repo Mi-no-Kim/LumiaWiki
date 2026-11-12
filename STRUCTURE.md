@@ -22,6 +22,7 @@ lumia_island_wiki/
 │   ├── test-python.py              표준 unittest JSON reporter
 │   ├── install-hooks.py            기존 Git hook 연결·해제/복원
 │   ├── check-harness-inventory.py 실제 work/index/commit 원천과 현황 대조(읽기 전용)
+│   ├── check-work-records.py       변경 후보의 기록 날짜·근거 위치 검사와 100줄 경고
 │   ├── harness_inventory.py       후보·경계·등록·지문·확인 상태 판독
 │   ├── install-harness-hooks.py   기존 Git hook 보존·중복 설치·복원
 │   ├── hooks/pre-commit           프로젝트 관리 Git hook 정의

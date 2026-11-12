@@ -6,9 +6,9 @@
 - 제목: 공통 웹·API·이미지 제공 골격
 - GitHub sub-issue: [Mi-no-Kim/LumiaWiki #52](https://github.com/Mi-no-Kim/LumiaWiki/issues/52)
 - 부모 Issue: [Issue #42](<issue.md#summary>)
-- 상태: 예정
-- 현재 진행 위치: 공통 연결 계약·버전·확인 화면·오류/이미지 처리 세부 사항을 확정했다. 구현과 브라우저 검증은 미수행이다.
-- 다음 행동: Task 002의 필수 검증 후 아래 계약으로 확인 화면을 먼저 마련하고 공통 동작을 구현한다.
+- 상태: 진행 중
+- 현재 진행 위치: Task 001·002의 부모 통합을 확인했고 최신 main의 기록 검사와 기존 TDD hook을 부모 경로에 결합하고 있다. 확인 화면과 공통 동작은 아직 구현하지 않았다.
+- 다음 행동: 부모 결합 검수 후 Task 브랜치에서 확인 화면을 먼저 마련하고 검토한 다음 공통 동작을 구현한다. 실제 게임 자료 작업 보류를 유지한다.
 
 <a id="goal"></a>
 ## 목적과 허용 범위 및 완료 조건
@@ -41,7 +41,7 @@
 실제 진입 주소·화면과 요청 계약은 구현 전에 공유한다. AI 자동/직접 조작·사용자 결과를 분리해 기록하며 현재는 모두 미수행이다. 커밋 전 [자체·별도 검수](<../../../../.agents/skills/review-work/SKILL.md#before-commit>)를 수행한다.
 
 <a id="implementation-decisions"></a>
-## 확정한 구현 세부 사항 — 2026-11-12
+## 확정한 구현 세부 사항
 
 이 구역은 #42의 실행 준비에서 정한 설계다. 제품 범위·시각 디자인을 추가하지 않았고, 결정 당시 설치·구현·커밋은 수행하지 않았다.
 
@@ -72,4 +72,11 @@
 - 자동 검사는 fetch 정상/ProblemDetail/비JSON 실패/취소·시간 초과, Query 상태 격리·입력 변경, Router 이동, 이미지 대체, MVC 200/400/404/500·내부정보 비노출·문서 프로필을 다룬다. 브라우저 확인은 위 사용자 목록과 실제 프록시 왕복을 사용한다. Chrome 자동 조작은 사용하지 않으며 AI가 직접 확인하지 못하면 그 범위를 밝히고 사용자 확인과 구별한다.
 - 운영 API 문서 노출·SPA fallback·권한/로그 보관·백업·S3 전환은 Issue #48이 필요한 적용/운영 담당에 연결한다. 제품 공통 디자인·검색 복귀 완성은 Issue #44다. 이들 후속 결정을 이번 Task의 미정으로 남기거나 로컬 골격으로 운영 완료를 주장하지 않는다.
 
-선택 사항은 위와 같이 정했으며 설치·HTTP/브라우저·테스트 결과는 아직 없다. 근거: [React Router Data Mode](https://reactrouter.com/start/data/installation) · [TanStack Query 기본값](https://tanstack.com/query/latest/docs/framework/react/guides/important-defaults) · [공통 API 기준](<../../../../docs/details/development/기술 구성.md#api-common>). 패치 버전/peer 조건은 2026-11-12 npm registry에서 확인했다.
+선택 사항은 위와 같이 정했으며 설치·HTTP/브라우저·테스트 결과는 아직 없다. 근거: [React Router Data Mode](https://reactrouter.com/start/data/installation) · [TanStack Query 기본값](https://tanstack.com/query/latest/docs/framework/react/guides/important-defaults) · [공통 API 기준](<../../../../docs/details/development/기술 구성.md#api-common>). 패치 버전/peer 조건은 실행 준비에서 npm registry로 확인했다.
+
+<a id="verification"></a>
+## 현재 결과와 검증 범위
+
+- 사용자 요청에 따라 기존 Task 003을 재사용해 확인 화면부터 진행한다. Task 001·002의 부모 통합 결과를 입력으로 사용한다.
+- 구현 전 진입 주소와 이동·정상/지연/빈 상태·오류·이미지 확인 목록을 공유했다. 사용자 직접 확인은 미확인이다.
+- [TDD 실행 입력과 정식 근거](artifacts/task-003-tdd.md)에 부모 결합 확인과 이후 동작별 실제 실행을 연결한다. 화면·API 구현 완료를 뜻하지 않는다.

@@ -19,7 +19,7 @@ SKILL = '.agents/skills/fixture/SKILL.md'
 HELPER = '.agents/skills/fixture/scripts/helper.py'
 TOOLS = ['scripts/check-harness-inventory.py', 'scripts/harness_inventory.py',
          'scripts/install-harness-hooks.py', 'scripts/install-hooks.py',
-         'scripts/tdd-check.py', 'scripts/tdd_core.py']
+         'scripts/tdd-check.py', 'scripts/tdd_core.py', 'scripts/check-work-records.py']
 
 
 def digest(root, files):
@@ -376,6 +376,40 @@ class CandidateTests(RepositoryCase):
 class HookTests(RepositoryCase):
     def install(self, *args):
         return self.run_tool('install-harness-hooks.py', *args)
+
+    def test_branches_predating_record_check_skip_but_unstaged_deletion_denies(self):
+        self.add_hook()
+        self.assertEqual(0, self.install().returncode)
+        helper = 'scripts/check-work-records.py'
+        definition = 'scripts/hooks/pre-commit'
+        self.write(definition, (self.root / definition).read_text(encoding='utf-8').replace(', "' + helper + '"', ''))
+        self.entries[1]['files'].remove(helper)
+        (self.root / helper).unlink()
+        self.refresh()
+        self.stage()
+        accepted = self.git('commit', '-qm', 'branch before record check', check=False)
+        self.assertEqual(0, accepted.returncode, accepted.stderr)
+        self.write(helper, (PROJECT / helper).read_text(encoding='utf-8'))
+        self.stage()
+        (self.root / helper).unlink()
+        denied = self.git('commit', '-qm', 'unstaged checker deletion', check=False)
+        self.assertNotEqual(0, denied.returncode)
+        self.assertIn('Record checker is missing', denied.stderr)
+
+    def test_record_gate_blocks_dates_but_only_warns_for_long_records(self):
+        self.add_hook()
+        self.assertEqual(0, self.install().returncode)
+        record = 'work/records/harness/issue-1/issue.md'
+        self.write(record, '# Current decisions\n' + '\n' * 100)
+        self.stage()
+        accepted = self.git('commit', '-qm', 'necessary long record', check=False)
+        self.assertEqual(0, accepted.returncode, accepted.stderr)
+        self.assertIn('WARNING', accepted.stderr)
+        self.write(record, '- 작성일: 2030-01-02\n')
+        self.stage()
+        denied = self.git('commit', '-qm', 'must reject record date', check=False)
+        self.assertNotEqual(0, denied.returncode)
+        self.assertIn('Record violation', denied.stderr)
 
     def test_existing_hook_is_preserved_duplicate_install_is_noop_and_remove_restores(self):
         self.add_hook()

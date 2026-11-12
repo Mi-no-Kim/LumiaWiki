@@ -7,8 +7,8 @@
 - 실제 GitHub Issue: [Mi-no-Kim/LumiaWiki #42](https://github.com/Mi-no-Kim/LumiaWiki/issues/42)
 - 소속 Phase: [Phase 001](<../phase.md#summary>)
 - 상태: 진행 중
-- 현재 진행 위치: Task 001·002는 자기 수용을 완료했다. 부모 통합은 [PR #54](https://github.com/Mi-no-Kim/LumiaWiki/pull/54)·[PR #59](https://github.com/Mi-no-Kim/LumiaWiki/pull/59)의 실제 상태를 따른다. Task 003~004는 예정이며 실제 게임 자료 작업은 보류다.
-- 다음 판단/행동: 공통 연결·품질/CI는 Task 003~004에 남아 있다. 후속 Task 착수와 Issue 전체 수용은 별도로 판단한다.
+- 현재 진행 위치: Task 001·002는 자기 수용과 [PR #54](https://github.com/Mi-no-Kim/LumiaWiki/pull/54)·[PR #59](https://github.com/Mi-no-Kim/LumiaWiki/pull/59)의 부모 통합을 마쳤다. Task 003은 확인 화면부터 진행 중이며 Task 004는 예정이다. 실제 게임 자료 작업은 보류다.
+- 다음 판단/행동: Task 003의 확인 화면 검토 후 공통 웹·API·이미지 동작을 구현·검증한다. 품질/CI와 Issue 전체 수용은 남아 있다.
 - 작성 근거: [Task 005](<../issue-15/task-005.md#summary>) · [전체 실행 순서](<../issue-15/artifacts/task-005-issue-outline.md#sequence>). 실제 자료 작업 보류를 유지한다.
 
 <a id="goal"></a>
