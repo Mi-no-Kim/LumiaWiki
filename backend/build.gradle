@@ -32,13 +32,38 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-flyway-test'
 	testImplementation 'org.springframework.boot:spring-boot-starter-validation-test'
 	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+	testImplementation 'org.springframework.boot:spring-boot-testcontainers'
+	testImplementation 'org.testcontainers:testcontainers-junit-jupiter'
+	testImplementation 'org.testcontainers:testcontainers-postgresql'
 	testCompileOnly 'org.projectlombok:lombok'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	testAnnotationProcessor 'org.projectlombok:lombok'
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+	useJUnitPlatform { excludeTags 'integration' }
+}
+
+tasks.register('integrationTest', Test) {
+    description = 'Runs isolated PostgreSQL integration tests (requires Docker).'
+    group = 'verification'
+    testClassesDirs = sourceSets.test.output.classesDirs
+    classpath = sourceSets.test.runtimeClasspath
+    useJUnitPlatform { includeTags 'integration' }
+    shouldRunAfter tasks.named('test')
+}
+
+tasks.named('check') { dependsOn tasks.named('integrationTest') }
+
+// Evidence executions must produce fresh reports instead of reusing cached results.
+tasks.withType(Test).configureEach {
+    maxHeapSize = '256m'
+    maxParallelForks = 1
+    if (providers.gradleProperty('tddReportDir').isPresent()) {
+        reports.junitXml.outputLocation = file("${providers.gradleProperty('tddReportDir').get()}/${name}")
+        outputs.upToDateWhen { false }
+        outputs.cacheIf { false }
+    }
 }
 
 // Shared SQL source; packaged resources are generated output.

@@ -7,8 +7,8 @@
 - 실제 GitHub Issue: [Mi-no-Kim/LumiaWiki #42](https://github.com/Mi-no-Kim/LumiaWiki/issues/42)
 - 소속 Phase: [Phase 001](<../phase.md#summary>)
 - 상태: 진행 중
-- 현재 진행 위치: Task 001을 PR #54의 squash commit `3ffeb6d`로 부모 Issue 브랜치에 통합하고 Task 브랜치를 정리했다. Task 002~004의 실행 세부 기준을 확정했으며 구현 상태는 예정이다. 실제 게임 자료 작업은 수행하지 않았다.
-- 다음 판단/행동: 남은 설계 결정을 아래 담당 Task에 보존했고 다음 작업으로 [Task 002](<task-002.md#implementation-decisions>)를 선택했다. 설계 검수·커밋 뒤 해당 Task 브랜치로 전환하며 구현은 별도 요청 시 진행한다. Node 설치·hook·공통 연결·CI의 실행 검증은 남아 있으며 Issue 전체 수용은 아직 충족 판정하지 않았다.
+- 현재 진행 위치: Task 001을 PR #54의 squash commit `3ffeb6d`로 부모 Issue 브랜치에 통합하고 Task 브랜치를 정리했다. Task 002~004의 실행 세부 기준을 확정했고 Task 002는 구현·자동 검증·실제 편집 hook 재검증과 자체·별도 검수·근거 보존·정리를 마쳐 자기 수용을 완료했다. Task 002 결과의 부모 통합은 남아 있고 Task 003~004는 예정이다. 실제 게임 자료 작업은 수행하지 않았다.
+- 다음 판단/행동: [Task 002의 검수 결과](<task-002.md#submission-review>)를 현재 Task 브랜치에 커밋·확인한다. 부모 Issue로의 PR·통합·정리는 별도 Git 절차를 따르며 Task 003~004와 Issue 전체 수용은 남아 있다. Task 완료로 부모 완료나 후속 Task 착수를 자동 처리하지 않는다.
 - 작성 근거: [Task 005](<../issue-15/task-005.md#summary>) · [전체 실행 순서](<../issue-15/artifacts/task-005-issue-outline.md#sequence>). 실제 자료 작업 보류를 유지한다.
 
 <a id="goal"></a>

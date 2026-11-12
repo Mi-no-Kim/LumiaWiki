@@ -8,12 +8,19 @@ lumia_island_wiki/
 ├── README.md                       프로젝트 소개와 시작 안내
 ├── STRUCTURE.md                    주요 경로와 역할
 ├── .agents/skills/                 요청 판단·검수·응답 형식의 AI 스킬
+├── .codex/hooks.json               사용자 신뢰가 필요한 Codex 편집 전 TDD 검사 정의
 ├── backend/                        Spring Boot API·Gradle Wrapper·공통/local/test 설정
 ├── frontend/                       React·Vite 웹 시작 화면·manifest·잠금 파일
 ├── db/migration/                   backend 밖에서 관리하는 공용 Flyway SQL
 ├── compose.yaml                    PostgreSQL 로컬 개발 환경
 ├── .env.example                    비밀값 없는 개인 설정 양식 (.env는 Git 제외)
-├── scripts/                        서버 실행·격리 기반 검증 도구
+├── scripts/                        서버 실행·격리 기반 검증·TDD 실행/검사·Git hook 설치
+│   ├── tdd-run.py                  실제 테스트 실행·근거 기록/보존
+│   ├── tdd-check.py                읽기 전용 편집/제출 후보 검사
+│   ├── tdd_core.py                 경로·후보·결과·worktree 근거 처리
+│   ├── test-python.py              표준 unittest JSON reporter
+│   ├── install-hooks.py            기존 Git hook 연결·해제/복원
+│   └── tests/                      도구의 정상/거부·후보/worktree·복원 테스트
 ├── docs/                           제품 요구와 운영 기준
 │   ├── 프로젝트 목표와 범위.md     제품 목표·범위·품질과 공개 조건
 │   ├── 개발 기준.md                기술·검증 기준 진입점과 서버·데이터 공통 기준
