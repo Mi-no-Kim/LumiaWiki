@@ -8,8 +8,8 @@
 - 실제 GitHub Issue: [Mi-no-Kim/LumiaWiki #42](https://github.com/Mi-no-Kim/LumiaWiki/issues/42)
 - 소속 Phase: [Phase 001](../phase.md#summary)
 - 상태: 진행 중
-- 현재 진행 위치: Task 001~004는 자기 수용을 완료했다. Task 001~003의 부모 통합 결과는 [PR #54](https://github.com/Mi-no-Kim/LumiaWiki/pull/54)·[PR #59](https://github.com/Mi-no-Kim/LumiaWiki/pull/59)·[PR #62](https://github.com/Mi-no-Kim/LumiaWiki/pull/62)를 따른다. Task 004는 품질/CI와 실제 호스트 자동 포맷 검증을 마쳤으며 [PR #63](https://github.com/Mi-no-Kim/LumiaWiki/pull/63)의 부모 통합 검토가 남아 있다. 실제 게임 자료 작업은 보류다.
-- 다음 판단/행동: Task 004의 PR #63을 부모에 통합 검토하고 Issue 전체 수용을 별도로 판단한다.
+- 현재 진행 위치: Task 001~004는 자기 수용을 완료했다. 부모 통합 결과는 [PR #54](https://github.com/Mi-no-Kim/LumiaWiki/pull/54)·[PR #59](https://github.com/Mi-no-Kim/LumiaWiki/pull/59)·[PR #62](https://github.com/Mi-no-Kim/LumiaWiki/pull/62)·[PR #63](https://github.com/Mi-no-Kim/LumiaWiki/pull/63)의 실제 상태를 따른다. Task 004의 통합 검토에서 필수 결함을 발견하지 못했다. 실제 게임 자료 작업은 보류다.
+- 다음 판단/행동: Task 004의 실제 부모 반영과 push CI를 확인한 뒤 Issue 전체 수용을 별도로 판단한다.
 - 작성 근거: [Task 005](../issue-15/task-005.md#summary) · [전체 실행 순서](../issue-15/artifacts/task-005-issue-outline.md#sequence). 실제 자료 작업 보류를 유지한다.
 
 <a id="goal"></a>
@@ -56,7 +56,7 @@
 
 - Task 001 → Task 002 순으로 진행한다. 첫 제품 기능의 동작 구현은 Task 002의 hook 필수 검증 완료 뒤 시작한다.
 - Task 003의 동작 구현은 Task 002 뒤 진행한다. Task 004는 Task 001 뒤 설계를 준비하고 Task 002의 hook을 보존해 연결한다. CI는 로컬 명령 준비 후 연결하고 Issue 완료 전에 최종 기반 후보의 실제 통과/실패를 확인한다.
-- 필요한 선택은 [Task 002 테스트/hook](artifacts/task-002-verification.md#implementation-decisions) · [Task 003 공통 연결](task-003.md#implementation-decisions) · [Task 004 품질/CI](task-004.md#implementation-decisions)에 있다. Node 24.22.3 LTS와 Task 002~004의 구현·설치·검증은 담당 결과를 따른다. 새 PostToolUse 실제 호스트 확인도 충족했으며 Task 004 부모 통합은 별도 검토한다. 사용자가 선택한 CI의 PR·부모 브랜치·수동 실행 중 수동 실행은 기본 브랜치의 workflow 등록 조건을 따른다.
+- 필요한 선택은 [Task 002 테스트/hook](artifacts/task-002-verification.md#implementation-decisions) · [Task 003 공통 연결](task-003.md#implementation-decisions) · [Task 004 품질/CI](task-004.md#implementation-decisions)에 있다. Node 24.22.3 LTS와 Task 002~004의 구현·설치·검증은 담당 결과를 따른다. 새 PostToolUse 실제 호스트 확인과 Task 004 부모 통합 검토도 충족했다. 실제 부모 반영은 PR #63의 상태를 따른다. 사용자가 선택한 CI의 PR·부모 브랜치·수동 실행 중 수동 실행은 기본 브랜치의 workflow 등록 조건을 따른다.
 
 <a id="related"></a>
 

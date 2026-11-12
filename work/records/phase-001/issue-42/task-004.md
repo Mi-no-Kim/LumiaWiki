@@ -9,7 +9,7 @@
 - 부모 Issue: [Issue #42](issue.md#summary)
 - 상태: 완료
 - 현재 진행 위치: 품질·포맷·후보 검사·CI 구현과 로컬·별도 검수·실제 PR/부모 패턴 push 정상 실행·통제 실패 반영을 확인했다. 사용자 검토·신뢰 후 새 PostToolUse의 실제 문서·Java 자동 포맷도 확인하고 근거 보존·Task 임시 정리를 마쳐 자기 수용을 완료했다.
-- 다음 행동: [PR #63](https://github.com/Mi-no-Kim/LumiaWiki/pull/63)을 부모 Issue에 통합 검토한다. [실제 CI](artifacts/task-004-implementation.md#remote-ci)와 [실제 호스트 검증](artifacts/task-004-implementation.md#host-verification)을 사용하며 Issue 전체 수용은 별도로 판단한다.
+- 다음 행동: [PR #63](https://github.com/Mi-no-Kim/LumiaWiki/pull/63)의 실제 부모 반영을 확인한 뒤 Issue 전체 수용을 별도로 판단한다. [통합 검토](#integration-review)·[실제 CI](artifacts/task-004-implementation.md#remote-ci)·[실제 호스트 검증](artifacts/task-004-implementation.md#host-verification)을 사용한다.
 
 <a id="goal"></a>
 
@@ -58,4 +58,12 @@
 
 - 로컬 프런트 lint·13개 테스트·타입/빌드와 서버 포맷·단위/격리 DB 통합 테스트·bootJar를 확인했다. 최종 내용 대응·전체 로컬 명령과 자체/별도 검수를 통과했다. 실제 CI의 정상 통과와 통제 실패 반영도 확인했다.
 - 사용자 검토·신뢰 후 실제 apply_patch 네 호출로 문서·Java 생성/수정 자동 포맷과 포맷된 입력 반복 무변경을 확인했다. 패치 밖 두 대조 파일은 그대로였고 새 event receipt 4개·실패 marker 불변을 확인했다. 기존 TDD PreToolUse도 조건 없는 코드 편집을 실제 거부했다.
-- [근거 보존·임시 정리](artifacts/task-004-implementation.md#host-verification)를 마쳐 Task 자기 수용을 완료했다. PR #63의 부모 통합과 Issue 전체 수용은 남아 있으며 Phase의 main 통합 뒤 CI 수동 실행 확인 조건을 유지한다. 사용자 직접 편집 검증은 미수행이다.
+- [근거 보존·임시 정리](artifacts/task-004-implementation.md#host-verification)를 마쳐 Task 자기 수용을 완료했다. 부모 통합 검토는 아래 결과를 따르며 실제 병합 상태는 PR #63에서 확인한다. Issue 전체 수용은 별도이며 Phase의 main 통합 뒤 CI 수동 실행 확인 조건을 유지한다. 사용자 직접 편집 검증은 미수행이다.
+
+<a id="integration-review"></a>
+
+## 부모 통합 검토
+
+사용자의 통합 요청으로 부모 `8a21c745746172763ef4c908436c755a3a8386ed`와 제출 head `429c6f52f22202d259423312495f28290d616446`를 대조했다. 최신 부모가 포함돼 있고 충돌 없이 병합 가능하며 최종 품질 CI 6개와 Ubuntu·Windows 회귀가 모두 통과했다. Task 요구·직접 영향·기존 hook과 부모 기반의 양립은 동일 입력의 자체·별도 검수 근거를 재사용해 필수 결함을 발견하지 못했다. 이번 후속 변경은 통합 검토 결과와 다음 행동의 기록이며 구현·설정·수용 조건은 같다.
+
+정해진 Task → Issue squash 방식과 `task(42-004): 코드·문서 품질 검사와 CI 연결 (#63)` 메시지를 사용한다. Task #53의 완료 상태를 유지하며 이 통합만으로 Issue #42·Phase를 완료하거나 상위로 병합하지 않는다. 병합 후 실제 반영·부모 push CI·Task 브랜치 정리를 확인한다.
