@@ -1,6 +1,6 @@
 #!/bin/sh
 # lumia-harness-inventory-v1
-# inventory-dependencies: ["scripts/check-harness-inventory.py", "scripts/harness_inventory.py", "scripts/install-harness-hooks.py"]
+# inventory-dependencies: ["scripts/check-harness-inventory.py", "scripts/harness_inventory.py", "scripts/install-harness-hooks.py", "scripts/check-work-records.py"]
 hook_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd) || exit 2
 if [ -f "$hook_dir/pre-commit.harness-original" ]; then
   "$hook_dir/pre-commit.harness-original" "$@" || exit $?
@@ -16,6 +16,18 @@ if [ ! -f "$checker" ]; then
   exit 0
 fi
 if [ "$OS" = 'Windows_NT' ]; then
-  exec python -B -X utf8 "$checker" --candidate index
+  python_cmd=python
+else
+  python_cmd=python3
 fi
-exec python3 -B -X utf8 "$checker" --candidate index
+"$python_cmd" -B -X utf8 "$checker" --candidate index || exit $?
+record_checker="$root/scripts/check-work-records.py"
+if [ ! -f "$record_checker" ]; then
+  record_candidate=$(git ls-files --stage -- 'scripts/check-work-records.py') || exit 2
+  if [ -n "$record_candidate" ]; then
+    echo 'Record checker is missing; restore the staged checker.' >&2
+    exit 2
+  fi
+  exit 0
+fi
+exec "$python_cmd" -B -X utf8 "$record_checker" --candidate index
