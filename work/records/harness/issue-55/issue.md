@@ -6,8 +6,8 @@
 - 제목: 스킬·hook 현황 관리와 갱신 누락 방지
 - 실제 GitHub Issue: [Mi-no-Kim/LumiaWiki #55](https://github.com/Mi-no-Kim/LumiaWiki/issues/55)
 - 상태: 검증 중
-- 현재 진행 위치: main `cbfe8594d382a98aacdff3ca4b1559268b4b78e1`에서 직접 분기한 `issue/55-skill-hook-inventory`의 구현·검수 결과를 `16a9546869f3377c879bf66468d71ef60dcd9337`에 커밋하고 이 Issue 브랜치만 push했다. 첫 원격 CI는 Windows·Ubuntu 모두 통과했다. 수용 조건 8의 실제 불일치 후보 거부와 정상 복구 후 재실행을 확인 중이다.
-- 다음 판단/행동: 격리 index의 의도적 원천 불일치 후보를 검수하고 같은 브랜치의 검증 전용 커밋으로 push해 원래 CI 검사 단계의 종료 2를 확인한다. 이후 정상 원천·결과 기록을 일반 hook으로 커밋·push하고 두 OS의 통과를 확인한다. force push·PR·병합은 하지 않는다.
+- 현재 진행 위치: main `cbfe8594d382a98aacdff3ca4b1559268b4b78e1`에서 직접 분기한 `issue/55-skill-hook-inventory`의 구현 커밋 `16a9546869f3377c879bf66468d71ef60dcd9337`은 원격 두 OS에서 통과했다. 검증 전용 불일치 커밋 `5d5351217396f16f309cab36b4f63a1525063288`은 두 OS 모두 정확한 원천 지문 불일치로 원래 CI 단계에서 실패했다. 작업 core의 정상 원형은 유지했으며 정상 복구 후보를 제출한다.
+- 다음 판단/행동: 정상 원천과 실제 실패 근거를 자체·별도 검수한 뒤 일반 hook으로 커밋·같은 브랜치에 push하고 두 OS의 통과를 확인한다. 이후 결과·현황·Issue 상태를 갱신한다. force push·PR·병합은 하지 않는다.
 
 <a id="goal"></a>
 ## 문제와 목표 및 수용 조건
@@ -145,3 +145,7 @@ skill·hook을 추가·변경·삭제했는데 현황 문서가 과거 상태로
 - 실패 확인의 필요성: 별도 검토자와 수용 조건 8을 대조했다. 성공 run 안의 거부 회귀는 실제 runner의 검사 동작을 확인하지만, 불일치한 push 커밋에서 원래 검사 단계의 실패가 workflow 결과로 전달되는 확인을 대신하지 않는다. 수용 문구를 소급 완화하지 않고 별도의 의도한 실패 run과 정상 복구 run을 확인한다.
 - 검증 전용 후보·보호: 실제 작업 폴더의 core와 실제 index는 정상 원형으로 유지한다. 별도 index에서 `scripts/harness_inventory.py` 끝의 주석 한 줄만 추가하고 현황 지문은 의도적으로 유지한다. 이 기록의 검증 목적·첫 정상 근거·복구 계획을 함께 포함하고 실제 후보를 자체·별도 검수한다. 일반 pre-commit이 막아야 할 합성 입력이므로 이 검증 전용 후보에만 `commit-tree`를 사용하고 예상 부모를 지정해 현재 Issue ref만 전진한다. 정상 결과나 검수 생략 수단으로 사용하지 않는다.
 - 기대 결과·복구: 같은 Issue 브랜치의 해당 push에서 `Check exact committed inventory`가 `Inventory source digest differs: git:pre-commit`·종료 2로 실패해야 한다. 네트워크·설치·다른 테스트 실패는 근거로 세지 않는다. 실패를 실제 확인한 뒤 정상 core와 결과 기록을 일반 hook을 거친 커밋으로 제출하고 두 OS의 성공을 확인한다. 이 과정에서는 상태를 검증 중으로 유지한다.
+- 검증 전용 제출: 자체·별도 검수에서 core 주석과 이 기록 2개만 있는 격리 후보 tree `b03a27bc906ccd88fbf94793b6d676f7c0d55056`를 대조했다. 정확한 불일치 진단·종료 2, 실제 index/core 원형 유지와 복구 계획을 확인했고 필수 결함을 발견하지 못했다. 후보를 `5d5351217396f16f309cab36b4f63a1525063288`로 만들고 예상 부모 `16a9546`에서 Issue ref 하나만 전진·push했다. 정상 결과의 검수·hook 생략으로 사용하지 않았다.
+- 실제 실패: [run 43164139029](https://github.com/Mi-no-Kim/LumiaWiki/actions/runs/43164139029)의 두 OS 모두 `Check exact committed inventory`에서 `Inventory source digest differs: git:pre-commit`과 갱신 안내를 출력하고 실패했다. 후속 테스트 단계는 실행되지 않았다. 실제 GitHub 단계 종료는 Ubuntu 2·Windows 1이었다. 따라서 앞의 예상에 있던 종료 2를 두 OS의 workflow 종료로 보고하지 않는다. 검사기 계약과 runner 단계 종료를 구별하며, 정확한 불일치가 workflow 실패로 전달된다는 수용 판단은 충족했다. 종료 숫자를 같게 만들기 위한 CI 정의 변경은 하지 않는다.
+- 정상 복구 범위: 실제 작업 core는 처음부터 정상 원형을 유지했다. 복구 후보의 core·검사기·설치기·hook·테스트·workflow는 `16a9546`의 검수된 내용과 같으며 이 기록에 실제 정상/실패 근거를 반영한다. 복구 뒤 원격 통과를 아직 선행 기록하지 않고 검증 중으로 유지한다.
+- 복구 제출 전 검수: 자체·별도 검수에서 실제 staged 2개 파일과 공백·작업 파일 대응을 확인했다. 검토자는 위 실행 입력 6개의 index blob이 최초 정상 커밋과 같고 실제 staged core의 index 검사가 0.3787초에 통과하며 index 바이트를 유지함을 확인했다. 실제 실패 로그·종료값 구분과 복구 CI 미확인 기록에 남은 필수 결함을 발견하지 못했다. 이 줄은 이미 확인한 검수 결과의 요약으로 자체 대조했다.

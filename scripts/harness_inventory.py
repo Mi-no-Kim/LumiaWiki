@@ -322,5 +322,3 @@ def inspect(view, describe=False, render_only=False):
     if len(tables) != 1 or tables[0].strip() != expected:
         raise ValueError('Inventory summary table differs; render it from the same metadata')
     return None
-
-# Issue #55 negative CI fixture: inventory intentionally not updated.
