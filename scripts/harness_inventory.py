@@ -11,7 +11,7 @@ import subprocess
 import time
 import tomllib
 
-DOCUMENT = 'harness/스킬과 hook 현황.md'
+DOCUMENTS = {'skill': 'harness/스킬 현황.md', 'hook': 'harness/hook 현황.md'}
 SCOPES = ['.agents/skills', '.codex/hooks.json', '.codex/config.toml', 'scripts/hooks']
 GIT_EVENTS = {'applypatch-msg', 'pre-applypatch', 'post-applypatch', 'pre-commit',
               'pre-merge-commit', 'prepare-commit-msg', 'commit-msg', 'post-commit',
@@ -165,12 +165,12 @@ class Candidate:
         return self.cache.get(name)
 
 
-def inventory(view, optional=False):
-    raw = view.read(DOCUMENT)
+def inventory(view, document, optional=False):
+    raw = view.read(document)
     if raw is None:
         if optional:
             return {'schema': 1, 'entries': []}, ''
-        raise ValueError('Inventory document is absent from this candidate')
+        raise ValueError('Inventory document is absent from this candidate: ' + document)
     text = raw.decode('utf-8-sig').replace('\r\n', '\n')
     blocks = re.findall(r'<!-- harness-inventory -->\s*```json\s*\n(.*?)\n```', text, re.S)
     if len(blocks) != 1:
@@ -261,11 +261,11 @@ def digest(view, files):
 def render(entries):
     def cell(value):
         return value.replace('|', '\\|').replace('\r', ' ').replace('\n', ' ')
-    rows = ['| 종류 | 항목·원천 | 역할·적용 조건 | 확인 상태 |', '|---|---|---|---|']
+    rows = ['| 항목·원천 | 적용 조건 | 동작 | 확인 상태 |', '|---|---|---|---|']
     labels = {'unverified': '미확인', 'stale': '재확인 필요', 'verified': '확인'}
     for item in sorted(entries, key=lambda entry: entry['id']):
         status = labels[item['verification']['status']]
-        rows.append(f"| {item['kind']} | [{cell(item['title'])}](<../{item['definition']}>) | {cell(item['purpose'])}<br>조건: {cell(item['when'])} | {status} |")
+        rows.append(f"| [{cell(item['title'])}](<../{item['definition']}>) | {cell(item['when'])} | {cell(item['purpose'])} | {status} |")
     return '\n'.join(rows)
 
 
@@ -294,9 +294,21 @@ def validate_verification(view, item):
 
 
 def inspect(view, describe=False, render_only=False):
-    data, text = inventory(view, optional=describe)
-    actual = discover(view, data['entries'])
-    registered = {item['id']: item for item in data['entries']}
+    view.load(DOCUMENTS.values())
+    catalogs = {}
+    entries = []
+    for category, document in DOCUMENTS.items():
+        data, text = inventory(view, document, optional=describe)
+        kinds = {'skill'} if category == 'skill' else {'git', 'codex'}
+        for item in data['entries']:
+            if item.get('kind') not in kinds:
+                raise ValueError('Inventory entry is in the wrong catalog: ' + item['id'])
+        catalogs[document] = (data['entries'], text)
+        entries.extend(data['entries'])
+    registered = {item['id']: item for item in entries}
+    if len(entries) > 500 or len(registered) != len(entries):
+        raise ValueError('Too many or duplicate inventory identities')
+    actual = discover(view, entries)
     if describe:
         return {'schema': 1, 'entries': [{'id': identity, 'kind': kind, 'definition': definition,
                                         'files': files, 'sourceDigest': digest(view, files)}
@@ -315,10 +327,11 @@ def inspect(view, describe=False, render_only=False):
         if item.get('sourceDigest') != digest(view, files):
             raise ValueError('Inventory source digest differs: ' + identity)
         validate_verification(view, item)
-    expected = render(data['entries'])
     if render_only:
-        return expected
-    tables = re.findall(r'<!-- inventory-table -->\s*\n(.*?)\n<!-- /inventory-table -->', text, re.S)
-    if len(tables) != 1 or tables[0].strip() != expected:
-        raise ValueError('Inventory summary table differs; render it from the same metadata')
+        return '\n\n'.join(f'## {document}\n\n{render(items)}'
+                           for document, (items, _) in catalogs.items())
+    for document, (items, text) in catalogs.items():
+        tables = re.findall(r'<!-- inventory-table -->\s*\n(.*?)\n<!-- /inventory-table -->', text, re.S)
+        if len(tables) != 1 or tables[0].strip() != render(items):
+            raise ValueError('Inventory summary table differs: ' + document)
     return None

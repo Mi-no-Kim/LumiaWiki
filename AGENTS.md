@@ -27,7 +27,7 @@
 - 기존 작업에 관한 추가·변경 요청: [추가 요청 판단](.agents/skills/triage-additional-request/SKILL.md)을 새 요청의 첫 수정·등록·브랜치 전환 전에 적용한다.
 - 검수·리뷰 또는 커밋 준비: [작업 결과 검수](.agents/skills/review-work/SKILL.md)의 해당 구역을 적용한다. 커밋 전에는 자체·별도 에이전트 검수를 연결한다.
 
-프로젝트 skill·hook의 추가·변경·삭제와 적용 조건·등록 경로를 다루면 [현황 관리 기준](<docs/문서 관리 기준.md#skill-hook-inventory>)과 [현황·갱신 절차](<harness/스킬과 hook 현황.md#maintenance>)를 적용한다. 관련 원천과 현황을 같은 변경에서 맞추고 제출 후보를 확인한다.
+프로젝트 skill·hook의 추가·변경·삭제와 적용 조건·등록 경로를 다루면 [현황 관리 기준](<docs/문서 관리 기준.md#skill-hook-inventory>)과 [현황 갱신 절차](<harness/문서 관리.md#skill-hook-maintenance>)를 적용한다. 관련 원천과 해당 현황을 같은 변경에서 맞추고 제출 후보를 확인한다.
 
 ## 필요한 기준
 

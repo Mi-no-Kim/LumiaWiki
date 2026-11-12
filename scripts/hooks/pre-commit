@@ -8,8 +8,8 @@ fi
 root=$(git rev-parse --show-toplevel) || exit 2
 checker="$root/scripts/check-harness-inventory.py"
 if [ ! -f "$checker" ]; then
-  candidate_markers=$(git ls-files --stage -- 'scripts/check-harness-inventory.py' 'harness/스킬과 hook 현황.md') || exit 2
-  if [ -f "$root/harness/스킬과 hook 현황.md" ] || [ -n "$candidate_markers" ]; then
+  candidate_markers=$(git ls-files --stage -- 'scripts/check-harness-inventory.py' 'harness/스킬 현황.md' 'harness/hook 현황.md' 'harness/스킬과 hook 현황.md') || exit 2
+  if [ -f "$root/harness/스킬 현황.md" ] || [ -f "$root/harness/hook 현황.md" ] || [ -f "$root/harness/스킬과 hook 현황.md" ] || [ -n "$candidate_markers" ]; then
     echo 'Inventory checker is missing; restore the complete configuration.' >&2
     exit 2
   fi

@@ -12,7 +12,9 @@ import unittest
 
 
 PROJECT = Path(__file__).resolve().parents[2]
-DOCUMENT = 'harness/스킬과 hook 현황.md'
+DOCUMENT = 'harness/스킬 현황.md'
+HOOK_DOCUMENT = 'harness/hook 현황.md'
+DOCUMENTS = (DOCUMENT, HOOK_DOCUMENT)
 SKILL = '.agents/skills/fixture/SKILL.md'
 HELPER = '.agents/skills/fixture/scripts/helper.py'
 TOOLS = ['scripts/check-harness-inventory.py', 'scripts/harness_inventory.py',
@@ -29,11 +31,11 @@ def digest(root, files):
 
 
 def table(entries):
-    rows = ['| 종류 | 항목·원천 | 역할·적용 조건 | 확인 상태 |',
+    rows = ['| 항목·원천 | 적용 조건 | 동작 | 확인 상태 |',
             '|---|---|---|---|']
     for item in sorted(entries, key=lambda entry: entry['id']):
         state = {'unverified': '미확인', 'stale': '재확인 필요', 'verified': '확인'}[item['verification']['status']]
-        rows.append(f"| {item['kind']} | [{item['title']}](<../{item['definition']}>) | {item['purpose']}<br>조건: {item['when']} | {state} |")
+        rows.append(f"| [{item['title']}](<../{item['definition']}>) | {item['when']} | {item['purpose']} | {state} |")
     return '\n'.join(rows)
 
 
@@ -84,10 +86,15 @@ class RepositoryCase(unittest.TestCase):
         if update_hashes:
             for item in self.entries:
                 item['sourceDigest'] = digest(self.root, item['files'])
-        self.write(DOCUMENT, '# Inventory fixture\n\n<!-- inventory-table -->\n' +
-                   table(self.entries) + '\n<!-- /inventory-table -->\n\n' +
+        for document in DOCUMENTS:
+            entries = [item for item in self.entries if (item['kind'] == 'skill') == (document == DOCUMENT)]
+            self.write_inventory(document, entries)
+
+    def write_inventory(self, document, entries):
+        self.write(document, '# Inventory fixture\n\n<!-- inventory-table -->\n' +
+                   table(entries) + '\n<!-- /inventory-table -->\n\n' +
                    '<!-- harness-inventory -->\n```json\n' +
-                   json.dumps({'schema': 1, 'entries': self.entries}, ensure_ascii=False, indent=2) +
+                   json.dumps({'schema': 1, 'entries': entries}, ensure_ascii=False, indent=2) +
                    '\n```\n')
 
     def add_hook(self):
@@ -111,6 +118,37 @@ class RepositoryCase(unittest.TestCase):
 
 
 class CandidateTests(RepositoryCase):
+    def test_both_catalogs_are_required_even_when_no_hook_exists(self):
+        self.assert_allowed()
+        for document in DOCUMENTS:
+            with self.subTest(document=document):
+                (self.root / document).unlink()
+                result = self.check()
+                self.assertNotEqual(0, result.returncode)
+                self.assertIn('Inventory document is absent', result.stderr)
+                self.refresh()
+
+    def test_hook_entry_cannot_be_registered_in_skill_catalog(self):
+        self.add_hook()
+        self.write_inventory(DOCUMENT, self.entries)
+        self.write_inventory(HOOK_DOCUMENT, [])
+        result = self.check()
+        self.assertNotEqual(0, result.returncode)
+        self.assertIn('wrong catalog', result.stderr)
+
+    def test_staging_other_catalog_cannot_cover_a_stale_skill(self):
+        self.add_hook()
+        self.stage()
+        self.write(HELPER, 'VALUE = 9\n')
+        self.git('add', '--', HELPER)
+        self.refresh()
+        self.git('add', '--', HOOK_DOCUMENT)
+        result = self.check('index')
+        self.assertNotEqual(0, result.returncode)
+        self.assertIn('source digest differs: skill:fixture', result.stderr)
+        self.git('add', '--', DOCUMENT)
+        self.assert_allowed('index')
+
     def test_fifty_skills_stay_usable_and_last_source_change_is_identified(self):
         for number in range(49):
             name = f'.agents/skills/scale-{number:02d}/SKILL.md'
@@ -194,7 +232,7 @@ class CandidateTests(RepositoryCase):
 
     def test_summary_table_must_match_metadata(self):
         path = self.root / DOCUMENT
-        path.write_text(path.read_text(encoding='utf-8').replace('Fixture behavior<br>', 'Old purpose<br>'), encoding='utf-8')
+        path.write_text(path.read_text(encoding='utf-8').replace('Fixture behavior', 'Old purpose', 1), encoding='utf-8')
         self.assert_denied()
 
     def test_verified_digest_cannot_silently_advance_with_source(self):
@@ -393,7 +431,8 @@ class HookTests(RepositoryCase):
     def test_hook_skips_only_branches_without_both_inventory_files(self):
         self.add_hook()
         self.assertEqual(0, self.install().returncode)
-        (self.root / DOCUMENT).unlink()
+        for document in DOCUMENTS:
+            (self.root / document).unlink()
         self.stage()
         self.assertNotEqual(0, self.git('commit', '-qm', 'partial setup', check=False).returncode)
         (self.root / TOOLS[0]).unlink()
@@ -407,7 +446,8 @@ class HookTests(RepositoryCase):
         self.write(HELPER, 'VALUE = 99\n')
         self.git('add', '--', HELPER)
         self.assert_denied('index')
-        (self.root / DOCUMENT).unlink()
+        for document in DOCUMENTS:
+            (self.root / document).unlink()
         (self.root / TOOLS[0]).unlink()
         denied = self.git('commit', '-qm', 'unstaged deletion must not bypass', check=False)
         self.assertNotEqual(0, denied.returncode)
