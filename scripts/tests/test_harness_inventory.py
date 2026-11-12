@@ -18,7 +18,8 @@ DOCUMENTS = (DOCUMENT, HOOK_DOCUMENT)
 SKILL = '.agents/skills/fixture/SKILL.md'
 HELPER = '.agents/skills/fixture/scripts/helper.py'
 TOOLS = ['scripts/check-harness-inventory.py', 'scripts/harness_inventory.py',
-         'scripts/install-harness-hooks.py', 'scripts/check-work-records.py']
+         'scripts/install-harness-hooks.py', 'scripts/install-hooks.py',
+         'scripts/tdd-check.py', 'scripts/tdd_core.py', 'scripts/check-work-records.py']
 
 
 def digest(root, files):
@@ -99,7 +100,11 @@ class RepositoryCase(unittest.TestCase):
 
     def add_hook(self):
         name = 'scripts/hooks/pre-commit'
-        self.write(name, (PROJECT / name).read_text(encoding='utf-8'))
+        definition = (PROJECT / name).read_text(encoding='utf-8')
+        # Fixtures without the quality tool represent the pre-quality branch contract.
+        declaration = next(line for line in definition.splitlines() if line.startswith('# inventory-dependencies: '))
+        definition = definition.replace(declaration, '# inventory-dependencies: ' + json.dumps(TOOLS))
+        self.write(name, definition)
         self.entries.append(self.entry('git:pre-commit', 'git', name, [name, *TOOLS]))
         self.refresh()
 
@@ -118,6 +123,17 @@ class RepositoryCase(unittest.TestCase):
 
 
 class CandidateTests(RepositoryCase):
+    def test_table_padding_and_equivalent_markdown_links_are_accepted(self):
+        for document in DOCUMENTS:
+            target = self.root / document
+            text = target.read_text(encoding='utf-8')
+            begin = text.index('<!-- inventory-table -->')
+            end = text.index('<!-- /inventory-table -->')
+            table = text[begin:end].replace('|---', '| --- ').replace('| 항목', '|  항목')
+            table = table.replace('](<', '](').replace('>)', ')')
+            target.write_text(text[:begin] + table + text[end:], encoding='utf-8')
+        self.assert_allowed()
+
     def test_both_catalogs_are_required_even_when_no_hook_exists(self):
         self.assert_allowed()
         for document in DOCUMENTS:
@@ -281,6 +297,22 @@ class CandidateTests(RepositoryCase):
     def test_crlf_text_has_the_same_fingerprint(self):
         path = self.root / SKILL
         path.write_bytes(path.read_bytes().replace(b'\n', b'\r\n'))
+        self.assert_allowed()
+
+    def test_wrapper_text_has_the_same_fingerprint_across_checkouts(self):
+        names = ['backend/build.gradle', 'backend/settings.gradle', 'backend/gradlew.bat', 'backend/gradle/wrapper/gradle-wrapper.properties', 'backend/gradlew']
+        for name in names:
+            self.write(name, 'fixture text\n')
+        self.add_hook()
+        hook = self.root / 'scripts/hooks/pre-commit'
+        definition = hook.read_text(encoding='utf-8')
+        declaration = next(line for line in definition.splitlines() if line.startswith('# inventory-dependencies: '))
+        hook.write_text(definition.replace(declaration, '# inventory-dependencies: ' + json.dumps(TOOLS + names)), encoding='utf-8')
+        self.entries[-1]['files'] = sorted(self.entries[-1]['files'] + names)
+        self.refresh()
+        self.assert_allowed()
+        for name in names:
+            (self.root / name).write_bytes(b'fixture text\r\n')
         self.assert_allowed()
 
     def test_crlf_document_is_accepted(self):

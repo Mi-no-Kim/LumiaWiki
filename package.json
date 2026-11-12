@@ -1,0 +1,24 @@
+{
+  "name": "lumiawiki-tools",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "24.22.3",
+    "npm": "11.19.1"
+  },
+  "scripts": {
+    "format": "node scripts/quality/format.mjs --write",
+    "format:docs": "node scripts/quality/format.mjs --write --docs",
+    "format:check": "node scripts/quality/format.mjs --check",
+    "format:prepare": "node scripts/quality/format.mjs --prepare",
+    "check:frontend": "node scripts/quality/check.mjs frontend",
+    "check:backend": "node scripts/quality/check.mjs backend",
+    "test:tools": "node scripts/quality/check.mjs tools",
+    "check:docs": "node scripts/quality/check.mjs docs",
+    "check": "node scripts/quality/check.mjs all"
+  },
+  "devDependencies": {
+    "prettier": "3.10.0"
+  }
+}

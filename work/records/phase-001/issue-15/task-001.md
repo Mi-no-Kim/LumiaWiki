@@ -1,33 +1,35 @@
 # Task 15-001 — 등록 대상·지원 기능·완료 기준 정하기
 
 <a id="summary"></a>
+
 ## 현재 요약
 
 - GitHub sub-issue: [Mi-no-Kim/LumiaWiki #21](https://github.com/Mi-no-Kim/LumiaWiki/issues/21)
 - 상태: 완료
-- 현재 진행 위치: [P1의 여섯 완료 조건](<../phase.md#completion-criteria>)과 등록·지원 범위를 확정하고 자체·별도 검수 후 [PR #33](https://github.com/Mi-no-Kim/LumiaWiki/pull/33)을 부모 Issue에 squash 병합했다. 결과 보존·GitHub 종료 표시와 Task 브랜치 정리까지 확인했다. 제품 구현·자료 처리는 수행하지 않았다.
-- 다음 행동: 이 Task의 종료 처리는 완료했다. [인계 목록](<artifacts/task-001-discussion-details.md#handoff-decisions>)의 상세 결정은 각 담당 작업에서 정하며 후속 진행은 부모 Issue 계획을 따른다.
+- 현재 진행 위치: [P1의 여섯 완료 조건](../phase.md#completion-criteria)과 등록·지원 범위를 확정하고 자체·별도 검수 후 [PR #33](https://github.com/Mi-no-Kim/LumiaWiki/pull/33)을 부모 Issue에 squash 병합했다. 결과 보존·GitHub 종료 표시와 Task 브랜치 정리까지 확인했다. 제품 구현·자료 처리는 수행하지 않았다.
+- 다음 행동: 이 Task의 종료 처리는 완료했다. [인계 목록](artifacts/task-001-discussion-details.md#handoff-decisions)의 상세 결정은 각 담당 작업에서 정하며 후속 진행은 부모 Issue 계획을 따른다.
 
 <a id="goal"></a>
+
 ## 목적과 허용 범위 및 완료 조건
 
-- 부모 Issue: [Issue #15](<issue.md#goal>)
+- 부모 Issue: [Issue #15](issue.md#goal)
 - 목적: Phase 001에서 무엇을 등록·저장·조회하고 어떤 기능을 사용할 수 있어야 하는지 확정한다.
-- 입력: [Phase 계획](<../phase.md#goal>), [아이템 정보 요구](<../../../../docs/details/product/아이템 탐색과 상세.md#item-information>), [루트 요구](<../../../../docs/details/product/루트 계산기.md#current>), [데이터 요구](<../../../../docs/details/product/게임 데이터 변경 관리.md#current>).
-- 결과 반영: 합의한 P1 포함·후속 범위와 수용 조건은 Phase 본문에 요약한다. 정보별 규칙은 담당 제품 문서를 참조하고, 판단의 조건·이유·미정과 세부 설계·확인 사례는 이 Task의 [상세 논의](<artifacts/task-001-discussion-details.md>)와 [SQL 대조](<artifacts/task-001-sql-review.md>)에서 관리한다.
+- 입력: [Phase 계획](../phase.md#goal), [아이템 정보 요구](<../../../../docs/details/product/아이템 탐색과 상세.md#item-information>), [루트 요구](<../../../../docs/details/product/루트 계산기.md#current>), [데이터 요구](<../../../../docs/details/product/게임 데이터 변경 관리.md#current>).
+- 결과 반영: 합의한 P1 포함·후속 범위와 수용 조건은 Phase 본문에 요약한다. 정보별 규칙은 담당 제품 문서를 참조하고, 판단의 조건·이유·미정과 세부 설계·확인 사례는 이 Task의 [상세 논의](artifacts/task-001-discussion-details.md)와 [SQL 대조](artifacts/task-001-sql-review.md)에서 관리한다.
 
 ### 결정할 범위
 
-| 항목 | 결정할 내용 |
-|---|---|
-| 등록 대상 | 시즌·버전·아이템과 능력치 종류·스킬 설명·조합법·지역·배달 등 어떤 정보를 P1에서 다룰지 |
+| 항목      | 결정할 내용                                                                                                                                                                             |
+| --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 등록 대상 | 시즌·버전·아이템과 능력치 종류·스킬 설명·조합법·지역·배달 등 어떤 정보를 P1에서 다룰지                                                                                                  |
 | 등록 정보 | 대상별 의미·관계·필수·선택·후속 정보와 저장·조회 범위. 시즌·버전의 정렬 규칙과 시즌 1·v1.0.0 초기 등록·자료 연결 조건, 아이템 이름·분류·능력치, 재료와 수량, 획득 지역 등을 포함해 판단 |
-| 검색·상세 | 지원할 검색 조건과 확인할 정보, P1에서 제공할 동작 |
-| 제작 관계 | 하위 재료·상위 제작 아이템을 확인할 범위와 필요한 수량 표현 |
-| 기본 루트 | 제작 목표 지정 방식, 지원 조건, 필수 결과 정보와 후속으로 남길 옵션 |
-| 보존 | 원자료 연결, v1.0.0 기준 정보 보존과 입력 오류 정정에 필요한 최소 요구 |
+| 검색·상세 | 지원할 검색 조건과 확인할 정보, P1에서 제공할 동작                                                                                                                                      |
+| 제작 관계 | 하위 재료·상위 제작 아이템을 확인할 범위와 필요한 수량 표현                                                                                                                             |
+| 기본 루트 | 제작 목표 지정 방식, 지원 조건, 필수 결과 정보와 후속으로 남길 옵션                                                                                                                     |
+| 보존      | 원자료 연결, v1.0.0 기준 정보 보존과 입력 오류 정정에 필요한 최소 요구                                                                                                                  |
 
-시즌·버전의 정의와 구현은 Phase 001에 포함한다. 이 Task는 필요한 결과와 구현 범위를 정하며, DB 종류·접속 방식·환경 설정은 [Task 003](<task-003.md#goal>)에서 선택한다. 실제 자료 조사·확보·처리·등록과 기능 구현은 후속 P1 과제의 범위다.
+시즌·버전의 정의와 구현은 Phase 001에 포함한다. 이 Task는 필요한 결과와 구현 범위를 정하며, DB 종류·접속 방식·환경 설정은 [Task 003](task-003.md#goal)에서 선택한다. 실제 자료 조사·확보·처리·등록과 기능 구현은 후속 P1 과제의 범위다.
 
 ### 완료 조건
 
@@ -39,56 +41,60 @@
 - 합의된 제품 요구와 단계 범위가 일치하고, 제품 요구를 바꾸는 선택은 담당 제품 문서에 합의 후 반영되어 있다.
 
 <a id="plan"></a>
+
 ## 계획과 예정 검증
 
 1. 기존 제품 요구와 Phase의 확정 전제·단계 경계를 확인한다.
 2. 위 항목별로 P1 포함·후속 범위와 필요한 정보를 사용자와 구체화한다.
 3. 합의한 범위마다 완료 시 가능한 결과를 적고 필요한 입력·미정을 연결한다.
-4. Phase 본문을 갱신하고 [Task 002](<task-002.md#goal>)가 사용할 범위를 연결한다.
+4. Phase 본문을 갱신하고 [Task 002](task-002.md#goal)가 사용할 범위를 연결한다.
 
 예정 검증은 제품 요구·Phase 본문·범위 목록을 대조해 시즌·버전과 관련 정보의 누락, 모호한 완료 조건, 기술 선택의 혼입이 없는지 확인하는 것이다. 실제 기능이 작동한다고 판정하는 단계는 아니다.
 
 <a id="registration-discussion"></a>
+
 ## 현재 합의와 상세 문서
 
-- 등록 정보: 시즌·버전·지역과 아이템의 등록 범위는 [Phase](<../phase.md#agreed-data-scope>), 정보별 규칙과 남은 설계 입력은 [상세 논의](<artifacts/task-001-discussion-details.md#registration-discussion>)를 따른다.
-- 실제 게임 자료 조사·확보·처리의 기존 보류 조건은 유지한다. 자료 제공·보관과 출처 연결의 미정은 [등록 정보 논의](<artifacts/task-001-discussion-details.md#registration-discussion>)에 있다.
+- 등록 정보: 시즌·버전·지역과 아이템의 등록 범위는 [Phase](../phase.md#agreed-data-scope), 정보별 규칙과 남은 설계 입력은 [상세 논의](artifacts/task-001-discussion-details.md#registration-discussion)를 따른다.
+- 실제 게임 자료 조사·확보·처리의 기존 보류 조건은 유지한다. 자료 제공·보관과 출처 연결의 미정은 [등록 정보 논의](artifacts/task-001-discussion-details.md#registration-discussion)에 있다.
 
 <a id="version-strategy"></a>
 
-- 버전 관리: 아이템 단위로 보존하고 이력에서 유효 버전을 선택해 조회한다. 독립 관리로 전환할 계획은 유지하며 시점은 불편이 커질 때로 둔다. 이유와 후속 설계는 [전환 계획과 조건](<artifacts/task-001-discussion-details.md#version-strategy>)을 따른다.
+- 버전 관리: 아이템 단위로 보존하고 이력에서 유효 버전을 선택해 조회한다. 독립 관리로 전환할 계획은 유지하며 시점은 불편이 커질 때로 둔다. 이유와 후속 설계는 [전환 계획과 조건](artifacts/task-001-discussion-details.md#version-strategy)을 따른다.
 
 <a id="deferred-target-design"></a>
 
-- 사냥 관련 대상: 별도 테이블 관리 방향은 확정했고, 명칭·필드·관계는 [후속 설계](<artifacts/task-001-discussion-details.md#deferred-target-design>)에서 정한다.
+- 사냥 관련 대상: 별도 테이블 관리 방향은 확정했고, 명칭·필드·관계는 [후속 설계](artifacts/task-001-discussion-details.md#deferred-target-design)에서 정한다.
 
 <a id="search-detail-discussion"></a>
 
-- 검색·상세: 이름 검색과 옵션·부위 필터, 기본 정보·능력치·스킬·획득·배달 표시를 포함한다. 미등록 정보와 검색 결과 없음은 빈 상태로 두며, 세부 미정과 확인 근거는 [상세 논의](<artifacts/task-001-discussion-details.md#search-detail-discussion>)에 있다.
+- 검색·상세: 이름 검색과 옵션·부위 필터, 기본 정보·능력치·스킬·획득·배달 표시를 포함한다. 미등록 정보와 검색 결과 없음은 빈 상태로 두며, 세부 미정과 확인 근거는 [상세 논의](artifacts/task-001-discussion-details.md#search-detail-discussion)에 있다.
 
 <a id="legacy-sql-reference"></a>
 
-- 제공 SQL: [보관 원본](<artifacts/task-001-user-schema.sql>)과 [기존 대조·설계 참고](<artifacts/task-001-sql-review.md#legacy-sql-reference>)를 구별한다. SQL 전체 채택·DB 기술 선정·실제 실행으로 확대하지 않는다.
+- 제공 SQL: [보관 원본](artifacts/task-001-user-schema.sql)과 [기존 대조·설계 참고](artifacts/task-001-sql-review.md#legacy-sql-reference)를 구별한다. SQL 전체 채택·DB 기술 선정·실제 실행으로 확대하지 않는다.
 
 <a id="crafting-details"></a>
 
-- 제작 관계: 하위 전체·직접 상위 목록과 상세 이동, 제작 1회의 재료·결과 수량 및 최하위 재료 총 필요량을 포함한다. 생산 수량·반복 재료·미등록 처리와 확인 사례는 [제작 관계 상세](<artifacts/task-001-discussion-details.md#crafting-details>)에 있다.
+- 제작 관계: 하위 전체·직접 상위 목록과 상세 이동, 제작 1회의 재료·결과 수량 및 최하위 재료 총 필요량을 포함한다. 생산 수량·반복 재료·미등록 처리와 확인 사례는 [제작 관계 상세](artifacts/task-001-discussion-details.md#crafting-details)에 있다.
 
-- 기본 루트: 직접 지정한 전체·일부 장비의 지역 집합·배달 계산을 지원한다. 조건·결과와 후속 경계는 [Phase](<../phase.md#basic-route-scope>), 상세 조건과 예정 확인은 [담당 논의](<artifacts/task-001-discussion-details.md#basic-route-discussion>)를 따른다.
+- 기본 루트: 직접 지정한 전체·일부 장비의 지역 집합·배달 계산을 지원한다. 조건·결과와 후속 경계는 [Phase](../phase.md#basic-route-scope), 상세 조건과 예정 확인은 [담당 논의](artifacts/task-001-discussion-details.md#basic-route-discussion)를 따른다.
 
 <a id="phase-record-correction"></a>
 <a id="independent-work-transition"></a>
 
-- 과거 근거: Phase 기록 정정·검수는 [정정 경위](<artifacts/task-001-record-history.md#phase-record-correction>), 독립 작업의 분리·제품 복귀는 [전환 경위](<artifacts/task-001-record-history.md#independent-work-transition>)에서 확인한다.
+- 과거 근거: Phase 기록 정정·검수는 [정정 경위](artifacts/task-001-record-history.md#phase-record-correction), 독립 작업의 분리·제품 복귀는 [전환 경위](artifacts/task-001-record-history.md#independent-work-transition)에서 확인한다.
 
 <a id="remaining-discussion"></a>
+
 ## 범위 확정과 후속 인계
 
-등록·검색·상세·제작 관계·기본 루트·보존/정정의 P1 범위와 여섯 완료 조건을 [Phase](<../phase.md#goal>)에 반영했다. 개별 아이템 페이지는 P1에서 v1.0.0만 표시하며 버전 선택기는 후속이다. 이 Task에서 결정할 범위·수용 조건의 미합의 항목은 남지 않았다.
+등록·검색·상세·제작 관계·기본 루트·보존/정정의 P1 범위와 여섯 완료 조건을 [Phase](../phase.md#goal)에 반영했다. 개별 아이템 페이지는 P1에서 v1.0.0만 표시하며 버전 선택기는 후속이다. 이 Task에서 결정할 범위·수용 조건의 미합의 항목은 남지 않았다.
 
-[최종 인계 목록](<artifacts/task-001-discussion-details.md#handoff-decisions>)에 미정별 필요한 입력·담당·결정 시점을 연결했다. Task 002는 화면·흐름, Task 003은 공통 기술·참조 전제, Task 004는 자료·검증 방향, Task 005는 실제 후속 과제 배정을 맡는다. 상세 DB 설계를 Task 003에서 모두 수행한 것으로 처리하지 않는다.
+[최종 인계 목록](artifacts/task-001-discussion-details.md#handoff-decisions)에 미정별 필요한 입력·담당·결정 시점을 연결했다. Task 002는 화면·흐름, Task 003은 공통 기술·참조 전제, Task 004는 자료·검증 방향, Task 005는 실제 후속 과제 배정을 맡는다. 상세 DB 설계를 Task 003에서 모두 수행한 것으로 처리하지 않는다.
 
 <a id="pending"></a>
+
 ## 이월한 미정
 
 실제 자료의 값·세부 DB 관계·조회/캐시·계산·정정·공개 방식은 위 인계 목록의 담당 설계에서 결정한다. 최초 보유 구성 등 실제 값은 자료 확인 때, 재료 합산 방식은 기능 개발 때 실험 후, 수식은 딜량 계산기 작업 때 정한다. 이월은 설계 완료나 실제 담당 Issue의 등록 완료가 아니다.
@@ -100,6 +106,7 @@
 사용자 요청에 따라 상세 논의·SQL 대조·과거 경위를 세 첨부 문서로 이동했다. 기존 내용과 SQL 원본을 보존하고, 기존 구역 링크는 본문의 요약과 상세 문서 연결로 유지했다. 내용 대조와 관련 로컬 링크·표식 및 공백을 확인했다. 제품 합의·진행 상태는 유지하며 커밋·GitHub 반영은 수행하지 않았다.
 
 <a id="verification"></a>
+
 ## 최종 점검
 
 - 대조 대상: 사용자 합의·제공 SQL, 제품의 아이템/버전/루트 요구, Phase의 P1 범위·완료 조건과 Task 002~005의 실제 목적·범위.

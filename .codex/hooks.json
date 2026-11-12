@@ -1,0 +1,30 @@
+{
+  "description": "Read-only TDD guard before edits and scoped formatting after edits; review and trust new handlers before use.",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "^apply_patch$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node -e \"const c=require('node:child_process'),p=require('node:path');const r=c.execFileSync('git',['rev-parse','--show-toplevel'],{encoding:'utf8'}).trim();const x=c.spawnSync(process.execPath,[p.join(r,'scripts/quality/post-edit.mjs')],{stdio:'inherit'});process.exit(x.status??2)\"",
+            "timeout": 90
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "^apply_patch$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -B -X utf8 -c \"import pathlib,runpy,subprocess,sys; p=pathlib.Path(subprocess.check_output(['git','rev-parse','--show-toplevel'],text=True).strip())/'scripts'/'tdd-check.py'; sys.path.insert(0,str(p.parent)); sys.argv=[str(p),'--hook']; runpy.run_path(str(p),run_name='__main__')\"",
+            "commandWindows": "python -B -X utf8 -c \"import pathlib,runpy,subprocess,sys; p=pathlib.Path(subprocess.check_output(['git','rev-parse','--show-toplevel'],text=True).strip())/'scripts'/'tdd-check.py'; sys.path.insert(0,str(p.parent)); sys.argv=[str(p),'--hook']; runpy.run_path(str(p),run_name='__main__')\"",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}

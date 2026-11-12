@@ -1,26 +1,29 @@
 # GitHub 라벨 기준
 
 <a id="current"></a>
+
 ## 적용
 
 로컬 Issue·Task를 GitHub에 표시할 때 사용하는 라벨의 이름·설명·색상·적용 규칙을 둔다. 작업 단위와 상태의 의미는 [기록 체계](<작업 기록 체계.md#current>)가 소유한다. Phase는 milestone으로 구분하며 이 라벨의 적용 대상은 GitHub Issue·Task다.
 
 <a id="labels"></a>
+
 ## 라벨 목록
 
-| 라벨 | 설명 | 색상 |
-|---|---|---|
-| `unit:issue` | 로컬 Issue에 대응하는 과제 | `#5319E7` |
-| `unit:task` | 로컬 Task에 대응하는 실행 단위 | `#1D76DB` |
-| `status:planned` | 예정 | `#EDEDED` |
-| `status:in-progress` | 진행 중 | `#0075CA` |
-| `status:verifying` | 검증 중 | `#FBCA04` |
-| `status:blocked` | 구체 조건에 막혀 대기 | `#D93F0B` |
-| `status:on-hold` | 추진을 미룬 보류 | `#BFDADC` |
-| `status:completed` | 자기 완료 조건 충족 | `#0E8A16` |
-| `status:cancelled` | 목표 달성으로 처리하지 않고 취소 | `#6E7781` |
+| 라벨                 | 설명                             | 색상      |
+| -------------------- | -------------------------------- | --------- |
+| `unit:issue`         | 로컬 Issue에 대응하는 과제       | `#5319E7` |
+| `unit:task`          | 로컬 Task에 대응하는 실행 단위   | `#1D76DB` |
+| `status:planned`     | 예정                             | `#EDEDED` |
+| `status:in-progress` | 진행 중                          | `#0075CA` |
+| `status:verifying`   | 검증 중                          | `#FBCA04` |
+| `status:blocked`     | 구체 조건에 막혀 대기            | `#D93F0B` |
+| `status:on-hold`     | 추진을 미룬 보류                 | `#BFDADC` |
+| `status:completed`   | 자기 완료 조건 충족              | `#0E8A16` |
+| `status:cancelled`   | 목표 달성으로 처리하지 않고 취소 | `#6E7781` |
 
 <a id="apply"></a>
+
 ## 적용 규칙
 
 - Issue·Task마다 단위 라벨 하나와 상태 라벨 하나를 적용한다. 상태는 해당 로컬 기록에서 가져오며 부모 상태를 자식에게 복사하지 않는다.

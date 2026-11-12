@@ -10,24 +10,33 @@
 - 게임 규칙에 따른 피해량 계산과 변경 조건의 성능 비교
 - AI를 활용한 패치노트 데이터 변환
 
-제품 범위·공개 조건과 기능별 요구는 [프로젝트 목표와 범위](<docs/프로젝트 목표와 범위.md#current>) 및 연결된 제품 문서에서, 단계별 실현 범위·순서는 [현황에서 연결한 Phase 계획](<work/현황.md#harness-record-separation>)에서 관리한다.
+제품 범위·공개 조건과 기능별 요구는 [프로젝트 목표와 범위](<docs/프로젝트 목표와 범위.md#current>) 및 연결된 제품 문서에서, 단계별 실현 범위·순서는 [현황에서 연결한 Phase 계획](work/현황.md#harness-record-separation)에서 관리한다.
 
 ## 현재 상태
 
-요구사항과 7개 Phase의 계획을 문서로 정리한 단계다. 제품 기능 구현에는 아직 착수하지 않았다.
+요구사항과 7개 Phase의 계획을 정리하고 웹·API 서버·개발 DB의 실행 기반을 구축하고 있다. 게임 자료와 검색·계산 등 제품 기능은 아직 구현하지 않았다.
 
-현재 진행 상황과 다음 작업은 [작업 현황](<work/현황.md#current>)에서 확인한다. 기술 구성과 설치·실행·테스트 방법은 실제 구현에 맞춰 추가한다.
+현재 진행 상황과 다음 작업은 [작업 현황](work/현황.md#current)에서 확인한다. 기반 구축의 검증 결과와 남은 확인은 [Task 42-001](work/records/phase-001/issue-42/task-001.md#implementation)에 기록한다.
+
+테스트·TDD 도구의 구현 결과와 실제 Codex 편집 hook의 검증 결과는 [Task 42-002](work/records/phase-001/issue-42/task-002.md#handoff)에서 확인한다. 사용자 신뢰와 실제 편집 차단 검증은 구별하며 필수 연결 확인 전 첫 제품 기능에 착수하지 않는다.
 
 ## 프로젝트 구성
 
-| 위치 | 내용 |
-|---|---|
-| [AGENTS.md](<AGENTS.md>) | AI의 작업 진입 지침 |
-| [STRUCTURE.md](<STRUCTURE.md>) | 주요 파일·폴더의 위치와 역할을 안내하는 지도 |
-| `docs/` | 제품 요구사항과 프로젝트 운영 기준 |
-| `harness/` | 작업 절차와 문서·기록 양식 |
-| `work/` | 계획, 진행 현황, 실제 논의·작업·검증 기록 |
-| `harness-design/` | 별도로 관리하는 하네스 설계 도구. 아래 접근 제한 적용 |
+품질 도구는 루트 `package.json`과 `scripts/quality/`에서 관리한다. 실행법은 아래 품질 검사 안내를 따른다.
+
+| 위치                         | 내용                                                  |
+| ---------------------------- | ----------------------------------------------------- |
+| [AGENTS.md](AGENTS.md)       | AI의 작업 진입 지침                                   |
+| [STRUCTURE.md](STRUCTURE.md) | 주요 파일·폴더의 위치와 역할을 안내하는 지도          |
+| `docs/`                      | 제품 요구사항과 프로젝트 운영 기준                    |
+| `harness/`                   | 작업 절차와 문서·기록 양식                            |
+| `work/`                      | 계획, 진행 현황, 실제 논의·작업·검증 기록             |
+| `backend/`                   | Java 21·Spring Boot API 서버와 Gradle Wrapper         |
+| `frontend/`                  | React·TypeScript·Vite 시작 화면                       |
+| `db/migration/`              | Flyway 공용 SQL 원천. 현재 게임 스키마는 미등록       |
+| `compose.yaml`               | PostgreSQL 로컬 개발 환경                             |
+| `scripts/`                   | 서버 실행기와 격리 기반 검증 도구                     |
+| `harness-design/`            | 별도로 관리하는 하네스 설계 도구. 아래 접근 제한 적용 |
 
 <a id="start"></a>
 
@@ -36,8 +45,8 @@
 AI와 작업할 때는 원하는 결과와 대상, 허용 범위를 전달한다. 기존 작업을 이어가는 경우 담당 기록이나 관련 파일을 함께 지정한다.
 
 - 제품 목표와 범위: [프로젝트 목표와 범위](<docs/프로젝트 목표와 범위.md#current>)
-- 작업 찾기와 재개: [work 안내](<work/README.md#start>), [작업 현황](<work/현황.md#current>)
-- AI 작업 지침: [AGENTS.md](<AGENTS.md>)
+- 작업 찾기와 재개: [work 안내](work/README.md#start), [작업 현황](work/현황.md#current)
+- AI 작업 지침: [AGENTS.md](AGENTS.md)
 - 공통 작업 절차: [공용 절차](<harness/공용 절차.md#entry>)
 - 애플리케이션 개발 기준: [공통 개발 기준](<docs/개발 기준.md#current>)
 - 프로젝트 구성: [스킬 현황](<harness/스킬 현황.md#current>) · [hook 현황](<harness/hook 현황.md#current>)
@@ -57,3 +66,123 @@ AI와 작업할 때는 원하는 결과와 대상, 허용 범위를 전달한다
 - 새 위키 개발·운영 기록은 `work/`에서 관리한다.
 
 관련 `.harness-state/`도 명시적으로 허용된 범위에서만 접근한다. 상세 기준은 [원천과 보존 경계](<docs/문서 관리 기준.md#harness-design-boundary>)를 따른다.
+
+<a id="quality-check"></a>
+
+## 코드·문서 검사와 포맷
+
+루트에서 `npm ci`, `npm --prefix frontend ci`, `npm run format:prepare`로 잠금 파일의 도구와 Java formatter를 먼저 준비한다. Node 24.22.3·npm 11.19.1·JDK 21·Python 3.14.2를 사용한다. `check:backend`의 통합 테스트에는 Docker Linux 엔진이 필요하다. 개인 `.env`는 품질 검사와 CI의 입력이 아니다.
+
+| 명령                     | 결과                                               |
+| ------------------------ | -------------------------------------------------- |
+| `npm run format`         | 허용된 문서·프런트·Java 포맷                       |
+| `npm run format:docs`    | 현재 관리 문서만 포맷                              |
+| `npm run format:check`   | 같은 대상을 읽기 전용 검사                         |
+| `npm run check:frontend` | 프런트 포맷·lint·테스트·타입 포함 빌드             |
+| `npm run check:backend`  | Java 포맷·단위/격리 DB 통합 테스트·bootJar         |
+| `npm run test:tools`     | 도구 포맷·Node/Python·기존 검수 도구 테스트        |
+| `npm run check:docs`     | 문서 형식·스킬/hook 현황·기록 검사                 |
+| `npm run check`          | 전체 포맷 검사→도구→프런트→서버→문서. 실패 시 중단 |
+
+포맷 실행기는 허용 경로만 수집한다. 보존 영역·원자료/증거 첨부·SQL·잠금 파일·Wrapper·생성물은 자동 수정하지 않는다. Python은 테스트로 확인한다. 새 형식·경로가 분류되지 않으면 해당 범위를 검토한다.
+
+VS Code 권장 확장을 설치하면 프런트·문서는 루트 Prettier, Java는 프로젝트 Spotless로 저장 시 포맷한다. 확장 설치·편집기 직접 조작은 별도 사용자 환경 확인이며, 명시 명령으로도 같은 도구를 실행할 수 있다. [Spotless 확장 안내](https://github.com/badsyntax/vscode-spotless-gradle)
+
+Codex의 새 `PostToolUse` 정의는 앱 Settings > Hooks 또는 Review hooks에서 검토·신뢰한 뒤 사용한다. `apply_patch` 뒤 허용된 생존 파일만 포맷한다. Java는 `format:prepare`가 확인한 캐시의 Gradle을 직접 offline 실행하며, Wrapper를 바꾸거나 캐시가 없으면 명시적으로 다시 준비해야 한다. hook이 배포본을 다운로드하지 않는다. 성공은 무출력이다. 실패하면 기존 편집은 남고 `.tmp/quality/failures/`에 미확인을 남겨 제출을 막는다. 편집·도구·경로를 확인하고 `npm run format`으로 복구한 뒤 검사한다. 미분류·판독 불능 기록은 전체 포맷으로 지우지 않으며, 실제 편집을 복구하거나 경로를 분류한 뒤 해당 기록을 명시적으로 정리해야 한다. 자동 설치·테스트·stage·재시도는 하지 않는다. [공식 신뢰 안내](https://learn.chatgpt.com/docs/hooks#review-and-trust-hooks)
+
+Git pre-commit은 기존 hook·TDD·현황·기록 검사 뒤 인덱스의 실행기·내용·설정으로 임시 후보를 읽기 전용 검사한다. 부분 스테이징의 작업 파일은 고치지 않는다. hook 설치·해제는 기존 `scripts/install-harness-hooks.py`를 사용하며, 정의 갱신 시 바깥 wrapper만 제거·재설치해 선행 TDD wrapper를 보존한다.
+
+CI는 부모 대상 PR·부모 브랜치 push에서 변경 영역 전체를 검사하고 `quality`가 필요한 job의 성공과 의도한 skip을 확인한다. 수동 실행은 전체 검사이며 main에 workflow가 들어간 뒤 활성화·실측한다. 로컬 TDD receipt와 개인 환경값을 요구하지 않고 CI에서 Git hook을 설치하지 않는다. 현재 결과와 실행 근거는 [Task 42-004](work/records/phase-001/issue-42/task-004.md#verification)를 따른다.
+
+<a id="local-development"></a>
+
+## 로컬 실행
+
+JDK 21, Node.js 24.22.3 LTS, npm 11.19.1과 실행 중인 Docker Desktop의 Linux 엔진이 필요하다. Java는 기존 설치를 사용하고 Gradle은 저장소 Wrapper 9.9.1로 실행한다. 웹 직접 의존성은 manifest와 잠금 파일의 버전으로 설치한다. TDD 도구에는 Python 3.14 계열 표준 라이브러리를 사용한다.
+
+1. `.env.example`을 루트 `.env`로 복사하고 `DB_PASSWORD`를 개인 값으로 바꾼다. `$` 등 특별 문자가 들어간 값은 작은따옴표로 감싸 Node와 Compose에서 동일하게 읽도록 한다. 비밀번호를 채팅·문서·Git에 넣지 않는다. `.env`는 자동 생성하거나 덮어쓰지 않는다.
+2. `npm --prefix frontend ci`로 웹 의존성을 설치한다.
+3. 다음 DB 명령을 실행한 뒤 API와 웹 명령을 각각 별도 터미널에서 실행한다.
+
+```text
+docker compose -p lumiawiki up -d --wait --wait-timeout 90 db
+node --env-file=.env scripts/dev-api.mjs
+npm --prefix frontend run dev
+```
+
+웹은 `http://localhost:5173/`, API 서버는 `http://127.0.0.1:8080`, DB는 `127.0.0.1:5432`를 사용한다. 시작 화면과 아래 공통 연결 확인 화면을 제공한다. 포트가 이미 사용 중이면 기존 서비스를 종료하거나 임의 포트로 바꾸지 않고 실패한다. DB 포트는 `.env`의 `DB_PORT`, 서버 포트는 실행 환경의 `SERVER_PORT`로 조정할 수 있다. 개인 DB 환경값을 웹 프로세스에 전달하지 않는다.
+
+서버 실행기는 Node의 기본 env-file 기능으로 접속값을 읽고 local 프로필을 명시한다. 누락/예제 비밀번호·잘못된 포트는 Java 시작 전에 거부한다. `JAVA_HOME`이 필요하면 기존 JDK 21 설치 경로로 지정한다. common/local/test 설정을 구분하며 테스트 전용 DB 연결·테스트/hook 환경은 Task 002의 담당이다.
+
+<a id="foundation-check"></a>
+
+## 공통 연결 확인과 후속 사용
+
+위 DB·API·웹 실행 후 `http://localhost:5173/__dev/foundation`에 접속한다. 실제 게임 자료 없이 합성 응답과 이미지로 확인한다.
+
+- 응답 상황을 선택하고 **조회하기**를 누른다. 정상 항목, 1초 로딩, 빈 결과, 400·404·500 안내와 오류 요청 ID를 확인할 수 있다. 선택만으로 조회하지 않으며 입력 변경은 이전 요청을 취소한다.
+- **이동 확인**으로 이동한 뒤 브라우저 뒤로 가기를 사용한다. 아래 이미지 영역에는 기존·교체 경로와 미등록·실패 대체 표시가 함께 있다.
+- 로컬 API 문서는 `http://127.0.0.1:8080/swagger-ui/index.html`이다. 확인 API `GET /api/v1/_dev/foundation?scenario=...`는 `ok`, `slow`, `empty`, `bad-input`, `missing`, `failure`를 지원하며 local/test 프로필에만 등록된다. 문서도 공통 설정에서는 꺼지고 local/test에서 활성화된다. 확인 화면과 경로는 제품 빌드에서 제외된다.
+
+후속 화면은 `frontend/src/app/App.tsx`의 Data Router와 단일 QueryClient를 사용한다. 공통 `apiGet`은 상대 `/api/v1` JSON 조회·ProblemDetail 오류·취소·10초 제한을 처리하고 Vite가 `/api` 접두사를 유지해 서버로 전달한다. Query 기본값은 재시도 없음·staleTime 0·gcTime 5분·focus/reconnect 재조회 없음이며 기능별 정책은 해당 기능에서 정한다. `CommonImage`에는 이미지 루트 아래의 상대 파일 경로와 대체 텍스트를 전달한다.
+
+서버는 DTO를 반환하며 실제 DB 조회·DTO 구성은 서비스 트랜잭션 안에서 마쳐야 한다. 합성 확인 서비스는 DB를 조회하지 않는다. 업무 오류는 `ApiFailure`, 공통 MVC 오류는 `ApiExceptionAdvice`가 안전한 ProblemDetail로 변환한다. 서버 발급 `X-Request-ID`로 응답·오류·로그를 연결하며 예상 못한 실패 로그에는 예외 종류와 stack 위치를 남기고 원문 메시지·cause·요청 값은 기록하지 않는다. 제품 기능·운영 배포의 완료는 [담당 Task의 범위와 한계](work/records/phase-001/issue-42/task-003.md#verification)를 따른다.
+
+## 빌드와 기반 확인
+
+```text
+npm --prefix frontend run typecheck
+npm --prefix frontend run build
+npm --prefix frontend run preview
+node --test scripts/dev-api.test.mjs
+node scripts/verify-bootstrap.mjs
+```
+
+빌드 화면은 `http://127.0.0.1:4173/`에서 확인한다. Windows 서버 빌드는 `backend\gradlew.bat -p backend bootJar`, 다른 환경에서는 `sh backend/gradlew -p backend bootJar`다. 생성 JAR는 `backend/build/libs/lumiawiki-api-0.0.1-SNAPSHOT.jar`다. bootJar 통과가 테스트 완료를 뜻하지 않는다.
+
+기반 검증 도구는 `.tmp/issue-42/task-001/`의 격리 복제본에만 합성 SQL을 만들어 JAR 포함·Flyway 적용·앱/DB 재시작 보존·잘못된 암호·실제 env-file/bootRun을 확인한다. 개발 DB에 합성 테이블을 만들지 않는다. 성공하면 소유를 확인한 임시 컨테이너/볼륨을 정리하고 비밀값 없는 결과·입력 지문을 남긴다. 실패하면 안내한 실행별 임시 경로와 재현 리소스를 유지한다. 실제 제품 SQL은 `db/migration/`에서 한 번만 관리하고 Gradle이 빌드 리소스에 포함한다.
+
+일반 DB 종료는 `docker compose -p lumiawiki down`이며 named volume과 데이터를 보존한다. 볼륨을 삭제하는 초기화 명령은 일상 종료에 사용하지 않는다. 중요한 데이터를 삭제·초기화하기 전에는 별도 백업이 필요하다.
+
+<a id="testing"></a>
+
+## 테스트 실행
+
+```text
+npm --prefix frontend run test
+npm --prefix frontend run test:watch
+backend\gradlew.bat -p backend test
+backend\gradlew.bat -p backend integrationTest
+python -X utf8 -m unittest discover -s scripts/tests -v
+```
+
+다른 환경에서는 Gradle 명령 앞을 `sh backend/gradlew`로 바꾼다. `test`는 DB 없는 JUnit·Mockito·MockMvc 테스트, `integrationTest`는 test 프로필의 전용 PostgreSQL 18.6·Flyway·JDBC 테스트다. 후자만 Docker가 필요하고 개발 `.env`·고정 포트·개발 볼륨을 사용하지 않는다. 테스트 전용 반복 SQL과 합성 테이블은 제품 JAR에 포함되지 않는다. 메모리가 부족한 환경에서는 Gradle에 `--max-workers=2 "-Dorg.gradle.jvmargs=-Xms64m -Xmx256m -XX:MaxMetaspaceSize=256m"`를 추가한다.
+
+프런트는 Vitest·jsdom·React Testing Library를 사용하고 매 테스트 뒤 DOM을 정리한다. TanStack Query는 Task 003에서 도입하며 해당 테스트는 QueryClient도 독립시킨다. 현재 시작 화면에 제품 기능을 추가한 것은 아니다.
+
+<a id="tdd-tools"></a>
+
+## TDD 기록과 hook
+
+담당 Task에서 연결한 artifacts의 TDD 실행 입력 문서에 있는 `<!-- tdd-plan -->` 다음 JSON 블록에 작은 동작 식별자, 기대 결과, 정확한 대상/테스트/설정 경로, 명령 인수 배열, 결과 adapter와 예상 실패 테스트를 선언한다. 실제 예와 초기 도구 연결 근거는 [Task 42-002](work/records/phase-001/issue-42/artifacts/task-002-verification.md#implementation)에서 확인한다. 별도 Python 패키지 설치는 필요하지 않다.
+
+```text
+python -X utf8 scripts/tdd-run.py --task <실행 입력 경로> --activate
+python -X utf8 scripts/tdd-run.py --task <실행 입력 경로> --cycle <식별자> --phase red
+python -X utf8 scripts/tdd-run.py --task <실행 입력 경로> --cycle <식별자> --phase green --export
+python -X utf8 scripts/tdd-check.py --task <실행 입력 경로> --candidate index
+python -X utf8 scripts/tdd-check.py --task <실행 입력 경로> --candidate <제출 commit> --base <비교 commit>
+python -X utf8 scripts/install-hooks.py
+python -X utf8 scripts/install-hooks.py --status
+python -X utf8 scripts/install-hooks.py --remove
+```
+
+명령을 `--` 뒤에 직접 쓰면 선언한 인수 배열과 정확히 같아야 한다. `{root}`·`{report}`·`{run_id}`는 실행기가 채운다. 결과 형식은 `unittest`(test-python.py), `vitest` JSON, `junit`(Gradle·Node)이다. Gradle에는 `-PtddReportDir={report}`를 붙여 task별 새 보고서를 강제한다. 기존 보고서·실행 생략·테스트 0개·환경 오류는 Red가 아니다. 실행기 종료 0은 해당 단계의 유효한 결과 기록을 뜻하며 Red의 실제 테스트 프로세스 종료 1과 구별한다.
+
+Red는 현재 worktree에서만 편집을 허용하고 Green 뒤 닫힌다. 새 동작에는 새 사이클을 선언한다. 테스트/설정이 바뀌면 관련 이전 근거는 무효다. 순수 리팩터링은 이유를 적고 `--phase before`로 기존 테스트 통과를 기록한 뒤 `--phase verify`로 다시 확인한다. 초기 환경·정정은 이유 있는 예외 사이클의 `verify`를 쓰며 실행 근거 없이 제출하지 않는다. 환경 예외로 런타임 동작을 숨길 수 없다. 최초 검사기 연결의 bootstrap 근거는 이 Task에서만 초기 실제 실행 기록과 함께 검수하며 제품 기능에 자동 면제하지 않는다.
+
+진행 상태는 Git 제외 `.tmp/`의 Task/worktree별 위치, 활성 Task 포인터는 `.tmp/tdd-active.json`이다. `--export`는 끝난 최소 실행·파일 지문을 같은 실행 입력 문서에 보존한다. 임시 자료 정리나 worktree 통합 전에 export·후보 검사를 수행한다. 부분 스테이징은 작업 파일 대신 실제 index 내용으로 확인한다. 다른 worktree·squash 후보도 보존 근거와 내용이 같으면 재검증할 수 있지만 진행 중 Red는 공유하지 않는다. 의존성/결합 내용이 바뀌면 관련 회귀 실행이 필요하다.
+
+Git 설치기는 기존 pre-commit을 먼저 실행한 뒤 같은 읽기 전용 검사기를 연결한다. 중복 설치는 무변경이고, 해제는 설치한 wrapper와 백업이 그대로일 때만 복원한다. 전역 core.hooksPath·기존 사용자/플러그인 hook·Codex 신뢰 설정은 변경하지 않는다.
+
+Codex 정의는 [.codex/hooks.json](.codex/hooks.json)의 `PreToolUse`/`apply_patch` 한 지점이다. 실제 적용에는 프로젝트와 해당 정의의 사용자 신뢰 승인이 필요하며 CLI에서는 `/hooks`에서 검토한다. [공식 hook 문서](https://learn.chatgpt.com/docs/hooks)를 따른다. 성공은 무출력, 거부는 이유·다음 행동을 짧게 알린다. 내부 판정 제한은 3초, 외부 제한은 5초다. Codex 자체 실패/시간 초과는 편집이 실행될 수 있으므로 차단 성공으로 간주하지 않는다. 모든 셸/IDE 쓰기를 사전 차단하는 장치가 아니며 실제 제출 검수는 유지한다. 포맷 PostToolUse·품질/CI 명령은 Task 004의 담당이다.

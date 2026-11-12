@@ -1,10 +1,11 @@
 # Task 작성 양식
 
-GitHub에 반영할 때는 [GitHub Task 게시 양식](<github-task.md>)을 사용한다.
+GitHub에 반영할 때는 [GitHub Task 게시 양식](github-task.md)을 사용한다.
 
 실제 실행 단위가 필요할 때 복사해 부모 Issue에 [등록](<../문서 관리.md#create>)하고 최종 위치에서 링크를 정비한다. [최소 정보/시점](<../../docs/작업 기록 작성 기준.md#minimum>)에 따라 계획·수용 조건은 착수 전에, 사건·검증·종료는 실제 해당 시점에 작성한다. 미발생 승인/성공을 채우거나 보존 근거를 덮어쓰지 않는다. 현재 요약부터 [필요한 근거](<../../docs/문서 관리 기준.md#sources>)만 읽는다.
 
 <a id="summary"></a>
+
 ## 현재 요약
 
 - 제목:
@@ -14,6 +15,7 @@ GitHub에 반영할 때는 [GitHub Task 게시 양식](<github-task.md>)을 사�
 - 다음 행동·막힌 조건/근거:
 
 <a id="goal"></a>
+
 ## 목적과 허용 범위 및 완료 조건
 
 - 부모 Issue:
@@ -22,6 +24,7 @@ GitHub에 반영할 때는 [GitHub Task 게시 양식](<github-task.md>)을 사�
 - 자기 완료 조건·현재 기준/권한 근거:
 
 <a id="plan"></a>
+
 ## 계획과 예정 검증
 
 - 준비/선행 조건·미정:
@@ -31,11 +34,13 @@ GitHub에 반영할 때는 [GitHub Task 게시 양식](<github-task.md>)을 사�
 - 확인할 결과/방법·필요한 별도 검수:
 
 <a id="conditional-guidance"></a>
+
 ### 조건부 항목의 적용 판단과 기록
 
 [공통 작성](<../../docs/작업 기록 작성 기준.md#conditional-writing>)대로 조건·원천/확인 대상·시점, 현재 적용 판단과 활동 근거를 연결한다. 모르는 조건은 해당 없음이 아니다.
 
 <a id="activity"></a>
+
 ## 현재 결정과 제약
 
 - 유효한 결정·이유·승인·제약과 근거:
@@ -44,6 +49,7 @@ GitHub에 반영할 때는 [GitHub Task 게시 양식](<github-task.md>)을 사�
 [기록 경계](<../../docs/작업 기록 작성 기준.md#recording-boundary>)에 따라 같은 항목을 갱신한다. 필요한 상세 과정·출력은 artifacts에 연결하며 실행 경과를 누적하지 않는다.
 
 <a id="verification"></a>
+
 ## 검증과 근거
 
 - 대상/입력·기준/조건·방법:
@@ -54,6 +60,7 @@ GitHub에 반영할 때는 [GitHub Task 게시 양식](<github-task.md>)을 사�
 [확인 기준](<../../docs/details/operations/검증과 완료.md>)대로 계획/추론과 실행 사실을 구별한다.
 
 <a id="transition"></a>
+
 ## 중단과 전환 및 재개
 
 이 틀은 유지하고 실제 사건 때만 작성한다. 계획 전환은 B 착수 전 [보존/등록](<../문서 관리.md#transition>), 예기치 않은 중단은 [실제 상태부터 복구](<../문서 관리.md#recovery>)한다.
@@ -62,6 +69,7 @@ GitHub에 반영할 때는 [GitHub Task 게시 양식](<github-task.md>)을 사�
 - 복귀 조건·다음 행동·재개 판단:
 
 <a id="result"></a>
+
 ## 결과와 잔여 및 인계
 
 [종료 절차](<../문서 관리.md#close>)에 따라 작성하고 현재 요약/관련 현황을 맞춘다. 부모 수용은 별도다.
