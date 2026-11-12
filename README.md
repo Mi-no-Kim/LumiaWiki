@@ -118,14 +118,14 @@ python -X utf8 -m unittest discover -s scripts/tests -v
 <a id="tdd-tools"></a>
 ## TDD 기록과 hook
 
-담당 Task의 `<!-- tdd-plan -->` 다음 JSON 블록에 작은 동작 식별자, 기대 결과, 정확한 대상/테스트/설정 경로, 명령 인수 배열, 결과 adapter와 예상 실패 테스트를 선언한다. 실제 예와 초기 도구 연결 근거는 [Task 42-002](<work/records/phase-001/issue-42/task-002.md#implementation>)에서 확인한다. 별도 Python 패키지 설치는 필요하지 않다.
+담당 Task에서 연결한 artifacts의 TDD 실행 입력 문서에 있는 `<!-- tdd-plan -->` 다음 JSON 블록에 작은 동작 식별자, 기대 결과, 정확한 대상/테스트/설정 경로, 명령 인수 배열, 결과 adapter와 예상 실패 테스트를 선언한다. 실제 예와 초기 도구 연결 근거는 [Task 42-002](<work/records/phase-001/issue-42/artifacts/task-002-verification.md#implementation>)에서 확인한다. 별도 Python 패키지 설치는 필요하지 않다.
 
 ```text
-python -X utf8 scripts/tdd-run.py --task <기록 경로> --activate
-python -X utf8 scripts/tdd-run.py --task <기록 경로> --cycle <식별자> --phase red
-python -X utf8 scripts/tdd-run.py --task <기록 경로> --cycle <식별자> --phase green --export
-python -X utf8 scripts/tdd-check.py --task <기록 경로> --candidate index
-python -X utf8 scripts/tdd-check.py --task <기록 경로> --candidate <제출 commit> --base <비교 commit>
+python -X utf8 scripts/tdd-run.py --task <실행 입력 경로> --activate
+python -X utf8 scripts/tdd-run.py --task <실행 입력 경로> --cycle <식별자> --phase red
+python -X utf8 scripts/tdd-run.py --task <실행 입력 경로> --cycle <식별자> --phase green --export
+python -X utf8 scripts/tdd-check.py --task <실행 입력 경로> --candidate index
+python -X utf8 scripts/tdd-check.py --task <실행 입력 경로> --candidate <제출 commit> --base <비교 commit>
 python -X utf8 scripts/install-hooks.py
 python -X utf8 scripts/install-hooks.py --status
 python -X utf8 scripts/install-hooks.py --remove
@@ -135,7 +135,7 @@ python -X utf8 scripts/install-hooks.py --remove
 
 Red는 현재 worktree에서만 편집을 허용하고 Green 뒤 닫힌다. 새 동작에는 새 사이클을 선언한다. 테스트/설정이 바뀌면 관련 이전 근거는 무효다. 순수 리팩터링은 이유를 적고 `--phase before`로 기존 테스트 통과를 기록한 뒤 `--phase verify`로 다시 확인한다. 초기 환경·정정은 이유 있는 예외 사이클의 `verify`를 쓰며 실행 근거 없이 제출하지 않는다. 환경 예외로 런타임 동작을 숨길 수 없다. 최초 검사기 연결의 bootstrap 근거는 이 Task에서만 초기 실제 실행 기록과 함께 검수하며 제품 기능에 자동 면제하지 않는다.
 
-진행 상태는 Git 제외 `.tmp/`의 Task/worktree별 위치, 활성 Task 포인터는 `.tmp/tdd-active.json`이다. `--export`는 끝난 최소 실행·파일 지문을 기존 담당 기록에 보존한다. 임시 자료 정리나 worktree 통합 전에 export·후보 검사를 수행한다. 부분 스테이징은 작업 파일 대신 실제 index 내용으로 확인한다. 다른 worktree·squash 후보도 보존 근거와 내용이 같으면 재검증할 수 있지만 진행 중 Red는 공유하지 않는다. 의존성/결합 내용이 바뀌면 관련 회귀 실행이 필요하다.
+진행 상태는 Git 제외 `.tmp/`의 Task/worktree별 위치, 활성 Task 포인터는 `.tmp/tdd-active.json`이다. `--export`는 끝난 최소 실행·파일 지문을 같은 실행 입력 문서에 보존한다. 임시 자료 정리나 worktree 통합 전에 export·후보 검사를 수행한다. 부분 스테이징은 작업 파일 대신 실제 index 내용으로 확인한다. 다른 worktree·squash 후보도 보존 근거와 내용이 같으면 재검증할 수 있지만 진행 중 Red는 공유하지 않는다. 의존성/결합 내용이 바뀌면 관련 회귀 실행이 필요하다.
 
 Git 설치기는 기존 pre-commit을 먼저 실행한 뒤 같은 읽기 전용 검사기를 연결한다. 중복 설치는 무변경이고, 해제는 설치한 wrapper와 백업이 그대로일 때만 복원한다. 전역 core.hooksPath·기존 사용자/플러그인 hook·Codex 신뢰 설정은 변경하지 않는다.
 

@@ -8,7 +8,7 @@
 - GitHub milestone: [Mi-no-Kim/LumiaWiki #1](https://github.com/Mi-no-Kim/LumiaWiki/milestone/1)
 - 상태: 진행 중
 - 현재 진행 위치: 계획 Issue #15를 PR #49로 통합·정리했다. Issue #42의 Task 001은 PR #54로 Issue 브랜치에 통합·정리했고 Task 002~004의 실행 설계를 확정했다. Task 002는 구현·검증·검수·보존/정리를 마쳐 자기 수용을 완료했으며 부모 Issue로의 결과 통합은 남아 있다. Task 003~004·Issue #43~#48은 예정이며 게임 자료 작업은 보류다. Phase의 실제 기능/자료 수용 조건은 아직 충족 판정하지 않았다.
-- 다음 판단/행동: [Task 002의 검수 결과](<issue-42/task-002.md#submission-review>)를 현재 Task 브랜치에서 커밋·확인하고 이후 부모 통합·정리 절차를 따른다. 실제 편집 hook의 거부·허용과 Node·자동 테스트·Git hook은 검증했고 공통 연결·품질/CI는 Task 003~004에 남아 있다. 실제 자료 조사·확보·처리 보류를 유지한다.
+- 다음 판단/행동: [Task 002의 검수 결과](<issue-42/artifacts/task-002-verification.md#submission-review>)를 현재 Task 브랜치에서 커밋·확인하고 이후 부모 통합·정리 절차를 따른다. 실제 편집 hook의 거부·허용과 Node·자동 테스트·Git hook은 검증했고 공통 연결·품질/CI는 Task 003~004에 남아 있다. 실제 자료 조사·확보·처리 보류를 유지한다.
 
 <a id="ci-manual-followup"></a>
 ### main 통합 뒤 CI 수동 실행 확인
@@ -103,7 +103,7 @@ Task 005에서 합의한 큰 순서는 실행 기반·DB 저장/조회 준비→
 - 계획 Issue #15의 종료 후 첫 기반 구축 과제 초반, 프로젝트 골격과 테스트 실행 명령을 마련한 직후 hook을 연결·검증한다. 이 결과는 해당 기반 과제의 필수 완료 조건이다.
 - 첫 제품 기능의 동작 구현은 위 자동화 연결·검증이 완료된 뒤 시작한다. 미완료·미확인이면 기능 구현의 선행 조건이 충족되지 않은 것으로 처리한다.
 
-현재 hook의 실제 편집 거부·허용은 [Task 42-002의 실행 근거](<issue-42/task-002.md#host-acceptance>)로 확인했고 자기 수용은 [검수·보존·정리 결과](<issue-42/task-002.md#submission-review>)에 따른다. 제품 기능의 화면 설계 선행·화면을 통한 검증 기준은 함께 유지한다.
+현재 hook의 실제 편집 거부·허용은 [Task 42-002의 실행 근거](<issue-42/artifacts/task-002-verification.md#host-acceptance>)로 확인했고 자기 수용은 [검수·보존·정리 결과](<issue-42/artifacts/task-002-verification.md#submission-review>)에 따른다. 제품 기능의 화면 설계 선행·화면을 통한 검증 기준은 함께 유지한다.
 
 <a id="input-workflow"></a>
 ### 자료 확보·임시 변환 계획
