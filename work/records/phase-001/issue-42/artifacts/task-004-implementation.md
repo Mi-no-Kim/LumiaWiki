@@ -37,7 +37,7 @@
 
 ### Actions 고정 버전
 
-태그의 공식 commit을 조회했다. 구현에서는 전체 SHA로 고정하고 옆에 버전을 표시한다. 설치/runner 실행 호환성은 아직 검증하지 않았다.
+태그의 공식 commit을 조회했다. 구현에서는 전체 SHA로 고정하고 옆에 버전을 표시한다. 계약 확정 당시 설치/runner 실행 호환성은 미검증이었으며 현재 결과는 아래 실제 CI 근거를 따른다.
 
 | Action                      | 버전   | SHA                                        |
 | --------------------------- | ------ | ------------------------------------------ |
@@ -71,4 +71,24 @@
 - 인덱스의 staged 모듈·내용·설정으로 형식을 확인했고 원본 작업 파일을 고치지 않았다. 실제 설치 pre-commit은 정상 후보를 종료 0으로 허용했다(7957ms, TDD와 형식 포함). 별도 index의 README 포맷 위반은 파일을 식별해 종료 2로 거부했다. 실제 index SHA-256은 전후 같았고 선행 TDD wrapper SHA-256도 재설치 전후 같았다.
 - Git/Windows Wrapper 속성·Gradle/배치 파일 지문은 CRLF 동등성을 실제 Red→Green으로 확인했다. Java는 UNIX 줄바꿈을 명시해 Windows 작업 파일·인덱스·Linux의 후보 형식을 일치시켰다. `format:prepare`가 배포본을 명시적으로 준비하고 hook은 그 배포본만 직접 offline 실행한다. 미준비 fixture에서 Wrapper 미호출을 확인했다.
 - 기록·현황·공백 검사를 통과했다. 현재 source와 별도 검수의 코드·조건을 보존한 결과/한계 갱신은 자체 대조하고 검수 근거를 재사용한다.
-- 원격 정상/통제 실패 CI와 새 PostToolUse의 실제 호스트 자동 실행은 아직 미확인이다. WIP는 이 잔여를 보존해 실제 CI를 실행할 진행 후보이며 Task 자기 수용은 진행 중이다. 수동 실행 실측은 Phase의 main 통합 뒤 조건을 유지한다. 실제 CI 실행 URL·commit·job 판정은 수행 후 연결한다.
+- 원격 정상/통제 실패 CI는 아래 근거로 확인했고 새 PostToolUse의 실제 호스트 자동 실행은 아직 미확인이다. WIP는 이 잔여를 보존해 실제 CI를 실행할 진행 후보이며 Task 자기 수용은 진행 중이다. 수동 실행 실측은 Phase의 main 통합 뒤 조건을 유지한다. 실제 CI 실행 URL·commit·job 판정은 수행 후 연결한다.
+
+<a id="remote-ci"></a>
+## 실제 CI와 현재 인계
+
+검증한 구현 commit은 `86569c684a632a2f69296dd0b6d2e287ad2e1fba`다. 후속 변경은 이 코드·설정·수용 조건을 보존한 관찰/기록 갱신이며 정상 결과로 자기 수용을 완료하지 않는다.
+
+| 실제 입력·이벤트 | 실행·관찰·판정 |
+|---|---|
+| 정상 PR #63, 구현 commit `86569c6` | [품질 CI](https://github.com/Mi-no-Kim/LumiaWiki/actions/runs/43217304661)의 changes/tools/docs/frontend/backend/quality 전부 성공. [별도 회귀](https://github.com/Mi-no-Kim/LumiaWiki/actions/runs/43217304862)의 Ubuntu·Windows도 성공 |
+| 부모 패턴 push, 같은 구현 commit | 격리 `issue/42-ci-push-fixture`에서 [push CI](https://github.com/Mi-no-Kim/LumiaWiki/actions/runs/43218226280) 6개 job 전부 성공. 새 ref 비교 기준 누락의 전체 검사도 관찰 |
+| lint 실패 PR #64, commit `3bfb8178c6b8bf5af37f4a68e11316eafad12f57` | [실행](https://github.com/Mi-no-Kim/LumiaWiki/actions/runs/43217663817)에서 추가 파일의 no-unused-vars 오류로 frontend 실패·quality 실패, 나머지 필요한 job 성공 |
+| 테스트 실패 PR #65, commit `988349beb950849603438847bf34f02db51070be` | [실행](https://github.com/Mi-no-Kim/LumiaWiki/actions/runs/43217674243)에서 통제 assertion 1개 실패·기존 13개 통과, frontend/quality 실패·나머지 필요한 job 성공 |
+
+- 통제 후보는 같은 정상 tree에 검수한 파일 하나씩만 추가해 별도 index/commit-tree로 만들었다. 제품 수용 후보나 가짜 TDD Green이 아니다. 별도 에이전트는 fixture 두 원문의 포맷·lint·수집 경로를 검수했다. 로컬에서도 lint 종료 1과 환경 오류 없는 Vitest assertion 실패 1개를 먼저 확인했다.
+- PR #64·#65는 병합하지 않고 닫았다. 두 Task 검증 브랜치와 부모 push 검증 브랜치의 실제 head를 대조한 뒤 원격·존재하는 로컬 검증 브랜치만 삭제했다. 정상 Task 브랜치와 실제 index는 보존했다.
+- Linux tools job에서 상태 파일 symlink 보호 사례가 실제 통과했다. Windows의 같은 파일 symlink 권한 skip과 Linux의 Windows 대소문자 전용 skip은 환경별 조건과 구별한다.
+- PR #65의 별도 [Windows 회귀](https://github.com/Mi-no-Kim/LumiaWiki/actions/runs/43217677524)는 Git ls-files 조회가 남은 1.266초 제한을 초과해 한 사례가 실패했다. 같은 하네스 입력의 정상 PR·lint PR Windows 회귀는 통과했다. 재실행 API는 토큰 권한 부족으로 거부됐으며 그 실행을 성공으로 바꾸지 않는다. 품질 CI의 통제 assertion·집계 실패 확인과 이 별도 회귀의 시간 초과를 구별해 보존한다.
+- 비용은 TDD의 전체 구현 후보 검사 1300ms, 사전 준비된 Java 한 파일 포맷 1640ms, 설치 pre-commit 전체 7957ms였다. formatter 비용을 TDD 3초 목표에 합쳐 판정하지 않는다.
+- 남은 필수 확인: 앱에서 새 PostToolUse 정의를 검토·신뢰한 뒤 실제 apply_patch로 문서·Java 자동 포맷을 확인한다. 정의/직접 실행/기존 PreToolUse 거부·허용과 현재 대화의 자동 PostToolUse 실행은 별개다. 같은 합성 JSON의 실제 편집 뒤 자동 포맷되지 않은 것을 두 번 관찰했으며 원인은 신뢰/세션 적용 등으로 확정하지 않았다. 앱·전역 신뢰를 자동 변경하거나 우회하지 않았다.
+- Task는 진행 중이다. 작업·테스트 입력·준비 캐시·정식 receipt와 필요한 Git 제외 임시는 호스트 재개를 위해 유지한다. main·Phase·부모 Issue에 병합하거나 저장소 보호 설정을 바꾸지 않았다. 수동 실행 실측은 기존 Phase의 main 통합 뒤 조건으로 남긴다.

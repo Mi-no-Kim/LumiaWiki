@@ -9,7 +9,7 @@
 - 소속 Phase: [Phase 001](../phase.md#summary)
 - 상태: 진행 중
 - 현재 진행 위치: Task 001~003은 자기 수용을 완료했다. 부모 통합 결과는 [PR #54](https://github.com/Mi-no-Kim/LumiaWiki/pull/54)·[PR #59](https://github.com/Mi-no-Kim/LumiaWiki/pull/59)·[PR #62](https://github.com/Mi-no-Kim/LumiaWiki/pull/62)의 실제 상태를 따른다. Task 003의 통합 검토에서 필수 결함을 발견하지 못했으며 Task 004는 품질/CI 구현·검증 중이다. 실제 게임 자료 작업은 보류다.
-- 다음 판단/행동: Task 004의 품질/CI 구현·검증과 실제 호스트 연결·원격 CI 잔여를 확인한다. Issue 전체 수용은 남아 있다.
+- 다음 판단/행동: Task 004의 품질/CI의 실제 호스트 자동 포맷 잔여를 확인한다. Issue 전체 수용은 남아 있다.
 - 작성 근거: [Task 005](../issue-15/task-005.md#summary) · [전체 실행 순서](../issue-15/artifacts/task-005-issue-outline.md#sequence). 실제 자료 작업 보류를 유지한다.
 
 <a id="goal"></a>
@@ -56,7 +56,7 @@
 
 - Task 001 → Task 002 순으로 진행한다. 첫 제품 기능의 동작 구현은 Task 002의 hook 필수 검증 완료 뒤 시작한다.
 - Task 003의 동작 구현은 Task 002 뒤 진행한다. Task 004는 Task 001 뒤 설계를 준비하고 Task 002의 hook을 보존해 연결한다. CI는 로컬 명령 준비 후 연결하고 Issue 완료 전에 최종 기반 후보의 실제 통과/실패를 확인한다.
-- 필요한 선택은 [Task 002 테스트/hook](artifacts/task-002-verification.md#implementation-decisions) · [Task 003 공통 연결](task-003.md#implementation-decisions) · [Task 004 품질/CI](task-004.md#implementation-decisions)에 있다. Node 24.22.3 LTS와 Task 002·003의 구현·설치·검증은 담당 결과를 따르며 Task 004의 품질/CI는 아직 설계 단계다. 사용자가 선택한 CI의 PR·부모 브랜치·수동 실행 중 수동 실행은 기본 브랜치의 workflow 등록 조건을 따른다.
+- 필요한 선택은 [Task 002 테스트/hook](artifacts/task-002-verification.md#implementation-decisions) · [Task 003 공통 연결](task-003.md#implementation-decisions) · [Task 004 품질/CI](task-004.md#implementation-decisions)에 있다. Node 24.22.3 LTS와 Task 002·003의 구현·설치·검증은 담당 결과를 따르며 Task 004의 품질/CI 구현·로컬·실제 CI 검증은 담당 결과를 따르며 새 PostToolUse 실제 호스트 확인은 남아 있다. 사용자가 선택한 CI의 PR·부모 브랜치·수동 실행 중 수동 실행은 기본 브랜치의 workflow 등록 조건을 따른다.
 
 <a id="related"></a>
 
@@ -71,7 +71,7 @@
 - 요청: #42 준비와 하위 Task 등록. 종료된 #15의 추가 수정이 아닌 #42의 실행 준비로 처리한다. 이번 변경은 계획·등록 기록이며 제품 구현, 실제 자료 조사·확보·처리, 커밋·push·PR·병합은 수행 범위에 포함하지 않는다.
 - 기존 #42 Open·Phase milestone #1·단위/예정 라벨, 하위 Task 미등록과 일반 작업 영역의 미커밋 변경 부재를 확인한 뒤 `issue/42-development-foundation`을 부모 Phase에서 분기했다.
 - 준비의 수용 조건: 네 Task의 목표·범위·자기 완료 조건·입력·미정/결정 시점·실행/검증 순서, 실제 sub-issue 부모 관계·milestone·라벨·상태·원본 경로, Phase/현황과 첫 기능 착수 조건의 연결을 대조한다. 구현 성과나 Issue 완료를 판정하는 검증과 구별한다.
-- Task별 사용자 확인 목록은 계획 초안이다. 구현 직전 실제 명령·주소·대상을 확정해 공유하며 자동 검사·AI 직접 조작·사용자 확인 결과를 구분한다. 현재 실제 도구 호환 설치·빌드·DB·hook·CI·화면 동작은 미확인이다.
+- Task별 사용자 확인 목록은 계획 초안이다. 구현 직전 실제 명령·주소·대상을 확정해 공유하며 자동 검사·AI 직접 조작·사용자 확인 결과를 구분한다. 실제 도구 호환 설치·빌드·DB·hook·CI·화면 동작의 현재 확인과 잔여는 각 담당 Task의 결과를 따른다.
 - 준비 검증 결과: 자체 내용 대조로 네 Task의 담당 범위·수용 조건·선후 관계·미정/결정 시점과 기존 기술/hook/품질 인계를 확인했다. 변경/신규 Markdown 7개와 로컬 참조·표식 92개, 등록 번호·공백을 확인했다. GitHub #42는 Open·unit:issue/status:in-progress, #50~#53은 Open·unit:task/status:planned·실제 부모 #42이며 모두 milestone #1에 속한다. Task·Issue의 실제 저장 본문과 Phase 설명 반영도 대조했다. 구현·실행 검증이나 Issue 전체 완료를 뜻하지 않는다. 등록 검증 당시 로컬 기록은 미커밋·원격 미게시였으며 GitHub 원본 표시는 실제 로컬 경로다.
 
 <a id="preparation-review"></a>

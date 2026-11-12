@@ -8,8 +8,8 @@
 - 구상상 구분: P1
 - GitHub milestone: [Mi-no-Kim/LumiaWiki #1](https://github.com/Mi-no-Kim/LumiaWiki/milestone/1)
 - 상태: 진행 중
-- 현재 진행 위치: 계획 Issue #15는 완료했고 Issue #42는 진행 중이다. Task 001~003은 자기 수용을 완료했으며 Task 003의 부모 통합 결과는 [PR #62](https://github.com/Mi-no-Kim/LumiaWiki/pull/62)의 실제 상태를 따른다. Task 004·Issue #43~#48은 예정이며 게임 자료 작업은 보류다. Phase의 실제 기능/자료 수용 조건은 남아 있다.
-- 다음 판단/행동: Issue #42의 Task 004 품질/CI 구현·검증과 실제 호스트 연결·원격 CI 잔여를 확인한다. 실제 자료 조사·확보·처리 보류를 유지한다.
+- 현재 진행 위치: 계획 Issue #15는 완료했고 Issue #42는 진행 중이다. Task 001~003은 자기 수용을 완료했으며 Task 003의 부모 통합 결과는 [PR #62](https://github.com/Mi-no-Kim/LumiaWiki/pull/62)의 실제 상태를 따른다. Task 004는 품질/CI 검증 중이며 Issue #43~#48은 예정이고 게임 자료 작업은 보류다. Phase의 실제 기능/자료 수용 조건은 남아 있다.
+- 다음 판단/행동: Issue #42의 Task 004 품질/CI의 실제 호스트 자동 포맷 잔여를 확인한다. 실제 자료 조사·확보·처리 보류를 유지한다.
 
 <a id="ci-manual-followup"></a>
 
