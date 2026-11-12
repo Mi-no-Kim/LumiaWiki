@@ -7,8 +7,8 @@
 - 실제 GitHub Issue: [Mi-no-Kim/LumiaWiki #42](https://github.com/Mi-no-Kim/LumiaWiki/issues/42)
 - 소속 Phase: [Phase 001](<../phase.md#summary>)
 - 상태: 진행 중
-- 현재 진행 위치: Task 001·002는 자기 수용과 [PR #54](https://github.com/Mi-no-Kim/LumiaWiki/pull/54)·[PR #59](https://github.com/Mi-no-Kim/LumiaWiki/pull/59)의 부모 통합을 마쳤다. Task 003은 확인 화면부터 진행 중이며 Task 004는 예정이다. 실제 게임 자료 작업은 보류다.
-- 다음 판단/행동: Task 003의 확인 화면 검토 후 공통 웹·API·이미지 동작을 구현·검증한다. 품질/CI와 Issue 전체 수용은 남아 있다.
+- 현재 진행 위치: Task 001~003은 자기 수용을 완료했다. 부모 통합 결과는 [PR #54](https://github.com/Mi-no-Kim/LumiaWiki/pull/54)·[PR #59](https://github.com/Mi-no-Kim/LumiaWiki/pull/59)·[PR #62](https://github.com/Mi-no-Kim/LumiaWiki/pull/62)의 실제 상태를 따른다. Task 003의 통합 검토에서 필수 결함을 발견하지 못했으며 Task 004는 예정이다. 실제 게임 자료 작업은 보류다.
+- 다음 판단/행동: PR #62의 반영·정리 확인 후 Task 004의 품질/CI 착수 범위를 확인한다. Issue 전체 수용은 남아 있다.
 - 작성 근거: [Task 005](<../issue-15/task-005.md#summary>) · [전체 실행 순서](<../issue-15/artifacts/task-005-issue-outline.md#sequence>). 실제 자료 작업 보류를 유지한다.
 
 <a id="goal"></a>
@@ -49,7 +49,7 @@
 
 - Task 001 → Task 002 순으로 진행한다. 첫 제품 기능의 동작 구현은 Task 002의 hook 필수 검증 완료 뒤 시작한다.
 - Task 003의 동작 구현은 Task 002 뒤 진행한다. Task 004는 Task 001 뒤 설계를 준비하고 Task 002의 hook을 보존해 연결한다. CI는 로컬 명령 준비 후 연결하고 Issue 완료 전에 최종 기반 후보의 실제 통과/실패를 확인한다.
-- 남은 선택을 [Task 002 테스트/hook](<artifacts/task-002-verification.md#implementation-decisions>) · [Task 003 공통 연결](<task-003.md#implementation-decisions>) · [Task 004 품질/CI](<task-004.md#implementation-decisions>)에서 확정했다. 사용자는 Node 24.22.3 LTS와 CI의 PR·부모 브랜치·수동 실행을 선택했다. 현재는 설계 반영이며 구현·설치·실측은 미수행이다. 수동 실행은 기본 브랜치의 workflow 등록 조건을 따른다.
+- 필요한 선택은 [Task 002 테스트/hook](<artifacts/task-002-verification.md#implementation-decisions>) · [Task 003 공통 연결](<task-003.md#implementation-decisions>) · [Task 004 품질/CI](<task-004.md#implementation-decisions>)에 있다. Node 24.22.3 LTS와 Task 002·003의 구현·설치·검증은 담당 결과를 따르며 Task 004의 품질/CI는 아직 설계 단계다. 사용자가 선택한 CI의 PR·부모 브랜치·수동 실행 중 수동 실행은 기본 브랜치의 workflow 등록 조건을 따른다.
 
 <a id="related"></a>
 ## 기준·검증 배정

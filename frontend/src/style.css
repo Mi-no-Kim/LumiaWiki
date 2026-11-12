@@ -1,11 +1,19 @@
 :root {
-  font-family: system-ui, sans-serif;
+  font-family: 'Segoe UI', 'Malgun Gothic', system-ui, sans-serif;
   color: #e9edf6;
-  background: #101621;
+  background: #0d131d;
+  --surface: #151e2b;
+  --border: #2a3749;
+  --muted: #a8b6c9;
+  --accent: #8ce3d0;
   font-synthesis: none;
   line-height: 1.6;
 }
-body { margin: 0; }
-main { max-width: 56rem; margin: 16vh auto; padding: 2rem; }
-h1 { font-size: clamp(2rem, 6vw, 3.5rem); line-height: 1.2; }
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 320px; }
+button, select { font: inherit; }
+button, a, select { -webkit-tap-highlight-color: transparent; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+.landing { max-width: 56rem; margin: 16vh auto; padding: 2rem; }
+.landing h1 { font-size: clamp(2rem, 6vw, 3.5rem); line-height: 1.2; }
 .eyebrow { color: #8acbd5; letter-spacing: .14em; font-size: .8rem; }
