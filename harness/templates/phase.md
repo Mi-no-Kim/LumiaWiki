@@ -67,7 +67,7 @@ GitHub에 반영할 때는 [GitHub Phase 게시 양식](<github-phase.md>)을 �
 <a id="activity"></a>
 ### 주요 논의·판단 근거
 
-#### [확인 가능한 날짜] — [사건]
+#### [사건]
 
 - 사실·논의:
 - 판단·이유:

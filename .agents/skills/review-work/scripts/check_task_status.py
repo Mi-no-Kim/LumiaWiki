@@ -62,10 +62,10 @@ def main(argv=None):
         print(f"미확인: {error}", file=sys.stderr)
         return 2
     if actual != args.expect_state:
-        print(f"불일치: {args.task} — 인덱스 상태 '{actual}', 기대 '{args.expect_state}'. "
+        print(f"불일치: {args.task} - 인덱스 상태 '{actual}', 기대 '{args.expect_state}'. "
               "수용 판단과 담당 기록을 대조한 뒤 필요한 상태를 반영·스테이징하세요.")
         return 1
-    print(f"일치: {args.task} — 인덱스 상태 '{actual}'. "
+    print(f"일치: {args.task} - 인덱스 상태 '{actual}'. "
           "Task 상태만 확인; 검수·GitHub·PR·종료 처리는 별도 확인.")
     return 0
 
