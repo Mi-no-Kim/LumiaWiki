@@ -1,6 +1,7 @@
 # Task 42-002 — 테스트 실행 환경·최소 TDD hook
 
 <a id="summary"></a>
+
 ## 현재 요약
 
 - GitHub sub-issue: [#51](https://github.com/Mi-no-Kim/LumiaWiki/issues/51)
@@ -10,6 +11,7 @@
 - 다음 행동: 부모 통합·브랜치 정리는 [PR #59](https://github.com/Mi-no-Kim/LumiaWiki/pull/59)의 실제 상태를 따른다. Task 003~004는 별도 작업이다.
 
 <a id="goal"></a>
+
 ## 목적과 허용 범위 및 완료 조건
 
 [테스트 기준](<../../../../docs/details/development/테스트와 TDD.md#current>)과 [최소 hook 기준](<../../../../docs/details/development/TDD hook.md#minimum>)을 실제로 연결한다. Task 001의 웹·서버·환경 설정을 입력으로 삼는다.
@@ -23,6 +25,7 @@
 완료 조건은 [hook 수용 사례 1~7](<../../../../docs/details/development/TDD hook.md#acceptance>)의 실제 정상/거부/미확인 판정, Windows·worktree 및 실제 Codex 편집/Git 커밋 경로의 동작, 개발 DB/볼륨과 테스트 DB의 분리, 후속 작업이 재사용할 명령·근거·예외/해제 안내다. 검사기 자체는 테스트·수정·커밋을 수행하지 않고 작업 상태도 바꾸지 않는다. 실제 커밋 경로 검증은 격리된 임시 저장소/후보로 수행한다.
 
 <a id="plan"></a>
+
 ## 실행 입력과 검증 근거
 
 - [구현 계약·확정 환경](artifacts/task-002-verification.md#implementation-decisions)
@@ -33,6 +36,7 @@
 - [제출 후보 검수·근거 보존](artifacts/task-002-verification.md#submission-review)
 
 <a id="handoff"></a>
+
 ## 결과와 잔여
 
 - PR 결합 후보의 도구 테스트 69개가 통과했다. 웹·서버와 실제 Codex 편집/Git 제출 경로는 동일 입력의 기존 검증 근거를 재사용했다.

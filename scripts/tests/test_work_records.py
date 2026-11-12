@@ -135,9 +135,7 @@ class CandidateTests(unittest.TestCase):
         failed = check()
         self.assertEqual(2, failed.returncode)
         self.assertIn('Invalid or oversized source object: AGENTS.md', failed.stderr)
-        workflow = (SCRIPTS.parent / '.github/workflows/harness-inventory.yml').read_text(encoding='utf-8')
-        step = workflow.split('      - name: Prepare parent document blobs\n', 1)[1].split('\n      - name:', 1)[0]
-        code = textwrap.dedent(step.split('        run: |\n', 1)[1])
+        code = (SCRIPTS / 'quality/record-base.py').read_text(encoding='utf-8')
         prepared = subprocess.run([sys.executable, '-B', '-X', 'utf8', '-c', code], cwd=clone,
                                   capture_output=True, text=True, encoding='utf-8')
         self.assertEqual(0, prepared.returncode, prepared.stderr)

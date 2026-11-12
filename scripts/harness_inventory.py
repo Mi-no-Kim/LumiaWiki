@@ -20,7 +20,8 @@ GIT_EVENTS = {'applypatch-msg', 'pre-applypatch', 'post-applypatch', 'pre-commit
               'post-index-change', 'p4-changelist', 'p4-prepare-changelist',
               'p4-post-changelist', 'p4-pre-submit'}
 TEXT_SUFFIXES = {'.md', '.py', '.js', '.mjs', '.ts', '.tsx', '.json', '.yaml', '.yml',
-                 '.toml', '.sh', '.txt', '.svg', '.html', '.css', '.xml', '.sql'}
+                 '.toml', '.sh', '.txt', '.svg', '.html', '.css', '.xml', '.sql',
+                 '.gradle', '.properties', '.bat'}
 HEX = re.compile(r'[0-9a-f]{64}\Z')
 
 
@@ -56,7 +57,7 @@ def canonical(value):
 
 
 def source_hash(name, content):
-    if PurePosixPath(name).suffix in TEXT_SUFFIXES or PurePosixPath(name).name in GIT_EVENTS:
+    if PurePosixPath(name).suffix in TEXT_SUFFIXES or PurePosixPath(name).name in GIT_EVENTS | {'gradlew'}:
         content = content.replace(b'\r\n', b'\n')
     return hashlib.sha256(content).hexdigest()
 
@@ -293,6 +294,18 @@ def validate_verification(view, item):
         raise ValueError('Verification evidence anchor is absent: ' + item['id'])
 
 
+def table_content(text):
+    rows = []
+    for line in text.strip().splitlines():
+        if not line.strip():
+            continue
+        cells = [cell.strip() for cell in re.split(r'(?<!\\)\|', line.strip())]
+        cells = [re.sub(r'\]\(<([^<>\s]+)>\)', r'](\1)', cell) for cell in cells]
+        cells = [re.sub(r'-+', '---', cell) if re.fullmatch(r':?-{3,}:?', cell) else cell for cell in cells]
+        rows.append(cells)
+    return rows
+
+
 def inspect(view, describe=False, render_only=False):
     view.load(DOCUMENTS.values())
     catalogs = {}
@@ -332,6 +345,6 @@ def inspect(view, describe=False, render_only=False):
                            for document, (items, _) in catalogs.items())
     for document, (items, text) in catalogs.items():
         tables = re.findall(r'<!-- inventory-table -->\s*\n(.*?)\n<!-- /inventory-table -->', text, re.S)
-        if len(tables) != 1 or tables[0].strip() != render(items):
+        if len(tables) != 1 or table_content(tables[0]) != table_content(render(items)):
             raise ValueError('Inventory summary table differs: ' + document)
     return None

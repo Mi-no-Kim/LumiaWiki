@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+    "redhat.java",
+    "vscjava.vscode-gradle",
+    "richardwillis.vscode-spotless-gradle"
+  ]
+}

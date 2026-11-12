@@ -1,16 +1,18 @@
 # Task 42-001 — 프로젝트 골격·실행 환경·DB 연결
 
 <a id="summary"></a>
+
 ## 현재 요약
 
 - 제목: 프로젝트 골격·실행 환경·DB 연결
 - GitHub sub-issue: [Mi-no-Kim/LumiaWiki #50](https://github.com/Mi-no-Kim/LumiaWiki/issues/50)
-- 부모 Issue: [Issue #42](<issue.md#summary>)
+- 부모 Issue: [Issue #42](issue.md#summary)
 - 상태: 완료
 - 현재 진행 위치: 확정한 Task 1의 웹·서버·개발 DB·실행기·격리 검증 도구를 구현했다. 빌드·격리 검증·새 개발 DB 인증/재시작 보존과 사용자 시작 화면 확인을 마쳤다.
 - 다음 행동: [PR #54](https://github.com/Mi-no-Kim/LumiaWiki/pull/54)를 부모 Issue 브랜치에 Squash 병합하고 반영 결과·Task 브랜치 정리를 확인한다. Task 002 이후는 예정이며 이번 요청에서 착수하지 않는다.
 
 <a id="goal"></a>
+
 ## 목적과 허용 범위 및 완료 조건
 
 후속 테스트·공통 골격이 사용할 웹·서버·개발 DB의 실행 기반을 만든다. 입력은 [기술 구성](<../../../../docs/details/development/기술 구성.md#stack>)·[DB 환경](<../../../../docs/details/development/DB 환경.md#layout>)·[서버 프로필](<../../../../docs/개발 기준.md#server-profiles>)이다.
@@ -23,24 +25,26 @@
 완료 조건은 선택한 버전의 설치·웹/서버 빌드·로컬 실행·DB 접속 확인, 환경변수 전달과 비밀값 비추적, SQL의 JAR 포함·Boot Flyway 인식·재시작 시 이력 유지, 컨테이너 종료/재시작 후 볼륨 보존이다. 게임 스키마 없는 상태의 확인은 격리된 임시 검증용 migration으로 수행하고 제품 스키마로 남기지 않는다. 실제 검증법은 아래 확정 설계의 격리 복제·임시 DB 절차를 따른다. 실행 안내와 실제 경로는 README·STRUCTURE에 반영한다.
 
 <a id="plan"></a>
+
 ## 계획과 예정 검증
 
 1. JDK·Node·npm·Docker 엔진·포트와 기존 파일/설정을 확인한다. 도구의 버전 차이만으로 교체하지 않는다. 배포 메타데이터·호환성은 실제 설치 전에 확인하고 충돌은 해당 범위에서 판단한다.
 2. 잠금 파일·Wrapper·기본 설정과 DB 구성을 마련하고 빌드·실행한다. 생성/환경 준비 예외의 대상·이유·검증을 기록하며 기능 로직을 앞당기지 않는다.
 3. 정상 접속, 개인 값 누락/잘못된 접속의 실패, SQL 리소스/이력과 볼륨 보존을 확인한다. 기존 사용자 데이터 삭제나 볼륨 초기화는 하지 않는다.
-4. 골격 직후 [Task 002](<task-002.md#plan>)에 테스트 실행 환경·최소 hook을 연결한다. 테스트 DB 분리의 실제 결과는 그 Task에서 확인하고 Issue 통합 수용에서 함께 대조한다.
+4. 골격 직후 [Task 002](task-002.md#plan)에 테스트 실행 환경·최소 hook을 연결한다. 테스트 DB 분리의 실제 결과는 그 Task에서 확인하고 Issue 통합 수용에서 함께 대조한다.
 
 ### 구현 전 공유할 사용자 확인 목록
 
-| 준비·조작 | 기대 결과·AI 확인 방법 |
-|---|---|
+| 준비·조작                                                 | 기대 결과·AI 확인 방법                                                     |
+| --------------------------------------------------------- | -------------------------------------------------------------------------- |
 | 개인 환경변수를 주입한 뒤 DB·서버·웹을 안내 명령으로 실행 | 웹 진입·서버 시작·개발 DB 접속이 성공. 빌드·접속 검사와 직접 실행으로 확인 |
-| 컨테이너를 일반 종료한 뒤 재시작 | 기존 볼륨·Flyway 이력이 보존됨. 재시작 전후 내부 값 대조 |
-| 별도 실행에서 필수 접속값 누락/잘못된 값 사용 | 비밀값 노출 없이 원인 확인 가능한 실패. 로그·종료 결과 대조 |
+| 컨테이너를 일반 종료한 뒤 재시작                          | 기존 볼륨·Flyway 이력이 보존됨. 재시작 전후 내부 값 대조                   |
+| 별도 실행에서 필수 접속값 누락/잘못된 값 사용             | 비밀값 노출 없이 원인 확인 가능한 실패. 로그·종료 결과 대조                |
 
-아래 명령·주소·후보 버전과 위 조작/기대 결과를 구현 전 계획으로 공유한다. 명령은 앞으로 구현할 사용 계약이며 현재 실행 가능한 기능이 아니다. 사용자 확인은 아직 미수행이다. 이번 범위는 기술 실행 골격이며 검색·상세·루트 화면은 Issue #44 이후 디자인을 따른다. 자체 검수와 커밋 전 별도 검수는 [검수 기준](<../../../../.agents/skills/review-work/SKILL.md#before-commit>)을 적용한다.
+아래 명령·주소·후보 버전과 위 조작/기대 결과를 구현 전 계획으로 공유한다. 명령은 앞으로 구현할 사용 계약이며 현재 실행 가능한 기능이 아니다. 사용자 확인은 아직 미수행이다. 이번 범위는 기술 실행 골격이며 검색·상세·루트 화면은 Issue #44 이후 디자인을 따른다. 자체 검수와 커밋 전 별도 검수는 [검수 기준](../../../../.agents/skills/review-work/SKILL.md#before-commit)을 적용한다.
 
 <a id="implementation-decisions"></a>
+
 ## Task 1 세부 결정 — 확정
 
 2026-11-12 사용자 요청으로 현재 Task 1의 세부 사항만 확정했다. 기존 Task 1의 실행 준비를 구체화하는 변경이며 새 Task·브랜치·제품 요구를 추가하지 않는다. 후속 Task 002~004의 도구·설계 결정은 변경하지 않는다. 이번 변경은 계획 기록이며 구현·설치·DB 생성·커밋·push는 수행하지 않는다.
@@ -71,17 +75,17 @@
 
 모든 명령은 저장소 루트 기준이다. 현재는 계획된 사용 계약이며 명령을 구현·실행한 결과가 아니다.
 
-| 목적 | 명령·관찰 위치 |
-|---|---|
-| DB 시작/준비 대기 | `docker compose -p lumiawiki up -d --wait --wait-timeout 90 db` |
-| DB 일반 종료 | `docker compose -p lumiawiki down` (볼륨 보존) |
-| API 로컬 실행 | `node --env-file=.env scripts/dev-api.mjs` → 127.0.0.1:8080 |
-| 웹 실행 | `npm --prefix frontend run dev` → localhost:5173 |
-| 웹 타입 검사 | `npm --prefix frontend run typecheck` → tsc --noEmit |
-| 웹 빌드 | `npm --prefix frontend run build` → typecheck 후 vite build |
-| 웹 빌드 확인 | `npm --prefix frontend run preview` → 127.0.0.1:4173 |
-| 서버 빌드 | Windows: `backend\gradlew.bat -p backend bootJar`, 다른 환경: `backend/gradlew -p backend bootJar` |
-| 기반 검증 | `node scripts/verify-bootstrap.mjs` → 아래 격리 검증 결과 |
+| 목적              | 명령·관찰 위치                                                                                     |
+| ----------------- | -------------------------------------------------------------------------------------------------- |
+| DB 시작/준비 대기 | `docker compose -p lumiawiki up -d --wait --wait-timeout 90 db`                                    |
+| DB 일반 종료      | `docker compose -p lumiawiki down` (볼륨 보존)                                                     |
+| API 로컬 실행     | `node --env-file=.env scripts/dev-api.mjs` → 127.0.0.1:8080                                        |
+| 웹 실행           | `npm --prefix frontend run dev` → localhost:5173                                                   |
+| 웹 타입 검사      | `npm --prefix frontend run typecheck` → tsc --noEmit                                               |
+| 웹 빌드           | `npm --prefix frontend run build` → typecheck 후 vite build                                        |
+| 웹 빌드 확인      | `npm --prefix frontend run preview` → 127.0.0.1:4173                                               |
+| 서버 빌드         | Windows: `backend\gradlew.bat -p backend bootJar`, 다른 환경: `backend/gradlew -p backend bootJar` |
+| 기반 검증         | `node scripts/verify-bootstrap.mjs` → 아래 격리 검증 결과                                          |
 
 Task 1의 서버 빌드는 bootJar이며 제품 테스트/hook 검증 완료를 뜻하지 않는다. 테스트 명령/연결은 골격 직후 Task 002가 준비한다. 서버의 성공 판정은 기동 로그·DB 접속으로 확인하며 제품 API나 health endpoint를 임의로 추가하지 않는다.
 
@@ -106,6 +110,7 @@ Task 1의 서버 빌드는 bootJar이며 제품 테스트/hook 검증 완료를 
 - 결정 반영 확인: Task 1 본문과 부모/현황 요약 4개 파일의 로컬 참조·표식 79개와 공백을 확인했다. 기존 기술·DB 기준과 이번 세부 설계를 대조했으며 Task 002~004의 원문이 HEAD와 같음을 확인했다. 결정 기록은 미커밋이고 실행 검증은 수행하지 않았다.
 
 <a id="implementation"></a>
+
 ## 구현 진행
 
 - 2026-11-12 사용자 요청으로 확정한 Task 1 구현을 시작한다. 기존 미커밋 상세 결정 4개 기록을 보존하며 같은 Task에서 구현·검증·안내를 함께 처리한다. 후속 Task의 제품 기능·테스트/hook/CI는 구현하지 않는다.
@@ -115,6 +120,7 @@ Task 1의 서버 빌드는 bootJar이며 제품 테스트/hook 검증 완료를 
 - 사용자 추가 지시: Spring Boot 파일은 사용자가 제공한다. 진행 중이던 backend bootJar는 중단(종료 1)했고 빌드 성공으로 판정하지 않는다. AI 생성 파일의 지문을 확인해 `.tmp/issue-42/task-001/server-before-user/`로 보존했다. 이후 보관 경로에서 확인한 공통 파일은 settings·Wrapper 3개·애플리케이션 Java의 총 5개다. build.gradle·Wrapper properties·application.yaml은 지문이 달라 원위치에 보존했다. 사용자 제공 파일의 도착 전 backend 생성/수정을 중단한다. 웹·Compose·실행기·검증 도구는 독립적으로 계속 구현한다. 제공 후 실제 서버 파일과 확정 설정/버전을 대조하고 필요한 연결만 수행한다.
 
 <a id="verification"></a>
+
 ## 구현 결과와 실제 검증
 
 - 입력: 사용자가 backend 제공 완료를 알린 뒤 제공된 build.gradle·application.yaml·HELP·기본 테스트를 기준으로 연결했다. 현재 없던 공통 파일 5개는 보관본에서 복원하고 local/test 설정을 작성했다. 제공된 의존성/테스트는 유지하며 PostgreSQL Flyway 모듈의 runtime 범위·Wrapper 9.9.1·SQL processResources·공통 JPA/Flyway 설정만 확정 기준에 맞췄다. 첫 생성 시도와 사용자 제공 전 빌드, 제공 직후 복원 도중의 빌드는 중단한 시도로 구별한다.
@@ -132,22 +138,22 @@ Task 1의 서버 빌드는 bootJar이며 제품 테스트/hook 검증 완료를 
 
 격리 실행의 서버 입력은 아래 SHA-256으로 보존한다. 기준 commit은 `d8133e3`이고 서버/실행기/웹 변경은 아직 미커밋이다. 임시 출력만으로 검증 근거를 대체하지 않는다. 아래 서버 지문은 성공 실행 후 원본과 다시 대조했다. 실행기의 다른 OS 호출은 sh를 통한 Wrapper 실행으로 정리했으며 Windows 호출 경로는 검증 때와 같고 다른 OS 실행은 미확인이다.
 
-| 입력 | SHA-256 |
-|---|---|
-| `backend/build.gradle` | `7d40889a9340e24fc7c99352ec573eb289857b50364f41b81aef59ec799499e9` |
-| `backend/settings.gradle` | `46d05a549b9d8eb3fd16af7d914377c9bf1bce8d234f941b210838b54eaa1bb9` |
-| `backend/gradlew` | `a5a5c199ba02189ae8c46a334223371a20599d9c298ef65e7540ede4a3f72d59` |
-| `backend/gradlew.bat` | `f17917f8dbe61182b149273ee78090fec1197442c3f38276af907bfa5190db16` |
-| `backend/gradle/wrapper/gradle-wrapper.jar` | `3b8a25775a69158b5ad2b1d17a80a88dc7b40a352a73eb27d06c612a7ce68e98` |
-| `backend/gradle/wrapper/gradle-wrapper.properties` | `ce6651f61cd5c8827ffa10f4ebc400d9363745b0de5616cc4fc8140627c6a943` |
+| 입력                                                                             | SHA-256                                                            |
+| -------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| `backend/build.gradle`                                                           | `7d40889a9340e24fc7c99352ec573eb289857b50364f41b81aef59ec799499e9` |
+| `backend/settings.gradle`                                                        | `46d05a549b9d8eb3fd16af7d914377c9bf1bce8d234f941b210838b54eaa1bb9` |
+| `backend/gradlew`                                                                | `a5a5c199ba02189ae8c46a334223371a20599d9c298ef65e7540ede4a3f72d59` |
+| `backend/gradlew.bat`                                                            | `f17917f8dbe61182b149273ee78090fec1197442c3f38276af907bfa5190db16` |
+| `backend/gradle/wrapper/gradle-wrapper.jar`                                      | `3b8a25775a69158b5ad2b1d17a80a88dc7b40a352a73eb27d06c612a7ce68e98` |
+| `backend/gradle/wrapper/gradle-wrapper.properties`                               | `ce6651f61cd5c8827ffa10f4ebc400d9363745b0de5616cc4fc8140627c6a943` |
 | `backend/src/main/java/io/github/minokim/lumiawiki/LumiawikiApiApplication.java` | `656c97f12467804d5db08a98e2546d61667ce9461c566a8022f26c6d0867c705` |
-| `backend/src/main/resources/application-local.yaml` | `a9f83af5c15034c2a3e15219c0e39e80d15db4deae77e864f3999216452243e5` |
-| `backend/src/main/resources/application.yaml` | `4761c46d3f79db0632579511eac32ade8f1856703687973ddcb9d324cba5cc6e` |
-| `scripts/dev-api.mjs` | `7929de355b3808b1f02ee2c9625318c5a4b6151dfba148346e203a8155cfe768` |
-| `scripts/dev-api.test.mjs` | `00cc2a649e931e62c270e2a3093f39f088ac6aa6c2bbe43a032125ac83761ffb` |
-| `scripts/verify-bootstrap.mjs` | `196600442ab6aa6f00f91e22955bb4174cdc7703065fac8785ec4b7fda188180` |
-| `frontend/package.json` | `15859b72d5dfb7d32d5d3c4aeaac3d016f9a777970109dd52f94e93ebcda6d38` |
-| `frontend/package-lock.json` | `49a00b7d18cdb137bfc5fb7ffc327cd41e8a495ec0a349f35dfdaac619b66ec0` |
+| `backend/src/main/resources/application-local.yaml`                              | `a9f83af5c15034c2a3e15219c0e39e80d15db4deae77e864f3999216452243e5` |
+| `backend/src/main/resources/application.yaml`                                    | `4761c46d3f79db0632579511eac32ade8f1856703687973ddcb9d324cba5cc6e` |
+| `scripts/dev-api.mjs`                                                            | `7929de355b3808b1f02ee2c9625318c5a4b6151dfba148346e203a8155cfe768` |
+| `scripts/dev-api.test.mjs`                                                       | `00cc2a649e931e62c270e2a3093f39f088ac6aa6c2bbe43a032125ac83761ffb` |
+| `scripts/verify-bootstrap.mjs`                                                   | `196600442ab6aa6f00f91e22955bb4174cdc7703065fac8785ec4b7fda188180` |
+| `frontend/package.json`                                                          | `15859b72d5dfb7d32d5d3c4aeaac3d016f9a777970109dd52f94e93ebcda6d38` |
+| `frontend/package-lock.json`                                                     | `49a00b7d18cdb137bfc5fb7ffc327cd41e8a495ec0a349f35dfdaac619b66ec0` |
 
 ### 사용자 화면 확인과 DB 저장 공간 확인
 
@@ -163,6 +169,7 @@ Task 1의 서버 빌드는 bootJar이며 제품 테스트/hook 검증 완료를 
 - 같은 Compose 구성과 현재 개인 .env로 빈 volume을 다시 생성해 개발 서버 연결·재시작 보존을 확인한다. 비밀번호 값은 출력하거나 기록하지 않는다.
 
 <a id="result"></a>
+
 ## 최종 결과와 완료 판단
 
 - 새 개발 volume 생성일은 2026-11-12(KST, Docker metadata `2026-11-11T17:08:00Z`)이다. 사용자 개인 .env로 local 프로필 서버가 DB 인증·Hikari 접속·Flyway 빈 migration 검증 후 8080에서 기동했다. API를 종료하고 Compose의 일반 down/up을 실행해 같은 volume 생성시각·DB OID·Flyway history table OID와 행 수가 유지됨을 대조했다. 이후 같은 서버 실행기로 재기동해 DB 연결·Flyway 검사·서버 시작을 재확인했다.
@@ -174,6 +181,7 @@ Task 1의 서버 빌드는 bootJar이며 제품 테스트/hook 검증 완료를 
 - 관련 반영: Task 완료를 부모 Issue/Phase 전체 완료로 전파하지 않는다. GitHub #50의 완료/라벨과 부모 요약을 로컬 결과에 맞추고 후속 Task는 예정으로 유지한다. 구현 완료 당시 소스는 미커밋이었으며 이번 제출에서도 Task 브랜치를 자동 통합하거나 삭제하지 않는다.
 
 <a id="commit-review"></a>
+
 ## 구현 커밋 전 검수
 
 - 2026-11-12 사용자 요청으로 Task 1 구현 결과의 검수·로컬 커밋을 진행한다. 기존 완료 작업의 제출 보완이며 새 Task/브랜치·동작 범위를 추가하지 않는다. 기준은 HEAD `d8133e3`과 확정 설계·최종 실행 결과다. 개인 .env·캐시·빌드 결과·임시 검증 출력·사용자 제공 HELP는 제출 대상에 넣지 않는다.
@@ -184,6 +192,7 @@ Task 1의 서버 빌드는 bootJar이며 제품 테스트/hook 검증 완료를 
 - 주 진행자 최종 확인: GitHub #50 Closed/Completed·unit:task/status:completed·milestone1, 부모 #42와 milestone1 Open, #51~#53 Open/Planned와 실제 하위 관계가 로컬 기록과 일치했다. 인덱스 Task 상태 검사도 완료와 일치했다. 상태 검사 도구의 첫 cp949 출력 인코딩 오류는 Python UTF-8 실행 옵션으로 해결했으며 검사기 자체는 변경하지 않았다. 실제 개인 DB 암호가 staged 33개 파일에 없음을 값 출력 없이 확인했다. 이후 검수 결과 요약만 추가한 후보의 나머지 파일/내용 일치를 재대조한다.
 
 <a id="parent-integration"></a>
+
 ## 부모 Issue 통합
 
 - 2026-11-12 사용자 요청: Task 1 push·PR 생성·부모 Issue 병합. 새 Task나 기능 변경이 아닌 기존 완료 결과의 통합이다. 검수된 구현 commit `95cafce`와 부모 Issue의 준비 commit `d8133e3`을 각각 담당 원격 브랜치에 push하고 실제 ref 일치를 확인했다.

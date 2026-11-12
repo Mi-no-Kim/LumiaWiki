@@ -8,13 +8,15 @@ lumia_island_wiki/
 ├── README.md                       프로젝트 소개와 시작 안내
 ├── STRUCTURE.md                    주요 경로와 역할
 ├── .agents/skills/                 요청 판단·검수·응답 형식의 AI 스킬
-├── .codex/hooks.json               사용자 신뢰가 필요한 Codex 편집 전 TDD 검사 정의
+├── .codex/hooks.json               Codex 편집 전 TDD·편집 뒤 변경 파일 포맷 정의
+├── package.json                    공통 품질·포맷·검사 명령과 루트 Prettier
+├── .vscode/                        저장 시 Prettier·Spotless 설정과 권장 확장
 ├── backend/                        Spring Boot API·Gradle Wrapper·공통/local/test 설정
 ├── frontend/                       React·Vite 웹 시작 화면·manifest·잠금 파일
 ├── db/migration/                   backend 밖에서 관리하는 공용 Flyway SQL
 ├── compose.yaml                    PostgreSQL 로컬 개발 환경
 ├── .env.example                    비밀값 없는 개인 설정 양식 (.env는 Git 제외)
-├── .github/workflows/             하네스 현황 후보 검사·격리 테스트의 CI 정의
+├── .github/workflows/             영역별 품질·테스트·빌드와 하네스 현황 CI 정의
 ├── scripts/                        서버 실행·TDD·현황 검사·Git hook 설치·격리 검증 도구
 │   ├── tdd-run.py                  실제 테스트 실행·근거 기록/보존
 │   ├── tdd-check.py                읽기 전용 편집/제출 후보 검사
@@ -26,6 +28,7 @@ lumia_island_wiki/
 │   ├── harness_inventory.py       후보·경계·등록·지문·확인 상태 판독
 │   ├── install-harness-hooks.py   기존 Git hook 보존·중복 설치·복원
 │   ├── hooks/pre-commit           프로젝트 관리 Git hook 정의
+│   ├── quality/                    허용 경로·포맷·인덱스 검사·편집 hook·CI 분류 실행기
 │   └── tests/                      TDD·현황의 정상/거부·후보/worktree·hook 공존·복원 테스트
 ├── docs/                           제품 요구와 운영 기준
 │   ├── 프로젝트 목표와 범위.md     제품 목표·범위·품질과 공개 조건
@@ -61,8 +64,8 @@ lumia_island_wiki/
         └── harness/                독립 하네스 정비 Issue
 ```
 
-| 세부 위치 | 역할 |
-|---|---|
+| 세부 위치                                      | 역할                                      |
+| ---------------------------------------------- | ----------------------------------------- |
 | `work/records/phase-001/`부터 `phase-007/`까지 | Phase별 계획과 실제 하위 작업 기록의 위치 |
 
-제품 범위는 [프로젝트 목표와 범위](<docs/프로젝트 목표와 범위.md#current>), 작업 기록의 위치는 [work 안내](<work/README.md#start>)와 [현황](<work/현황.md#current>)에서 더 자세히 확인할 수 있다.
+제품 범위는 [프로젝트 목표와 범위](<docs/프로젝트 목표와 범위.md#current>), 작업 기록의 위치는 [work 안내](work/README.md#start)와 [현황](work/현황.md#current)에서 더 자세히 확인할 수 있다.

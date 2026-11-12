@@ -1,16 +1,18 @@
 # Phase 001 구체화 및 Issue·Task 실행 계획 수립
 
 <a id="summary"></a>
+
 ## 현재 요약
 
 - 제목: Phase 001 구체화 및 Issue·Task 실행 계획 수립
 - 실제 GitHub Issue: [Mi-no-Kim/LumiaWiki #15](https://github.com/Mi-no-Kim/LumiaWiki/issues/15)
-- 소속 Phase: [Phase 001](<../phase.md#summary>)
+- 소속 Phase: [Phase 001](../phase.md#summary)
 - 상태: 완료
 - 현재 진행 위치: Task 001~005의 결합과 아홉 수용 조건을 자체·별도 검수해 내용 수용을 완료하고 [PR #49](https://github.com/Mi-no-Kim/LumiaWiki/pull/49)로 Phase에 merge commit 병합했다. 실제 내용·이력 보존과 Issue 브랜치의 로컬·원격 삭제를 확인해 종료 처리를 마쳤다. 후속 Issue #42~#48은 예정이며 새 Task 생성·기능 구현·자료 처리는 수행하지 않았다.
 - 다음 판단/행동: 이 Issue의 통합·종료 결과를 반환한다. 후속 진행은 Phase 계획과 첫 실행 기반 Issue #42의 착수 조건에 따르며 이번에는 실행 준비·Task 생성을 시작하지 않는다. Phase 전체 완료를 뜻하지 않으며 실제 자료 작업 보류를 유지한다.
 
 <a id="goal"></a>
+
 ## 문제와 목표 및 수용 조건
 
 ### 문제와 목표
@@ -27,7 +29,7 @@ Phase 001에는 단계 목표와 검토용 완료 조건이 있지만, 시즌·�
 - 후속 Issue별 목표·범위·수용 조건·의존 관계와 실행 순서를 정한다.
 - 각 Issue의 Task 윤곽과 선후 관계를 정한다. 상세 Task의 범위·완료 조건·실행·검증 계획은 해당 Issue를 준비할 때 구체화한다.
 - 제품 요구를 바꾸는 선택은 기존 요구와 구별해 논의하고, 합의된 변경은 담당 제품 문서에 반영한다.
-- 이번 Issue에서는 화면 목록·사용 흐름·디자인 담당 범위를 정하고 Task 002에서 구체화된 화면을 이미지로 작성·검토한다. 구현 기준의 상세 디자인은 각 기능 Issue에서 동작 구현보다 먼저 검토한다. 실제 페이지·기능 동작 구현과 실제 게임 자료의 조사·확보·변환·DB 등록은 포함하지 않는다. 자료 작업은 [기존 보류 조건](<../phase.md#input-workflow>)을 유지한다.
+- 이번 Issue에서는 화면 목록·사용 흐름·디자인 담당 범위를 정하고 Task 002에서 구체화된 화면을 이미지로 작성·검토한다. 구현 기준의 상세 디자인은 각 기능 Issue에서 동작 구현보다 먼저 검토한다. 실제 페이지·기능 동작 구현과 실제 게임 자료의 조사·확보·변환·DB 등록은 포함하지 않는다. 자료 작업은 [기존 보류 조건](../phase.md#input-workflow)을 유지한다.
 - 각 Phase의 첫 Issue를 같은 방식으로 두자는 제안 중, 이번에는 Phase 001만 구체화한다.
 
 ### 이 Issue의 수용 조건
@@ -44,9 +46,10 @@ Phase 001에는 단계 목표와 검토용 완료 조건이 있지만, 시즌·�
 
 ### 기준 원천
 
-[Phase 목표와 범위](<../phase.md#goal>) · [아이템 탐색과 상세](<../../../../docs/details/product/아이템 탐색과 상세.md#current>) · [루트 계산기](<../../../../docs/details/product/루트 계산기.md#current>) · [게임 데이터 변경 관리](<../../../../docs/details/product/게임 데이터 변경 관리.md#current>) · [제품 요구와 실행 계획의 관계](<../../../../docs/문서 관리 기준.md#product-and-plan>)
+[Phase 목표와 범위](../phase.md#goal) · [아이템 탐색과 상세](<../../../../docs/details/product/아이템 탐색과 상세.md#current>) · [루트 계산기](<../../../../docs/details/product/루트 계산기.md#current>) · [게임 데이터 변경 관리](<../../../../docs/details/product/게임 데이터 변경 관리.md#current>) · [제품 요구와 실행 계획의 관계](<../../../../docs/문서 관리 기준.md#product-and-plan>)
 
 <a id="plan"></a>
+
 ## 해결 계획과 의존
 
 ### Task 구성과 진행 순서
@@ -64,48 +67,53 @@ Task 001에서 필요한 결과를, Task 002에서 화면과 사용 흐름을 �
 - 로컬 Phase·Issue·Task가 각자의 범위와 판단을 소유하고, GitHub는 로컬 내용을 기준으로 반영한다.
 
 <a id="pending"></a>
+
 ## 미정과 결정 시점
 
-- 등록 대상·지원 기능·완료 기준: [Task 001](<task-001.md#summary>)에서 확정했다. 남은 상세 결정의 담당·시점은 [인계 목록](<artifacts/task-001-discussion-details.md#handoff-decisions>)을 따른다.
-- 화면 목록·사용 흐름·디자인 범위: [Task 002](<task-002.md#goal>)에서 확정했다.
-- 기술 선택·사용 버전·공통 설정: [Task 003](<task-003.md#summary>)에서 확정하고 실제 개발 기준·후속 인계에 연결했다. 설치·구현·실행 검증은 담당 후속 과제에서 수행한다.
-- 필요한 자료와 등록·검증 방향: [Task 004](<task-004.md#summary>)에서 사용자 합의 후 로컬 내용 수용을 완료했다. PR #40 통합·내용 보존·Task 브랜치 정리를 마쳤다. 실제 자료 작업 보류는 유지한다.
-- 후속 Issue·Task 윤곽과 첫 착수 대상: [Task 005](<task-005.md#summary>)에서 일곱 Issue와 총 23개 Task 구성 윤곽·수용 조건을 확정했다. 실제 Issue #42~#48은 Phase 001에 등록했고 Task는 아직 생성하지 않았다. 첫 실행 기반은 Issue #42이며 Task 001~005의 통합·종료는 마쳤다. 이 Issue 결과의 Phase 통합·종료는 [병합 후 기록](<#merge-close>)에서 확인한다.
+- 등록 대상·지원 기능·완료 기준: [Task 001](task-001.md#summary)에서 확정했다. 남은 상세 결정의 담당·시점은 [인계 목록](artifacts/task-001-discussion-details.md#handoff-decisions)을 따른다.
+- 화면 목록·사용 흐름·디자인 범위: [Task 002](task-002.md#goal)에서 확정했다.
+- 기술 선택·사용 버전·공통 설정: [Task 003](task-003.md#summary)에서 확정하고 실제 개발 기준·후속 인계에 연결했다. 설치·구현·실행 검증은 담당 후속 과제에서 수행한다.
+- 필요한 자료와 등록·검증 방향: [Task 004](task-004.md#summary)에서 사용자 합의 후 로컬 내용 수용을 완료했다. PR #40 통합·내용 보존·Task 브랜치 정리를 마쳤다. 실제 자료 작업 보류는 유지한다.
+- 후속 Issue·Task 윤곽과 첫 착수 대상: [Task 005](task-005.md#summary)에서 일곱 Issue와 총 23개 Task 구성 윤곽·수용 조건을 확정했다. 실제 Issue #42~#48은 Phase 001에 등록했고 Task는 아직 생성하지 않았다. 첫 실행 기반은 Issue #42이며 Task 001~005의 통합·종료는 마쳤다. 이 Issue 결과의 Phase 통합·종료는 [병합 후 기록](#merge-close)에서 확인한다.
 
 <a id="related"></a>
+
 ## 관련 과제
 
-- [Issue #16: 화면 디자인 선행과 화면 기반 기능 검증 기준 정립](<../../harness/issue-16/issue.md#summary>)은 공통 운영 규칙의 정의·정비·수용을 담당한다. 이번 Issue는 Phase 001에 적용할 계획과 선행 관계를 관리한다.
+- [Issue #16: 화면 디자인 선행과 화면 기반 기능 검증 기준 정립](../../harness/issue-16/issue.md#summary)은 공통 운영 규칙의 정의·정비·수용을 담당한다. 이번 Issue는 Phase 001에 적용할 계획과 선행 관계를 관리한다.
 
 <a id="owned-tasks"></a>
+
 ## 보유 Task
 
-- [Task 15-001: 등록 대상·지원 기능·완료 기준 정하기](<task-001.md#summary>)
-- [Task 15-002: 화면 목록·사용 흐름·디자인 범위 정하기](<task-002.md#summary>)
-- [Task 15-003: 기술 선택·공통 설정·의존 관계 정하기](<task-003.md#summary>)
-- [Task 15-004: 자료 등록·검증 방향 정하기](<task-004.md#summary>)
-- [Task 15-005: 후속 Issue·Task 윤곽과 실행 순서 정하기](<task-005.md#summary>)
+- [Task 15-001: 등록 대상·지원 기능·완료 기준 정하기](task-001.md#summary)
+- [Task 15-002: 화면 목록·사용 흐름·디자인 범위 정하기](task-002.md#summary)
+- [Task 15-003: 기술 선택·공통 설정·의존 관계 정하기](task-003.md#summary)
+- [Task 15-004: 자료 등록·검증 방향 정하기](task-004.md#summary)
+- [Task 15-005: 후속 Issue·Task 윤곽과 실행 순서 정하기](task-005.md#summary)
 
 <a id="verification"></a>
+
 ## 현재 결과와 검증
 
 - 최초 등록 시 Task 계획 5개와 이 Issue의 보유 목록·Phase·현황을 사용자 요청 및 제품·기록 기준에 대조해 자체·별도 에이전트 검수했다. 당시 커밋 후보 8개 파일의 범위·상태·로컬 참조를 확인했다.
-- Task 001의 범위 결정·검수·인계와 PR #33의 통합·브랜치 정리를 완료했고 GitHub #21도 완료로 유지한다. P1의 여섯 완료 조건과 이월한 미정의 담당·시점을 연결했다. 개별 페이지는 P1에서 v1.0.0만 표시하고 버전 선택기는 후속으로 둔다. Task 002의 화면·흐름·기준 시안·디자인 분담과 이월 사항도 자체·별도 검수 후 PR #38로 통합하고 종료·브랜치 정리를 확인했다. Task 003은 기술·공통 전제·후속 인계를 실제 개발 기준에 정리하고 자체·별도 검수 후 완료로 판정했다. 해당 변경은 PR #39로 이 부모 브랜치에 통합했고 [Task 003의 병합·정리 기록](<task-003.md#merge-close>)에서 실제 검수·보존·종료 결과를 구분한다. Task 004는 사용자와 자료·교정·검증 방향을 합의하고 자체·별도 검수해 로컬 내용 수용을 완료했다. PR #40의 부모 Issue 통합·내용 보존·GitHub #24 완료 표시·Task 브랜치 정리를 확인했다. 상세는 [Task 004 종료 기록](<task-004.md#verification>)을 따른다. Task 005는 일곱 Issue의 Task 구성·수용 조건과 V05 배정을 확정하고 자체·별도 검수 후 PR #41로 통합했다. 내용 보존·GitHub 완료 표시·Task 브랜치 정리를 확인했으며 상세는 [Task 005 종료 기록](<task-005.md#merge-close>)을 따른다. 제품 구현·동작 검증은 아직이다.
+- Task 001의 범위 결정·검수·인계와 PR #33의 통합·브랜치 정리를 완료했고 GitHub #21도 완료로 유지한다. P1의 여섯 완료 조건과 이월한 미정의 담당·시점을 연결했다. 개별 페이지는 P1에서 v1.0.0만 표시하고 버전 선택기는 후속으로 둔다. Task 002의 화면·흐름·기준 시안·디자인 분담과 이월 사항도 자체·별도 검수 후 PR #38로 통합하고 종료·브랜치 정리를 확인했다. Task 003은 기술·공통 전제·후속 인계를 실제 개발 기준에 정리하고 자체·별도 검수 후 완료로 판정했다. 해당 변경은 PR #39로 이 부모 브랜치에 통합했고 [Task 003의 병합·정리 기록](task-003.md#merge-close)에서 실제 검수·보존·종료 결과를 구분한다. Task 004는 사용자와 자료·교정·검증 방향을 합의하고 자체·별도 검수해 로컬 내용 수용을 완료했다. PR #40의 부모 Issue 통합·내용 보존·GitHub #24 완료 표시·Task 브랜치 정리를 확인했다. 상세는 [Task 004 종료 기록](task-004.md#verification)을 따른다. Task 005는 일곱 Issue의 Task 구성·수용 조건과 V05 배정을 확정하고 자체·별도 검수 후 PR #41로 통합했다. 내용 보존·GitHub 완료 표시·Task 브랜치 정리를 확인했으며 상세는 [Task 005 종료 기록](task-005.md#merge-close)을 따른다. 제품 구현·동작 검증은 아직이다.
 
 <a id="issue-acceptance"></a>
+
 ## Issue 전체 수용 조건 대조
 
-| 수용 조건 | 결합 결과와 근거 |
-|---|---|
-| P1 최소 범위·후속 경계 | [Phase 범위·수용 조건](<../phase.md#goal>)에 Task 001의 등록·조회·제작·기본 루트·보존 최소 범위와 후속 경계를 반영 |
-| 시즌/버전·등록 정보·저장/조회와 구현 배정 | [Task 001 상세](<artifacts/task-001-discussion-details.md#handoff-decisions>)·제품 원천과 [담당 배정](<artifacts/task-005-handoff-requirements.md#allocation>)을 대조. DB/기본 조회·자료/교정·계산을 실제 Issue에 연결 |
-| Phase 수용 조건별 확인 대상·방법 | [Task 004 검증 계획](<artifacts/task-004-verification-plan.md#acceptance-map>)의 여섯 조건·V01~V12와 [후속 확인 담당](<artifacts/task-005-handoff-requirements.md#phase-acceptance>)을 연결 |
-| 주요 설계·선택 이유 | Task 001·002의 범위/흐름 선택과 [Task 003 선택 근거](<artifacts/task-003-tech-stack.md#current>)·자료/검증 방향을 보존. 미확인 실제 값·상세 알고리즘은 임의 확정하지 않음 |
-| 기술·버전·실행/개발/DB·도구 기준 | [실제 개발 기준](<../../../../docs/개발 기준.md#topics>)에 기술·생성/의존성·DB/환경·테스트/TDD/hook·코드 품질을 반영. [Issue #42](<../issue-42/issue.md#foundation>)에 실제 구축·검증을 배정 |
-| 화면·사용 흐름·디자인 분담·검증 순서 | [Task 002](<task-002.md#design-handoff>)의 세 화면·기준 시안과 공용 사용자 확인 기준을 검색/상세·제작·루트에 배정. 화면 검토→동작 구현→화면/내부 검증 유지 |
-| 후속 Issue 목표·수용·의존·실행 순서 | [정식 Issue #42~#48](<artifacts/task-005-issue-outline.md#issues>)과 실제 GitHub 등록·Phase 보유 관계를 확인. 자료 입력 확인 결과와 자료 Issue 전체 완료 의존을 구분해 순환 방지 |
-| Task 윤곽·선후 관계·상세 계획 담당 | 합의한 23개 구성 윤곽과 통합 확인 직접 수행을 각 Issue에 보존. 실제 Task는 만들지 않았으며 상세 실행·검증 계획은 담당 Issue 준비 때 작성 |
-| 미정의 담당·시점·착수 영향 | [인계 담당/시점](<artifacts/task-005-handoff-requirements.md#allocation>)·각 Issue의 필요한 입력/남은 결정에 연결. 실제 자료 보류와 영향 범위만 제한하는 경계 유지 |
+| 수용 조건                                 | 결합 결과와 근거                                                                                                                                                                                                   |
+| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| P1 최소 범위·후속 경계                    | [Phase 범위·수용 조건](../phase.md#goal)에 Task 001의 등록·조회·제작·기본 루트·보존 최소 범위와 후속 경계를 반영                                                                                                   |
+| 시즌/버전·등록 정보·저장/조회와 구현 배정 | [Task 001 상세](artifacts/task-001-discussion-details.md#handoff-decisions)·제품 원천과 [담당 배정](artifacts/task-005-handoff-requirements.md#allocation)을 대조. DB/기본 조회·자료/교정·계산을 실제 Issue에 연결 |
+| Phase 수용 조건별 확인 대상·방법          | [Task 004 검증 계획](artifacts/task-004-verification-plan.md#acceptance-map)의 여섯 조건·V01~V12와 [후속 확인 담당](artifacts/task-005-handoff-requirements.md#phase-acceptance)을 연결                            |
+| 주요 설계·선택 이유                       | Task 001·002의 범위/흐름 선택과 [Task 003 선택 근거](artifacts/task-003-tech-stack.md#current)·자료/검증 방향을 보존. 미확인 실제 값·상세 알고리즘은 임의 확정하지 않음                                            |
+| 기술·버전·실행/개발/DB·도구 기준          | [실제 개발 기준](<../../../../docs/개발 기준.md#topics>)에 기술·생성/의존성·DB/환경·테스트/TDD/hook·코드 품질을 반영. [Issue #42](../issue-42/issue.md#foundation)에 실제 구축·검증을 배정                         |
+| 화면·사용 흐름·디자인 분담·검증 순서      | [Task 002](task-002.md#design-handoff)의 세 화면·기준 시안과 공용 사용자 확인 기준을 검색/상세·제작·루트에 배정. 화면 검토→동작 구현→화면/내부 검증 유지                                                           |
+| 후속 Issue 목표·수용·의존·실행 순서       | [정식 Issue #42~#48](artifacts/task-005-issue-outline.md#issues)과 실제 GitHub 등록·Phase 보유 관계를 확인. 자료 입력 확인 결과와 자료 Issue 전체 완료 의존을 구분해 순환 방지                                     |
+| Task 윤곽·선후 관계·상세 계획 담당        | 합의한 23개 구성 윤곽과 통합 확인 직접 수행을 각 Issue에 보존. 실제 Task는 만들지 않았으며 상세 실행·검증 계획은 담당 Issue 준비 때 작성                                                                           |
+| 미정의 담당·시점·착수 영향                | [인계 담당/시점](artifacts/task-005-handoff-requirements.md#allocation)·각 Issue의 필요한 입력/남은 결정에 연결. 실제 자료 보류와 영향 범위만 제한하는 경계 유지                                                   |
 
 Task 개수나 GitHub 닫힘만으로 판단하지 않고 제품·개발·공용 원천과 각 결과의 결합을 대조했다. 계획·원천 반영·후속 배정의 실질 누락·중복 소유·의존 순환은 발견하지 못했다. Task 003·004의 현재 요약/첫 기반 담당에 남은 등록 전·예정 표현은 현재 담당 연결과 당시 근거를 구분해 정리했다.
 
@@ -114,6 +122,7 @@ Task 개수나 GitHub 닫힘만으로 판단하지 않고 제품·개발·공용
 전체 내용과 최종 제출 후보의 자체·별도 검수에서 필수 지적은 해소됐고 새 필수 결함은 발견하지 못했다. Phase 기준 `cbfe859` 대비 누적 61개 파일(Markdown 51개, 시안 4개·프롬프트 4개·원본 SQL·전용 속성)을 대조했다. 실제 변경 후보 6개 기록의 인덱스/작업 파일 일치·공백, 누적 문서의 로컬 참조 672개·표식과 상태 경계를 확인했다. 이미지 4개·원본 SQL은 정확한 바이트를, 텍스트 원본은 Git 정규화 내용을 보존했다. GitHub 하위 Task #21~#25의 완료·부모/Phase 관계를 직접 확인했으며 이 사실만으로 Issue 수용을 대신하지 않았다.
 
 <a id="merge-close"></a>
+
 ## Phase 통합과 종료
 
 - 최종 PR #49 head `52ee710`·base `cbfe859`가 검수한 후보와 같고 부모가 변경되지 않았음을 확인했다. 미해결 검토 의견·실패 검사·충돌이 없어 기존 전체 자체·별도 검수 근거를 재사용했다.

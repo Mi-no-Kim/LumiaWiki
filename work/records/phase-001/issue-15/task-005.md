@@ -1,6 +1,7 @@
 # Task 15-005 — 후속 Issue·Task 윤곽과 실행 순서 정하기
 
 <a id="summary"></a>
+
 ## 현재 요약
 
 - GitHub sub-issue: [Mi-no-Kim/LumiaWiki #25](https://github.com/Mi-no-Kim/LumiaWiki/issues/25)
@@ -9,12 +10,13 @@
 - 다음 행동: 이 Task의 종료 결과를 반환한다. 부모 Issue #15의 자체 수용·Phase 통합·종료는 별도 판단이며 실제 자료 작업 보류를 유지한다. 후속 Issue 준비는 부모 계획과 각 착수 조건을 따른다.
 
 <a id="goal"></a>
+
 ## 목적과 허용 범위 및 완료 조건
 
-- 부모 Issue: [Issue #15](<issue.md#goal>)
+- 부모 Issue: [Issue #15](issue.md#goal)
 - 목적: Phase 001의 구현 범위를 누락 없이 Issue와 Task 윤곽에 배정하고 실행 순서를 정한다.
-- 입력: [Task 001](<task-001.md#goal>)의 범위, [Task 002](<task-002.md#goal>)의 화면·디자인 범위, [Task 003](<task-003.md#goal>)의 기술·공통 전제, [Task 004](<task-004.md#goal>)의 등록·검증 방향.
-- 결과 반영: [합의한 구성·순서](<artifacts/task-005-issue-outline.md>)와 담당 Issue에서 정할 상세를 구분하고 Phase 계획에 연결한다. 실제 등록은 번호·부모·경로를 확인하는 등록 절차를 따른다.
+- 입력: [Task 001](task-001.md#goal)의 범위, [Task 002](task-002.md#goal)의 화면·디자인 범위, [Task 003](task-003.md#goal)의 기술·공통 전제, [Task 004](task-004.md#goal)의 등록·검증 방향.
+- 결과 반영: [합의한 구성·순서](artifacts/task-005-issue-outline.md)와 담당 Issue에서 정할 상세를 구분하고 Phase 계획에 연결한다. 실제 등록은 번호·부모·경로를 확인하는 등록 절차를 따른다.
 
 ### 범위
 
@@ -23,7 +25,7 @@
 - 각 Issue의 Task는 나눌 결과·역할·선후 관계의 윤곽까지 정한다. 작은 Issue는 Task 없이 직접 수행할지 판단한다.
 - 최소 실행·등록 기반, 시즌·버전의 구현·초기 등록·자료 연결, 아이템 정보·조회·제작 관계·루트·보존·검증을 담당할 과제가 빠지지 않게 한다.
 - 공통·기존 화면의 사용 관계와 화면 디자인 → 동작 구현 → 화면이 있는 상태에서 검증하는 순서를 연결한다.
-- 세부 기술·데이터·화면·자료/교정·검증 인계와 배정할 필수 사항은 [상세 배정 요구](<artifacts/task-005-handoff-requirements.md#requirements>)를 따른다.
+- 세부 기술·데이터·화면·자료/교정·검증 인계와 배정할 필수 사항은 [상세 배정 요구](artifacts/task-005-handoff-requirements.md#requirements)를 따른다.
 
 상세 Task의 범위·완료 조건·실행·검증 계획은 각 후속 Issue를 준비할 때 정한다. 첫 착수 Issue만 상세 Task 계획을 미리 작성하는 작업도 이 Task에 포함하지 않는다. 실제 번호가 없는 과제는 제목과 관계로 관리한다.
 
@@ -40,6 +42,7 @@
 - 다음 착수 Issue와 착수 준비 조건이 정해져 있다. Task의 상세 실행 계획 작성이나 제품 구현을 이 Task의 완료로 요구하지 않는다.
 
 <a id="plan"></a>
+
 ## 계획과 예정 검증
 
 - 선행 조건: Task 001~004의 결과.
@@ -47,9 +50,10 @@
 - 예정 검증: 범위의 누락·중복·의존 순환과 가짜 식별자가 없는지, 첫 Issue의 상세 Task 계획을 포함하지 않았는지, 제품 요구와 Phase 경계를 유지하는지 대조한다.
 
 <a id="discussion"></a>
+
 ## 현재 결정과 검수
 
-- 일곱 Issue의 경계·실행 순서·주담당·자료/제작/루트의 수용 범위와 [Task 구성·개별 수용 조건](<artifacts/task-005-issue-outline.md#issues>)을 합의했다. [필수 인계 배정](<artifacts/task-005-handoff-requirements.md#allocation>)과 각 계획서의 선행 결과를 따르고, 남은 상세 설계는 해당 Issue의 결정 시점에 구체화한다.
+- 일곱 Issue의 경계·실행 순서·주담당·자료/제작/루트의 수용 범위와 [Task 구성·개별 수용 조건](artifacts/task-005-issue-outline.md#issues)을 합의했다. [필수 인계 배정](artifacts/task-005-handoff-requirements.md#allocation)과 각 계획서의 선행 결과를 따르고, 남은 상세 설계는 해당 Issue의 결정 시점에 구체화한다.
 - 로컬 계획 작성·분리와 합의 반영을 수행했다. 계획 작성 단계에서는 구현·자료 작업을 수행하지 않았으며 실제 자료 작업 보류를 유지한다. 분리 전후의 인계 항목·완료 조건 보존과 관련 로컬 참조·표식·공백을 확인했다.
 - 현황 정정: 완료된 작업 구역에서 누락된 Phase 001 하위 Issue #15·Task 001~005의 상태 목록을 담당 기록·부모 보유 목록과 대조해 복구했다. 세부 이력은 담당 기록 링크로 연결한다.
 - 작성 당시 관련 15개 문서의 로컬 참조 196개·표식·공백, 기존 필수 인계와 Task 005 완료 조건 보존 및 현황의 13개 상태 표시를 확인했다. 일곱 계획서의 Task 수와 필수 구역을 대조했다.
@@ -62,24 +66,26 @@
 - 정식화 제출 후보 검수: 기존 PR head `3948a6a` 대비 7개 이관·8개 기록 갱신을 포함한 최종 문서 15개를 자체·별도 검수했고 필수 결함은 발견하지 못했다. 원문 수용 조건·Task 역할 23개·Task 005 완료 조건과 로컬 참조 236개·인덱스/작업 파일 일치·완료 상태 검사 통과를 확인했다. 실제 GitHub #42~#48의 본문/Task 윤곽·번호·제목·milestone 1·예정 라벨·열림 상태를 대조했고 다른 Issue의 하위 관계나 하위 Task는 없다. 부모 Issue·Phase는 진행 중이며 실제 자료 작업 보류를 유지한다. 부모 기준은 `af038b9`로 유지되고 제품·DB·자료 동작 검증은 수행하지 않았다.
 
 <a id="readiness"></a>
+
 ## 완료 조건 대조
 
 아래는 위 아홉 완료 조건의 내용 대조다. 사용자 합의·자체/별도 검수와 내용 조건의 충족을 근거로 이 Task 자체의 내용 수용을 완료로 판정했다. 제출·부모 통합과 부모 Issue·Phase 수용은 별도로 확인한다.
 
-| 완료 조건 | 내용 대조·근거 |
-|---|---|
-| P1 포함 범위의 배정·누락/중복 없음 | [인계 담당](<artifacts/task-005-handoff-requirements.md#allocation>)·[P1 대응](<artifacts/task-005-handoff-requirements.md#phase-acceptance>)과 자체·별도 검수로 확인 |
-| Issue별 목표/범위/수용/화면/입력, Task 윤곽·선후 관계 | [일곱 계획서](<artifacts/task-005-issue-outline.md#issues>)에 배정하고 사용자와 확정 |
-| 디자인→구현→검증, 확인 화면→등록과 의존 순환 없음 | [실행 순서](<artifacts/task-005-issue-outline.md#sequence>)·[공통 기준](<artifacts/task-005-issue-outline.md#common>)에 반영. 자료 입력 확인 결과와 자료 Issue 전체 완료 의존을 구분 |
-| 기능별 TDD·사용자 확인, 첫 기반의 테스트/hook·CI | [실행 기반](<../issue-42/issue.md#foundation>)·[공통 기준](<artifacts/task-005-issue-outline.md#common>)에 담당·시점·실제 검증 수용 조건 배정 |
-| 후속 미정의 담당·결정 시점 | [인계 담당/시점](<artifacts/task-005-handoff-requirements.md#allocation>)과 각 계획서의 남은 결정에 연결 |
-| 다음 착수 Issue·준비 조건 | [실행 기반부터 착수](<artifacts/task-005-issue-outline.md#next-issue>)하되 Task 005 제출·부모 Issue 종료·실제 후속 등록 뒤 준비 |
+| 완료 조건                                             | 내용 대조·근거                                                                                                                                                                   |
+| ----------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| P1 포함 범위의 배정·누락/중복 없음                    | [인계 담당](artifacts/task-005-handoff-requirements.md#allocation)·[P1 대응](artifacts/task-005-handoff-requirements.md#phase-acceptance)과 자체·별도 검수로 확인                |
+| Issue별 목표/범위/수용/화면/입력, Task 윤곽·선후 관계 | [일곱 계획서](artifacts/task-005-issue-outline.md#issues)에 배정하고 사용자와 확정                                                                                               |
+| 디자인→구현→검증, 확인 화면→등록과 의존 순환 없음     | [실행 순서](artifacts/task-005-issue-outline.md#sequence)·[공통 기준](artifacts/task-005-issue-outline.md#common)에 반영. 자료 입력 확인 결과와 자료 Issue 전체 완료 의존을 구분 |
+| 기능별 TDD·사용자 확인, 첫 기반의 테스트/hook·CI      | [실행 기반](../issue-42/issue.md#foundation)·[공통 기준](artifacts/task-005-issue-outline.md#common)에 담당·시점·실제 검증 수용 조건 배정                                        |
+| 후속 미정의 담당·결정 시점                            | [인계 담당/시점](artifacts/task-005-handoff-requirements.md#allocation)과 각 계획서의 남은 결정에 연결                                                                           |
+| 다음 착수 Issue·준비 조건                             | [실행 기반부터 착수](artifacts/task-005-issue-outline.md#next-issue)하되 Task 005 제출·부모 Issue 종료·실제 후속 등록 뒤 준비                                                    |
 
 Task 005에서 새로 결정할 계획 내용은 남지 않았다. 실제 자료 제공·등록, 후속 Issue의 상세 실행/검증 계획이나 기능 구현은 이 Task의 완료 조건이 아니며 자료 작업 보류도 유지한다.
 
 내용 수용·제출과 아래 부모 통합·보존·Task 브랜치 정리를 마쳤다. Task 생성·구현·자료 작업은 수행하지 않았으며 실제 자료 작업 보류를 유지한다. 부모 Issue와 Phase의 수용·종료는 각각 별도로 판단한다.
 
 <a id="merge-close"></a>
+
 ## 부모 통합과 종료
 
 - PR #41 최종 head `2814021`·base `af038b9`는 검수한 후보와 같았다. 미해결 검토 의견·실패 검사·충돌이 없고 부모가 변경되지 않았음을 확인해 기존 자체·별도 검수 근거를 재사용했다.

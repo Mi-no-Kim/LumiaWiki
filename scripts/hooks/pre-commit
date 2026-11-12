@@ -1,6 +1,6 @@
 #!/bin/sh
 # lumia-harness-inventory-v1
-# inventory-dependencies: ["scripts/check-harness-inventory.py", "scripts/harness_inventory.py", "scripts/install-harness-hooks.py", "scripts/install-hooks.py", "scripts/tdd-check.py", "scripts/tdd_core.py", "scripts/check-work-records.py"]
+# inventory-dependencies: ["scripts/check-harness-inventory.py", "scripts/harness_inventory.py", "scripts/install-harness-hooks.py", "scripts/install-hooks.py", "scripts/tdd-check.py", "scripts/tdd_core.py", "scripts/check-work-records.py", "scripts/quality/format.mjs", "scripts/quality/paths.mjs", "scripts/quality/process.mjs", ".prettierrc.json", "package.json", "package-lock.json", "backend/build.gradle", "backend/settings.gradle", "backend/gradlew", "backend/gradlew.bat", "backend/gradle/wrapper/gradle-wrapper.properties", "backend/gradle/wrapper/gradle-wrapper.jar"]
 hook_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd) || exit 2
 if [ -f "$hook_dir/pre-commit.harness-original" ]; then
   "$hook_dir/pre-commit.harness-original" "$@" || exit $?
@@ -30,4 +30,11 @@ if [ ! -f "$record_checker" ]; then
   fi
   exit 0
 fi
-exec "$python_cmd" -B -X utf8 "$record_checker" --candidate index
+"$python_cmd" -B -X utf8 "$record_checker" --candidate index || exit $?
+if git cat-file -e ':scripts/quality/format.mjs' 2>/dev/null; then
+  if [ ! -f "$root/scripts/quality/format.mjs" ]; then
+    echo 'Quality checker is missing; restore the staged configuration.' >&2
+    exit 2
+  fi
+  exec node "$root/scripts/quality/format.mjs" --index
+fi

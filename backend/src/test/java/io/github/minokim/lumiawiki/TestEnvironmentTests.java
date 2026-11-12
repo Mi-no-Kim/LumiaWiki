@@ -18,42 +18,57 @@ import org.springframework.web.bind.annotation.RestController;
 
 // Test-only HTTP fixture: no product controller, database, or business contract.
 class TestEnvironmentTests {
-    interface Echo { String echo(String value); }
-    record Input(@NotBlank String value) {}
+  interface Echo {
+    String echo(String value);
+  }
 
-    @RestController
-    static class ProbeController {
-        private final Echo echo;
-        ProbeController(Echo echo) { this.echo = echo; }
-        @PostMapping("/test-only/probe")
-        String probe(@Valid @RequestBody Input input) { return echo.echo(input.value()); }
+  record Input(@NotBlank String value) {}
+
+  @RestController
+  static class ProbeController {
+    private final Echo echo;
+
+    ProbeController(Echo echo) {
+      this.echo = echo;
     }
 
-    Echo echo;
-    MockMvc mvc;
-
-    @BeforeEach
-    void setUp() {
-        echo = mock(Echo.class);
-        var validator = new LocalValidatorFactoryBean();
-        validator.afterPropertiesSet();
-        mvc = MockMvcBuilders.standaloneSetup(new ProbeController(echo)).setValidator(validator).build();
+    @PostMapping("/test-only/probe")
+    String probe(@Valid @RequestBody Input input) {
+      return echo.echo(input.value());
     }
+  }
 
-    @Test
-    void junitMockitoAndMockMvcRunWithoutDocker() throws Exception {
-        when(echo.echo("ready")).thenReturn("ok");
-        mvc.perform(post("/test-only/probe").contentType(MediaType.APPLICATION_JSON)
+  Echo echo;
+  MockMvc mvc;
+
+  @BeforeEach
+  void setUp() {
+    echo = mock(Echo.class);
+    var validator = new LocalValidatorFactoryBean();
+    validator.afterPropertiesSet();
+    mvc =
+        MockMvcBuilders.standaloneSetup(new ProbeController(echo)).setValidator(validator).build();
+  }
+
+  @Test
+  void junitMockitoAndMockMvcRunWithoutDocker() throws Exception {
+    when(echo.echo("ready")).thenReturn("ok");
+    mvc.perform(
+            post("/test-only/probe")
+                .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"value\":\"ready\"}"))
-                .andExpect(status().isOk()).andExpect(content().string("ok"));
-        verify(echo).echo("ready");
-    }
+        .andExpect(status().isOk())
+        .andExpect(content().string("ok"));
+    verify(echo).echo("ready");
+  }
 
-    @Test
-    void beanValidationRejectsInputBeforeCallingTheCollaborator() throws Exception {
-        mvc.perform(post("/test-only/probe").contentType(MediaType.APPLICATION_JSON)
+  @Test
+  void beanValidationRejectsInputBeforeCallingTheCollaborator() throws Exception {
+    mvc.perform(
+            post("/test-only/probe")
+                .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"value\":\"\"}"))
-                .andExpect(status().isBadRequest());
-        verifyNoInteractions(echo);
-    }
+        .andExpect(status().isBadRequest());
+    verifyNoInteractions(echo);
+  }
 }

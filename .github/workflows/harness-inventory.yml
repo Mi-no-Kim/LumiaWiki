@@ -1,6 +1,6 @@
 name: Harness inventory
 
-"on":
+'on':
   push:
     branches: [main]
   pull_request:
@@ -19,7 +19,7 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest]
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
           fetch-depth: 2
@@ -36,38 +36,30 @@ jobs:
             /README.md
             /STRUCTURE.md
             /.gitignore
+            /package.json
+            /package-lock.json
+            /.prettierrc.json
+            /backend/build.gradle
+            /backend/settings.gradle
+            /backend/gradlew
+            /backend/gradlew.bat
+            /backend/gradle/wrapper/
             !/harness-design/
             !/.harness-state/
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
-          python-version: '3.14'
+          python-version: '3.14.2'
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24.22.3'
+          cache: npm
+          cache-dependency-path: package-lock.json
+      - run: npm install --global npm@11.19.1 --ignore-scripts --no-audit --no-fund
+      - run: npm ci --ignore-scripts --no-audit --no-fund
       - name: Check exact committed inventory
         run: python -B -X utf8 scripts/check-harness-inventory.py --candidate HEAD
       - name: Prepare parent document blobs
-        shell: python
-        run: |
-          import os
-          from pathlib import PurePosixPath
-          import subprocess
-          def git(*args, **kwargs):
-              return subprocess.check_output(['git', *args], **kwargs)
-          parents = git('rev-list', '--parents', '-n', '1', 'HEAD').decode().split()
-          if len(parents) > 1:
-              base = parents[1]
-              paths = git('diff', '--name-only', '-z', '--diff-filter=AM', '--no-renames', base, 'HEAD', '--',
-                          'AGENTS.md', 'README.md', 'STRUCTURE.md', 'docs', 'harness', 'work').decode().split('\0')
-              paths = [path for path in paths if path and PurePosixPath(path).suffix in ('.md', '.json', '.yaml', '.yml', '.toml')
-                       and not ('/artifacts/' in path and not path.endswith('.md'))]
-              if paths:
-                  rows = git('ls-tree', '-r', '-z', base, '--', *paths).split(b'\0')
-                  objects = sorted({row.split(b'\t', 1)[0].split()[2] for row in rows if row})
-                  if objects:
-                      checked = git('cat-file', '--batch-check', input=b'\n'.join(objects) + b'\n',
-                                    env={**os.environ, 'GIT_NO_LAZY_FETCH': '1'})
-                      missing = [line.split()[0].decode() for line in checked.splitlines() if line.endswith(b' missing')]
-                      if missing:
-                          subprocess.run(['git', 'fetch', '--no-tags', '--no-write-fetch-head',
-                                          '--filter=blob:none', 'origin', *missing], check=True)
+        run: python -B -X utf8 scripts/quality/record-base.py
       - name: Check changed work records
         run: python -B -X utf8 scripts/check-work-records.py --candidate HEAD
       - name: Candidate and hook behavior

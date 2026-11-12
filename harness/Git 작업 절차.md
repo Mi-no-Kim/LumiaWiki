@@ -1,26 +1,30 @@
 # Git 작업 절차
 
 <a id="entry"></a>
+
 ## 적용
 
 [Git 작업 기준](<../docs/Git 작업 기준.md#current>)을 아래 세 상황에 적용한다. [공용 절차](<공용 절차.md#entry>)와 [문서·기록 관리](<문서 관리.md#entry>)를 함께 따르며, 커밋·push·PR·병합 중 요청에서 허용한 행동까지만 수행한다. 저장소 옵션과 기능 지원 판단이 필요하면 [저장소 설정 기준](<../docs/GitHub 저장소 설정 기준.md#current>)의 해당 구역을 확인한다.
 
 <a id="start"></a>
+
 ## 작업을 시작·재개할 때
 
 1. 담당 작업·범위·수용 조건과 현재 브랜치·작업 트리·스테이징·사용자 변경을 확인한다. 원격 작업이 필요하면 대상과 인증·접근 상태도 확인한다.
 2. [계층·브랜치 이름과 독립 작업 경로](<../docs/details/git/브랜치 관리 기준.md#branches>)와 [재개 기준](<../docs/details/git/브랜치 관리 기준.md#branch-resume>)에 따라 작업 단위·기존 브랜치 재사용 또는 새 분기·이름·부모를 정한다. [상위 변경 반영 기준](<../docs/details/git/브랜치 관리 기준.md#parent-updates>)에 따라 필요한 부모 변경을 위에서부터 반영·확인한 뒤 재사용하거나 새로 분기한다. 미커밋 변경의 이동·보존 범위를 정해 기존 변경을 보호하고, 담당 기록·필요한 부모 요약과 [GitHub 표시](<문서 관리.md#github-update>)도 실제 작업 상태에 맞춘다.
 
-부모 반영은 `git merge --ff --no-commit <직계 부모>`로 결합 결과를 커밋 전에 확인할 수 있게 한다. Fast-forward는 새 커밋이 없고, 이력이 갈라져 멈춘 경우에는 [커밋 전 검수](<../.agents/skills/review-work/SKILL.md#before-commit>) 후 허용된 merge commit을 만든다. 병합 방식·영향 검증 범위는 상위 변경 반영 기준을 유지한다.
+부모 반영은 `git merge --ff --no-commit <직계 부모>`로 결합 결과를 커밋 전에 확인할 수 있게 한다. Fast-forward는 새 커밋이 없고, 이력이 갈라져 멈춘 경우에는 [커밋 전 검수](../.agents/skills/review-work/SKILL.md#before-commit) 후 허용된 merge commit을 만든다. 병합 방식·영향 검증 범위는 상위 변경 반영 기준을 유지한다.
 
 <a id="commit"></a>
+
 ## 작업 결과를 제출할 때
 
-1. 작업·필요한 검증과 관련 문서·기록을 [커밋 기준](<../docs/details/git/작업 커밋 기준.md#working-commits>)에 맞춰 준비하고 [커밋 전 검수 스킬](<../.agents/skills/review-work/SKILL.md#before-commit>)을 적용한다. PR에 제출할 때는 [직계 부모의 최신 변경](<../docs/details/git/브랜치 관리 기준.md#parent-updates>)을 확인해 필요한 반영·영향 검증도 포함한다. 허용된 범위에서 같은 변경 목적의 결과와 문서를 함께 커밋하고, 생성된 내용·메시지·부모와 남은 작업 트리를 확인한다. 중단 보존은 같은 기준의 `wip` 규칙을 따른다.
+1. 작업·필요한 검증과 관련 문서·기록을 [커밋 기준](<../docs/details/git/작업 커밋 기준.md#working-commits>)에 맞춰 준비하고 [커밋 전 검수 스킬](../.agents/skills/review-work/SKILL.md#before-commit)을 적용한다. PR에 제출할 때는 [직계 부모의 최신 변경](<../docs/details/git/브랜치 관리 기준.md#parent-updates>)을 확인해 필요한 반영·영향 검증도 포함한다. 허용된 범위에서 같은 변경 목적의 결과와 문서를 함께 커밋하고, 생성된 내용·메시지·부모와 남은 작업 트리를 확인한다. 중단 보존은 같은 기준의 `wip` 규칙을 따른다.
 2. Push가 허용됐으면 대상 원격·브랜치와 차이를 확인해 해당 브랜치만 명시하여 전송한다. [로컬 보존 브랜치](<../docs/details/git/브랜치 관리 기준.md#remote>)는 제외하고, 원격 커밋과 로컬 커밋의 일치를 확인한다. 예상하지 못한 원격 변경은 덮어쓰지 않는다.
-3. 변경한 담당 기록과 해당하는 부모 진행 요약의 [GitHub 반영](<문서 관리.md#github-update>)을 허용된 범위에서 수행·확인한다. PR 생성·수정이 허용됐으면 head·base와 실제 비교 범위·기존 PR 상태를 확인한다. [PR 기준](<../docs/details/git/PR과 병합 기준.md#prs>)·[참조와 닫기 규칙](<../docs/Git 작업 기준.md#github-closing>)에 맞춰 [템플릿](<templates/pr.md>)으로 작성하고 실제 번호·URL·head·base를 확인한다.
+3. 변경한 담당 기록과 해당하는 부모 진행 요약의 [GitHub 반영](<문서 관리.md#github-update>)을 허용된 범위에서 수행·확인한다. PR 생성·수정이 허용됐으면 head·base와 실제 비교 범위·기존 PR 상태를 확인한다. [PR 기준](<../docs/details/git/PR과 병합 기준.md#prs>)·[참조와 닫기 규칙](<../docs/Git 작업 기준.md#github-closing>)에 맞춰 [템플릿](templates/pr.md)으로 작성하고 실제 번호·URL·head·base를 확인한다.
 
 <a id="merge"></a>
+
 ## 상위 단계로 통합할 때
 
 1. 최신 차이와 담당 기록을 [단계별 검수 조건](<../docs/details/git/PR과 병합 기준.md#pr-review>)에 대조하고 자체·필요한 별도 검수와 지적 처리를 마친다. 최종 병합 전에 [부모 변경 포함 여부](<../docs/details/git/브랜치 관리 기준.md#parent-updates>)를 확인하고, 검수 이후 부모가 바뀌었으면 필요한 반영·영향 검증·재검수를 수행한다. 수정 커밋에는 관련 문서·기록을 함께 반영하고 기존 PR·[GitHub 게시물](<문서 관리.md#github-update>)·검증 근거도 허용된 범위에서 맞춘다.
