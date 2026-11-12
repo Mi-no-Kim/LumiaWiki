@@ -37,7 +37,7 @@ GitHub에 반영할 때는 [GitHub Task 게시 양식](<github-task.md>)을 사�
 <a id="activity"></a>
 ## 진행과 논의 및 판단
 
-- 확인 가능한 날짜·사실/논의·판단/이유·근거:
+- 사실/논의·판단/이유·근거:
 - 실패/실제 반영·수정 범위/예정 확인(실패 수정 시):
 
 <a id="verification"></a>

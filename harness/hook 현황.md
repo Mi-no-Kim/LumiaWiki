@@ -21,11 +21,11 @@
       "kind": "git",
       "definition": "scripts/hooks/pre-commit",
       "files": ["scripts/check-harness-inventory.py", "scripts/harness_inventory.py", "scripts/hooks/pre-commit", "scripts/install-harness-hooks.py"],
-      "sourceDigest": "38db9a0467e81b67290a91f6dfb395a9f6f4554645a493aa67689a65318243ef",
+      "sourceDigest": "1ef9e02865cd813e5fbd2bca337ddf1011246e490e1ea0a5cfe9c910183c276b",
       "title": "현황 검사 · Git pre-commit",
       "purpose": "스킬·hook 현황 누락·불일치 시 커밋 차단",
       "when": "Git 커밋 전; 기존 hook 성공 후",
-      "verification": {"status": "verified", "sourceDigest": "38db9a0467e81b67290a91f6dfb395a9f6f4554645a493aa67689a65318243ef", "date": "2026-11-12", "environment": "Windows 로컬 Python 3.14.2 / CI Windows·Ubuntu Python 3.14.10", "scope": "후보 검사·Git hook 실행·설치/복원", "evidence": "work/records/harness/issue-55/issue.md#catalog-split"}
+      "verification": {"status": "verified", "sourceDigest": "1ef9e02865cd813e5fbd2bca337ddf1011246e490e1ea0a5cfe9c910183c276b", "environment": "Windows / Python 3.14.2", "scope": "날짜 없는 후보·원천 불일치·날짜 필드 거부; 설치/복원 회귀", "evidence": "work/records/harness/issue-55/verification.md#document-structure"}
     }
   ]
 }

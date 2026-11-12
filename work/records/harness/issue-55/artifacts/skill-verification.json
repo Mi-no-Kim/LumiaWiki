@@ -1,6 +1,5 @@
 {
   "schema": 1,
-  "date": "2026-11-12",
   "environment": "Windows / Python 3.14.2 / Git / Codex separate agent contexts",
   "protocol": {
     "sourceBaseline": "aef88df774cd776c1985e6be5678870aff086291",
@@ -195,18 +194,20 @@
       "id": "D2",
       "skill": "rundown",
       "synthetic": true,
-      "request": "팀에 보낼 공지문을 작성해줘. 인사나 해설 없이 공지 본문만 써줘. 사실: 점검은 2026-11-13 20:00~20:30 KST이며 그동안 검색 기능을 사용할 수 없어.",
       "criteria": [
         "요청한 공지 본문만 반환",
         "시각·영향 보존",
         "TL;DR/체크리스트 등 해설 추가 없음"
       ],
-      "response": "2026년 11월 13일 20:00~20:30(KST)에 점검이 진행됩니다. 점검 시간 동안 검색 기능을 사용할 수 없습니다.",
       "parentObservations": {
         "passed": true,
-        "responseSha256": "5a633652c205fd45b38f9eda926a6503d2a5ea37f0d580d86e2d8d9c20511b3a"
+        "unredactedResponseSha256": "5a633652c205fd45b38f9eda926a6503d2a5ea37f0d580d86e2d8d9c20511b3a"
       },
-      "result": "pass"
+      "result": "pass",
+      "requestExcerpt": "팀에 보낼 공지문을 작성해줘. 인사나 해설 없이 공지 본문만 써줘. 사실: 점검은 [일정] 20:00~20:30 KST이며 그동안 검색 기능을 사용할 수 없어.",
+      "unredactedRequestSha256": "310eb68b82b9b63d96edd08e73fe31ab1d96137b7262248ce2096ecd47663c2e",
+      "responseExcerpt": "[일정] 20:00~20:30(KST)에 점검이 진행됩니다. 점검 시간 동안 검색 기능을 사용할 수 없습니다.",
+      "unredactedResponseSha256": "5a633652c205fd45b38f9eda926a6503d2a5ea37f0d580d86e2d8d9c20511b3a"
     },
     {
       "id": "D3",
@@ -435,5 +436,9 @@
       }
     },
     "reuseBoundary": "SKILL.md는 동일. 변경된 보조 도구는 CP949 정상·불일치 및 기존 상태/경로 사례를 새로 실행."
+  },
+  "provenance": {
+    "unredactedEvidenceBlob": "227828aa46a73c97fd91ec08aae91d1be2959de6",
+    "redaction": "D2 요청·응답의 일정값만 마스킹한 발췌본. 원문은 기존 Git blob과 각 지문으로 대조한다."
   }
 }

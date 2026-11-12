@@ -1,6 +1,5 @@
 """Bounded, read-only views of project-managed skill and hook sources."""
 
-import datetime
 import hashlib
 import io
 import json
@@ -273,18 +272,19 @@ def validate_verification(view, item):
     value = item.get('verification')
     if not isinstance(value, dict) or value.get('status') not in ('unverified', 'stale', 'verified'):
         raise ValueError('Invalid verification status: ' + item['id'])
+    if 'date' in value:
+        raise ValueError('Verification date fields are forbidden; use source digest and evidence: ' + item['id'])
     if value['status'] == 'unverified':
-        if any(value.get(k) is not None for k in ('sourceDigest', 'date', 'environment', 'scope', 'evidence')):
+        if any(value.get(k) is not None for k in ('sourceDigest', 'environment', 'scope', 'evidence')):
             raise ValueError('Unverified entry cannot claim a verified baseline: ' + item['id'])
         return
     if not isinstance(value.get('sourceDigest'), str) or not HEX.fullmatch(value['sourceDigest']):
         raise ValueError('Verification needs its own source digest: ' + item['id'])
     if value['status'] == 'verified' and value['sourceDigest'] != item['sourceDigest']:
         raise ValueError('Verification is stale; recheck or label it stale: ' + item['id'])
-    for key in ('date', 'environment', 'scope', 'evidence'):
+    for key in ('environment', 'scope', 'evidence'):
         if not isinstance(value.get(key), str) or not value[key].strip() or len(value[key]) > 2000:
-            raise ValueError('Verification needs date/environment/scope/evidence: ' + item['id'])
-    datetime.date.fromisoformat(value['date'])
+            raise ValueError('Verification needs environment/scope/evidence: ' + item['id'])
     evidence, _, anchor = value['evidence'].partition('#')
     raw = view.read(path_name(evidence))
     if raw is None:

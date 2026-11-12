@@ -80,7 +80,7 @@ class RepositoryCase(unittest.TestCase):
                 'definition': definition, 'files': sorted(files),
                 'sourceDigest': digest(self.root, files),
                 'verification': {'status': 'unverified', 'sourceDigest': None,
-                                 'date': None, 'environment': None, 'scope': None, 'evidence': None}}
+                                 'environment': None, 'scope': None, 'evidence': None}}
 
     def refresh(self, update_hashes=True):
         if update_hashes:
@@ -239,7 +239,7 @@ class CandidateTests(RepositoryCase):
         evidence = 'work/records/harness/issue-1/issue.md'
         self.write(evidence, '<a id="verification"></a>\n# Observed result\n')
         self.entries[0]['verification'].update(status='verified', sourceDigest=self.entries[0]['sourceDigest'],
-                                             date='2026-11-12', environment='fixture', scope='behavior',
+                                             environment='fixture', scope='behavior',
                                              evidence=evidence + '#verification')
         self.refresh()
         self.assert_allowed()
@@ -249,6 +249,26 @@ class CandidateTests(RepositoryCase):
         self.entries[0]['verification']['status'] = 'stale'
         self.refresh()
         self.assert_allowed()
+
+    def test_verification_binds_evidence_without_recording_dates(self):
+        evidence = 'work/records/harness/issue-1/issue.md'
+        self.write(evidence, '<a id="verification"></a>\n# Observed result\n')
+        verified = {'status': 'verified', 'sourceDigest': self.entries[0]['sourceDigest'],
+                    'environment': 'fixture', 'scope': 'behavior',
+                    'evidence': evidence + '#verification'}
+        self.entries[0]['verification'] = dict(verified)
+        self.refresh()
+        self.assert_allowed()
+        for status in ('unverified', 'stale', 'verified'):
+            for forbidden in (None, 'not recorded'):
+                with self.subTest(status=status, value=forbidden):
+                    value = {'status': status} if status == 'unverified' else {**verified, 'status': status}
+                    value['date'] = forbidden
+                    self.entries[0]['verification'] = value
+                    self.refresh()
+                    result = self.check()
+                    self.assertEqual(2, result.returncode)
+                    self.assertIn('date fields are forbidden', result.stderr)
 
     def test_preserved_private_and_parent_paths_are_rejected(self):
         for bad in ('harness-design/secret.md', '.harness-state/state.json', '.env',
