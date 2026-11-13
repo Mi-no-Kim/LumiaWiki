@@ -7,8 +7,8 @@
 - 제목: 아이템·능력치·스킬 저장/조회
 - GitHub sub-issue 저장소·번호·URL(실제 연결 시): [Mi-no-Kim/LumiaWiki #68](https://github.com/Mi-no-Kim/LumiaWiki/issues/68). 부모 Issue #43의 실제 sub-issue이며 로컬 Task 순번과 GitHub 번호는 별개다.
 - 상태: 예정
-- 현재 진행 위치: 계획을 준비했으며 Task 001의 부모 통합·정리 뒤 착수한다. 상세 DB 선택·구현·실제 자료 확인은 미착수다.
-- 다음 행동·막힌 조건/근거: 먼저 Task 001의 [종료 잔여](task-001.md#closure-status)를 처리한다. 종료 뒤 갱신된 부모에서 분기해 공유 관계·필요 참조 계약을 받아 아이템 버전·스킬 참조·원본/캐시의 세부 선택을 사용자에게 제시한다.
+- 현재 진행 위치: 계획을 준비했고 선행 Task 001의 부모 통합·브랜치 정리를 확인했다. 상세 DB 선택·구현·실제 자료 확인은 미착수다.
+- 다음 행동·막힌 조건/근거: [Task 001의 반영 결과](task-001.md#closure-status)를 입력으로, 갱신된 부모에서 분기해 아이템 버전·스킬 참조·원본/캐시의 세부 선택안을 사용자에게 제시한다.
 
 <a id="goal"></a>
 
@@ -74,7 +74,7 @@
 ## 현재 결정과 제약
 
 - 유효한 결정·이유·승인·제약과 근거: [확정한 공유 관계](https://github.com/Mi-no-Kim/LumiaWiki/blob/9b8773ed5a26b799eac971ea8fe60949e14c4d0a/work/records/phase-001/issue-43/artifacts/task-001-version-references.md#agreed)를 아이템 버전·스킬·원본/캐시 설계의 입력으로 받는다. 버전별 귀속 행, R2의 직접 재료 버전/상위 구성 생성, R3-A의 기존 스킬 버전 재사용·새 연결의 소속 기준 패치, K-D 현재 분류와 완성 버전의 단일 종류/필수 종류 참조를 유지한다. [공통 키/참조 검사](https://github.com/Mi-no-Kim/LumiaWiki/blob/9b8773ed5a26b799eac971ea8fe60949e14c4d0a/work/records/phase-001/issue-43/artifacts/task-001-common-model.md#current)를 따르되 후속 버전의 구체 키·복합 검사·다른 NULL/갱신 수단은 담당 미정으로 남긴다. 새 선택은 먼저 확인받고 [자료 단계](issue.md#data-timing)와 보류를 유지한다.
-- 현재 막힌 실패·미확인 또는 해결 후 최종 결론·다음 행동: 상세 DB 선택·확인 경로·실제 자료는 아직 미확인이다. Task 001의 [부모 통합·정리](task-001.md#closure-status) 뒤 공유 관계 검토·필요 참조 계약을 받아 세부 선택을 제시하며 응답 전에 확정하지 않는다.
+- 현재 막힌 실패·미확인 또는 해결 후 최종 결론·다음 행동: 선행 공통 기반은 부모 반영·정리를 마쳤다. 상세 DB 선택·확인 경로·실제 자료는 아직 미확인이다. 공유 관계·필요 참조 계약에 따라 세부 선택을 제시하며 응답 전에 확정하지 않는다.
 
 <a id="verification"></a>
 

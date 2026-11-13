@@ -8,9 +8,9 @@
 - 실제 GitHub Issue: [Mi-no-Kim/LumiaWiki #43](https://github.com/Mi-no-Kim/LumiaWiki/issues/43)
 - 소속 Phase: [Phase 001](../phase.md#summary)
 - 상태: 진행 중
-- 현재 진행 위치: Task 001 자체 결과는 완료했다. 구현·실행 근거는 보존한 Task 원본에 있고 이 Issue 브랜치에는 준비·등록/전체 수용 경계를 둔다. 공통 8개 표/Java와 승인한 로컬 적용 결과는 유지한다. 단위 30·통합 11건, app JPA와 구조/소유/권한·0행 대조를 통과했다. [생성/검증 결과](https://github.com/Mi-no-Kim/LumiaWiki/blob/9b8773ed5a26b799eac971ea8fe60949e14c4d0a/work/records/phase-001/issue-43/artifacts/task-001-creation.md#current)를 따른다. Task 002~004는 예정이며 실제 자료 작업은 계속 보류한다.
-- 허용 범위: 공통 8개 표 구현·격리/로컬 검증과 Issue/Task 변경 분리는 마쳤다. 이번 요청은 Task 001의 자체·별도 검수 후 커밋·push·GitHub 기록 갱신·부모 대상 PR·squash 통합·브랜치 정리까지다. 실제 자료와 추가 DB 객체/역할/소유 변경은 계속 보류한다.
-- 다음 판단/행동: Task 001의 [실제 종료 상태와 잔여](task-001.md#closure-status)에 따라 제출·부모 통합·정리를 마친다. Task 002 세부 설계는 그 뒤의 후속이다. 실제 자료 보류와 신규 표 생성 직전 전체 구조/정확한 대상 확인을 유지한다.
+- 현재 진행 위치: Task 001의 공통 8개 표/Java·격리/로컬 검증 결과를 [PR #71](https://github.com/Mi-no-Kim/LumiaWiki/pull/71)로 이 Issue 브랜치에 반영했고 전용 Task 브랜치를 정리했다. 단위 30·통합 11건의 [생성/검증 결과](artifacts/task-001-creation.md#current)와 PR CI 8개 통과를 확인했다. Task 002~004는 예정이며 실제 자료 작업은 계속 보류한다.
+- 허용 범위: 승인한 Task 001의 제출·부모 통합·브랜치 정리를 마쳤다. 현재는 종료 결과와 후속 대기 해제의 기록 반영이다. 실제 자료와 추가 DB 객체/역할/소유 변경은 계속 보류한다.
+- 다음 판단/행동: 종료 기록의 원격 반영을 확인한 뒤 Task 002 세부 설계 논의로 이어간다. 실제 자료 보류와 신규 표 생성 직전 전체 구조/정확한 대상 확인을 유지한다.
 - 작성 근거: [Task 005](../issue-15/task-005.md#summary) · [전체 실행 순서](../issue-15/artifacts/task-005-issue-outline.md#sequence). 실제 자료 작업 보류를 유지한다.
 
 <a id="goal"></a>
@@ -66,7 +66,7 @@
 
 ## 계획 범위와 사용자 결정 방식
 
-- Issue 준비/등록과 Task 실행 변경의 분리·브랜치 배치는 마쳤다. 이번 요청에서 Task 001의 제출·GitHub 기록 갱신·부모 PR·squash 통합·브랜치 정리를 승인받았다. 완료한 결과·기존 보존 커밋·DB와 네 Task의 담당 경계를 유지하며 새 제품 목표나 Task를 추가하지 않는다. Issue/Phase 전체 통합과 실제 자료·추가 DB 작업은 이번 범위에 포함하지 않는다.
+- Issue 준비/등록과 Task 실행 변경의 분리 뒤 승인한 Task 001의 제출·부모 squash 통합·브랜치 정리를 마쳤다. 완료한 결과·기존 보존 커밋·DB와 네 Task의 담당 경계를 유지하며 새 제품 목표나 Task를 추가하지 않는다. Issue/Phase 전체 통합과 실제 자료·추가 DB 작업은 이번 범위에 포함하지 않는다.
 - 새 선택은 내용·대안·추천 이유·장단점/영향·필요 입력을 사용자에게 먼저 제시한다. 응답 전에는 그 선택을 확정하거나 의존하는 스키마·검증 규칙·동작을 구현하지 않는다. 기존 합의와 새 선택을 구별한다.
 - 실제 자료 조사·확보·변환·등록·교정은 계속 보류한다. 통제한 검증 입력과 실제 게임 자료는 구별하고 자료 의존 미정은 임의 값으로 채우지 않는다. 입력 부족은 영향을 받는 구현·완료 판정만 제한한다.
 - 확정한 공통 키·관계 개수·일반 참조/필수값과 F4·S1~S3를 유지한다. 공통 8개 표/제약·보호/권한 수단과 오류 계약은 확정/구현했다. 후속 관계·캐시 갱신·API/응답·수량/JSON은 각 담당 Task의 미정이다. 이번 통합은 완료한 Task 001 결과와 직접 관련된 기록/절차 보완만 포함한다.
@@ -102,7 +102,7 @@
 ## Task 계획과 공유 관계 검토의 확인 범위
 
 - 네 Task의 실행/검증 계획과 담당 미정은 [목적별 상세](https://github.com/Mi-no-Kim/LumiaWiki/blob/9b8773ed5a26b799eac971ea8fe60949e14c4d0a/work/records/phase-001/issue-43/artifacts/task-001-shared-version-references.md#summary)를 따른다. [복원/정비](https://github.com/Mi-no-Kim/LumiaWiki/blob/9b8773ed5a26b799eac971ea8fe60949e14c4d0a/work/records/phase-001/issue-43/artifacts/task-001-pending.md#conditional-exceptions)는 필요 시점에 다룬다. 001의 합의 파일과 승인한 격리/로컬 DB 적용을 마쳤으며 실제 자료 작업은 계속 보류한다.
-- 최초 구동 구현·격리 DB 검증은 [Task 001 결과](task-001.md#verification)를 따른다. 공통 도메인 표 검증은 Task 원본에서 완료했다. 이 Issue 브랜치에 구현을 통합한 것으로 표시하지 않는다. 후속 본행·결합 조회/자료·제품 API 검증과 Issue 전체 수용은 남아 있다. GitHub sub-issue 4개 등록/관계·상태 반영을 확인했다.
+- 최초 구동 구현·격리 DB 검증은 [Task 001 결과](task-001.md#verification)를 따른다. 공통 도메인 구현과 기록/절차 보완을 PR #71로 이 Issue 브랜치에 통합했고 반영 결과를 대조했다. 후속 본행·결합 조회/자료·제품 API 검증과 Issue 전체 수용은 남아 있다. GitHub sub-issue 4개 등록/관계·상태를 유지한다.
 
 <a id="related"></a>
 

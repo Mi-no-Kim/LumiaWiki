@@ -9,7 +9,7 @@
 - GitHub milestone: [Mi-no-Kim/LumiaWiki #1](https://github.com/Mi-no-Kim/LumiaWiki/milestone/1)
 - 상태: 진행 중
 - 현재 진행 위치: 계획 Issue #15와 기반 #42는 완료했다. [Issue #43](issue-43/issue.md#summary)의 Task 001은 완료했고 공통 8개 표/Java 구현·격리 검증 뒤 승인한 로컬에 적용했으며 단위 30·통합 11건을 통과했다. [결과](https://github.com/Mi-no-Kim/LumiaWiki/blob/9b8773ed5a26b799eac971ea8fe60949e14c4d0a/work/records/phase-001/issue-43/artifacts/task-001-creation.md#current)를 따른다. Task 002~004·Issue #44~#48과 Phase 수용은 남아 있으며 실제 자료 작업은 계속 보류한다.
-- 다음 판단/행동: 사용자 승인에 따라 Issue #43의 Task 001 [제출·부모 통합·정리](issue-43/task-001.md#closure-status)를 마친다. Task 002 설계는 그 뒤의 후속이다. 실제 자료 보류와 신규 표 생성 직전 전체 구조/정확한 대상 확인을 유지한다.
+- 다음 판단/행동: Task 001의 [부모 통합·정리](issue-43/task-001.md#closure-status)를 확인했다. 종료 기록의 원격 반영을 확인한 뒤 Task 002 세부 설계 논의로 이어간다. 실제 자료 보류와 신규 표 생성 직전 전체 구조/정확한 대상 확인을 유지한다.
 
 <a id="ci-manual-followup"></a>
 
