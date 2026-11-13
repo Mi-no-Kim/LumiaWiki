@@ -18,10 +18,32 @@ const area = resolve(root, '.tmp/issue-42/task-001', id);
 const project = join(area, 'project');
 const composeFile = join(area, 'compose.json');
 const password = randomBytes(24).toString('hex');
+const appPassword = randomBytes(24).toString('hex');
+const migrationPassword = randomBytes(24).toString('hex');
+const isolatedEnvironment = Object.fromEntries(
+  Object.entries(process.env).filter(
+    ([key]) =>
+      !key.startsWith('SPRING_') &&
+      !['JAVA_TOOL_OPTIONS', 'JDK_JAVA_OPTIONS', 'GRADLE_OPTS'].includes(key),
+  ),
+);
+const testConnection = {
+  DB_HOST: '127.0.0.1',
+  DB_PORT: '5432',
+  DB_NAME: 'lumiawiki',
+  DB_APP_USERNAME: 'lumia_app',
+  DB_APP_PASSWORD: appPassword,
+  DB_FLYWAY_USERNAME: 'lumia_migrator',
+  DB_FLYWAY_PASSWORD: migrationPassword,
+};
 const sql =
   "CREATE TABLE bootstrap_probe (id integer PRIMARY KEY, value text NOT NULL);\nINSERT INTO bootstrap_probe VALUES (1, 'preserved');\n";
 const digest = (data) => createHash('sha256').update(data).digest('hex');
-const safe = (text) => text.replaceAll(password, '[redacted]');
+const safe = (text) =>
+  [password, appPassword, migrationPassword].reduce(
+    (value, secret) => value.replaceAll(secret, '[redacted]'),
+    text,
+  );
 let sequence = 0;
 let app;
 let databaseCreated = false;
@@ -148,9 +170,9 @@ async function query(sqlText) {
       'db',
       'psql',
       '-U',
-      'bootstrap',
+      'lumiawiki',
       '-d',
-      'bootstrap',
+      'lumiawiki',
       '-At',
       '-c',
       sqlText,
@@ -212,6 +234,11 @@ async function main() {
     join(project, 'backend/src/main'),
     inputs,
   );
+  await copyTree(
+    join(root, 'db/bootstrap'),
+    join(project, 'db/bootstrap'),
+    inputs,
+  );
   const migration = join(project, 'db/migration/V1__bootstrap_probe.sql');
   await mkdir(dirname(migration), { recursive: true });
   await writeFile(migration, sql);
@@ -224,7 +251,10 @@ async function main() {
     '--console=plain',
     '--no-daemon',
   ]);
-  await run(build.command, build.args, { ...build, env: process.env });
+  await run(build.command, build.args, {
+    ...build,
+    env: serverEnvironment({ ...isolatedEnvironment, ...testConnection }),
+  });
   const jar = join(
     project,
     'backend/build/libs/lumiawiki-api-0.0.1-SNAPSHOT.jar',
@@ -240,7 +270,10 @@ async function main() {
   const unpack = join(area, 'jar-entry');
   await mkdir(unpack, { recursive: true });
   const entry = 'BOOT-INF/classes/db/migration/V1__bootstrap_probe.sql';
-  await run(jarTool, ['-xf', jar, entry], { cwd: unpack });
+  await run(jarTool, ['-xf', jar, entry], {
+    cwd: unpack,
+    env: isolatedEnvironment,
+  });
   if ((await readFile(join(unpack, entry), 'utf8')) !== sql)
     throw new Error('Packaged SQL does not match its input.');
   console.log('PASS: source hashes and packaged shared SQL');
@@ -250,14 +283,37 @@ async function main() {
       db: {
         image: 'postgres:18.6',
         environment: {
-          POSTGRES_DB: 'bootstrap',
-          POSTGRES_USER: 'bootstrap',
+          POSTGRES_DB: 'lumiawiki',
+          POSTGRES_USER: 'lumiawiki',
           POSTGRES_PASSWORD: password,
+          DB_APP_USERNAME: 'lumia_app',
+          DB_APP_PASSWORD: appPassword,
+          DB_FLYWAY_USERNAME: 'lumia_migrator',
+          DB_FLYWAY_PASSWORD: migrationPassword,
         },
         ports: ['127.0.0.1::5432'],
-        volumes: ['probe_data:/var/lib/postgresql'],
+        volumes: [
+          'probe_data:/var/lib/postgresql',
+          {
+            type: 'bind',
+            source: join(project, 'db/bootstrap/10-prepare-roles.sh'),
+            target: '/docker-entrypoint-initdb.d/10-prepare-roles.sh',
+            read_only: true,
+            bind: { create_host_path: false },
+          },
+          {
+            type: 'bind',
+            source: join(project, 'db/bootstrap/sql/prepare-roles.sql'),
+            target: '/opt/lumia-bootstrap/prepare-roles.sql',
+            read_only: true,
+            bind: { create_host_path: false },
+          },
+        ],
         healthcheck: {
-          test: ['CMD-SHELL', 'pg_isready -U bootstrap -d bootstrap'],
+          test: [
+            'CMD-SHELL',
+            'pg_isready -h 127.0.0.1 -U lumiawiki -d lumiawiki',
+          ],
           interval: '5s',
           timeout: '5s',
           retries: 12,
@@ -274,12 +330,9 @@ async function main() {
   const dbPort = portText.match(/:(\d+)$/)?.[1];
   if (!dbPort) throw new Error('Cannot identify isolated database port.');
   const env = serverEnvironment({
-    ...process.env,
-    DB_HOST: '127.0.0.1',
+    ...isolatedEnvironment,
+    ...testConnection,
     DB_PORT: dbPort,
-    DB_NAME: 'bootstrap',
-    DB_USERNAME: 'bootstrap',
-    DB_PASSWORD: password,
     SERVER_PORT: await freePort(),
   });
   const java = process.env.JAVA_HOME
@@ -325,7 +378,7 @@ async function main() {
 
   const wrong = start(java, ['-jar', jar], {
     cwd: project,
-    env: { ...env, DB_PASSWORD: 'intentionally-wrong-bootstrap-password' },
+    env: { ...env, DB_APP_PASSWORD: 'intentionally-wrong-bootstrap-password' },
   });
   let wrongTimer;
   const failed = await Promise.race([
@@ -364,21 +417,29 @@ async function main() {
       'DB_HOST',
       'DB_PORT',
       'DB_NAME',
-      'DB_USERNAME',
-      'DB_PASSWORD',
+      'DB_APP_USERNAME',
+      'DB_APP_PASSWORD',
+      'DB_FLYWAY_USERNAME',
+      'DB_FLYWAY_PASSWORD',
       'SERVER_PORT',
     ]
       .map((key) => `${key}=${env[key]}`)
       .join('\n'),
     { mode: 0o600 },
   );
-  const runnerEnv = { ...process.env };
+  const runnerEnv = { ...isolatedEnvironment };
   for (const key of [
     'DB_HOST',
     'DB_PORT',
     'DB_NAME',
     'DB_USERNAME',
     'DB_PASSWORD',
+    'DB_BOOTSTRAP_USERNAME',
+    'DB_BOOTSTRAP_PASSWORD',
+    'DB_APP_USERNAME',
+    'DB_APP_PASSWORD',
+    'DB_FLYWAY_USERNAME',
+    'DB_FLYWAY_PASSWORD',
     'SERVER_PORT',
     'SPRING_PROFILES_ACTIVE',
   ])
@@ -407,13 +468,15 @@ async function main() {
   const production = gradleCommand(root, ['bootJar', '--console=plain']);
   await run(production.command, production.args, {
     ...production,
-    env: process.env,
+    env: serverEnvironment({ ...isolatedEnvironment, ...testConnection }),
   });
   const actualJar = join(
     root,
     'backend/build/libs/lumiawiki-api-0.0.1-SNAPSHOT.jar',
   );
-  const entries = await run(jarTool, ['-tf', actualJar]);
+  const entries = await run(jarTool, ['-tf', actualJar], {
+    env: isolatedEnvironment,
+  });
   if (entries.includes('V1__bootstrap_probe.sql'))
     throw new Error('Synthetic SQL leaked into the product JAR.');
   const originalSql = await readdir(join(root, 'db/migration'));

@@ -8,8 +8,8 @@
 - 구상상 구분: P1
 - GitHub milestone: [Mi-no-Kim/LumiaWiki #1](https://github.com/Mi-no-Kim/LumiaWiki/milestone/1)
 - 상태: 진행 중
-- 현재 진행 위치: 계획 Issue #15와 실행·개발·검증 기반 Issue #42는 완료했다. [Issue #42 전체 수용 결과](issue-42/issue.md#acceptance-result)에 따라 네 Task의 실제 결합·필수 검증을 확인했다. Issue #43~#48은 예정이고 게임 자료 작업은 보류다. Phase의 실제 기능/자료 수용 조건은 남아 있다.
-- 다음 판단/행동: Issue #42의 [PR #66](https://github.com/Mi-no-Kim/LumiaWiki/pull/66) Phase 반영·CI·브랜치 정리를 확인한 뒤 Issue #43의 입력·설계 준비 범위를 검토한다. 실제 자료 조사·확보·처리 보류를 유지한다.
+- 현재 진행 위치: 계획 Issue #15와 기반 Issue #42는 완료했고 [PR #66](https://github.com/Mi-no-Kim/LumiaWiki/pull/66)의 Phase 반영·CI·정리를 확인했다. [Issue #43](issue-43/issue.md#summary)은 최초 구동 구현·격리 DB 검증을 통과했다. 계약·후보·미정은 [설계 안내](issue-43/artifacts/task-001-shared-version-references.md#summary), 실행 근거는 [검증 기록](issue-43/artifacts/task-001-bootstrap-verification.md#results)에서 조회한다. Task 001 진행 중·002~004 예정·sub-issue 미등록, Issue #44~#48 예정이다. 실제 자료·기존 개발 DB/볼륨과 공통 도메인 표 구현은 보류하며 Phase 수용 조건은 남아 있다.
+- 다음 판단/행동: #43은 최초 구동 결과를 인계하고 [남은 공통 저장/갱신 계약·D1~D4](issue-43/artifacts/task-001-pending.md#remaining-review)를 필요한 범위에서 확인한다. 조건부 예외를 일반 구현의 필수로 확대하거나 이미 채택한 선택을 반복 승인받지 않는다. 새 업무 선택은 먼저 확인받고 실제 자료·기존 개발 DB/볼륨·공통 도메인 표 구현 보류를 유지한다.
 
 <a id="ci-manual-followup"></a>
 

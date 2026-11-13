@@ -14,6 +14,9 @@ lumia_island_wiki/
 ├── backend/                        Spring Boot API·Gradle Wrapper·공통/local/test 설정
 ├── frontend/                       React·Vite 웹 시작 화면·manifest·잠금 파일
 ├── db/migration/                   backend 밖에서 관리하는 공용 Flyway SQL
+├── db/bootstrap/                   빈 로컬 DB의 역할·최소 권한 최초 준비 쉘/SQL
+├── db/README.md                    DB 안내와 주제별 구동·모델·마이그레이션 문서
+├── db/model/                       공통 표의 구조·참조·남은 결정 안내
 ├── compose.yaml                    PostgreSQL 로컬 개발 환경
 ├── .env.example                    비밀값 없는 개인 설정 양식 (.env는 Git 제외)
 ├── .github/workflows/             영역별 품질·테스트·빌드와 하네스 현황 CI 정의

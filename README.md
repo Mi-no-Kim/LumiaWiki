@@ -100,7 +100,7 @@ CI는 부모 대상 PR·부모 브랜치 push에서 변경 영역 전체를 검�
 
 JDK 21, Node.js 24.22.3 LTS, npm 11.19.1과 실행 중인 Docker Desktop의 Linux 엔진이 필요하다. Java는 기존 설치를 사용하고 Gradle은 저장소 Wrapper 9.9.1로 실행한다. 웹 직접 의존성은 manifest와 잠금 파일의 버전으로 설치한다. TDD 도구에는 Python 3.14 계열 표준 라이브러리를 사용한다.
 
-1. `.env.example`을 루트 `.env`로 복사하고 `DB_PASSWORD`를 개인 값으로 바꾼다. `$` 등 특별 문자가 들어간 값은 작은따옴표로 감싸 Node와 Compose에서 동일하게 읽도록 한다. 비밀번호를 채팅·문서·Git에 넣지 않는다. `.env`는 자동 생성하거나 덮어쓰지 않는다.
+1. `.env.example`을 루트 `.env`로 복사하고 `DB_BOOTSTRAP_PASSWORD`, `DB_APP_PASSWORD`, `DB_FLYWAY_PASSWORD`를 개인 값으로 바꾼다. `$` 등 특별 문자가 들어간 값은 작은따옴표로 감싸 Node와 Compose에서 동일하게 읽도록 한다. 비밀번호를 채팅·문서·Git에 넣지 않는다. `.env`는 자동 생성하거나 덮어쓰지 않는다.
 2. `npm --prefix frontend ci`로 웹 의존성을 설치한다.
 3. 다음 DB 명령을 실행한 뒤 API와 웹 명령을 각각 별도 터미널에서 실행한다.
 
@@ -112,7 +112,11 @@ npm --prefix frontend run dev
 
 웹은 `http://localhost:5173/`, API 서버는 `http://127.0.0.1:8080`, DB는 `127.0.0.1:5432`를 사용한다. 시작 화면과 아래 공통 연결 확인 화면을 제공한다. 포트가 이미 사용 중이면 기존 서비스를 종료하거나 임의 포트로 바꾸지 않고 실패한다. DB 포트는 `.env`의 `DB_PORT`, 서버 포트는 실행 환경의 `SERVER_PORT`로 조정할 수 있다. 개인 DB 환경값을 웹 프로세스에 전달하지 않는다.
 
-서버 실행기는 Node의 기본 env-file 기능으로 접속값을 읽고 local 프로필을 명시한다. 누락/예제 비밀번호·잘못된 포트는 Java 시작 전에 거부한다. `JAVA_HOME`이 필요하면 기존 JDK 21 설치 경로로 지정한다. common/local/test 설정을 구분하며 테스트 전용 DB 연결·테스트/hook 환경은 Task 002의 담당이다.
+빈 새 DB는 최초 초기화에서 `lumia_migrator`와 `lumia_app`을 준비한다. Flyway는 migrator로 구조를 설치하고, 서비스는 app으로 접속한다. 실행기는 기존 환경을 유지하면서 알려진 관리자 DB 변수를 Java 자식에서 제외한다. [DB 안내](db/README.md#current)와 [최초 구동·실패 대응](db/bootstrap/README.md#current)을 따른다.
+
+기존 볼륨에서는 최초 초기화가 다시 실행되지 않는다. 기존 공용 계정 환경은 `.env`만 바꿔 전환할 수 없으며 보존 대상 확인과 별도 역할·권한 이관이 필요하다. 초기화가 실패하면 서버 시작을 보류하고 상태를 확인한다. 재시작만으로 성공으로 처리하거나 볼륨을 자동 삭제하지 않는다.
+
+서버 실행기는 Node의 기본 env-file 기능으로 접속값을 읽고 local 프로필을 명시한다. 누락/예제 비밀번호·잘못된 포트는 Java 시작 전에 거부한다. `JAVA_HOME`이 필요하면 기존 JDK 21 설치 경로로 지정한다. common/local/test 설정을 구분하며 테스트는 별도 격리 DB를 사용한다.
 
 <a id="foundation-check"></a>
 

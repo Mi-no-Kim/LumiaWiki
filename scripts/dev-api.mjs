@@ -10,18 +10,27 @@ export function serverEnvironment(input) {
     'DB_HOST',
     'DB_PORT',
     'DB_NAME',
-    'DB_USERNAME',
-    'DB_PASSWORD',
+    'DB_APP_USERNAME',
+    'DB_APP_PASSWORD',
+    'DB_FLYWAY_USERNAME',
+    'DB_FLYWAY_PASSWORD',
   ]) {
-    if (!env[key]?.trim() || /^(CHANGE_ME|<.*>)$/i.test(env[key])) {
+    if (
+      typeof env[key] !== 'string' ||
+      env[key].length === 0 ||
+      /^(CHANGE_ME|<.*>)$/i.test(env[key])
+    ) {
       throw new Error(`${key} must be set to a personal local value.`);
     }
   }
   if (!/^[a-zA-Z0-9.-]+$/.test(env.DB_HOST))
     throw new Error('DB_HOST is invalid.');
-  for (const key of ['DB_NAME', 'DB_USERNAME']) {
-    if (!/^[a-zA-Z_][a-zA-Z0-9_]*$/.test(env[key]))
-      throw new Error(`${key} is invalid.`);
+  for (const [key, expected] of Object.entries({
+    DB_NAME: 'lumiawiki',
+    DB_APP_USERNAME: 'lumia_app',
+    DB_FLYWAY_USERNAME: 'lumia_migrator',
+  })) {
+    if (env[key] !== expected) throw new Error(`${key} must be ${expected}.`);
   }
   env.SERVER_PORT ??= '8080';
   for (const key of ['DB_PORT', 'SERVER_PORT']) {
@@ -33,6 +42,17 @@ export function serverEnvironment(input) {
       throw new Error(`${key} must be an integer from 1 to 65535.`);
     }
   }
+  for (const key of [
+    'DB_BOOTSTRAP_USERNAME',
+    'DB_BOOTSTRAP_PASSWORD',
+    'DB_USERNAME',
+    'DB_PASSWORD',
+    'POSTGRES_USER',
+    'POSTGRES_PASSWORD',
+    'PGUSER',
+    'PGPASSWORD',
+  ])
+    delete env[key];
   return env;
 }
 
