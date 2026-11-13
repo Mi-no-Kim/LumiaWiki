@@ -16,7 +16,9 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.postgresql.PostgreSQLContainer;
 
-@SpringBootTest
+@SpringBootTest(
+    classes = io.github.minokim.lumiawiki.fixture.FoundationTestApplication.class,
+    properties = "spring.flyway.locations=classpath:db/test-migration")
 @ActiveProfiles("test")
 @Tag("integration")
 @Import(LumiawikiApiApplicationTests.Database.class)

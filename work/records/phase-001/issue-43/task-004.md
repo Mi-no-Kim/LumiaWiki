@@ -7,7 +7,7 @@
 - 제목: 유효 버전 조회·참조 일치·갱신 처리
 - GitHub sub-issue 저장소·번호·URL(실제 연결 시): 미등록. 로컬 Task 순번과 GitHub 번호는 별개이며 현재는 외부 등록을 수행하지 않는다.
 - 상태: 예정
-- 현재 진행 위치: 확정한 8개 표·N1~N5·패치 번호 각각 0~99와 공통 참조/갱신·보호 계약의 결합 검증을 준비한다. 최초 구동의 기존 검증 근거와 도메인 검증을 구별한다. 후속 유효 구간/본행과 조회 응답 의미는 이 Task의 구현 전 확인 대상이며 실제 도메인 SQL·DB/자료 검증은 미착수다.
+- 현재 진행 위치: 확정한 8개 표·N1~N5·패치 번호 각각 0~99와 공통 참조/갱신·보호 계약의 결합 검증을 준비한다. 최초 구동의 기존 검증 근거와 도메인 검증을 구별한다. 후속 유효 구간/본행과 조회 응답 의미는 이 Task의 구현 전 확인 대상이며 001의 공통 SQL/DB 검증은 완료했으며 이 Task의 후속 결합·실제 자료 검증은 미착수다.
 - 다음 행동·막힌 조건/근거: Task 43-001~003의 관계·참조·갱신 계약을 받아 유효 이력 조회와 기본 수정의 남은 선택을 사용자에게 먼저 요청한다. 지역의 지도 변경 경계/관계 유효 구간과 수정 일치는 [C-A 지역 참조 계약](../../../../db/model/consumer-references.md#current)와 연결하며 아직 구현하지 않는다.
 
 <a id="goal"></a>
@@ -26,7 +26,7 @@
 - 준비/선행 조건·미정: [001](task-001.md#plan)·[002](task-002.md#plan)·[003](task-003.md#plan)의 확정 이력·참조·저장/조회·기본 수정 계약과 [담당 미정](#decisions)을 따른다. [최초 구동](artifacts/task-001-startup.md#current)의 설치/격리 검증·기본 기동 오류·운영 절차의 실패 보류/복구를 확인한다. app 오류 전 Flyway 성공과 매 기동 전체 권한 검사 부재를 전제로 실제 재개 후 결합 검증한다.
 - 수행 계획:
 
-  1. 앞선 설계의 유효 이력·참조·캐시와 [공통 모델](artifacts/task-001-common-model.md#current)·[갱신 경계](artifacts/task-001-updates.md#current)·[PK 보호](artifacts/task-001-pk-protection.md#current)·[최초 구동 A](artifacts/task-001-startup.md#current)를 결합 계약으로 대조한다. M1~M3와 D1~D4 유보를 유지하고, 유효 이력 경계/없는 결과·수정/실패·API/인덱스·Python 역할의 미정은 구현 전에 먼저 선택안을 제시한다.
+  1. 앞선 설계의 유효 이력·참조·캐시와 [공통 모델](artifacts/task-001-common-model.md#current)·[갱신 경계](artifacts/task-001-updates.md#current)·[PK 보호](artifacts/task-001-pk-protection.md#current)·[최초 구동 A](artifacts/task-001-startup.md#current)를 결합 계약으로 대조한다. M1~M3와 D1~D4 확정 계약과 실제 값 입력 보류를 유지하고, 유효 이력 경계/없는 결과·수정/실패·API/인덱스·Python 역할의 미정은 구현 전에 먼저 선택안을 제시한다.
   2. 변경된 패치에만 새 정보를 등록하고 다음 변경 전까지 사용하는 조회를 구현한다. [확정한 R2 재료 기준](artifacts/task-001-version-references.md#r2-read-priority)에 따라 재료 참조 버전이 바뀐 간접 상위 구성도 반영하고, Q의 유효 상위 구성을 선택한 뒤 저장된 재료 버전 ID를 읽는 계약을 확인한다. 아이템·스킬·제작/획득/배달 관계는 같은 Q에 유효한 구성을 확인하고, [K-D](artifacts/task-001-version-references.md#r2-classification-unversioned)의 종류 이름·계층은 과거 조회에도 현재 기준을 적용한다. 종류 표시 변경만으로 아이템·재료·스킬 연결을 새로 만들지 않으며 아이템 자체 소속 변경의 종류 ID는 버전별로 보존한다. [F2-A·F2-B](artifacts/task-001-common-model.md#f2-cardinality)에 따라 부모 0~1개인 트리 모음과 완성된 아이템 버전당 종류 1개를 결합 조회에서도 확인한다. F3의 일반 FK 비지연 검사·참조 중 RESTRICT·지정 핵심 NOT NULL/루트 NULL·등급의 관리자 판단·기본 검사을 결합 계약으로 받으며, 남은 복합 검사·guard/갱신 수단은 선택 뒤 구현한다. [R3-A](artifacts/task-001-version-references.md#r3)에 따라 새 스킬 연결 행은 소속 아이템 버전의 기준 패치를 기록하고, 스킬 내용이 그대로면 기존 스킬 버전·JSON을 유지한다. 조회 Q·아이템 버전 기준·스킬 버전 기준 패치를 모두 같은 값으로 강제하지 않으며 독립 연결 버전은 만들지 않는다.
   3. 새 게임 변경과 같은 패치 입력 오류 정정을 구별하는 기본 수정·원본/캐시 갱신을 결합 검증한다. 실패 시 일치 조건의 확인은 #43이, 실제 등록/교정 실행·정정 기록·실패 복구 수단은 기존 배정대로 #45가 맡는다.
   4. #44~#47에 조회 입력/결과·참조/상태 의미·정확한 값 전달·기본 수정의 계약과 확인 근거를 넘긴다. 필요한 API 경로/DTO·오류 목록은 사전 사용자 결정에 따라 담당 기능과 연결한다.
@@ -71,13 +71,13 @@
 | 조회 패치의 유효 이력 선택·최초 이력 전/누락/삭제 경계·인덱스              | [Task 43-004](#summary), Task 43-001·002·003와 대조          | 아이템/스킬/관계의 승인된 이력 모델·K-D 현재 분류·F2-A·F2-B의 개수·통제한 변경/없는 이력 사례 | 조회·오류/미확인 결과·성능상 필요한 인덱스 후보. 각 참조 설계 때 전제를 확인하고 결합 조회 구현 전 확정 |
 | 기본 수정의 관련 변경 범위·원본/캐시 갱신·실패 시 보장, #45 교정 실행 인계 | [Task 43-004](#summary)와 각 저장 Task, 실제 실행/복구는 #45 | 입력 오류/새 게임 변경 구분·의존 관계·실패 사례·#45 교정 요구                                 | 수정/갱신 보장·서비스 계약. 해당 수정 구현 전; 실제 정정 기록·실행/복구 수단은 #45 적용 전              |
 
-공통 확인 경로와 API/DTO 배정은 [Task 43-001의 미정](task-001.md#decisions)에 연결한다. 이 Task의 개별 응답·업무 오류 계약도 구현 전에 사용자에게 먼저 확인받는다.
+공통 서비스/저장소와 검사 명령은 [구현 안내](../../../../db/model/implementation.md#current)를 따른다. 새 API/DTO와 후속 응답 계약은 담당 Task에서 확인한다. 이 Task의 개별 응답·업무 오류 계약도 구현 전에 사용자에게 먼저 확인받는다.
 
 <a id="activity"></a>
 
 ## 현재 결정과 제약
 
-- 유효한 결정·이유·승인·제약과 근거: [공유 버전/참조](artifacts/task-001-version-references.md#current)·[공통 모델/검사](artifacts/task-001-common-model.md#current)·[갱신/교정](artifacts/task-001-updates.md#current)·[PK 보호](artifacts/task-001-pk-protection.md#current)와 [최초 구동 A](artifacts/task-001-startup.md#current)를 결합 입력으로 받는다. A의 최초 설치 검증/기본 기동과 app 오류 전 Flyway 성공 가능성, 계정/고정 권한·B2/B3, 관리자 판단의 등급 수정과 D1~D4 유보를 유지한다. 실제 교정/자료 작업은 [기존 단계](issue.md#data-timing), 복원/정비는 [필요 시점](artifacts/task-001-pending.md#conditional-exceptions)에 한정하고 새 선택은 먼저 확인받는다.
+- 유효한 결정·이유·승인·제약과 근거: [공유 버전/참조](artifacts/task-001-version-references.md#current)·[공통 모델/검사](artifacts/task-001-common-model.md#current)·[갱신/교정](artifacts/task-001-updates.md#current)·[PK 보호](artifacts/task-001-pk-protection.md#current)와 [최초 구동 A](artifacts/task-001-startup.md#current)를 결합 입력으로 받는다. A의 최초 설치 검증/기본 기동과 app 오류 전 Flyway 성공 가능성, 계정/고정 권한·B2/B3, 관리자 판단의 등급 수정과 D1~D4 확정 계약과 실제 값 입력 보류를 유지한다. 실제 교정/자료 작업은 [기존 단계](issue.md#data-timing), 복원/정비는 [필요 시점](artifacts/task-001-pending.md#conditional-exceptions)에 한정하고 새 선택은 먼저 확인받는다.
 - 현재 막힌 실패·미확인 또는 해결 후 최종 결론·다음 행동: 상세 DB 선택·확인 경로·실제 자료는 아직 미확인이다. Task 43-001~003의 관계·참조·갱신 계약을 받아 유효 이력 조회와 기본 수정의 남은 선택을 사용자에게 먼저 요청한다. 새 선택은 사용자에게 먼저 요청하고 응답 전에 확정하지 않는다.
 
 <a id="verification"></a>

@@ -117,7 +117,9 @@ class BootstrapInitializationTests {
                     + " or has_schema_privilege('lumia_app','public','CREATE')"));
       }
 
-      var app = new SpringApplication(LumiawikiApiApplication.class);
+      var app =
+          new SpringApplication(
+              io.github.minokim.lumiawiki.fixture.FoundationTestApplication.class);
       var isolatedEnvironment = new StandardEnvironment();
       isolatedEnvironment
           .getPropertySources()

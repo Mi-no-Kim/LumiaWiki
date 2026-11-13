@@ -2,7 +2,7 @@
 
 <a id="current"></a>
 
-[공통 표](common-tables.md#current)의 확정 번호 범위·중복 금지·이름 비교 계약이다. 메이저·마이너 각각 0~99는 사용자 확인을 받은 사실이며 실제 목록·누락/충돌 사례를 조사한 것은 아니다. D1은 [이름·날짜](names-and-dates.md#current)에서 다룬다. 실제 자료·DB 작업과 구현 파일 생성은 보류한다.
+[공통 표](common-tables.md#current)의 확정 번호 범위·중복 금지·이름 비교 계약이다. 메이저·마이너 각각 0~99는 사용자 확인을 받은 사실이며 실제 목록·누락/충돌 사례를 조사한 것은 아니다. D1은 [이름·날짜](names-and-dates.md#current)에서 다룬다. 구현·격리 검증과 승인한 로컬 적용은 [결과](../migration/application-status.md#current)를 따른다. 실제 자료 작업은 계속 보류한다.
 
 ## 업무 키와 기존 정렬
 
@@ -46,7 +46,7 @@ N1에 따라 season.display_name·season.season_name·game_patch.version_name에
 
 ## N2 — 이름 중복 비교
 
-region.display_name·item_category.name·item_grade.name·weapon_type.name·region_map_member.name에 COLLATE "C"를 명시한다. 저장 문자열을 그대로 비교하며 대소문자·앞뒤 공백·Unicode 표현 차이를 구별한다. 빈값 거부와 기존 UNIQUE의 비교 범위는 유지하고 자동 trim/정규화·동명 병합은 하지 않는다. 공개 검색의 정규화/유사어 처리는 후속 검색 계약에서 정한다. [PostgreSQL 비교 규칙](https://www.postgresql.org/docs/18/collation.html)을 근거로 하며 실제 DB 동작은 생성 승인 뒤 검증한다.
+region.display_name·item_category.name·item_grade.name·weapon_type.name·region_map_member.name에 COLLATE "C"를 명시한다. 저장 문자열을 그대로 비교하며 대소문자·앞뒤 공백·Unicode 표현 차이를 구별한다. 빈값 거부와 기존 UNIQUE의 비교 범위는 유지하고 자동 trim/정규화·동명 병합은 하지 않는다. 공개 검색의 정규화/유사어 처리는 후속 검색 계약에서 정한다. [PostgreSQL 비교 규칙](https://www.postgresql.org/docs/18/collation.html)을 근거로 하며 실제 DB 검증 범위는 [적용 결과](../migration/application-status.md#current)를 따른다.
 
 ## 남은 입력과 물리 설계
 

@@ -121,6 +121,13 @@ function composeArgs(args) {
 const docker = (args) => run('docker', composeArgs(args), { timeout: 120000 });
 
 async function copyTree(source, destination, inputs) {
+  // This probe verifies initial startup with synthetic SQL, independently of the product model.
+  // The actual product JAR is still built and checked separately below.
+  if (
+    relative(root, source).split(sep).join('/') ===
+    'backend/src/main/java/io/github/minokim/lumiawiki/catalog'
+  )
+    return;
   await mkdir(destination, { recursive: true });
   for (const entry of await readdir(source, { withFileTypes: true })) {
     if (entry.isSymbolicLink())

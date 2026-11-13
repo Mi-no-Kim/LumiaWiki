@@ -2,7 +2,7 @@
 
 <a id="current"></a>
 
-지속 지역 ID·게임 패치 이력과 지도 전체 구성 버전/소속 행의 총 8개 표 및 아래 열·키·참조/교정 수단은 사용자 확인을 받은 저장 계약이다. region의 작업용 표시 이름은 [공통 표](table-layout.md#region)에 두고 공개 이름·순서와 구별한다. 실제 자료·DB 작업과 구현 파일 생성은 보류한다.
+지속 지역 ID·게임 패치 이력과 지도 전체 구성 버전/소속 행의 총 8개 표 및 아래 열·키·참조/교정 수단은 사용자 확인을 받은 저장 계약이다. region의 작업용 표시 이름은 [공통 표](table-layout.md#region)에 두고 공개 이름·순서와 구별한다. 구현·격리 검증과 승인한 로컬 적용은 [결과](../migration/application-status.md#current)를 따른다. 실제 자료 작업은 계속 보류한다.
 
 ## R-A — 지도 전체의 구성 버전
 
@@ -38,7 +38,7 @@ erDiagram
 | name           | TEXT                   | 불가 | 이 지도 구성의 지역 이름. 빈값 금지       |
 | sort_order     | BIGINT                 | 불가 | 10 이상·10의 배수                         |
 
-소속 행은 `(map_version_id, region_id)`, `(map_version_id, name)`, `(map_version_id, sort_order)` 각각 UNIQUE다. name에는 N2의 COLLATE "C"를 명시한다. 다른 지도 구성에서 같은 이름/순서를 재사용할 수 있다. FK는 비지연/삭제 RESTRICT와 ON UPDATE NO ACTION을 적용한다. 새 두 표의 ID/PK는 M-A에 따라 [8개 표의 공용 guard](permissions-and-installation.md#current)로 보호하며 실제 설치는 생성 승인 뒤다.
+소속 행은 `(map_version_id, region_id)`, `(map_version_id, name)`, `(map_version_id, sort_order)` 각각 UNIQUE다. name에는 N2의 COLLATE "C"를 명시한다. 다른 지도 구성에서 같은 이름/순서를 재사용할 수 있다. FK는 비지연/삭제 RESTRICT와 ON UPDATE NO ACTION을 적용한다. 새 두 표의 ID/PK는 M-A에 따라 [8개 표의 공용 guard](permissions-and-installation.md#current)로 보호하며 실제 설치/검증은 [적용 결과](../migration/application-status.md#current)를 따른다.
 
 ## 조회 의미
 

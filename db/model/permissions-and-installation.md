@@ -2,7 +2,7 @@
 
 <a id="current"></a>
 
-기존 migrator 소유/설치·app 비소유 업무 분리를 유지한다. 표별 업무 권한·교정용 소속 행 DELETE·총 8개 PK 보호와 한 파일 설치 M-A/N5는 확정 계약이다. region 작업용 이름 수정에는 UPDATE를 포함한다. 새 빈 환경의 V1 파일명은 확정했으며 실제 GRANT/제약별 이름·정확한 실행 환경과 생성 직전 확인은 남아 있다. 실제 역할/권한/SQL/DB는 변경하지 않는다.
+기존 migrator 소유/설치·app 비소유 업무 분리를 유지한다. 표별 업무 권한·교정용 소속 행 DELETE·총 8개 PK 보호와 한 파일 설치 M-A/N5는 확정 계약이다. region 작업용 이름 수정에는 UPDATE를 포함한다. 제약/GRANT는 [V1 DDL](../migration/V1__create_common_model.sql)을 원천으로 하며 사용자 구조/대상 확인 뒤 격리 검증과 승인한 로컬 적용을 완료했다. 실제 상태와 별도 승인한 역할/소유 준비는 [적용 결과](../migration/application-status.md#current)를 따른다. 실제 자료 작업은 계속 보류한다.
 
 ## A-A — 업무에 필요한 DML과 교정용 DELETE
 
@@ -17,7 +17,7 @@
 
 비교 대안 A-B는 app의 DELETE를 전혀 주지 않고 지역 구성 교정의 제거/교체 방식부터 다시 설계하는 안이다. 업무 계정의 제거 능력은 줄지만 지역 등장 목록의 교정과 소속 행 참조/보존 요구를 먼저 확정해야 한다. 반대로 모든 공통 표에 DELETE를 일괄 부여하는 안은 초기 추천 범위가 아니다.
 
-lumia_migrator가 직접 생성하는 객체를 소유하고 설치한다. 별도 소유/조회/정비 역할·멤버십과 DEFAULT PRIVILEGES는 추가하지 않는다. IDENTITY INSERT에 필요한 실제 권한은 생성 승인 뒤 비소유자 격리 검증으로 확인하고 시퀀스 전체 USAGE/UPDATE를 미리 부여하지 않는다. 직접 nextval/setval·명시 ID 복원은 조건부 예외로 남긴다.
+lumia_migrator가 직접 생성하는 객체를 소유하고 설치한다. 별도 소유/조회/정비 역할·멤버십과 DEFAULT PRIVILEGES는 추가하지 않는다. IDENTITY INSERT는 비소유자 격리 검증으로 확인했고 시퀀스 전체 USAGE/UPDATE를 미리 부여하지 않는다. 직접 nextval/setval·명시 ID 복원은 조건부 예외로 남긴다.
 
 ## 총 8개 표의 PK 보호
 
@@ -28,7 +28,7 @@ lumia_migrator가 직접 생성하는 객체를 소유하고 설치한다. 별�
 | region_map_version.id | trg_region_map_version_reject_pk_update |
 | region_map_member.id  | trg_region_map_member_reject_pk_update  |
 
-공통 함수와 신규 표별 trigger는 항상 같은 실제 id 값의 변경만 거부한다. 지역 FK/시작 패치·이름·순서까지 PK guard로 고정하지 않는다. 실제 설치/비소유자 동작 검증은 최종 생성 승인 뒤다. 기존 6개만 DB 보호하고 새 두 표는 Spring 검사만 두는 대안은 직접 SQL 예외의 PK 검증 부담이 커 초기 추천하지 않는다.
+공통 함수와 신규 표별 trigger는 항상 같은 실제 id 값의 변경만 거부한다. 지역 FK/시작 패치·이름·순서까지 PK guard로 고정하지 않는다. 실제 설치/비소유자 검증은 [적용 결과](../migration/application-status.md#current)를 따른다. 기존 6개만 DB 보호하고 새 두 표는 Spring 검사만 두는 대안은 직접 SQL 예외의 PK 검증 부담이 커 초기 추천하지 않는다.
 
 ## M-A — 초기 설치 한 파일
 
@@ -41,9 +41,9 @@ N5의 새 빈 격리 환경용 최초 파일은 V1__create_common_model.sql이�
 
 M-A는 최초 8개 구조의 부분 설치를 줄이기 위한 선택이다. 표의 전체 구조와 실제 실행 대상/순번은 생성 직전에 재확인한다. 롤백 범위는 해당 마이그레이션의 함수·제품 표·제약·trigger·GRANT 단위이며 선행 bootstrap·DB/Flyway 관리 표까지 모두 되돌린다는 뜻이 아니다. M-B의 첫 설치만 성공한 상태도 제품 기능 완료로 표시할 수 없다.
 
-함수 CREATE/공개 실행권 회수와 각 표 CREATE/자기 trigger는 합의한 같은 마이그레이션 트랜잭션 단위를 유지한다. N5의 최초 적용 검증은 새 격리 DB이며 정확한 실행 환경은 생성 직전 사용자에게 다시 확인받는다. 기존 DB의 Flyway 순번/소유는 조회 보류 해제 뒤 확인하며 새 빈 환경의 V1을 그대로 적용하지 않는다. 실제 자료·DB 작업과 구현 파일 생성 보류를 유지한다.
+함수 CREATE/공개 실행권 회수와 각 표 CREATE/자기 trigger는 합의한 같은 마이그레이션 트랜잭션 단위를 유지한다. N5의 최초 적용 검증은 새 격리 DB이며 정확한 실행 환경은 생성 직전 사용자에게 다시 확인받는다. 기존 DB의 Flyway 순번/소유/객체 충돌을 확인하고 승인한 준비 뒤 적용한다. 현재 로컬의 메타정보와 V1 성공은 [적용 결과](../migration/application-status.md#current)로 확인한다. 실제 자료 작업은 계속 보류한다.
 
-plain CREATE로 충돌 시 중단하고 자동 교체·삭제·건너뛰기를 하지 않는다. 승인 전 새 DDL을 적용할 수 있는 Flyway/서버 시작·DB 통합 테스트도 실행하지 않는다. [C-A 참조](consumer-references.md#current)와 [L-A 잠금](writes-and-checks.md#catalog-locking)을 함께 적용하며 잠금 SQL/권한의 실제 동작은 생성 승인 뒤 검증한다.
+plain CREATE로 충돌 시 중단하고 자동 교체·삭제·건너뛰기를 하지 않는다. 승인 전 새 DDL을 적용할 수 있는 Flyway/서버 시작·DB 통합 테스트도 실행하지 않는다. [C-A 참조](consumer-references.md#current)와 [L-A 잠금](writes-and-checks.md#catalog-locking)을 함께 적용하며 잠금 SQL/권한의 실제 검증 범위는 [적용 결과](../migration/application-status.md#current)를 따른다.
 
 ## 확인 순서
 

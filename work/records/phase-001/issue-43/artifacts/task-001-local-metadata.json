@@ -1,0 +1,1071 @@
+{
+  "target": {
+    "docker_context": "desktop-linux",
+    "container": "lumiawiki-db-1",
+    "container_id": "e85f1d98b2a7",
+    "host": "127.0.0.1",
+    "port": 5432
+  },
+  "ddl_sha256": "1495d8a5085188f535865f9b46f51aa1c9a18480c1b49efd68df61c43f5b8ddd",
+  "guard": {
+    "body": "\nBEGIN\n    IF OLD.id IS DISTINCT FROM NEW.id THEN\n        RAISE EXCEPTION USING ERRCODE = 'LW001',\n            MESSAGE = 'Common primary key cannot be changed.';\n    END IF;\n    RETURN NEW;\nEND;\n",
+    "owner": "lumia_migrator",
+    "settings": [
+      "search_path=pg_catalog"
+    ],
+    "app_execute": false,
+    "security_definer": false
+  },
+  "roles": [
+    {
+      "name": "lumia_app",
+      "login": true,
+      "createdb": false,
+      "bypassrls": false,
+      "superuser": false,
+      "createrole": false,
+      "replication": false
+    },
+    {
+      "name": "lumia_migrator",
+      "login": true,
+      "createdb": false,
+      "bypassrls": false,
+      "superuser": false,
+      "createrole": false,
+      "replication": false
+    },
+    {
+      "name": "lumiawiki",
+      "login": true,
+      "createdb": true,
+      "bypassrls": true,
+      "superuser": true,
+      "createrole": true,
+      "replication": true
+    }
+  ],
+  "tables": [
+    {
+      "name": "flyway_schema_history",
+      "owner": "lumia_migrator"
+    },
+    {
+      "name": "game_patch",
+      "owner": "lumia_migrator"
+    },
+    {
+      "name": "item_category",
+      "owner": "lumia_migrator"
+    },
+    {
+      "name": "item_grade",
+      "owner": "lumia_migrator"
+    },
+    {
+      "name": "region",
+      "owner": "lumia_migrator"
+    },
+    {
+      "name": "region_map_member",
+      "owner": "lumia_migrator"
+    },
+    {
+      "name": "region_map_version",
+      "owner": "lumia_migrator"
+    },
+    {
+      "name": "season",
+      "owner": "lumia_migrator"
+    },
+    {
+      "name": "weapon_type",
+      "owner": "lumia_migrator"
+    }
+  ],
+  "columns": [
+    {
+      "type": "int8",
+      "table": "game_patch",
+      "column": "id",
+      "identity": "ALWAYS",
+      "nullable": "NO",
+      "datetime_precision": null
+    },
+    {
+      "type": "int8",
+      "table": "game_patch",
+      "column": "season_id",
+      "identity": null,
+      "nullable": "NO",
+      "datetime_precision": null
+    },
+    {
+      "type": "int4",
+      "table": "game_patch",
+      "column": "major_no",
+      "identity": null,
+      "nullable": "NO",
+      "datetime_precision": null
+    },
+    {
+      "type": "int4",
+      "table": "game_patch",
+      "column": "minor_no",
+      "identity": null,
+      "nullable": "NO",
+      "datetime_precision": null
+    },
+    {
+      "type": "text",
+      "table": "game_patch",
+      "column": "version_name",
+      "identity": null,
+      "nullable": "YES",
+      "datetime_precision": null
+    },
+    {
+      "type": "int8",
+      "table": "game_patch",
+      "column": "sort_order",
+      "identity": null,
+      "nullable": "NO",
+      "datetime_precision": null
+    },
+    {
+      "type": "timestamptz",
+      "table": "game_patch",
+      "column": "applied_at",
+      "identity": null,
+      "nullable": "YES",
+      "datetime_precision": 0
+    },
+    {
+      "type": "int8",
+      "table": "item_category",
+      "column": "id",
+      "identity": "ALWAYS",
+      "nullable": "NO",
+      "datetime_precision": null
+    },
+    {
+      "type": "text",
+      "table": "item_category",
+      "column": "name",
+      "identity": null,
+      "nullable": "NO",
+      "datetime_precision": null
+    },
+    {
+      "type": "int8",
+      "table": "item_category",
+      "column": "parent_id",
+      "identity": null,
+      "nullable": "YES",
+      "datetime_precision": null
+    },
+    {
+      "type": "int8",
+      "table": "item_grade",
+      "column": "id",
+      "identity": "ALWAYS",
+      "nullable": "NO",
+      "datetime_precision": null
+    },
+    {
+      "type": "text",
+      "table": "item_grade",
+      "column": "name",
+      "identity": null,
+      "nullable": "NO",
+      "datetime_precision": null
+    },
+    {
+      "type": "int8",
+      "table": "item_grade",
+      "column": "sort_order",
+      "identity": null,
+      "nullable": "NO",
+      "datetime_precision": null
+    },
+    {
+      "type": "int8",
+      "table": "region",
+      "column": "id",
+      "identity": "ALWAYS",
+      "nullable": "NO",
+      "datetime_precision": null
+    },
+    {
+      "type": "text",
+      "table": "region",
+      "column": "display_name",
+      "identity": null,
+      "nullable": "NO",
+      "datetime_precision": null
+    },
+    {
+      "type": "int8",
+      "table": "region_map_member",
+      "column": "id",
+      "identity": "ALWAYS",
+      "nullable": "NO",
+      "datetime_precision": null
+    },
+    {
+      "type": "int8",
+      "table": "region_map_member",
+      "column": "map_version_id",
+      "identity": null,
+      "nullable": "NO",
+      "datetime_precision": null
+    },
+    {
+      "type": "int8",
+      "table": "region_map_member",
+      "column": "region_id",
+      "identity": null,
+      "nullable": "NO",
+      "datetime_precision": null
+    },
+    {
+      "type": "text",
+      "table": "region_map_member",
+      "column": "name",
+      "identity": null,
+      "nullable": "NO",
+      "datetime_precision": null
+    },
+    {
+      "type": "int8",
+      "table": "region_map_member",
+      "column": "sort_order",
+      "identity": null,
+      "nullable": "NO",
+      "datetime_precision": null
+    },
+    {
+      "type": "int8",
+      "table": "region_map_version",
+      "column": "id",
+      "identity": "ALWAYS",
+      "nullable": "NO",
+      "datetime_precision": null
+    },
+    {
+      "type": "int8",
+      "table": "region_map_version",
+      "column": "from_game_patch_id",
+      "identity": null,
+      "nullable": "NO",
+      "datetime_precision": null
+    },
+    {
+      "type": "int8",
+      "table": "season",
+      "column": "id",
+      "identity": "ALWAYS",
+      "nullable": "NO",
+      "datetime_precision": null
+    },
+    {
+      "type": "int4",
+      "table": "season",
+      "column": "season_number",
+      "identity": null,
+      "nullable": "NO",
+      "datetime_precision": null
+    },
+    {
+      "type": "text",
+      "table": "season",
+      "column": "display_name",
+      "identity": null,
+      "nullable": "NO",
+      "datetime_precision": null
+    },
+    {
+      "type": "text",
+      "table": "season",
+      "column": "season_name",
+      "identity": null,
+      "nullable": "YES",
+      "datetime_precision": null
+    },
+    {
+      "type": "int8",
+      "table": "season",
+      "column": "sort_order",
+      "identity": null,
+      "nullable": "NO",
+      "datetime_precision": null
+    },
+    {
+      "type": "date",
+      "table": "season",
+      "column": "start_date",
+      "identity": null,
+      "nullable": "YES",
+      "datetime_precision": 0
+    },
+    {
+      "type": "date",
+      "table": "season",
+      "column": "end_date",
+      "identity": null,
+      "nullable": "YES",
+      "datetime_precision": 0
+    },
+    {
+      "type": "int8",
+      "table": "weapon_type",
+      "column": "id",
+      "identity": "ALWAYS",
+      "nullable": "NO",
+      "datetime_precision": null
+    },
+    {
+      "type": "text",
+      "table": "weapon_type",
+      "column": "name",
+      "identity": null,
+      "nullable": "NO",
+      "datetime_precision": null
+    },
+    {
+      "type": "int8",
+      "table": "weapon_type",
+      "column": "category_id",
+      "identity": null,
+      "nullable": "NO",
+      "datetime_precision": null
+    }
+  ],
+  "database": "lumiawiki",
+  "triggers": [
+    {
+      "name": "trg_game_patch_reject_pk_update",
+      "definition": "CREATE TRIGGER trg_game_patch_reject_pk_update AFTER UPDATE ON public.game_patch FOR EACH ROW EXECUTE FUNCTION reject_common_pk_update()"
+    },
+    {
+      "name": "trg_item_category_reject_pk_update",
+      "definition": "CREATE TRIGGER trg_item_category_reject_pk_update AFTER UPDATE ON public.item_category FOR EACH ROW EXECUTE FUNCTION reject_common_pk_update()"
+    },
+    {
+      "name": "trg_item_grade_reject_pk_update",
+      "definition": "CREATE TRIGGER trg_item_grade_reject_pk_update AFTER UPDATE ON public.item_grade FOR EACH ROW EXECUTE FUNCTION reject_common_pk_update()"
+    },
+    {
+      "name": "trg_region_map_member_reject_pk_update",
+      "definition": "CREATE TRIGGER trg_region_map_member_reject_pk_update AFTER UPDATE ON public.region_map_member FOR EACH ROW EXECUTE FUNCTION reject_common_pk_update()"
+    },
+    {
+      "name": "trg_region_map_version_reject_pk_update",
+      "definition": "CREATE TRIGGER trg_region_map_version_reject_pk_update AFTER UPDATE ON public.region_map_version FOR EACH ROW EXECUTE FUNCTION reject_common_pk_update()"
+    },
+    {
+      "name": "trg_region_reject_pk_update",
+      "definition": "CREATE TRIGGER trg_region_reject_pk_update AFTER UPDATE ON public.region FOR EACH ROW EXECUTE FUNCTION reject_common_pk_update()"
+    },
+    {
+      "name": "trg_season_reject_pk_update",
+      "definition": "CREATE TRIGGER trg_season_reject_pk_update AFTER UPDATE ON public.season FOR EACH ROW EXECUTE FUNCTION reject_common_pk_update()"
+    },
+    {
+      "name": "trg_weapon_type_reject_pk_update",
+      "definition": "CREATE TRIGGER trg_weapon_type_reject_pk_update AFTER UPDATE ON public.weapon_type FOR EACH ROW EXECUTE FUNCTION reject_common_pk_update()"
+    }
+  ],
+  "migration": [
+    {
+      "script": "V1__create_common_model.sql",
+      "success": true,
+      "version": "1",
+      "checksum": -995352012,
+      "installed_by": "lumia_migrator"
+    }
+  ],
+  "sequences": [
+    {
+      "name": "game_patch_id_seq",
+      "owner": "lumia_migrator",
+      "app_usage": false,
+      "app_update": false
+    },
+    {
+      "name": "item_category_id_seq",
+      "owner": "lumia_migrator",
+      "app_usage": false,
+      "app_update": false
+    },
+    {
+      "name": "item_grade_id_seq",
+      "owner": "lumia_migrator",
+      "app_usage": false,
+      "app_update": false
+    },
+    {
+      "name": "region_id_seq",
+      "owner": "lumia_migrator",
+      "app_usage": false,
+      "app_update": false
+    },
+    {
+      "name": "region_map_member_id_seq",
+      "owner": "lumia_migrator",
+      "app_usage": false,
+      "app_update": false
+    },
+    {
+      "name": "region_map_version_id_seq",
+      "owner": "lumia_migrator",
+      "app_usage": false,
+      "app_update": false
+    },
+    {
+      "name": "season_id_seq",
+      "owner": "lumia_migrator",
+      "app_usage": false,
+      "app_update": false
+    },
+    {
+      "name": "weapon_type_id_seq",
+      "owner": "lumia_migrator",
+      "app_usage": false,
+      "app_update": false
+    }
+  ],
+  "row_counts": {
+    "region": 0,
+    "season": 0,
+    "game_patch": 0,
+    "item_grade": 0,
+    "weapon_type": 0,
+    "item_category": 0,
+    "region_map_member": 0,
+    "region_map_version": 0
+  },
+  "constraints": [
+    {
+      "name": "ck_game_patch_major",
+      "type": "c",
+      "table": "game_patch",
+      "deferrable": false,
+      "definition": "CHECK (((major_no >= 0) AND (major_no <= 99)))"
+    },
+    {
+      "name": "ck_game_patch_minor",
+      "type": "c",
+      "table": "game_patch",
+      "deferrable": false,
+      "definition": "CHECK (((minor_no >= 0) AND (minor_no <= 99)))"
+    },
+    {
+      "name": "ck_game_patch_name",
+      "type": "c",
+      "table": "game_patch",
+      "deferrable": false,
+      "definition": "CHECK (((version_name IS NULL) OR (btrim(version_name) <> ''::text)))"
+    },
+    {
+      "name": "ck_item_category_name",
+      "type": "c",
+      "table": "item_category",
+      "deferrable": false,
+      "definition": "CHECK ((btrim(name) <> ''::text))"
+    },
+    {
+      "name": "ck_item_category_parent",
+      "type": "c",
+      "table": "item_category",
+      "deferrable": false,
+      "definition": "CHECK (((parent_id IS NULL) OR (parent_id <> id)))"
+    },
+    {
+      "name": "ck_item_grade_name",
+      "type": "c",
+      "table": "item_grade",
+      "deferrable": false,
+      "definition": "CHECK ((btrim(name) <> ''::text))"
+    },
+    {
+      "name": "ck_region_display_name",
+      "type": "c",
+      "table": "region",
+      "deferrable": false,
+      "definition": "CHECK ((btrim(display_name) <> ''::text))"
+    },
+    {
+      "name": "ck_region_map_member_name",
+      "type": "c",
+      "table": "region_map_member",
+      "deferrable": false,
+      "definition": "CHECK ((btrim(name) <> ''::text))"
+    },
+    {
+      "name": "ck_region_map_member_order",
+      "type": "c",
+      "table": "region_map_member",
+      "deferrable": false,
+      "definition": "CHECK (((sort_order >= 10) AND ((sort_order % (10)::bigint) = 0)))"
+    },
+    {
+      "name": "ck_season_actual_name",
+      "type": "c",
+      "table": "season",
+      "deferrable": false,
+      "definition": "CHECK (((season_name IS NULL) OR (btrim(season_name) <> ''::text)))"
+    },
+    {
+      "name": "ck_season_dates",
+      "type": "c",
+      "table": "season",
+      "deferrable": false,
+      "definition": "CHECK (((start_date IS NULL) OR (end_date IS NULL) OR (end_date >= start_date)))"
+    },
+    {
+      "name": "ck_season_display_name",
+      "type": "c",
+      "table": "season",
+      "deferrable": false,
+      "definition": "CHECK ((btrim(display_name) <> ''::text))"
+    },
+    {
+      "name": "ck_season_number",
+      "type": "c",
+      "table": "season",
+      "deferrable": false,
+      "definition": "CHECK ((season_number >= 1))"
+    },
+    {
+      "name": "ck_season_order",
+      "type": "c",
+      "table": "season",
+      "deferrable": false,
+      "definition": "CHECK ((sort_order = ((season_number)::bigint + 9)))"
+    },
+    {
+      "name": "ck_weapon_type_name",
+      "type": "c",
+      "table": "weapon_type",
+      "deferrable": false,
+      "definition": "CHECK ((btrim(name) <> ''::text))"
+    },
+    {
+      "name": "fk_game_patch_season",
+      "type": "f",
+      "table": "game_patch",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (season_id) REFERENCES season(id) ON DELETE RESTRICT"
+    },
+    {
+      "name": "fk_item_category_parent",
+      "type": "f",
+      "table": "item_category",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (parent_id) REFERENCES item_category(id) ON DELETE RESTRICT"
+    },
+    {
+      "name": "fk_region_map_member_map",
+      "type": "f",
+      "table": "region_map_member",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (map_version_id) REFERENCES region_map_version(id) ON DELETE RESTRICT"
+    },
+    {
+      "name": "fk_region_map_member_region",
+      "type": "f",
+      "table": "region_map_member",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (region_id) REFERENCES region(id) ON DELETE RESTRICT"
+    },
+    {
+      "name": "fk_region_map_start",
+      "type": "f",
+      "table": "region_map_version",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (from_game_patch_id) REFERENCES game_patch(id) ON DELETE RESTRICT"
+    },
+    {
+      "name": "fk_weapon_type_category",
+      "type": "f",
+      "table": "weapon_type",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (category_id) REFERENCES item_category(id) ON DELETE RESTRICT"
+    },
+    {
+      "name": "game_patch_id_not_null",
+      "type": "n",
+      "table": "game_patch",
+      "deferrable": false,
+      "definition": "NOT NULL id"
+    },
+    {
+      "name": "item_category_id_not_null",
+      "type": "n",
+      "table": "item_category",
+      "deferrable": false,
+      "definition": "NOT NULL id"
+    },
+    {
+      "name": "item_grade_id_not_null",
+      "type": "n",
+      "table": "item_grade",
+      "deferrable": false,
+      "definition": "NOT NULL id"
+    },
+    {
+      "name": "nn_game_patch_major",
+      "type": "n",
+      "table": "game_patch",
+      "deferrable": false,
+      "definition": "NOT NULL major_no"
+    },
+    {
+      "name": "nn_game_patch_minor",
+      "type": "n",
+      "table": "game_patch",
+      "deferrable": false,
+      "definition": "NOT NULL minor_no"
+    },
+    {
+      "name": "nn_game_patch_order",
+      "type": "n",
+      "table": "game_patch",
+      "deferrable": false,
+      "definition": "NOT NULL sort_order"
+    },
+    {
+      "name": "nn_game_patch_season",
+      "type": "n",
+      "table": "game_patch",
+      "deferrable": false,
+      "definition": "NOT NULL season_id"
+    },
+    {
+      "name": "nn_item_category_name",
+      "type": "n",
+      "table": "item_category",
+      "deferrable": false,
+      "definition": "NOT NULL name"
+    },
+    {
+      "name": "nn_item_grade_name",
+      "type": "n",
+      "table": "item_grade",
+      "deferrable": false,
+      "definition": "NOT NULL name"
+    },
+    {
+      "name": "nn_item_grade_order",
+      "type": "n",
+      "table": "item_grade",
+      "deferrable": false,
+      "definition": "NOT NULL sort_order"
+    },
+    {
+      "name": "nn_region_display_name",
+      "type": "n",
+      "table": "region",
+      "deferrable": false,
+      "definition": "NOT NULL display_name"
+    },
+    {
+      "name": "nn_region_map_member_map",
+      "type": "n",
+      "table": "region_map_member",
+      "deferrable": false,
+      "definition": "NOT NULL map_version_id"
+    },
+    {
+      "name": "nn_region_map_member_name",
+      "type": "n",
+      "table": "region_map_member",
+      "deferrable": false,
+      "definition": "NOT NULL name"
+    },
+    {
+      "name": "nn_region_map_member_order",
+      "type": "n",
+      "table": "region_map_member",
+      "deferrable": false,
+      "definition": "NOT NULL sort_order"
+    },
+    {
+      "name": "nn_region_map_member_region",
+      "type": "n",
+      "table": "region_map_member",
+      "deferrable": false,
+      "definition": "NOT NULL region_id"
+    },
+    {
+      "name": "nn_region_map_start",
+      "type": "n",
+      "table": "region_map_version",
+      "deferrable": false,
+      "definition": "NOT NULL from_game_patch_id"
+    },
+    {
+      "name": "nn_season_display_name",
+      "type": "n",
+      "table": "season",
+      "deferrable": false,
+      "definition": "NOT NULL display_name"
+    },
+    {
+      "name": "nn_season_number",
+      "type": "n",
+      "table": "season",
+      "deferrable": false,
+      "definition": "NOT NULL season_number"
+    },
+    {
+      "name": "nn_season_order",
+      "type": "n",
+      "table": "season",
+      "deferrable": false,
+      "definition": "NOT NULL sort_order"
+    },
+    {
+      "name": "nn_weapon_type_category",
+      "type": "n",
+      "table": "weapon_type",
+      "deferrable": false,
+      "definition": "NOT NULL category_id"
+    },
+    {
+      "name": "nn_weapon_type_name",
+      "type": "n",
+      "table": "weapon_type",
+      "deferrable": false,
+      "definition": "NOT NULL name"
+    },
+    {
+      "name": "pk_game_patch",
+      "type": "p",
+      "table": "game_patch",
+      "deferrable": false,
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "name": "pk_item_category",
+      "type": "p",
+      "table": "item_category",
+      "deferrable": false,
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "name": "pk_item_grade",
+      "type": "p",
+      "table": "item_grade",
+      "deferrable": false,
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "name": "pk_region",
+      "type": "p",
+      "table": "region",
+      "deferrable": false,
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "name": "pk_region_map_member",
+      "type": "p",
+      "table": "region_map_member",
+      "deferrable": false,
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "name": "pk_region_map_version",
+      "type": "p",
+      "table": "region_map_version",
+      "deferrable": false,
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "name": "pk_season",
+      "type": "p",
+      "table": "season",
+      "deferrable": false,
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "name": "pk_weapon_type",
+      "type": "p",
+      "table": "weapon_type",
+      "deferrable": false,
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "name": "region_id_not_null",
+      "type": "n",
+      "table": "region",
+      "deferrable": false,
+      "definition": "NOT NULL id"
+    },
+    {
+      "name": "region_map_member_id_not_null",
+      "type": "n",
+      "table": "region_map_member",
+      "deferrable": false,
+      "definition": "NOT NULL id"
+    },
+    {
+      "name": "region_map_version_id_not_null",
+      "type": "n",
+      "table": "region_map_version",
+      "deferrable": false,
+      "definition": "NOT NULL id"
+    },
+    {
+      "name": "season_id_not_null",
+      "type": "n",
+      "table": "season",
+      "deferrable": false,
+      "definition": "NOT NULL id"
+    },
+    {
+      "name": "uq_game_patch_number",
+      "type": "u",
+      "table": "game_patch",
+      "deferrable": false,
+      "definition": "UNIQUE (season_id, major_no, minor_no)"
+    },
+    {
+      "name": "uq_game_patch_order",
+      "type": "u",
+      "table": "game_patch",
+      "deferrable": false,
+      "definition": "UNIQUE (sort_order)"
+    },
+    {
+      "name": "uq_item_category_parent_name",
+      "type": "u",
+      "table": "item_category",
+      "deferrable": false,
+      "definition": "UNIQUE NULLS NOT DISTINCT (parent_id, name)"
+    },
+    {
+      "name": "uq_item_grade_name",
+      "type": "u",
+      "table": "item_grade",
+      "deferrable": false,
+      "definition": "UNIQUE (name)"
+    },
+    {
+      "name": "uq_item_grade_order",
+      "type": "u",
+      "table": "item_grade",
+      "deferrable": false,
+      "definition": "UNIQUE (sort_order)"
+    },
+    {
+      "name": "uq_region_display_name",
+      "type": "u",
+      "table": "region",
+      "deferrable": false,
+      "definition": "UNIQUE (display_name)"
+    },
+    {
+      "name": "uq_region_map_member_name",
+      "type": "u",
+      "table": "region_map_member",
+      "deferrable": false,
+      "definition": "UNIQUE (map_version_id, name)"
+    },
+    {
+      "name": "uq_region_map_member_order",
+      "type": "u",
+      "table": "region_map_member",
+      "deferrable": false,
+      "definition": "UNIQUE (map_version_id, sort_order)"
+    },
+    {
+      "name": "uq_region_map_member_region",
+      "type": "u",
+      "table": "region_map_member",
+      "deferrable": false,
+      "definition": "UNIQUE (map_version_id, region_id)"
+    },
+    {
+      "name": "uq_region_map_start",
+      "type": "u",
+      "table": "region_map_version",
+      "deferrable": false,
+      "definition": "UNIQUE (from_game_patch_id)"
+    },
+    {
+      "name": "uq_season_number",
+      "type": "u",
+      "table": "season",
+      "deferrable": false,
+      "definition": "UNIQUE (season_number)"
+    },
+    {
+      "name": "uq_weapon_type_category",
+      "type": "u",
+      "table": "weapon_type",
+      "deferrable": false,
+      "definition": "UNIQUE (category_id)"
+    },
+    {
+      "name": "uq_weapon_type_name",
+      "type": "u",
+      "table": "weapon_type",
+      "deferrable": false,
+      "definition": "UNIQUE (name)"
+    },
+    {
+      "name": "weapon_type_id_not_null",
+      "type": "n",
+      "table": "weapon_type",
+      "deferrable": false,
+      "definition": "NOT NULL id"
+    }
+  ],
+  "memberships": 0,
+  "public_owner": "pg_database_owner",
+  "database_owner": "lumiawiki",
+  "server_version": "18.6 (Debian 18.6-1.pgdg13+2)",
+  "basis_privileges": {
+    "app_temp": false,
+    "app_connect": true,
+    "app_db_create": false,
+    "migrator_temp": false,
+    "app_schema_usage": true,
+    "migrator_connect": true,
+    "app_schema_create": false,
+    "migrator_db_create": false,
+    "migrator_schema_usage": true,
+    "migrator_schema_create": true
+  },
+  "app_table_privileges": [
+    {
+      "table": "game_patch",
+      "grantable": "NO",
+      "privilege": "INSERT"
+    },
+    {
+      "table": "game_patch",
+      "grantable": "NO",
+      "privilege": "SELECT"
+    },
+    {
+      "table": "game_patch",
+      "grantable": "NO",
+      "privilege": "UPDATE"
+    },
+    {
+      "table": "item_category",
+      "grantable": "NO",
+      "privilege": "INSERT"
+    },
+    {
+      "table": "item_category",
+      "grantable": "NO",
+      "privilege": "SELECT"
+    },
+    {
+      "table": "item_category",
+      "grantable": "NO",
+      "privilege": "UPDATE"
+    },
+    {
+      "table": "item_grade",
+      "grantable": "NO",
+      "privilege": "INSERT"
+    },
+    {
+      "table": "item_grade",
+      "grantable": "NO",
+      "privilege": "SELECT"
+    },
+    {
+      "table": "item_grade",
+      "grantable": "NO",
+      "privilege": "UPDATE"
+    },
+    {
+      "table": "region",
+      "grantable": "NO",
+      "privilege": "INSERT"
+    },
+    {
+      "table": "region",
+      "grantable": "NO",
+      "privilege": "SELECT"
+    },
+    {
+      "table": "region",
+      "grantable": "NO",
+      "privilege": "UPDATE"
+    },
+    {
+      "table": "region_map_member",
+      "grantable": "NO",
+      "privilege": "DELETE"
+    },
+    {
+      "table": "region_map_member",
+      "grantable": "NO",
+      "privilege": "INSERT"
+    },
+    {
+      "table": "region_map_member",
+      "grantable": "NO",
+      "privilege": "SELECT"
+    },
+    {
+      "table": "region_map_member",
+      "grantable": "NO",
+      "privilege": "UPDATE"
+    },
+    {
+      "table": "region_map_version",
+      "grantable": "NO",
+      "privilege": "INSERT"
+    },
+    {
+      "table": "region_map_version",
+      "grantable": "NO",
+      "privilege": "SELECT"
+    },
+    {
+      "table": "region_map_version",
+      "grantable": "NO",
+      "privilege": "UPDATE"
+    },
+    {
+      "table": "season",
+      "grantable": "NO",
+      "privilege": "INSERT"
+    },
+    {
+      "table": "season",
+      "grantable": "NO",
+      "privilege": "SELECT"
+    },
+    {
+      "table": "season",
+      "grantable": "NO",
+      "privilege": "UPDATE"
+    },
+    {
+      "table": "weapon_type",
+      "grantable": "NO",
+      "privilege": "INSERT"
+    },
+    {
+      "table": "weapon_type",
+      "grantable": "NO",
+      "privilege": "SELECT"
+    },
+    {
+      "table": "weapon_type",
+      "grantable": "NO",
+      "privilege": "UPDATE"
+    }
+  ],
+  "public_schema_privileges": [],
+  "public_database_privileges": []
+}

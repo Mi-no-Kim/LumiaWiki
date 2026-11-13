@@ -2,7 +2,7 @@
 
 <a id="current"></a>
 
-[공통 표](common-tables.md#current)의 확정한 NULL 등록 계약이다. 실제 값·누락 사례는 조사하지 않았다. 계약의 확정과 테이블·스키마·SQL 생성은 별개이며 실제 생성은 보류한다.
+[공통 표](common-tables.md#current)의 확정한 NULL 등록 계약이다. 실제 값·누락 사례는 조사하지 않았다. 표 구조의 설치/검증은 [적용 결과](../migration/application-status.md#current), 실제 이름·날짜의 확인/등록은 별도 자료 작업이며 현재 보류한다.
 
 ## 필수값과 값 보존
 

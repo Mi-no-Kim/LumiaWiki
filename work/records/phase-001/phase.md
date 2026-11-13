@@ -8,8 +8,8 @@
 - 구상상 구분: P1
 - GitHub milestone: [Mi-no-Kim/LumiaWiki #1](https://github.com/Mi-no-Kim/LumiaWiki/milestone/1)
 - 상태: 진행 중
-- 현재 진행 위치: 계획 Issue #15와 기반 Issue #42는 완료했고 [PR #66](https://github.com/Mi-no-Kim/LumiaWiki/pull/66)의 Phase 반영·CI·정리를 확인했다. [Issue #43](issue-43/issue.md#summary)은 최초 구동 구현·격리 DB 검증을 통과했다. 계약·후보·미정은 [설계 안내](issue-43/artifacts/task-001-shared-version-references.md#summary), 실행 근거는 [검증 기록](issue-43/artifacts/task-001-bootstrap-verification.md#results)에서 조회한다. Task 001 진행 중·002~004 예정·sub-issue 미등록, Issue #44~#48 예정이다. 실제 자료·기존 개발 DB/볼륨과 공통 도메인 표 구현은 보류하며 Phase 수용 조건은 남아 있다.
-- 다음 판단/행동: #43은 최초 구동 결과를 인계하고 [남은 공통 저장/갱신 계약·D1~D4](issue-43/artifacts/task-001-pending.md#remaining-review)를 필요한 범위에서 확인한다. 조건부 예외를 일반 구현의 필수로 확대하거나 이미 채택한 선택을 반복 승인받지 않는다. 새 업무 선택은 먼저 확인받고 실제 자료·기존 개발 DB/볼륨·공통 도메인 표 구현 보류를 유지한다.
+- 현재 진행 위치: 계획 Issue #15와 기반 #42는 완료했다. [Issue #43](issue-43/issue.md#summary)의 Task 001은 완료했고 공통 8개 표/Java 구현·격리 검증 뒤 승인한 로컬에 적용했으며 단위 30·통합 11건을 통과했다. [결과](issue-43/artifacts/task-001-creation.md#current)를 따른다. Task 002~004·Issue #44~#48과 Phase 수용은 남아 있으며 실제 자료 작업은 계속 보류한다.
+- 다음 판단/행동: Issue #43의 Task 002 설계로 이어간다. 001의 완료 수용과 후속 인계를 입력으로 받는다. 실제 자료 작업은 계속 보류하고 신규 표도 생성 직전 전체 구조/정확한 대상을 확인받는다. 새 결정과 승인 범위 밖의 객체 변경은 먼저 제시한다.
 
 <a id="ci-manual-followup"></a>
 

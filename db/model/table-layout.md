@@ -2,7 +2,7 @@
 
 <a id="current"></a>
 
-8개 표 저장 구조와 N1~N5는 확정 계약이다. 메이저·마이너 각각 0~99는 사용자 확인을 받은 범위이며 패치 정렬값 UNIQUE를 적용한다. [공통 계약](common-tables.md#current)과 [D1](names-and-dates.md#current)·[D2](ranges-and-uniqueness.md#current)를 함께 읽는다. 실제 제약 이름·실행 환경의 식별과 생성 직전 확인은 남아 있다. 실제 자료·DB 작업과 구현 파일 생성은 보류한다.
+8개 표 저장 구조와 N1~N5는 확정 계약이다. 메이저·마이너 각각 0~99는 사용자 확인을 받은 범위이며 패치 정렬값 UNIQUE를 적용한다. [공통 계약](common-tables.md#current)과 [D1](names-and-dates.md#current)·[D2](ranges-and-uniqueness.md#current)를 함께 읽는다. 제약 이름은 [V1 DDL](../migration/V1__create_common_model.sql), 실제 설치 대상과 검증은 [적용 결과](../migration/application-status.md#current)가 소유한다. 실제 자료 작업은 계속 보류한다.
 
 ## 전체 생성 검토 대상
 

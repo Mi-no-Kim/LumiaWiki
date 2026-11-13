@@ -2,7 +2,7 @@
 
 <a id="current"></a>
 
-소유/업무 계정 분리와 최초 역할/권한 SQL·비밀값 전달·인용/로그 보호의 결정 근거를 확인할 때. 담당 상태·수용 판단은 [Task 43-001](../task-001.md#summary), 전체 길잡이는 [설계 안내](task-001-shared-version-references.md#summary)를 따른다. 아래 채택·비채택·미정을 구별하며 최초 구동 구현과 격리 검증은 [검증 기록](task-001-bootstrap-verification.md#results)을 따른다. 실제 자료·기존 개발 DB/볼륨과 공통 도메인 표 구현은 보류한다.
+소유/업무 계정 분리와 최초 역할/권한 SQL·비밀값 전달·인용/로그 보호의 결정 근거를 확인할 때. 담당 상태·수용 판단은 [Task 43-001](../task-001.md#summary), 전체 길잡이는 [설계 안내](task-001-shared-version-references.md#summary)를 따른다. 아래 채택·비채택·미정을 구별하며 최초 구동 구현과 격리 검증은 [검증 기록](task-001-bootstrap-verification.md#results)을 따른다. 승인한 공통 구조의 구현·격리 검증·로컬 적용은 [생성 결과](task-001-creation.md#current)를 따른다. 실제 자료 작업은 계속 보류한다.
 
 역할/권한/비밀값은 [로컬 DB 최초 구동 기준](<../../../../../docs/details/development/로컬 DB 최초 구동.md#current>), 실행 흐름과 설정은 [최초 구동 상세](task-001-startup.md#current)를 따른다. 아래는 O/C/T·C-S-F/V/R/G/Q/L/E의 확정 계약과 비교 대안이다.
 
@@ -10,7 +10,7 @@
 
 ## P1의 실제 소유·설치 역할·권한 연결·분리 시점 — O-A·C-A·T-A 설계 채택
 
-소유/설치와 업무 계정을 분리하고 Spring/Flyway는 각 목적의 접속을 사용한다(O-A/C-A). 역할 분리는 최초 P1 설치 전에 준비하며(T-A), 빈 DB의 두 역할/최소 권한 준비는 Compose 최초 초기화에서 자동 수행한다(C-S-A). 새 환경용 구현과 격리 역할/권한 검증은 수행했으며 기존 개발 DB의 실제 이관은 보류한다.
+소유/설치와 업무 계정을 분리하고 Spring/Flyway는 각 목적의 접속을 사용한다(O-A/C-A). 역할 분리는 최초 P1 설치 전에 준비하며(T-A), 빈 DB의 두 역할/최소 권한 준비는 Compose 최초 초기화에서 자동 수행한다(C-S-A). 새 환경용 구현과 격리 역할/권한 검증은 수행했으며 승인한 로컬 준비/소유 이관은 [생성 결과](task-001-creation.md#current)를 따른다.
 
 ### 확정 규칙과 미정
 
@@ -20,7 +20,7 @@
 | R-A: INVOKER·pg_catalog, 새 함수 PUBLIC EXECUTE 회수. 설치자는 함수 EXECUTE와 표 TRIGGER 필요. 일반 DML에 직접 함수 EXECUTE를 미리 추가하지 않음 | O-A로 보유 역할·멤버십 없음 원칙 채택. 실제 유효 권한/설치 검증은 미수행                                  |
 | I-A: 함수/회수 및 각 신규 표/자기 trigger의 같은 마이그레이션 트랜잭션 설치                                                                      | migrator로 설치하고 T-A의 최초 P1 설치 전 분리. 구체 준비/기존 이관은 별도                                |
 | 현재 local 설정은 Spring 주 datasource의 DB_USERNAME/PASSWORD를 사용. 별도 Flyway 자격 증명 설정이 없어 같은 datasource 사용                     | C-A의 별도 접속·bootstrap/app/Flyway 변수 채택. C-S-A 최초 준비 자동화 방향도 채택. 구체 준비/복구는 별도 |
-| Compose는 bootstrap/app/Flyway 세 쌍을 분리하고 Spring에는 app/Flyway만 전달. 초기 관리자는 lumiawiki                                                     | 기존 DB의 실제 역할·소유·PUBLIC/상속 권한·Flyway 관리 표 존재/소유는 DB 조회 보류로 미확인                |
+| Compose는 bootstrap/app/Flyway 세 쌍을 분리하고 Spring에는 app/Flyway만 전달. 초기 관리자는 lumiawiki                                                     | 현재 로컬의 역할·소유·PUBLIC/상속·Flyway 이력은 생성 결과의 메타정보로 확인. 다른 기존 환경은 개별 확인                |
 
 파일 대조는 [Compose](../../../../../compose.yaml)·[local 설정](../../../../../backend/src/main/resources/application-local.yaml)·[Flyway 기본 설정](../../../../../backend/src/main/resources/application.yaml)·[현재 DB 환경 기준](../../../../../docs/details/development/DB 환경.md#db-config)에 한정했다. 개인 `.env`와 실제 DB는 읽지 않았다. 저장소의 도메인 SQL 구현 유무만으로 DB가 비어 있거나 `flyway_schema_history`가 없다고 단정하지 않는다.
 
@@ -95,7 +95,7 @@ C-S-A 채택은 최초 준비의 자동화 방향에 한정한다. 구현 파일
 | **T-결론: 보류 해제·필요 계약 확인 뒤, 최초 P1 보호 함수/표 마이그레이션 전** | 실제 역할/객체·기존 Flyway 관리 표의 소유/권한을 확인 → 검토한 역할·필요 권한/접속을 준비 → 비소유 업무/소유 설치 접속을 확인 → 승인한 함수/표/자기 trigger 원자 설치 → 권한/동작 검증 | 신규 P1 객체를 처음부터 선택한 소유자로 만들고 비소유 업무 권한을 기준으로 검사할 수 있음. 실행·테스트 기반의 계정 분리와 필요한 기존 객체 이관을 먼저 준비해야 함 |
 | T-B 비채택 비교: 공용 개발 계정으로 먼저 설치 후, 권한 수용 전 분리           | 최초 설치는 현 공용 계정 → 대상별 소유/권한 이관 → 계정 분리 → 전체 권한/trigger 검증                                                                                                  | 초기 설정 변경을 늦출 수 있지만 P1 함수/표·시퀀스·관리 표 이관과 재검증이 늘어남. 분리 전에는 P2 실제 권한 수용이나 비소유 실행 확인을 완료로 표시할 수 없음       |
 
-기존 DB를 재사용하려면 해당 환경의 상태 확인·이관 범위를 먼저 확인한다. 신규 격리 환경은 선택한 두 역할과 최소 권한으로 검증했다. 실제 자료와 기존 개발 DB/볼륨·공통 도메인 표 구현의 보류는 유지한다.
+기존 DB를 재사용하려면 해당 환경의 상태 확인·이관 범위를 먼저 확인한다. 신규 격리 환경은 선택한 두 역할과 최소 권한으로 검증했다. 현재 로컬의 승인한 준비/공통 적용은 생성 결과를 따르며 실제 자료 작업은 계속 보류한다.
 
 기존 `flyway_schema_history`나 공용 계정 소유 객체가 있으면 필요한 대상과 새 소유/접근을 별도로 제시한다. DB/public 스키마 전체 소유 이관, REASSIGN OWNED 일괄 실행, 역할 삭제·비밀번호 변경·볼륨 초기화를 자동 포함하지 않는다. 역할 생성/최초 권한 연결은 구조 마이그레이션 로그인 자체에 CREATEROLE을 주어 해결하지 않고 초기 관리 목적에서 분리해 준비하는 계약이다. 구체 부트스트랩/이관 실행 수단·SQL·파일·단계별 실패 복구는 실제 적용 전에 별도 확인한다.
 
@@ -123,7 +123,7 @@ C-S-A 채택은 최초 준비의 자동화 방향에 한정한다. 구현 파일
 
 ## C-S-A의 최초 준비 파일·비밀값 전달·실패 복구 — F-A·V-A·R-A 설계 채택
 
-파일 배치·비밀값 전달·실패/복구는 F-A/V-A/R-A를 따른다. 구현 원천은 [최초 구동 파일 안내](task-001-startup.md#f4-bootstrap-integrated), 실행 근거는 [검증 기록](task-001-bootstrap-verification.md#results)을 따른다. 개인 .env 조회/수정·기존 개발 DB/볼륨·실제 자료 작업은 보류한다.
+파일 배치·비밀값 전달·실패/복구는 F-A/V-A/R-A를 따른다. 구현 원천은 [최초 구동 파일 안내](task-001-startup.md#f4-bootstrap-integrated), 실행 근거는 [검증 기록](task-001-bootstrap-verification.md#results)을 따른다. 개인 .env와 로컬 준비는 승인한 app/Flyway·역할/소유 범위만 수행했고 실제 자료 작업은 계속 보류한다.
 
 ### 현재 구현·확정 계약·미정
 
@@ -220,7 +220,7 @@ R-A는 psql의 `--single-transaction`·`ON_ERROR_STOP`와 사용자 초기화 �
 
 ## C-S-A 최초 준비의 최소 권한 목록 — G-D-A·G-S-A 설계 채택
 
-최초 직접 권한과 대상 DB/public의 PUBLIC 회수는 G-D-A/G-S-A를 따른다. 최초 권한은 격리 DB에서 검증한다. 업무 권한·이관은 해당 범위에서 확인하며 실제 .env·기존 DB/ACL 조회·자료 작업은 보류한다.
+최초 직접 권한과 대상 DB/public의 PUBLIC 회수는 G-D-A/G-S-A를 따른다. 최초 권한은 격리 DB에서 검증한다. 업무 권한·이관은 해당 범위에서 확인하며 승인한 로컬 .env/DB·ACL 준비·조회 결과는 생성 기록을 따르며 실제 자료 작업은 계속 보류한다.
 
 ### 확정 규칙과 미정
 
@@ -326,9 +326,9 @@ SQL 인용·로그 제어 범위·진단 정보는 Q-A/L-A/E-A를 따른다. 구
 | V-A: 개인 `.env`, DB에는 세 계정 쌍·Spring에는 app/Flyway만 전달            | SQL에 사용할 값의 인용과 클라이언트/서버 출력 처리. 환경 조회 권한자의 노출 한계는 그대로             |
 | R-A: 한 트랜잭션·SQL 오류 시 중단/롤백·상태 확인 뒤 명시 복구               | 비밀 SQL 전 로그 조건을 갖추지 못하면 먼저 중단하는 제어 범위와 남길 진단 정보                        |
 | G-D-A/G-S-A: 대상 DB/public 회수·역할별 명시 권한, 시스템 기본 권한 유지    | 이 목록을 바꾸거나 초기 관리자 능력을 app/migrator에 추가하지 않음. 로그 제어는 초기 관리자 준비 구간 |
-| 개인 값은 Git/첨부/출력에 넣지 않음. 실제 자료·기존 개발 DB/볼륨·도메인 표 구현 보류            | 원문 출력 뒤 가리기와 출력 자체를 제한하는 방법을 구별. 성공/실패의 격리 검증은 검증 기록 참조               |
+| 개인 값은 Git/첨부/출력에 넣지 않음. 실제 자료 작업 보류. 기존 환경 변경은 승인한 범위만 수행            | 원문 출력 뒤 가리기와 출력 자체를 제한하는 방법을 구별. 성공/실패의 격리 검증은 검증 기록 참조               |
 
-근거는 [최초 준비 계약](<../../../../../docs/details/development/로컬 DB 최초 구동.md#bootstrap-files-values-recovery>)·[채택 최초 권한](<../../../../../docs/details/development/로컬 DB 최초 구동.md#bootstrap-initial-privileges>)이다. 현재 [Compose](../../../../../compose.yaml)·[실행기](../../../../../scripts/dev-api.mjs)에 아래 인용/로그 제어를 구현하거나 실제 로그 설정을 확인한 결과가 아니다. 기존 작업 단위와 네 Task의 계획/미정은 유지한다.
+근거는 [최초 준비 계약](<../../../../../docs/details/development/로컬 DB 최초 구동.md#bootstrap-files-values-recovery>)·[채택 최초 권한](<../../../../../docs/details/development/로컬 DB 최초 구동.md#bootstrap-initial-privileges>)이다. 현재 [Compose](../../../../../compose.yaml)·[실행기](../../../../../scripts/dev-api.mjs)·bootstrap 파일은 채택 계약을 구현하며 합성 비밀값 격리 검증은 [기존 근거](task-001-bootstrap-verification.md#results)를 따른다. 기존 작업 단위와 네 Task의 계획/미정은 유지한다.
 
 <a id="f4-bootstrap-sql-quoting"></a>
 
