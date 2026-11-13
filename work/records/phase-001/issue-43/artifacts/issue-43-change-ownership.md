@@ -27,4 +27,4 @@ Issue #43은 목표/범위·전체 수용 조건, 네 Task의 분해·계획 준
 - 보존: 49c39d4·45ec5d7·9b8773e는 기존 task/43-001-common-model과 로컬 codex/preserved-43-before-split에 그대로 남긴다. 기존에 게시한 ref를 덮어쓰거나 삭제하지 않는다.
 - 원본: [보존 커밋](https://github.com/Mi-no-Kim/LumiaWiki/tree/9b8773ed5a26b799eac971ea8fe60949e14c4d0a). 공통 모델·실행 근거는 이 원본과 새 Task 브랜치에서 찾는다.
 
-이번 요청에서는 PR·병합·DB 작업을 하지 않는다. Issue 브랜치에 Task 코드가 반영됐거나 Issue/Phase가 완료됐다고 판정하지 않는다. Task 001 자기 결과 완료와 이후 통합/부모 수용은 구별한다. 후속 002~004와 #45 실제 자료 작업은 기존 담당·보류 조건을 유지한다.
+위 브랜치 분리 작업에서는 PR·병합·DB 작업을 수행하지 않았다. 현재 제출·통합 범위와 실제 반영 여부는 [Task 001](../task-001.md#closure-status)을 따른다. Task 자기 결과 완료와 부모 Issue/Phase 수용을 구별하며 후속 002~004와 #45 실제 자료 작업은 기존 담당·보류 조건을 유지한다.

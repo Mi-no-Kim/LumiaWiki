@@ -4,14 +4,34 @@ services:
     image: postgres:18.6
     environment:
       POSTGRES_DB: ${DB_NAME:?DB_NAME is required}
-      POSTGRES_USER: ${DB_USERNAME:?DB_USERNAME is required}
-      POSTGRES_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD is required}
+      POSTGRES_USER: ${DB_BOOTSTRAP_USERNAME:?DB_BOOTSTRAP_USERNAME is required}
+      POSTGRES_PASSWORD: ${DB_BOOTSTRAP_PASSWORD:?DB_BOOTSTRAP_PASSWORD is required}
+      DB_APP_USERNAME: ${DB_APP_USERNAME:?DB_APP_USERNAME is required}
+      DB_APP_PASSWORD: ${DB_APP_PASSWORD:?DB_APP_PASSWORD is required}
+      DB_FLYWAY_USERNAME: ${DB_FLYWAY_USERNAME:?DB_FLYWAY_USERNAME is required}
+      DB_FLYWAY_PASSWORD: ${DB_FLYWAY_PASSWORD:?DB_FLYWAY_PASSWORD is required}
     ports:
       - '127.0.0.1:${DB_PORT:-5432}:5432'
     volumes:
       - postgres_data:/var/lib/postgresql
+      - type: bind
+        source: ./db/bootstrap/10-prepare-roles.sh
+        target: /docker-entrypoint-initdb.d/10-prepare-roles.sh
+        read_only: true
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ./db/bootstrap/sql/prepare-roles.sql
+        target: /opt/lumia-bootstrap/prepare-roles.sql
+        read_only: true
+        bind:
+          create_host_path: false
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"']
+      test:
+        [
+          'CMD-SHELL',
+          'pg_isready -h 127.0.0.1 -p 5432 -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"',
+        ]
       interval: 5s
       timeout: 5s
       retries: 12
