@@ -5,7 +5,7 @@
 ## 현재 요약
 
 - 제목: 공통 식별·시즌/패치·지역·분류
-- GitHub sub-issue 저장소·번호·URL(실제 연결 시): 미등록. 로컬 Task 순번과 GitHub 번호는 별개이며 현재는 외부 등록을 수행하지 않는다.
+- GitHub sub-issue 저장소·번호·URL(실제 연결 시): [Mi-no-Kim/LumiaWiki #67](https://github.com/Mi-no-Kim/LumiaWiki/issues/67). 부모 Issue #43의 실제 sub-issue이며 로컬 Task 순번과 GitHub 번호는 별개다.
 - 상태: 완료
 - 현재 진행 위치: 공통 8개 표/Java를 구현하고 새 격리 DB 검증 뒤 승인한 로컬 lumiawiki/public에 Flyway V1을 적용했다. app JPA validate와 구조/소유/권한 대조를 통과했고 제품 표는 모두 0행이다. [생성/검증 결과](artifacts/task-001-creation.md#current)를 따른다.
 - 다음 행동·막힌 조건/근거: 공통 기반의 완료 조건을 충족했다. 다음은 Task 002의 아이템/스킬·원본/캐시 세부 설계이며 새 선택은 먼저 대안과 추천 이유를 제시한다. 실제 자료 작업은 계속 보류하며 새 소비 표·API/화면은 각 담당 Task에서 별도 설계한다. 이후 신규 표도 생성 직전 전체 구조/정확한 대상을 확인받는다.
@@ -16,7 +16,7 @@
 
 - 부모 Issue: [Issue #43](issue.md#summary)
 - 목적/요청 결과: 시즌·게임 패치·지역·종류 계층·등급·별도 무기 종류를 구별하고 다른 Task가 사용할 식별·참조 기반을 만든다.
-- 허용 범위·실제 대상/입력·제약: 사용자가 전체 구조/실행 순서를 확인하고 새 격리 검증 뒤 기존 로컬 lumiawiki DB의 메타정보 조회·8개 표 추가를 승인했다. 별도 승인한 두 역할/최소 권한·빈 Flyway 관리 표 소유 이관·개인 .env의 app/Flyway 누락/예제 키만 준비했다. DB/public 소유·기존 개인 값은 유지하고 실제 게임 자료와 승인 범위 밖의 기존 객체 변경은 보류한다.
+- 허용 범위·실제 대상/입력·제약: 사용자가 전체 구조/실행 순서를 확인하고 새 격리 검증 뒤 기존 로컬 lumiawiki DB의 메타정보 조회·8개 표 추가를 승인했다. 별도 승인한 두 역할/최소 권한·빈 Flyway 관리 표 소유 이관·개인 .env의 app/Flyway 누락/예제 키만 준비했다. DB/public 소유·기존 개인 값은 유지하고 실제 게임 자료와 승인 범위 밖의 기존 객체 변경은 보류한다. 사용자 정상화 지시에 따라 기존 커밋 보존·Task 하위 등록과 Task→Issue PR/검수·CI·squash·브랜치 정리를 수행한다.
 - 자기 완료 조건·현재 기준/권한 근거: 승인된 공통 스키마·매핑·저장/조회·참조 계약과 필요한 실행 검증을 갖춰야 한다. [부모 수용 조건](issue.md#acceptance)을 따르며 실제 자료 의존 사실을 합성 검증으로 대체하지 않는다. 공통 구조/매핑·쓰기/읽기·격리/로컬 검증과 후속 계약 인계를 충족했다. 실제 자료·후속 본행/결합/화면은 해당 담당의 수용 범위다.
 
 <a id="plan"></a>
@@ -99,7 +99,7 @@
 - 대상/입력·기준/조건·방법: 기존 제품의 정보/보존 요구·공통 개발 기준·Task 계획과 검토안을 대조해 기존 합의/새 제안/자료 의존 유보를 구분한다. Task 양식·기존 수행/검증 계획·미정 표의 유지와 문서 참조도 확인한다.
 - 실제 관찰·판정·확인 범위/한계: 단위 30건·격리 통합 11건과 SpotlessCheck/실행 JAR 확인을 통과했다. 공통 도메인 5개 통합 검사는 DDL/JPA·권한·기준 잠금·저장/조회·업무/설치 롤백을 포함한다. 승인한 로컬에 8개 표를 추가했고 제약/소유/권한과 제품 표 0행을 대조했다. [생성 검증 근거](artifacts/task-001-creation.md#verification)를 따른다. 실제 자료/HTTP·화면과 후속 소비 참조는 미검증이다.
 - 사전 목록별 자동 검사·AI 직접 조작·사용자 확인 결과/미확인과 근거: 사용자가 전체 구조/대상·격리 우선 순서와 별도 역할/소유 준비를 승인했다. AI가 실행 JAR 적용과 읽기 전용 메타정보 대조를 수행했다. 자동 검사는 합성 입력의 단위/격리 DB 동작이며 제품 화면·사용자 직접 조작이나 실제 자료 수용을 대신하지 않는다.
-- 필요한 artifacts 근거 링크: [완료 수용/검수·후속 인계](artifacts/task-001-creation.md#acceptance) · [최초 구동 통합 검토안](artifacts/task-001-startup.md#f4-bootstrap-integrated) · [채택 결정](artifacts/task-001-shared-version-references.md#summary) · [F3 선택 범위](artifacts/task-001-common-model.md#f3-rules) · [비지연/지연 검사 예시](artifacts/task-001-common-model.md#f3-timing) · [F4 역할 분담](artifacts/task-001-updates.md#f4-path) · [S1~S3 채택 범위](artifacts/task-001-updates.md#f4-direct-sql) · [P1/P2 채택 범위](artifacts/task-001-pk-protection.md#f4-pk-guard) · [N/E/R 채택 계약](artifacts/task-001-pk-protection.md#f4-pk-contract) · [F/I 채택 설계·문서 SQL](artifacts/task-001-pk-protection.md#f4-pk-body-ddl) · [O/C/T 역할·접속·시점 비교안](artifacts/task-001-bootstrap-contract.md#f4-pk-role-binding) · [C-S-A 최초 준비 채택 범위](artifacts/task-001-bootstrap-contract.md#f4-pk-bootstrap) · [C-S-F-A/V-A/R-A 채택 계약](artifacts/task-001-bootstrap-contract.md#f4-bootstrap-details) · [G-D-A/G-S-A 최초 권한 채택 계약](artifacts/task-001-bootstrap-contract.md#f4-bootstrap-grants) · [Q-A/L-A/E-A 인용·로그·진단 채택 계약](artifacts/task-001-bootstrap-contract.md#f4-bootstrap-quoting-logs)
+- 필요한 artifacts 근거 링크: [등록/브랜치 정상화](artifacts/task-001-creation.md#workflow-recovery) · [완료 수용/검수·후속 인계](artifacts/task-001-creation.md#acceptance) · [최초 구동 통합 검토안](artifacts/task-001-startup.md#f4-bootstrap-integrated) · [채택 결정](artifacts/task-001-shared-version-references.md#summary) · [F3 선택 범위](artifacts/task-001-common-model.md#f3-rules) · [비지연/지연 검사 예시](artifacts/task-001-common-model.md#f3-timing) · [F4 역할 분담](artifacts/task-001-updates.md#f4-path) · [S1~S3 채택 범위](artifacts/task-001-updates.md#f4-direct-sql) · [P1/P2 채택 범위](artifacts/task-001-pk-protection.md#f4-pk-guard) · [N/E/R 채택 계약](artifacts/task-001-pk-protection.md#f4-pk-contract) · [F/I 채택 설계·문서 SQL](artifacts/task-001-pk-protection.md#f4-pk-body-ddl) · [O/C/T 역할·접속·시점 비교안](artifacts/task-001-bootstrap-contract.md#f4-pk-role-binding) · [C-S-A 최초 준비 채택 범위](artifacts/task-001-bootstrap-contract.md#f4-pk-bootstrap) · [C-S-F-A/V-A/R-A 채택 계약](artifacts/task-001-bootstrap-contract.md#f4-bootstrap-details) · [G-D-A/G-S-A 최초 권한 채택 계약](artifacts/task-001-bootstrap-contract.md#f4-bootstrap-grants) · [Q-A/L-A/E-A 인용·로그·진단 채택 계약](artifacts/task-001-bootstrap-contract.md#f4-bootstrap-quoting-logs)
 
 <a id="transition"></a>
 

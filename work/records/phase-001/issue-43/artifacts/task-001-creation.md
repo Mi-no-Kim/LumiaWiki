@@ -55,6 +55,16 @@ Task 001은 완료다. 부모 Issue #43·Phase 001의 완료로 전파하지 않
 
 현재 동시성 근거는 JDBC 기준 잠금 충돌/해제와 일반 SELECT 허용까지다. 후속 소비 업무 간 경합 전체·화면·실제 자료의 적합성을 확인했다고 판단하지 않는다. 추가 사용자 결정 없이 공통 기반 완료를 수용할 수 있으며 실제 자료 작업 보류는 유지한다.
 
+<a id="workflow-recovery"></a>
+
+## 등록과 브랜치 정상화
+
+누락은 GitHub Task 하위 등록과 Task 브랜치였다. 로컬 Issue 브랜치에 직접 기록된 49c39d4·45ec5d7은 task/43-001-common-model로 보존했다. 기존 원격 Issue/Task 브랜치가 없는 것을 확인한 뒤 부모 issue/43-item-persistence는 Phase 기준 0239caa로 복구하고 두 브랜치를 신규 게시했다. reset·force push와 기존 공유 이력의 덮어쓰기는 하지 않았다.
+
+실제 대응은 43-001→[#67](https://github.com/Mi-no-Kim/LumiaWiki/issues/67), 002→[#68](https://github.com/Mi-no-Kim/LumiaWiki/issues/68), 003→[#69](https://github.com/Mi-no-Kim/LumiaWiki/issues/69), 004→[#70](https://github.com/Mi-no-Kim/LumiaWiki/issues/70)이다. 부모 #43의 실제 sub-issue 관계와 milestone 1·unit:task·자기 상태 라벨을 확인했다. #67은 Closed/Completed, 나머지는 Open/Planned다. 부모 #43·Phase는 진행 중이며 #45의 실제 자료 작업은 계속 보류한다.
+
+정상화의 제출 경로는 task/43-001-common-model → issue/43-item-persistence의 squash PR이다. 원본 구현/DDL·DB 적용과 기존 검수/41건 검사 지문은 변경하지 않고 등록 메타정보·현재 범위·관계만 자체/별도 검수한다. PR 검증·병합 결과를 확인한 뒤 정리 조건을 만족한 Task 브랜치를 삭제한다. 실제 PR/병합 상태는 GitHub를 원천으로 확인하며 사후 등록을 사전 수행으로 기록하지 않는다.
+
 <!-- tdd-plan -->
 
 ```json
