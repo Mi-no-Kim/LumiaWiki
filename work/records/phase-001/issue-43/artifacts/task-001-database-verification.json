@@ -1,0 +1,191 @@
+{
+  "kind": "observed-junit-report-summary",
+  "baseline_commit": "49c39d43e35dcff40cfcbcac7328fcd4b070b085",
+  "command": [
+    "backend/gradlew.bat",
+    "-p",
+    "backend",
+    "spotlessCheck",
+    "test",
+    "integrationTest",
+    "--offline",
+    "--console=plain",
+    "--no-daemon",
+    "--max-workers=2",
+    "-PtddReportDir=D:/my_project/lumia_island_wiki/.tmp/common-catalog-final-reports",
+    "-Dorg.gradle.jvmargs=-Xms64m -Xmx256m -XX:MaxMetaspaceSize=256m"
+  ],
+  "totals": {
+    "tests": 41,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "reports": [
+    {
+      "task": "test",
+      "suite": "io.github.minokim.lumiawiki.catalog.CommonCatalogServiceTests",
+      "tests": 16,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "mapDuplicatesAreRejectedBeforeReplacement()",
+        "patchBoundaryZeroAndNinetyNineAreAccepted()",
+        "mapQueryDistinguishesUnknownFromConfirmedEmpty()",
+        "knownBusinessConstraintsUseExistingInputError()",
+        "seasonKeepsUnknownMetadataAndComputesWideOrder()",
+        "patchBoundsAreRejectedBeforeWriting()",
+        "patchUsesSeasonOrderAndTruncatesSubseconds()",
+        "workingRegionRenameDoesNotChangeMapHistory()",
+        "dependentFailureRollsBackTheSpringTransactionBoundary()",
+        "unexpectedPkGuardRemainsAnInternalFailure()",
+        "categoryCycleIsRejectedUnderTheTreeLock()",
+        "badNamesAndReversedDatesAreRejected()",
+        "dependentReferenceFailureIsPropagated()",
+        "missingMapRegionsAreRejected()",
+        "mapQueryReturnsPublicNamesOnly()",
+        "writeTransactionUsesReadCommitted()"
+      ],
+      "report": ".tmp/common-catalog-final-reports/test/TEST-io.github.minokim.lumiawiki.catalog.CommonCatalogServiceTests.xml",
+      "report_sha256": "325b69f98da3c25a2fceade33972e70c249b397ff000e97c111e1ce72801b60f"
+    },
+    {
+      "task": "test",
+      "suite": "io.github.minokim.lumiawiki.catalog.CommonCatalogStoreTests",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "missingQueryPatchHasNoMapResult()",
+        "nullMapAndConfirmedEmptyMapRemainDifferent()",
+        "mapSelectionAndMembersUseOneQueryWithoutReaderLocks()",
+        "writersAcquireBasisLocksInTheAgreedOrder()",
+        "rowProjectionPreservesLargeIdsAndPublicNames()"
+      ],
+      "report": ".tmp/common-catalog-final-reports/test/TEST-io.github.minokim.lumiawiki.catalog.CommonCatalogStoreTests.xml",
+      "report_sha256": "8a04d668d34b523444f6164d81d19cf5dff3d87980956730b6d7b2b78d3ccf55"
+    },
+    {
+      "task": "test",
+      "suite": "io.github.minokim.lumiawiki.FoundationApiTests",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "internalFailureRedactsResponsesAndLogs()",
+        "unsupportedMethodKeeps405()",
+        "normalAndEmptyResponsesHaveServerOwnedRequestIds()",
+        "slowResponseUsesOneSecondDelay()",
+        "badInputAndMissingUseProblemDetail()",
+        "mvcValidationAndParsingRemain400()",
+        "profileGatesDevEndpoint()"
+      ],
+      "report": ".tmp/common-catalog-final-reports/test/TEST-io.github.minokim.lumiawiki.FoundationApiTests.xml",
+      "report_sha256": "8a355e80c0cb2cf4b214e581c07e4a958a1045d4fb39953d7af73526b422bae8"
+    },
+    {
+      "task": "test",
+      "suite": "io.github.minokim.lumiawiki.TestEnvironmentTests",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "junitMockitoAndMockMvcRunWithoutDocker()",
+        "beanValidationRejectsInputBeforeCallingTheCollaborator()"
+      ],
+      "report": ".tmp/common-catalog-final-reports/test/TEST-io.github.minokim.lumiawiki.TestEnvironmentTests.xml",
+      "report_sha256": "ef23c1d9b533af23d8886f06526130a9dbfddb989dff236428cf3b92102a96a4"
+    },
+    {
+      "task": "integrationTest",
+      "suite": "io.github.minokim.lumiawiki.BootstrapInitializationTests",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "nonstandardLoggingStopsBeforePasswordSql()",
+        "missingInputFailsBeforeDatabaseWrites()",
+        "initializationSeparatesRolesAndSpringConnections(CapturedOutput)",
+        "lateSqlFailureRollsBackRolesAndPrivilegesWithoutSecretOutput()"
+      ],
+      "report": ".tmp/common-catalog-final-reports/integrationTest/TEST-io.github.minokim.lumiawiki.BootstrapInitializationTests.xml",
+      "report_sha256": "ac84ead9bbb25d63ca34508f19ea4caf8c518a536a5f11dd35bb9bce953196e5"
+    },
+    {
+      "task": "integrationTest",
+      "suite": "io.github.minokim.lumiawiki.catalog.CommonCatalogIntegrationTests",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "failedInitialMigrationRollsBackTheEntireProductStructure(Path)",
+        "guardsDirectWritesAndAllowsOnlyApprovedApplicationPrivileges()",
+        "conflictingBasisWritesWaitWhilePlainReadsContinue()",
+        "savesReadsAndCorrectsSnapshotsWithRealTransactionRollback()",
+        "installsEightOwnedTablesAndRevalidatesWithoutPendingMigrations()"
+      ],
+      "report": ".tmp/common-catalog-final-reports/integrationTest/TEST-io.github.minokim.lumiawiki.catalog.CommonCatalogIntegrationTests.xml",
+      "report_sha256": "bb3e0ae0210f5ef2e4bb2d734bdb193f6ae9383edc45e1d12b18256a854ef2ca"
+    },
+    {
+      "task": "integrationTest",
+      "suite": "io.github.minokim.lumiawiki.LumiawikiApiApplicationTests",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "flywayTestFixtureSupportsJdbcRoundTrip()",
+        "contextLoads()"
+      ],
+      "report": ".tmp/common-catalog-final-reports/integrationTest/TEST-io.github.minokim.lumiawiki.LumiawikiApiApplicationTests.xml",
+      "report_sha256": "ddb1bff3e72c1f3c11b22d7f1c30fac38c3cbf3b04d4aa3d39325f39282b9955"
+    }
+  ],
+  "manifest": {
+    "backend/build.gradle": "006fd621f88175e7544e9bb87b4131f213cb7f70fdcc882b32cd5d6d40760068",
+    "backend/src/main/java/io/github/minokim/lumiawiki/catalog/CatalogErrors.java": "7771556c752b0978dfe5e1ecb46eb2aac6c7d7b6f258da6e098bd3df11c927ba",
+    "backend/src/main/java/io/github/minokim/lumiawiki/catalog/CatalogReferenceCheck.java": "8cf20c52bce891cb3364c724f5bc8ca2d2ded13b983e6651875846dedf8a692f",
+    "backend/src/main/java/io/github/minokim/lumiawiki/catalog/CatalogRow.java": "f3fced3f2e67658585a46d750af36efcb600be82dce2229f5758f3c0554cf4f7",
+    "backend/src/main/java/io/github/minokim/lumiawiki/catalog/CatalogViews.java": "5a940c772008b1d8a636c95e414fbdc72beb9843275e4985a427dda9ab6095be",
+    "backend/src/main/java/io/github/minokim/lumiawiki/catalog/CommonCatalogService.java": "7b277961d2c2aee49857ab9c13a64acd426d31350a744af6062e3d3480047ba9",
+    "backend/src/main/java/io/github/minokim/lumiawiki/catalog/CommonCatalogStore.java": "fa54d3aecacca1f590af3dc244b7579dd1e456d69b75b4d60b3e0fa1e4ec38d5",
+    "backend/src/main/java/io/github/minokim/lumiawiki/catalog/GamePatch.java": "d093c6e72ee943598c2316cff1847ee4bc41f6ff6f85bd2454171e5a88df84f3",
+    "backend/src/main/java/io/github/minokim/lumiawiki/catalog/ItemCategory.java": "51c7e096478dddadefabf037c8e4d940dd269b1394bf795ff2026e5e83cfea9a",
+    "backend/src/main/java/io/github/minokim/lumiawiki/catalog/ItemGrade.java": "d541581dee194b6a4c7f8b448a071f7a5187d62c24a714e4ebdbc87e565ab9f7",
+    "backend/src/main/java/io/github/minokim/lumiawiki/catalog/Region.java": "0978cfd8da9f98223b03789a44bc426980fd6d17307100b259c1f0c1b4b9bb82",
+    "backend/src/main/java/io/github/minokim/lumiawiki/catalog/RegionMapMember.java": "ce03191677fd92a7e0a2ff0668d254e35847f745e27f0a43ecbc2b27198a5284",
+    "backend/src/main/java/io/github/minokim/lumiawiki/catalog/RegionMapVersion.java": "f22f7d052502486af6262cca8d9b6a08b9dd4883c4b4df259216f0b38d28c866",
+    "backend/src/main/java/io/github/minokim/lumiawiki/catalog/Season.java": "7eb8cc53be25b6b57aa5d15587005ee06d8b3173a011ace8e3a076b3da4bc872",
+    "backend/src/main/java/io/github/minokim/lumiawiki/catalog/WeaponType.java": "7657ab30da1846c76305778bc35a987c79903f9f0eba4bb9fada13a27510a257",
+    "backend/src/main/java/io/github/minokim/lumiawiki/common/api/ApiExceptionAdvice.java": "5fdb2bca1528c7483f2ccf377edf31c0e275b3cd05bb93842bad2a4eb9f00a0c",
+    "backend/src/main/java/io/github/minokim/lumiawiki/common/api/ApiFailure.java": "1519685c575e263019c2c7aca1076aa5d255d5510913ad6e4b18ce26b73dce0c",
+    "backend/src/main/java/io/github/minokim/lumiawiki/common/api/RequestIdFilter.java": "14b52b00cad2938082fa758984d48011ad6656a82a362332b1caa7cf9218a991",
+    "backend/src/main/java/io/github/minokim/lumiawiki/dev/FoundationController.java": "d992f17458283aa40b3e7878f120f5906d6b8c508116b7f6a2943f32a2b02664",
+    "backend/src/main/java/io/github/minokim/lumiawiki/dev/FoundationResponse.java": "f84f770603ecf4cabaa3059b90dbd992cfa6f57d389a167af0dce75291abeaa9",
+    "backend/src/main/java/io/github/minokim/lumiawiki/dev/FoundationService.java": "11201a16e1e9d6633e45fdfc5fbd801fb915a5a74c75f30eb10ceb2697c20793",
+    "backend/src/main/java/io/github/minokim/lumiawiki/LumiawikiApiApplication.java": "07f7f0b9a5ea3e11fd3183367fba4f34ce37c3e6d52b74757235815be061e4c2",
+    "backend/src/main/resources/application-local.yaml": "7bac4867aa7f1f8884e1d516c86be441afa7e37e277f1505ac41e7a025ae6c4c",
+    "backend/src/main/resources/application.yaml": "2dbf32ac67c131bd40cca4c722f5b512a82ae8e3d4f1332b007b0af0ad582f54",
+    "backend/src/test/java/io/github/minokim/lumiawiki/BootstrapInitializationTests.java": "2552aee693c3b50a2784e3c9a1e3ca8e0650ec5c45e2a6415b8aca264ddd39c4",
+    "backend/src/test/java/io/github/minokim/lumiawiki/catalog/CommonCatalogIntegrationTests.java": "b81c532976e0c771139fb23a4aaf992b292795c99a8effa87d9e2847b4b7d31e",
+    "backend/src/test/java/io/github/minokim/lumiawiki/catalog/CommonCatalogServiceTests.java": "de6699d75c3ce6556f5826a37e73689fba08cccca1dcabc7e98fe18ca91ba720",
+    "backend/src/test/java/io/github/minokim/lumiawiki/catalog/CommonCatalogStoreTests.java": "797ae626b636261888b90354a7e7ece7a556819c01d664ed54f5d2b509e39f0f",
+    "backend/src/test/java/io/github/minokim/lumiawiki/fixture/FoundationTestApplication.java": "1686f399f115f6430a54371a0050e6d442051948878bf2f79daef1fc441e7003",
+    "backend/src/test/java/io/github/minokim/lumiawiki/FoundationApiTests.java": "b4aaab1ee031567918cb44cc915682a21008404284540fe2e5303ef5b96379d9",
+    "backend/src/test/java/io/github/minokim/lumiawiki/LumiawikiApiApplicationTests.java": "34075b6c366a70dc104977764cc30881052323fb9b8a526eb717d4b4d0dcc8ad",
+    "backend/src/test/java/io/github/minokim/lumiawiki/TestEnvironmentTests.java": "bf92f64c400dba0b9c72fd1c44f8c55b44db7fe096528bf1672b8483669b02f2",
+    "backend/src/test/resources/application-test.yaml": "cbb4189660b7897f23983b3f6c7c5f5b552775b87b5f770fc311aa51a85a4af7",
+    "backend/src/test/resources/db/bootstrap-migration/V1__bootstrap_test_probe.sql": "9dc33f07fd9884db7bea2b8990976681a9e11b8e4d0d8571f2530ebbe3935df0",
+    "backend/src/test/resources/db/test-migration/R__test_connection_probe.sql": "848cffab158b123ff9afc94bcafecbf28b984c042e16e7964bcd5704893fada6",
+    "db/bootstrap/10-prepare-roles.sh": "832e9921588251e3a658fadc276ff7d3b46a46b110c45ae7a16cd4eb7819914a",
+    "db/bootstrap/sql/prepare-roles.sql": "160a624d9577848f6e61404ad3e52791c6a395af56186fec08e852f3f88ff8d4",
+    "db/migration/V1__create_common_model.sql": "1495d8a5085188f535865f9b46f51aa1c9a18480c1b49efd68df61c43f5b8ddd"
+  }
+}

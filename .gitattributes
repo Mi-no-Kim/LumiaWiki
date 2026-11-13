@@ -1,0 +1,2 @@
+db/bootstrap/*.sh text eol=lf
+db/bootstrap/sql/*.sql text eol=lf

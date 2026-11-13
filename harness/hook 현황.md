@@ -47,16 +47,16 @@
         "scripts/tdd-check.py",
         "scripts/tdd_core.py"
       ],
-      "sourceDigest": "405d577c68409b8f5532eb418e03d17120e706f7e00f469f126a7ffdf01f5d36",
+      "sourceDigest": "e48a90f4511bdc12f3adb48f10f35ae49027485af092804b30be259693318222",
       "title": "제출 TDD·현황·기록·형식 검사 · Git pre-commit",
       "purpose": "기존 hook·TDD·현황·기록 검사 후 인덱스 실행기·내용·설정의 형식 확인",
       "when": "Git 커밋 전; TDD hook이 연결된 현재 구성",
       "verification": {
         "status": "verified",
-        "sourceDigest": "405d577c68409b8f5532eb418e03d17120e706f7e00f469f126a7ffdf01f5d36",
-        "environment": "Windows / Node 24.22.3 / Python 3.14.2 / JDK 21 / actual installed Git hook",
-        "scope": "기존 TDD wrapper 보존 후 정상 actual index 종료 0, 별도 index README 형식 위반 종료 2와 실제 index 불변을 확인했다. staged 실행기·내용·설정을 사용하고 부분 스테이징·원천 현황·이전 hook 공존은 현재 fixture로 확인했다.",
-        "evidence": "work/records/phase-001/issue-42/artifacts/task-004-implementation.md#verification"
+        "sourceDigest": "e48a90f4511bdc12f3adb48f10f35ae49027485af092804b30be259693318222",
+        "environment": "Windows / Node 24.22.3 / Python 3.14.2 / current apply_patch and isolated hook/index fixtures",
+        "scope": "DB Markdown 포맷/수집·CI 분류 3건과 기존 품질 fixture 20건 통과·파일 symlink 1건 skip. 실제 apply_patch DB 문서 포맷을 확인했다. 변경한 경로 분류/수집 외 hook 정의·인덱스 실행·Java 경로는 동일하며 Task 42-004의 기존 실제 hook 근거를 재사용한다. 저장소 실제 인덱스 변경·커밋 실행은 미수행이다.",
+        "evidence": "work/records/phase-001/issue-43/artifacts/task-001-bootstrap-verification.md#database-documents"
       }
     },
     {
@@ -100,16 +100,16 @@
         "scripts/quality/post-edit.mjs",
         "scripts/quality/process.mjs"
       ],
-      "sourceDigest": "53386923de8863ae35e9ffdbeea95c39412407e85419759deac8fc8698daf9b6",
+      "sourceDigest": "70e864c41ab8a00dd84c2f8b9f9d619a3e1ddb0f0a553209e622766e7eda0ebc",
       "title": "변경 파일 포맷 · Codex PostToolUse",
       "purpose": "허용 변경 파일만 포맷; 실패는 제출 미확인으로 보존",
       "when": "PostToolUse / ^apply_patch$; 도구 사전 설치·정의 신뢰 필요",
       "verification": {
         "status": "verified",
-        "sourceDigest": "53386923de8863ae35e9ffdbeea95c39412407e85419759deac8fc8698daf9b6",
-        "environment": "Windows / current Codex apply_patch / Node 24.22.3 / prepared Gradle 9.9.1 / JDK 21",
-        "scope": "사용자 검토·신뢰 후 실제 apply_patch 네 호출로 JSON/Java 생성·수정·포맷된 입력 반복을 확인했다. 패치 밖 두 대조 파일 바이트 유지·새 event receipt 4개·실패 marker 불변·기존 TDD 실제 거부와 probe 제거를 확인했다.",
-        "evidence": "work/records/phase-001/issue-42/artifacts/task-004-implementation.md#host-verification"
+        "sourceDigest": "70e864c41ab8a00dd84c2f8b9f9d619a3e1ddb0f0a553209e622766e7eda0ebc",
+        "environment": "Windows / Node 24.22.3 / Python 3.14.2 / current apply_patch and isolated hook/index fixtures",
+        "scope": "DB Markdown 포맷/수집·CI 분류 3건과 기존 품질 fixture 20건 통과·파일 symlink 1건 skip. 실제 apply_patch DB 문서 포맷을 확인했다. 변경한 경로 분류/수집 외 hook 정의·인덱스 실행·Java 경로는 동일하며 Task 42-004의 기존 실제 hook 근거를 재사용한다. 저장소 실제 인덱스 변경·커밋 실행은 미수행이다.",
+        "evidence": "work/records/phase-001/issue-43/artifacts/task-001-bootstrap-verification.md#database-documents"
       }
     }
   ]

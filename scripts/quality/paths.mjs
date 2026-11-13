@@ -33,6 +33,7 @@ export const roots = [
   'docs',
   'harness',
   'work',
+  'db',
   'scripts',
   'frontend',
   'backend/src',
@@ -101,6 +102,7 @@ export function formatKind(input) {
     return 'prettier';
   if (/^(?:docs|harness|work)\/.*\.(?:md|json|ya?ml)$/.test(name))
     return 'prettier';
+  if (/^db\/.*\.md$/.test(name)) return 'prettier';
   if (/^scripts\/.*\.(?:[cm]?js|json)$/.test(name)) return 'prettier';
   if (
     /^frontend\/(?:src\/.*\.(?:[cm]?[jt]sx?|css|json|html)|[^/]+\.(?:[cm]?[jt]s|json|html|css))$/.test(
@@ -161,7 +163,7 @@ export async function collectFiles(root, { docs = false } = {}) {
     if (
       docs &&
       !rootFiles.includes(name) &&
-      !['docs', 'harness', 'work'].includes(name)
+      !['docs', 'harness', 'work', 'db'].includes(name)
     )
       continue;
     await visit(name);
@@ -181,6 +183,7 @@ export function classifyChanges(names) {
     }
     if (preserved.includes(name.split('/')[0].toLowerCase())) continue;
     if (name.startsWith('frontend/')) result.frontend = true;
+    else if (/^db\/.*\.md$/.test(name)) result.docs = true;
     else if (/^(?:backend|db)\//.test(name)) result.backend = true;
     else if (
       /^(?:docs|harness|work)\//.test(name) ||
