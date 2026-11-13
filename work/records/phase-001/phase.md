@@ -8,8 +8,8 @@
 - 구상상 구분: P1
 - GitHub milestone: [Mi-no-Kim/LumiaWiki #1](https://github.com/Mi-no-Kim/LumiaWiki/milestone/1)
 - 상태: 진행 중
-- 현재 진행 위치: 계획 Issue #15와 실행·개발·검증 기반 Issue #42는 완료했다. [Issue #42 전체 수용 결과](issue-42/issue.md#acceptance-result)에 따라 네 Task의 실제 결합·필수 검증을 확인했다. Issue #43~#48은 예정이고 게임 자료 작업은 보류다. Phase의 실제 기능/자료 수용 조건은 남아 있다.
-- 다음 판단/행동: Issue #42의 [PR #66](https://github.com/Mi-no-Kim/LumiaWiki/pull/66) Phase 반영·CI·브랜치 정리를 확인한 뒤 Issue #43의 입력·설계 준비 범위를 검토한다. 실제 자료 조사·확보·처리 보류를 유지한다.
+- 현재 진행 위치: 계획 Issue #15와 기반 #42는 완료했다. [Issue #43](issue-43/issue.md#summary)의 Task 001은 완료했고 공통 8개 표/Java 구현·격리 검증 뒤 승인한 로컬에 적용했으며 단위 30·통합 11건을 통과했다. [결과](https://github.com/Mi-no-Kim/LumiaWiki/blob/9b8773ed5a26b799eac971ea8fe60949e14c4d0a/work/records/phase-001/issue-43/artifacts/task-001-creation.md#current)를 따른다. Task 002~004·Issue #44~#48과 Phase 수용은 남아 있으며 실제 자료 작업은 계속 보류한다.
+- 다음 판단/행동: Issue #43의 Task 002 설계로 이어간다. 001의 완료 수용과 후속 인계를 입력으로 받는다. 실제 자료 작업은 계속 보류하고 신규 표도 생성 직전 전체 구조/정확한 대상을 확인받는다. 새 결정과 승인 범위 밖의 객체 변경은 먼저 제시한다.
 
 <a id="ci-manual-followup"></a>
 
@@ -35,8 +35,8 @@
 
 ### 합의한 등록 범위
 
-- 시즌·버전·지역과 시즌 1·v1.0.0의 아이템 기본 정보·분류·능력치·스킬·조합·획득·배달 정보를 등록한다. 정보 항목과 규칙은 [아이템 요구](<../../../docs/details/product/아이템 탐색과 상세.md#item-information>)와 [공통 데이터 요구](<../../../docs/details/product/게임 데이터 변경 관리.md#season-information>)를 따른다.
-- 무기 종류는 초기부터 별도 대상으로 두고 아이템 종류 계층과 연결한다. 역할과 DB 설계로 넘긴 관계의 세부는 [분류 요구](<../../../docs/details/product/아이템 탐색과 상세.md#classification>)를 따르며, 캐릭터·무기 스킬 기능 자체를 P1에 추가하는 결정은 아니다.
+- 시즌·버전·지역과 시즌 1·v1.0.0의 아이템 기본 정보·분류·능력치·스킬·조합·획득·배달 정보를 등록한다. 정보 항목과 규칙은 [아이템 요구](https://github.com/Mi-no-Kim/LumiaWiki/blob/9b8773ed5a26b799eac971ea8fe60949e14c4d0a/docs/details/product/%EC%95%84%EC%9D%B4%ED%85%9C%20%ED%83%90%EC%83%89%EA%B3%BC%20%EC%83%81%EC%84%B8.md#item-information)와 [공통 데이터 요구](https://github.com/Mi-no-Kim/LumiaWiki/blob/9b8773ed5a26b799eac971ea8fe60949e14c4d0a/docs/details/product/%EA%B2%8C%EC%9E%84%20%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B3%80%EA%B2%BD%20%EA%B4%80%EB%A6%AC.md#season-information)를 따른다.
+- 무기 종류는 초기부터 별도 대상으로 두고 아이템 종류 계층과 연결한다. 역할과 DB 설계로 넘긴 관계의 세부는 [분류 요구](https://github.com/Mi-no-Kim/LumiaWiki/blob/9b8773ed5a26b799eac971ea8fe60949e14c4d0a/docs/details/product/%EC%95%84%EC%9D%B4%ED%85%9C%20%ED%83%90%EC%83%89%EA%B3%BC%20%EC%83%81%EC%84%B8.md#classification)를 따르며, 캐릭터·무기 스킬 기능 자체를 P1에 추가하는 결정은 아니다.
 - 아이템 중심 버전 관리로 기준 자료와 과거 상태를 보존한다. 독립 관리 전환 조건과 별도 사냥 대상의 후속 설계는 [담당 Task](issue-15/task-001.md#version-strategy)에서 연결한다.
 - 아이템 스킬은 대상·버전·연결별 JSON의 저장과 설명 텍스트 표시까지 지원한다. 수식 계산과 외부 조건 처리는 후속 단계로 둔다.
 
@@ -90,7 +90,7 @@
 
 **기준 원천**
 
-[아이템 탐색과 상세](<../../../docs/details/product/아이템 탐색과 상세.md#current>) · [루트 계산기](<../../../docs/details/product/루트 계산기.md#current>) · [자료 준비와 변경 관리](<../../../docs/details/product/게임 데이터 변경 관리.md#initial-data>)
+[아이템 탐색과 상세](https://github.com/Mi-no-Kim/LumiaWiki/blob/9b8773ed5a26b799eac971ea8fe60949e14c4d0a/docs/details/product/%EC%95%84%EC%9D%B4%ED%85%9C%20%ED%83%90%EC%83%89%EA%B3%BC%20%EC%83%81%EC%84%B8.md#current) · [루트 계산기](<../../../docs/details/product/루트 계산기.md#current>) · [자료 준비와 변경 관리](https://github.com/Mi-no-Kim/LumiaWiki/blob/9b8773ed5a26b799eac971ea8fe60949e14c4d0a/docs/details/product/%EA%B2%8C%EC%9E%84%20%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B3%80%EA%B2%BD%20%EA%B4%80%EB%A6%AC.md#initial-data)
 
 <a id="stage-boundary"></a>
 
