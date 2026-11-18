@@ -7,9 +7,9 @@
 - 실제 GitHub Issue: [Mi-no-Kim/LumiaWiki #72](https://github.com/Mi-no-Kim/LumiaWiki/issues/72)
 - 분류·브랜치: 독립 하네스 Issue. `issue/72-task-issue-guidance`, 분기 기준 `2992008c7de4eb11b843fa0d2f89e62352b657bc`.
 - 상태: 진행 중
-- 현재 진행 위치: [생성 요청 범위와 GitHub 등록](#creation-registration-scope)
-- 다음 행동: 커밋 보존을 마친 뒤 별도 생성 요청에 새 기준을 적용하고 실제 발급·연결 쓰기와 전체 운영 효과를 확인한다. 보류한 CLI·초안 상태 일반화의 검증은 남아 있다.
-- 허용 범위·제약: 사용자가 생성 기준과 관련 변경의 검증·필요 보완·커밋을 요청했다. 같은 Issue의 후속 변경으로 처리하며 GitHub 기능·권한·라벨·milestone·sub-issue 조회는 읽기 전용으로 확인한다. 실제 GitHub 객체 발급·원격 #72 갱신·push·PR은 이번 커밋·검증 범위에 포함하지 않는다. 기존 기록 형식과 당시 근거를 유지한다.
+- 현재 진행 위치: [실제 라벨·Issue·Task 등록 검증](#live-registration-validation)
+- 다음 행동: 후속 커밋 보존을 마친 뒤 Phase 소속·실패 복구 경로와 전체 본작업 운영 효과를 필요한 요청 범위에서 검증한다. 이번 라벨·실제 발급·부모 연결 검증에는 남은 반영이 없다.
+- 허용 범위·제약: 사용자가 누락된 두 상태 라벨 등록과 실제 Issue·Task 생성·부모 연결 검증을 명시했다. 같은 Issue의 후속 검증으로 처리한다. 검증용 객체를 발급하고 생성·연결 확인 뒤 취소 사유를 남겨 닫으며 실제 번호·결과를 보존한다. 제품 본작업·브랜치 조작·push·PR은 진행하지 않는다. 기존 기록 형식을 유지한다.
 
 <a id="goal"></a>
 
@@ -82,15 +82,29 @@
 - 사용자 합의: “Issue나 Task를 생성하라고 하면 본문 작성과 GitHub 등록까지 포함하고, 실제 작업 착수는 별도로 하는 걸로 기준을 정리해줘.”를 현재 생성 범위로 채택했다. 기존 Issue·Task 생성 안내의 후속 정리이며 별도 작업 단위를 만들지 않는다.
 - 반영 범위: [생성 기본 범위](<../../../../docs/작업 기록 체계.md#creation-scope>)를 원천으로 [등록 절차](<../../../../harness/문서 관리.md#create>), 두 본문 생성 지시서, Issue의 Task 생성 단계와 두 생성 skill을 맞췄다. 기본 생성과 명시적 초안/본문만·외부 등록 제한을 구별하고, Issue 실제 번호 확보와 Task 로컬 순번·GitHub 번호의 차이, 부분 등록 복구와 본작업 미착수 경계를 유지했다.
 - 확인 결과: 번호 없는 독립 Issue, 상세 계획이 미정인 Task, 본문만 요청, 부분 실패 재개, 생성과 착수의 동시 지시를 별도 에이전트가 행동 추적했다. 동시 지시에도 다시 요청을 기다리게 하는 충돌을 발견해 담당 원천과 직접 사용처 6곳을 보완했다. 최종 index의 변경 9개와 작업 파일 일치, 명시적 제한·번호·부모 관계·미착수/동시 착수의 구분을 자체·별도 검수해 추가 필수 결함을 발견하지 못했다. index의 현황·주석·작업 기록·공백 검사, 스킬 형식 대체 검사와 변경 참조/표식 25개를 확인했다. 기록 길이 경고만 남았으며 Task 종료 상태 검사는 독립 Issue여서 해당하지 않는다.
-- 검증 한계: 실제 GitHub 발급·부모 연결 쓰기와 실패 후 복구의 전체 실행은 미확인이다. 행동 추적·읽기 전용 조회를 실제 발급 성공으로 확대하지 않는다. 두 skill의 과거 동작 근거와 재확인 필요 표시는 보존한다. 기본 스킬 검증기는 PyYAML 부재로 실행할 수 없어 기존 Prettier YAML 파서와 이름·설명·미완성 표식 대조로 대신한다.
-- 실제 조회: gh 2.101.0으로 Mi-no-Kim/LumiaWiki의 이슈 기능과 접근 권한, #72의 Open·unit:issue/status:in-progress 및 자식 0개, sub-issue 조회 성공과 Phase milestone 7개를 확인했다. 기본 샌드박스의 연결 실패 후 확장 권한의 GET만 사용했다. 신규 생성에 쓰는 unit:issue·unit:task·status:planned는 존재한다. status:paused·status:cancelled는 원격에 없어 후속 상태 전환 시 준비가 필요하다.
-- 원격 반영: 이번 기준 정리 결과는 로컬 원천과 기록에 반영하며 원격 #72에는 미반영이다. 기존 CLI·초안 상태 일반화와 실제 운영 효과 확인의 잔여는 유지한다.
+- 검증 한계: 커밋 46346b4의 행동 추적·읽기 조회 이후 아래 실등록 검증에서 독립 Issue 발급과 기존 부모 #72 아래 Task 발급·연결·취소 종료 쓰기를 확인했다. Phase/milestone 설정·오류 주입 후 복구·상세 계획과 본작업 수행·부모 전체 수용은 미검증이다. 스킬 형식 검사는 PyYAML 부재로 기존 Prettier YAML 파서와 이름·설명·미완성 표식 대조로 대신한다.
+- 실제 조회: 커밋 46346b4의 읽기 확인에서 gh 2.101.0·이슈 기능·접근 권한·기본 생성 라벨·Phase milestone 7개와 sub-issue 조회를 확인했다. 당시 없던 status:paused·status:cancelled는 아래 실등록 검증에서 추가·재조회했으며 #72의 실제 자식도 0개에서 검증용 #74 한 개로 바뀌었다.
+- 원격 반영: 생성 기준 변경의 원격 #72 본문 게시와 Git push는 수행하지 않았다. 이번 검증의 라벨·Issue #73·Task #74와 #72의 실제 자식 관계는 반영·재조회했다. 기존 CLI·초안 상태 일반화와 전체 본작업 운영 효과 확인의 잔여는 유지한다.
+
+<a id="live-registration-validation"></a>
+
+### 실제 라벨·Issue·Task 등록 검증
+
+- 요청·범위: 사용자가 누락 라벨 등록과 실제 Issue·Task 생성·부모 연결 검증을 직접 요청했다. 독립 하네스 검증용 Issue와 #72 아래의 Task 72-001을 등록해 생성 직후 예정·미착수 상태와 실제 연결을 확인하고, 검증 후 취소로 닫아 보존한다.
+- 라벨: status:paused(D93F0B)·status:cancelled(6E7781)를 기준 설명과 함께 실제 등록하고 조회해 일치를 확인했다.
+- Task 배정·확정 근거: 위 사용자 요청의 결과·범위를 [전달사항 r001](artifacts/task-001-assignment.md)에 확정했다. 직하 기록·보유 목록과 원격 자식이 없음을 대조해 순번 001과 경로 `work/records/harness/issue-72/task-001.md`를 배정했다. 상세 본작업 계획·수행은 맡기지 않는다.
+- 발급·검증 결과: [독립 검증 Issue #73](../issue-73/issue.md#registration-validation-result)과 [Task 72-001 / GitHub #74](task-001.md#result)의 실제 생성·게시·로컬 기록을 확인했다. Task #74의 부모 #72를 양방향 재조회했고 생성 직후 Open·예정 라벨·본문/원본·배정 참조와 본작업 미착수·수행 기록 부재를 확인했다. 두 검증 객체는 취소 종료 후 Closed/Not planned·status:cancelled·본문과 부모 관계를 재조회했다. [실제 응답 근거](artifacts/live-registration-verification.json)를 보존했으며 삭제하지 않았다.
+- 부모 수용의 구분: 취소한 자식 #74로 GitHub의 #72 진척률이 1/1·100%가 되었지만 #72는 Open·진행 중을 유지했다. 이 진척률을 부모의 전체 완료·수용으로 해석하지 않는다.
+- 검수 결과: 현재 index 6개 파일을 자체·별도 에이전트가 대조했고 별도 검토자가 원격 두 라벨·#73·#74·부모 #72를 GET으로 재조회했다. 부모 보유 목록의 낡은 예정 표시는 취소로 정정했고 추가 필수 결함은 발견하지 못했다. 현황·주석·기록·공백 검사와 Task 상태 취소 대조를 통과했다. 본작업 수행 기록은 없으며 분량 경고만 남았다.
+- 검증 한계·반영: 독립 하네스 경로와 기존 부모 연결·초기 미착수·취소 종료를 확인했다. Phase/milestone 설정과 실패 주입 복구, Task 본작업의 계획·수행·수용은 포함하지 않았다.
 
 <a id="owned-tasks"></a>
 
 ## 보유 Task와 관련 과제
 
-발급한 하위 Task는 없다. 관련 과제: [Git/GitHub #1](../issue-1/issue.md#summary), [기록 부담 #19](../issue-19/issue.md#summary)·[#60](../issue-60/issue.md#summary), [상태 검사 #36](../issue-36/issue.md#summary).
+- [Task 72-001: 등록 검증용 생성·부모 연결 확인](task-001.md#summary) — 취소 · GitHub #74 · 실제 부모 #72 연결·종료 재조회 확인
+
+ 관련 과제: [Git/GitHub #1](../issue-1/issue.md#summary), [기록 부담 #19](../issue-19/issue.md#summary)·[#60](../issue-60/issue.md#summary), [상태 검사 #36](../issue-36/issue.md#summary).
 
 <a id="verification"></a>
 
