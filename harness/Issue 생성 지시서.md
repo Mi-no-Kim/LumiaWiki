@@ -8,6 +8,8 @@ Phase 진행 AI와 독립 요청을 받은 AI가 같은 create-issue skill·입�
 
 [생성 입력](<templates/issue-input.md>)을 [본문 양식](<templates/issue.md>)에 옮겨 생성 직후의 Issue 파일을 작성한다. 이 지시서는 최초 본문 작성과 작성 후 대조에 사용한다. 이후 기록 갱신은 본문에 남긴 규칙 주석과 공통 절차를 따른다.
 
+이 지시서가 맡는 본문 작성 단계와 [생성 요청의 전체 범위](<../docs/작업 기록 체계.md#creation-scope>)를 구별한다. 생성 요청을 처리하는 AI는 [생성·등록 절차](<문서 관리.md#create>)와 create-issue skill로 GitHub 발급·로컬 저장·게시와 연결 확인을 마친다. 본문 작성만으로 기본 생성 범위를 완료했다고 반환하지 않는다.
+
 파일을 작성하면서 결론·Task 배정·준비 성공을 대신 확정하지 않는다. 새 Issue의 생성 적합성 판단이나 실제 등록·브랜치 준비·Task 생성은 이 작성 단계에서 수행하지 않는다.
 
 <a id="input-preservation"></a>
