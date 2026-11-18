@@ -8,10 +8,13 @@ lumia_island_wiki/
 ├── README.md                       프로젝트 소개와 시작 안내
 ├── STRUCTURE.md                    주요 경로와 역할
 ├── .agents/skills/                 Issue·Task 생성, 요청 판단·검수·응답 형식의 AI 스킬
+├── .codex/hooks.json              Codex PostToolUse의 공통 기록 주석·상태 검사 등록
 ├── .github/workflows/             하네스 현황 후보 검사·격리 테스트의 CI 정의
 ├── scripts/                       하네스 현황 검사·Git hook 설치와 격리 검증 도구
 │   ├── check-harness-inventory.py 실제 work/index/commit 원천과 현황 대조(읽기 전용)
 │   ├── check-work-records.py       변경 후보의 기록 날짜·근거 위치 검사와 100줄 경고
+│   ├── check-rule-comments.py     Issue·Task·수행 기록의 공통 주석·상태 검사 진입점
+│   ├── rule_comments.py            신규 표준 기록 자동 발견·고정 기존 기록 제외·주석/상태 대조
 │   ├── harness_inventory.py       후보·경계·등록·지문·확인 상태 판독
 │   ├── install-harness-hooks.py   기존 Git hook 보존·중복 설치·복원
 │   ├── hooks/pre-commit           프로젝트 관리 Git hook 정의
@@ -45,6 +48,9 @@ lumia_island_wiki/
 │   ├── rule-comments.json         고정 기존 기록·정식 주석 기준·명시 개정
 │   ├── examples/                  정식 양식의 공용 예시
 │   └── templates/                 본문·입력·수행 기록, GitHub 게시, PR 양식
+│       ├── issue-input.md / issue.md  Issue 생성 입력 / 최초 본문
+│       ├── task-input.md / task.md    확정 배정 전달사항 / 최초 Task 본문
+│       └── task-execution.md          첫 할 일 착수 때 수행 기록 최초 생성
 └── work/                           실제 계획·진행·작업 근거
     ├── README.md                   기록 탐색과 사용 안내
     ├── 현황.md                     현재 작업과 예정의 조회
@@ -56,6 +62,14 @@ lumia_island_wiki/
 
 | 세부 위치 | 역할 |
 |---|---|
+| [`.agents/skills/create-issue/`](.agents/skills/create-issue/SKILL.md) · [`.agents/skills/create-task/`](.agents/skills/create-task/SKILL.md) | Issue·Task 최초 작성·입력 확인의 진입점 |
+| [`.agents/skills/triage-additional-request/`](.agents/skills/triage-additional-request/SKILL.md) · [`.agents/skills/review-work/`](.agents/skills/review-work/SKILL.md) | 추가 요청의 작업 단위 판단과 결과 검수 |
+| `harness/스킬 현황.md` · `harness/hook 현황.md` | 등록 항목·적용 조건·원천·확인 범위의 조회 |
 | `work/records/phase-001/`부터 `phase-007/`까지 | Phase별 계획과 실제 하위 작업 기록의 위치 |
+| 담당 Issue 직하 `task-<순번>.md` | Task 본문 |
+| 담당 Issue의 `artifacts/task-<순번>-assignment.md` | 확정 배정 전달사항 원본 |
+| 담당 Issue의 `artifacts/task-<순번>-execution.md` | 착수 후 수행 기록 |
+
+식별·소유·경로는 [기록 체계](<docs/작업 기록 체계.md#paths>), 작성·검사·실패 대응은 [문서 관리](<harness/문서 관리.md#entry>)에서 확인한다.
 
 제품 범위는 [프로젝트 목표와 범위](<docs/프로젝트 목표와 범위.md#current>), 작업 기록의 위치는 [work 안내](<work/README.md#start>)와 [현황](<work/현황.md#current>)에서 더 자세히 확인할 수 있다.

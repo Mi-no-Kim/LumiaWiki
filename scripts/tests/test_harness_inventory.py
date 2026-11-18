@@ -204,6 +204,27 @@ class CandidateTests(RepositoryCase):
         self.git('add', '--', DOCUMENT)
         self.assert_allowed('index')
 
+    def test_mismatch_diagnostic_ignores_line_endings_and_names_real_difference(self):
+        dependencies = []
+        for number in range(10):
+            name = f'.agents/skills/fixture/scripts/extra-{number:02d}.py'
+            self.write(name, 'VALUE = 1\n')
+            dependencies.append(name)
+        self.entries[0]['files'] = sorted(self.entries[0]['files'] + dependencies)
+        self.refresh()
+        self.stage()
+        # Line-ending-only worktree differences must not displace a real change.
+        for name in dependencies:
+            self.write(name, 'VALUE = 1\r\n')
+        self.write(HELPER, 'VALUE = 9\n')
+        self.git('add', '--', HELPER)
+        self.write(HELPER, 'VALUE = 1\n')
+        result = self.check('index')
+        self.assertNotEqual(0, result.returncode)
+        self.assertIn('Candidate/worktree differences: ' + HELPER, result.stderr)
+        self.assertNotIn('extra-00.py', result.stderr)
+        self.assertIn('Repair unintended content changes', result.stderr)
+
     def test_fifty_skills_stay_usable_and_last_source_change_is_identified(self):
         for number in range(49):
             name = f'.agents/skills/scale-{number:02d}/SKILL.md'

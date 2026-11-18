@@ -40,7 +40,7 @@ def body_text(raw, mode):
     return text
 
 
-def live_markup(raw, mode='body'):
+def live_markup(raw, mode='body', with_spans=False):
     text = body_text(raw, mode)
     cursor, fence = 0, None
     while cursor < len(text):
@@ -80,7 +80,7 @@ def live_markup(raw, mode='body'):
                 end = tag_end(text, tag.end())
                 anchor = ANCHOR.match(text, cursor)
                 if anchor:
-                    yield 'anchor', anchor[2]
+                    yield ('anchor', anchor[2], (cursor, anchor.end())) if with_spans else ('anchor', anchor[2])
                     cursor = anchor.end()
                     continue
                 name = tag[1].lower()
@@ -98,7 +98,7 @@ def live_markup(raw, mode='body'):
         end = text.find('-->', cursor + 4)
         block_end = len(text) if end < 0 else end + 3
         block = text[cursor:block_end]
-        yield 'comment', block
+        yield ('comment', block, (cursor, block_end)) if with_spans else ('comment', block)
         cursor = block_end
 
 

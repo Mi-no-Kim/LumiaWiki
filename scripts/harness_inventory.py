@@ -333,7 +333,16 @@ def inspect(view, describe=False, render_only=False):
             if not isinstance(item.get(key), str) or not item[key].strip() or len(item[key]) > 2000:
                 raise ValueError('Inventory needs title/purpose/when: ' + identity)
         if item.get('sourceDigest') != digest(view, files):
-            raise ValueError('Inventory source digest differs: ' + identity)
+            differences = []
+            if view.kind == 'index':
+                peer = Candidate('work', cwd=view.root, seconds=10)
+                for name in files:
+                    candidate_raw, working_raw = view.read(name), peer.read(name)
+                    differs = candidate_raw != working_raw if candidate_raw is None or working_raw is None else source_hash(name, candidate_raw) != source_hash(name, working_raw)
+                    if differs:
+                        differences.append(name)
+            context = ('Candidate/worktree differences: ' + ', '.join(differences[:8])) if differences else ('Related source dependencies: ' + ', '.join(files[:8]))
+            raise ValueError('Inventory source digest differs: ' + identity + '\n' + context)
         validate_verification(view, item)
     if render_only:
         return '\n\n'.join(f'## {document}\n\n{render(items)}'
