@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "baseline": {
+    "source": "work/records/harness/issue-72/artifacts/issue-body-template-draft.md",
+    "meaning": "Automatically extracted verification snapshot; rules are authored in the Issue template. Scoped user-requested revisions are recorded separately.",
+    "comments": {
+      "start": "<!-- issue-rule:start\n착수·재개·조건 변경·주요 단계 전환·수용 판단 전에 공통 절차와 해당 단계 규칙을 읽고 본문·실제 상태를 대조한다. -->",
+      "state": "<!-- issue-rule:state\n상태는 '- 상태: 값' 한 줄에 예정·진행 중·중단·완료·취소 중 하나만 쓴다. 검사와 필수 종료 처리를 모두 마친 뒤에만 완료로 바꾼다. -->",
+      "position": "<!-- issue-rule:position\n현재 진행 위치는 현재 요약을 제외한 본문 안 실제 작업·근거 구역의 링크 하나만 쓴다. 표시명·번호·표식을 맞추고 설명·결과·다음 행동을 덧붙이지 않는다. -->",
+      "completion": "<!-- issue-rule:completion\nIssue별 최소 활동 기준과 전체 수용 조건을 기록한다. 판단 조건은 공통 절차, 조건별 기록 형식은 기록 지침을 따른다. -->"
+    }
+  },
+  "targets": [
+    {
+      "path": "work/records/harness/issue-72/artifacts/issue-body-template-draft.md",
+      "mode": "template"
+    },
+    {
+      "path": "work/records/harness/issue-72/artifacts/issue-body-example-42.md",
+      "mode": "body"
+    }
+  ],
+  "revisions": []
+}

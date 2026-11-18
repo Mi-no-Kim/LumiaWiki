@@ -1,0 +1,31 @@
+test_crlf_and_lf_counts_match (test_pilot_improvements.AuthoredLengthTests.test_crlf_and_lf_counts_match) ... ok
+test_fenced_or_changed_comments_remain_counted (test_pilot_improvements.AuthoredLengthTests.test_fenced_or_changed_comments_remain_counted) ... ok
+test_fixed_live_standalone_comments_do_not_consume_warning_budget (test_pilot_improvements.AuthoredLengthTests.test_fixed_live_standalone_comments_do_not_consume_warning_budget) ... ok
+test_inline_prose_is_not_hidden_by_a_protected_comment (test_pilot_improvements.AuthoredLengthTests.test_inline_prose_is_not_hidden_by_a_protected_comment) ... ok
+test_issue_cli_does_not_exclude_task_only_comments (test_pilot_improvements.AuthoredLengthTests.test_issue_cli_does_not_exclude_task_only_comments) ... ok
+test_written_content_above_threshold_still_warns (test_pilot_improvements.AuthoredLengthTests.test_written_content_above_threshold_still_warns) ... ok
+test_cwd_escape_is_rejected (test_pilot_improvements.ExplicitDraftTests.test_cwd_escape_is_rejected) ... ok
+test_directory_is_rejected (test_pilot_improvements.ExplicitDraftTests.test_directory_is_rejected) ... ok
+test_draft_cannot_mix_with_hook_or_candidate (test_pilot_improvements.ExplicitDraftTests.test_draft_cannot_mix_with_hook_or_candidate) ... ok
+test_explicit_draft_is_read_only_and_not_a_formal_record (test_pilot_improvements.ExplicitDraftTests.test_explicit_draft_is_read_only_and_not_a_formal_record) ... ok
+test_forbidden_cwd_is_rejected_before_read (test_pilot_improvements.ExplicitDraftTests.test_forbidden_cwd_is_rejected_before_read) ... ok
+test_invalid_state_is_rejected (test_pilot_improvements.ExplicitDraftTests.test_invalid_state_is_rejected) ... ok
+test_missing_protected_comment_is_rejected (test_pilot_improvements.ExplicitDraftTests.test_missing_protected_comment_is_rejected) ... ok
+test_preserved_or_private_path_is_rejected_before_read (test_pilot_improvements.ExplicitDraftTests.test_preserved_or_private_path_is_rejected_before_read) ... ok
+test_profile_is_required (test_pilot_improvements.ExplicitDraftTests.test_profile_is_required) ... ok
+test_committed_candidate_uses_parent_diff_not_worktree (test_work_records.CandidateTests.test_committed_candidate_uses_parent_diff_not_worktree) ... ok
+test_initial_index_reads_staged_content_and_warning_succeeds (test_work_records.CandidateTests.test_initial_index_reads_staged_content_and_warning_succeeds) ... ok
+test_sparse_ci_prepares_missing_parent_documents_only (test_work_records.CandidateTests.test_sparse_ci_prepares_missing_parent_documents_only) ... ok
+test_unmodified_long_record_does_not_warn (test_work_records.CandidateTests.test_unmodified_long_record_does_not_warn) ... ok
+test_100_lines_allowed_101_warned_including_blank_lines (test_work_records.RuleTests.test_100_lines_allowed_101_warned_including_blank_lines) ... ok
+test_execution_blocks_belong_in_artifacts (test_work_records.RuleTests.test_execution_blocks_belong_in_artifacts) ... ok
+test_explicit_new_record_dates_are_rejected_in_text_and_metadata (test_work_records.RuleTests.test_explicit_new_record_dates_are_rejected_in_text_and_metadata) ... ok
+test_native_artifact_payload_is_preserved_but_prose_date_is_rejected (test_work_records.RuleTests.test_native_artifact_payload_is_preserved_but_prose_date_is_rejected) ... ok
+test_needed_decisions_blockers_and_domain_dates_are_allowed (test_work_records.RuleTests.test_needed_decisions_blockers_and_domain_dates_are_allowed) ... ok
+test_new_dated_record_filename_is_rejected_but_old_name_is_not (test_work_records.RuleTests.test_new_dated_record_filename_is_rejected_but_old_name_is_not) ... ok
+test_unchanged_old_date_is_not_a_new_violation (test_work_records.RuleTests.test_unchanged_old_date_is_not_a_new_violation) ... ok
+
+----------------------------------------------------------------------
+Ran 26 tests in 9.578s
+
+OK
