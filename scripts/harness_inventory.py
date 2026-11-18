@@ -204,7 +204,15 @@ def discover(view, entries):
         if match:
             identity = 'skill:' + match[1]
             folder = definition.rsplit('/', 1)[0] + '/'
-            found[identity] = ('skill', definition, sorted(n for n in names if n.startswith(folder)))
+            text = view.read(definition).decode('utf-8-sig').replace('\r\n', '\n')
+            markers = re.findall(r'^<!-- inventory-dependencies: (.+) -->$', text, re.M)
+            if len(markers) > 1:
+                raise ValueError('Duplicate skill dependency declaration')
+            dependencies = json.loads(markers[0]) if markers else []
+            if not isinstance(dependencies, list) or len(dependencies) > 500:
+                raise ValueError('Skill dependencies must be a bounded explicit file list')
+            files = sorted(set([*(n for n in names if n.startswith(folder)), *(path_name(n) for n in dependencies)]))
+            found[identity] = ('skill', definition, files)
         elif definition.startswith('scripts/hooks/') and definition.count('/') == 2:
             event = definition.rsplit('/', 1)[1]
             if event not in GIT_EVENTS:

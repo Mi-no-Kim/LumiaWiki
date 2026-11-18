@@ -5,6 +5,8 @@ description: 작업 결과·설계·문서의 자체 검수나 별도 검수를 
 
 # 작업 결과 검수
 
+<!-- inventory-dependencies: ["harness/rule-comments.json"] -->
+
 ## 적용과 역할
 
 일반 검수·리뷰는 공통 검수 구역을 사용한다. 커밋을 준비할 때는 커밋 전 확인 구역도 적용한다. [검증·완료 원칙](<../../../docs/details/operations/검증과 완료.md>)과 [별도 검수 조건](<../../../docs/details/operations/별도 검수.md>)을 따른다. 스킬 사용은 수정·커밋·외부 작업의 권한을 추가하지 않는다.

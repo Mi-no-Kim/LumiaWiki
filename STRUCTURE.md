@@ -7,7 +7,7 @@ lumia_island_wiki/
 ├── AGENTS.md                       AI 작업 지침과 문서 진입점
 ├── README.md                       프로젝트 소개와 시작 안내
 ├── STRUCTURE.md                    주요 경로와 역할
-├── .agents/skills/                 요청 판단·검수·응답 형식의 AI 스킬
+├── .agents/skills/                 Issue·Task 생성, 요청 판단·검수·응답 형식의 AI 스킬
 ├── .github/workflows/             하네스 현황 후보 검사·격리 테스트의 CI 정의
 ├── scripts/                       하네스 현황 검사·Git hook 설치와 격리 검증 도구
 │   ├── check-harness-inventory.py 실제 work/index/commit 원천과 현황 대조(읽기 전용)
@@ -38,7 +38,13 @@ lumia_island_wiki/
 │   ├── 스킬 현황.md               등록된 스킬·적용 조건·원천
 │   ├── hook 현황.md               등록된 hook·실행 조건·원천
 │   ├── Git 작업 절차.md            브랜치·커밋·PR·병합 수행
-│   └── templates/                  로컬 Phase·Issue·Task, GitHub 게시, PR 양식
+│   ├── Issue 생성 지시서.md        공통 Issue 최초 작성·Phase 연결 처리
+│   ├── Issue 공통 절차.md          네 단계·Task 배정·전체 수용
+│   ├── Task 생성 지시서.md         확정 전달사항으로 최초 Task 작성
+│   ├── Task 공통 절차.md           전체 계획·실행·기록·종료
+│   ├── rule-comments.json         고정 기존 기록·정식 주석 기준·명시 개정
+│   ├── examples/                  정식 양식의 공용 예시
+│   └── templates/                 본문·입력·수행 기록, GitHub 게시, PR 양식
 └── work/                           실제 계획·진행·작업 근거
     ├── README.md                   기록 탐색과 사용 안내
     ├── 현황.md                     현재 작업과 예정의 조회
