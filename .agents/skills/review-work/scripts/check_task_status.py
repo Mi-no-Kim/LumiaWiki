@@ -36,7 +36,7 @@ def staged_state(repo, task):
         text = subprocess.run(
             ["git", "-C", root, "show", ":" + task],
             check=True, capture_output=True,
-        ).stdout.decode("utf-8")
+        ).stdout.decode("utf-8").replace("\r\n", "\n")
     except (OSError, subprocess.CalledProcessError, UnicodeError) as error:
         raise ValueError("Git 인덱스의 Task를 읽을 수 없습니다; 경로·스테이징·충돌을 확인하세요") from error
     summaries = re.findall(

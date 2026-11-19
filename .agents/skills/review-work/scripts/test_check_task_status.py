@@ -71,6 +71,28 @@ class StagedTaskStateTests(unittest.TestCase):
         subprocess.run(['git', '-C', str(self.repo), 'add', '--', 'harness/rule-comments.json'], check=True)
         self.assertEqual('검증 중', staged_state(self.repo, TASK))
 
+    def test_crlf_and_lf_staged_states_are_read_without_changing_index(self):
+        subprocess.run(['git', '-C', str(self.repo), 'config', 'core.autocrlf', 'false'],
+                       check=True, capture_output=True)
+        policy = self.repo / 'harness/rule-comments.json'
+        policy.parent.mkdir(parents=True)
+        policy.write_text(json.dumps({'schema': 1, 'legacyRecords': []}), encoding='utf-8')
+        subprocess.run(['git', '-C', str(self.repo), 'add', '--', 'harness/rule-comments.json'],
+                       check=True, capture_output=True)
+        for newline in ('\n', '\r\n'):
+            for state in ('예정', '진행 중', '중단', '완료', '취소'):
+                with self.subTest(newline=repr(newline), state=state):
+                    text = f'# Task\n\n## 현재 요약\n- 상태: {state}\n\n## 과거 기록\n- 상태: 예정\n'
+                    raw = text.replace('\n', newline).encode('utf-8')
+                    self.path.write_bytes(raw)
+                    subprocess.run(['git', '-C', str(self.repo), 'add', '--', TASK],
+                                   check=True, capture_output=True)
+                    blob = subprocess.check_output(['git', '-C', str(self.repo), 'show', ':' + TASK])
+                    self.assertEqual(raw, blob)
+                    before = (self.repo / '.git/index').read_bytes()
+                    self.assertEqual(state, staged_state(self.repo, TASK))
+                    self.assertEqual(before, (self.repo / '.git/index').read_bytes())
+
     def test_missing_staged_record_is_unconfirmed(self):
         with self.assertRaises(ValueError):
             staged_state(self.repo, TASK)
