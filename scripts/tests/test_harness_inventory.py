@@ -635,7 +635,8 @@ class HookTests(RepositoryCase):
         for name in RULE_MARKERS:
             (self.root / name).unlink(missing_ok=True)
         self.stage()
-        self.assertEqual(0, self.git('commit', '-qm', 'branch predating inventory', check=False).returncode)
+        result = self.git('commit', '-qm', 'branch predating inventory', check=False)
+        self.assertEqual(0, result.returncode, result.stderr)
 
     def test_unstaged_marker_deletion_cannot_skip_staged_inventory(self):
         self.add_hook()

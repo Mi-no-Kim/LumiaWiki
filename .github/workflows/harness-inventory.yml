@@ -4,6 +4,7 @@ name: Harness inventory
   push:
     branches: [main]
   pull_request:
+    types: [opened, synchronize, reopened, edited, ready_for_review]
   workflow_dispatch:
 
 permissions:
@@ -22,7 +23,7 @@ jobs:
       - uses: actions/checkout@v6
         with:
           persist-credentials: false
-          fetch-depth: 2
+          fetch-depth: 0
           sparse-checkout-cone-mode: false
           sparse-checkout: |
             /.agents/skills/
@@ -43,6 +44,15 @@ jobs:
           python-version: '3.14'
       - name: Check exact committed inventory
         run: python -B -X utf8 scripts/check-harness-inventory.py --candidate HEAD
+      - name: Check incoming messages and PR text
+        shell: python
+        run: |
+          import os
+          import subprocess
+          import sys
+          subprocess.run([sys.executable, '-B', '-X', 'utf8', 'scripts/check-github-closing.py',
+                          '--event-file', os.environ['GITHUB_EVENT_PATH'],
+                          '--event-name', os.environ['GITHUB_EVENT_NAME']], check=True)
       - name: Prepare parent document blobs
         shell: python
         run: |

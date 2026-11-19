@@ -1,4 +1,4 @@
-"""Preserve, connect and restore this repository's inventory pre-commit hook."""
+"""Preserve, connect and restore one selected project Git hook atomically."""
 
 import sys
 sys.dont_write_bytecode = True
@@ -44,6 +44,7 @@ def location(root):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--hook', choices=('pre-commit', 'commit-msg'), default='pre-commit')
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument('--status', action='store_true')
     mode.add_argument('--remove', action='store_true')
@@ -51,9 +52,9 @@ def main():
     try:
         root = Path(git(Path.cwd(), 'rev-parse', '--show-toplevel')).resolve()
         directory = location(root)
-        hook = directory / 'pre-commit'
-        backup = directory / 'pre-commit.harness-original'
-        metadata = directory / '.harness-inventory-pre-commit.json'
+        hook = directory / args.hook
+        backup = directory / (args.hook + '.harness-original')
+        metadata = directory / ('.harness-inventory-' + args.hook + '.json')
         for path in (hook, backup, metadata):
             if path.is_symlink() or path.is_junction():
                 raise ValueError('Reparse-point hook/backup/metadata requires manual review')
@@ -66,7 +67,7 @@ def main():
             if data['original'] is None and backup.exists():
                 raise ValueError('Unexpected backup exists; preserve it for review')
         if args.status:
-            print(json.dumps({'installed': data is not None, 'hookDirectory': str(directory),
+            print(json.dumps({'event': args.hook, 'installed': data is not None, 'hookDirectory': str(directory),
                               'previousHook': bool(data and data['original']), 'configurationChanged': False}))
             return 0
         if data is not None:
@@ -82,9 +83,9 @@ def main():
             return 0
         if backup.exists():
             raise ValueError('Unowned original-hook backup exists; nothing overwritten')
-        source = root / 'scripts/hooks/pre-commit'
+        source = root / 'scripts/hooks' / args.hook
         if source.is_symlink() or source.is_junction() or not source.is_file():
-            raise ValueError('Versioned pre-commit definition is absent or a link')
+            raise ValueError('Versioned hook definition is absent or a link')
         wrapper = source.read_bytes().replace(b'\r\n', b'\n')
         if hook.is_file() and hook.read_bytes().replace(b'\r\n', b'\n') == wrapper:
             raise ValueError('Unowned inventory wrapper exists; do not nest it')

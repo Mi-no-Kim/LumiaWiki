@@ -17,7 +17,7 @@ lumia_island_wiki/
 │   ├── rule_comments.py            신규 표준 기록 자동 발견·고정 기존 기록 제외·주석/상태 대조
 │   ├── harness_inventory.py       후보·경계·등록·지문·확인 상태 판독
 │   ├── install-harness-hooks.py   기존 Git hook 보존·중복 설치·복원
-│   ├── hooks/pre-commit           프로젝트 관리 Git hook 정의
+│   ├── hooks/                    현황·기록 pre-commit과 자동 닫기 commit-msg 정의
 │   └── tests/                    정상/누락·부분 후보·경계·hook 공존 테스트
 ├── docs/                           제품 요구와 운영 기준
 │   ├── 프로젝트 목표와 범위.md     제품 목표·범위·품질과 공개 조건
