@@ -1,6 +1,7 @@
 """Behavior checks with a disposable Git index; no project records are edited."""
 
 from pathlib import Path
+import json
 import os
 import subprocess
 import sys
@@ -56,12 +57,48 @@ class StagedTaskStateTests(unittest.TestCase):
             self.stage(f"- 상태: {state}\n")
             self.assertEqual(staged_state(self.repo, TASK), state)
 
+    def test_current_policy_supports_pause_and_rejects_previous_only_states(self):
+        policy = self.repo / 'harness/rule-comments.json'
+        policy.parent.mkdir(parents=True)
+        policy.write_text(json.dumps({'schema': 1, 'legacyRecords': []}), encoding='utf-8')
+        subprocess.run(['git', '-C', str(self.repo), 'add', '--', 'harness/rule-comments.json'], check=True)
+        self.stage('- 상태: 중단\n')
+        self.assertEqual('중단', staged_state(self.repo, TASK))
+        self.stage('- 상태: 검증 중\n')
+        with self.assertRaises(ValueError):
+            staged_state(self.repo, TASK)
+        policy.write_text(json.dumps({'schema': 1, 'legacyRecords': [TASK]}), encoding='utf-8')
+        subprocess.run(['git', '-C', str(self.repo), 'add', '--', 'harness/rule-comments.json'], check=True)
+        self.assertEqual('검증 중', staged_state(self.repo, TASK))
+
+    def test_crlf_and_lf_staged_states_are_read_without_changing_index(self):
+        subprocess.run(['git', '-C', str(self.repo), 'config', 'core.autocrlf', 'false'],
+                       check=True, capture_output=True)
+        policy = self.repo / 'harness/rule-comments.json'
+        policy.parent.mkdir(parents=True)
+        policy.write_text(json.dumps({'schema': 1, 'legacyRecords': []}), encoding='utf-8')
+        subprocess.run(['git', '-C', str(self.repo), 'add', '--', 'harness/rule-comments.json'],
+                       check=True, capture_output=True)
+        for newline in ('\n', '\r\n'):
+            for state in ('예정', '진행 중', '중단', '완료', '취소'):
+                with self.subTest(newline=repr(newline), state=state):
+                    text = f'# Task\n\n## 현재 요약\n- 상태: {state}\n\n## 과거 기록\n- 상태: 예정\n'
+                    raw = text.replace('\n', newline).encode('utf-8')
+                    self.path.write_bytes(raw)
+                    subprocess.run(['git', '-C', str(self.repo), 'add', '--', TASK],
+                                   check=True, capture_output=True)
+                    blob = subprocess.check_output(['git', '-C', str(self.repo), 'show', ':' + TASK])
+                    self.assertEqual(raw, blob)
+                    before = (self.repo / '.git/index').read_bytes()
+                    self.assertEqual(state, staged_state(self.repo, TASK))
+                    self.assertEqual(before, (self.repo / '.git/index').read_bytes())
+
     def test_missing_staged_record_is_unconfirmed(self):
         with self.assertRaises(ValueError):
             staged_state(self.repo, TASK)
 
     def test_ambiguous_or_unknown_state_is_unconfirmed(self):
-        for summary in ("- 상태: 완료\n- 상태: 보류\n", "- 상태: 알 수 없음\n", ""):
+        for summary in ("- 상태: 완료\n- 상태: 보류\n", "- 상태: 알 수 없음\n", "- 상태:\n완료\n", ""):
             self.stage(summary)
             with self.assertRaises(ValueError):
                 staged_state(self.repo, TASK)

@@ -204,7 +204,15 @@ def discover(view, entries):
         if match:
             identity = 'skill:' + match[1]
             folder = definition.rsplit('/', 1)[0] + '/'
-            found[identity] = ('skill', definition, sorted(n for n in names if n.startswith(folder)))
+            text = view.read(definition).decode('utf-8-sig').replace('\r\n', '\n')
+            markers = re.findall(r'^<!-- inventory-dependencies: (.+) -->$', text, re.M)
+            if len(markers) > 1:
+                raise ValueError('Duplicate skill dependency declaration')
+            dependencies = json.loads(markers[0]) if markers else []
+            if not isinstance(dependencies, list) or len(dependencies) > 500:
+                raise ValueError('Skill dependencies must be a bounded explicit file list')
+            files = sorted(set([*(n for n in names if n.startswith(folder)), *(path_name(n) for n in dependencies)]))
+            found[identity] = ('skill', definition, files)
         elif definition.startswith('scripts/hooks/') and definition.count('/') == 2:
             event = definition.rsplit('/', 1)[1]
             if event not in GIT_EVENTS:
@@ -325,7 +333,16 @@ def inspect(view, describe=False, render_only=False):
             if not isinstance(item.get(key), str) or not item[key].strip() or len(item[key]) > 2000:
                 raise ValueError('Inventory needs title/purpose/when: ' + identity)
         if item.get('sourceDigest') != digest(view, files):
-            raise ValueError('Inventory source digest differs: ' + identity)
+            differences = []
+            if view.kind == 'index':
+                peer = Candidate('work', cwd=view.root, seconds=10)
+                for name in files:
+                    candidate_raw, working_raw = view.read(name), peer.read(name)
+                    differs = candidate_raw != working_raw if candidate_raw is None or working_raw is None else source_hash(name, candidate_raw) != source_hash(name, working_raw)
+                    if differs:
+                        differences.append(name)
+            context = ('Candidate/worktree differences: ' + ', '.join(differences[:8])) if differences else ('Related source dependencies: ' + ', '.join(files[:8]))
+            raise ValueError('Inventory source digest differs: ' + identity + '\n' + context)
         validate_verification(view, item)
     if render_only:
         return '\n\n'.join(f'## {document}\n\n{render(items)}'

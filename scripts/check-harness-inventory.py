@@ -22,8 +22,8 @@ def main():
             print(json.dumps(value, ensure_ascii=False, indent=2) if args.describe else value)
         return 0
     except (ValueError, OSError, KeyError, TypeError, UnicodeError, subprocess.SubprocessError) as error:
-        reason = str(error).splitlines()[0][:1000]
-        print('Inventory unverified: ' + reason + '\nNext: update the matching inventory entry and stage the exact verified candidate.', file=sys.stderr)
+        reason = '\n'.join(str(error).splitlines()[:3])[:1800]
+        print('Inventory unverified: ' + reason + '\nNext: inspect the reported source/dependencies first. Repair unintended content changes. Update inventory only after the intended source and its behavior are verified; then stage and recheck the same candidate.', file=sys.stderr)
         return 2
 
 

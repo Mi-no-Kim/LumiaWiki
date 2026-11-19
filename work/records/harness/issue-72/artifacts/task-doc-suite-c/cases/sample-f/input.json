@@ -1,0 +1,39 @@
+{
+  "goal": "시작 안내의 링크·중복을 정리하고 선택·확인 근거를 남긴다.",
+  "result": "시작 안내의 링크·중복을 정리하고 선택·확인 근거를 남긴다.",
+  "acceptance": [
+    {
+      "id": "source",
+      "kind": "exists",
+      "path": "guide.md"
+    },
+    {
+      "id": "link",
+      "kind": "links",
+      "path": "start.md"
+    },
+    {
+      "id": "choice",
+      "kind": "choice",
+      "value": "A"
+    }
+  ],
+  "creation": {
+    "parent": "P",
+    "task": "T",
+    "path_checked": true,
+    "collision_checked": true
+  },
+  "note": "현재 허용은 생성·계획과 확보 원문의 읽기 전용 대조다. 상세 원문은 아직 미제공이다. 필요한 지점에서 supply 사건을 요청할 수 있다. 자료 제공은 편집 허용이 아니다.",
+  "expected_before": {
+    "start.md": "# 시작 안내\n\nTask 본문은 현재 상태와 계획을 관리합니다.\n자세한 수행 내용은 별도 수행 기록에 남깁니다.\n\n[기록 방법 보기](guide.md#record)\n"
+  },
+  "initial_events": [],
+  "events": [
+    {
+      "id": "supply",
+      "kind": "supply"
+    }
+  ],
+  "pending": "A/B 안내 방식은 모의 사용자 역할이 결정한다."
+}

@@ -1,0 +1,76 @@
+{
+  "schema": 3,
+  "validation": "github-registration-a79e1f8-task-002",
+  "source_commit": "a79e1f8ed60309d916171fd6eb7fd65eee18dd07",
+  "objects": {
+    "issue": {
+      "number": 75,
+      "url": "https://github.com/Mi-no-Kim/LumiaWiki/issues/75",
+      "initial": {
+        "state": "open",
+        "labels": [
+          "unit:issue",
+          "status:planned"
+        ],
+        "milestone": null
+      },
+      "final": {
+        "state": "closed",
+        "labels": [
+          "unit:issue",
+          "status:cancelled"
+        ],
+        "state_reason": "not_planned"
+      }
+    },
+    "task": {
+      "local_id": "72-002",
+      "number": 76,
+      "url": "https://github.com/Mi-no-Kim/LumiaWiki/issues/76",
+      "parent": 72,
+      "initial": {
+        "state": "open",
+        "labels": [
+          "unit:task",
+          "status:planned"
+        ],
+        "milestone": null
+      },
+      "final": {
+        "state": "closed",
+        "labels": [
+          "unit:task",
+          "status:cancelled"
+        ],
+        "state_reason": "not_planned"
+      }
+    },
+    "parent": {
+      "number": 72,
+      "url": "https://github.com/Mi-no-Kim/LumiaWiki/issues/72",
+      "observed_state": "open",
+      "observed_status": "status:in-progress"
+    }
+  },
+  "checks": {
+    "local_bodies_and_public_specs_checked_before_creation": true,
+    "rule_comments": {
+      "issue": 10,
+      "task": 8,
+      "omission_rejected": true
+    },
+    "published_specs_match_sources": true,
+    "real_numbers_and_formal_local_paths_recorded": true,
+    "parent_connection_verified_both_ways": true,
+    "parent_connection_retained_after_cancellation": true,
+    "issue_completed_stages": 0,
+    "task_executed_items": 0,
+    "task_execution_file_created": false
+  },
+  "limits": [
+    "명시적 skill 적용과 로컬 대조의 관찰 요약이다. 자동 skill 선택·hook 발동을 확인한 것은 아니다.",
+    "독립 Issue #75는 생성만 했다. Task #76의 부모는 기존 #72이며 #75 아래 생성·배정 흐름은 검증하지 않았다.",
+    "Phase 소속 milestone 설정·오류 주입 복구·본작업 계획/수행/수용은 검증하지 않았다.",
+    "원문·요청·응답 대신 확인 결과와 초기/종료 관찰을 요약했다. 상세 본문 차이를 재대조할 원문 사본은 보존하지 않는다."
+  ]
+}

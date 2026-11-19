@@ -1,0 +1,105 @@
+{
+  "baseCommit": "4b371143caba44d6bd384502f337d2891f1f4300",
+  "files": [
+    {
+      "path": ".agents/skills/create-issue/SKILL.md",
+      "category": "harness",
+      "sha256": "541b2adb1c14cb1341e0823ae50f4b41dbef53605069835fcf7110ffa0f100f2"
+    },
+    {
+      "path": "README.md",
+      "category": "documents",
+      "sha256": "4be6eef8104433bccf87487964d1a1ccd18039c217d5d229600faf573f293fe7"
+    },
+    {
+      "path": "STRUCTURE.md",
+      "category": "documents",
+      "sha256": "5a9d4c9fcf128f9a5bc255046df4d3d13f9c229fea0252708d75a9fc65b01b65"
+    },
+    {
+      "path": "docs/작업 기록 작성 기준.md",
+      "category": "harness",
+      "sha256": "3e494e27780dc23dfcbdc53b1131377ed4c10b583d7a8db93aa1990d738cdb33"
+    },
+    {
+      "path": "harness/Issue 공통 절차.md",
+      "category": "harness",
+      "sha256": "79accd8a182de0e299a5bf69092bb809fc65ea5fd1e1d467c6cf38bcbf1a6176"
+    },
+    {
+      "path": "harness/Issue 생성 지시서.md",
+      "category": "harness",
+      "sha256": "fe78eb0d053796380574be08626428556492bbf53f89019ddfa8d36b97f7f842"
+    },
+    {
+      "path": "harness/hook 현황.md",
+      "category": "harness",
+      "sha256": "7edab80c7760eea1a04bb9965caa15509a757969bac814c2a5c505700ed9e0f0"
+    },
+    {
+      "path": "harness/templates/issue-input.md",
+      "category": "harness",
+      "sha256": "583d267754306a35e4822f657f0977a95468de4c51c63c66433d1ca4baed96c1"
+    },
+    {
+      "path": "harness/templates/issue.md",
+      "category": "harness",
+      "sha256": "7d67d4a3bebfe8ee020230f3d44ace20385787789d60d1807ff000049047f728"
+    },
+    {
+      "path": "harness/문서 관리.md",
+      "category": "harness",
+      "sha256": "e3699e1ad9fa4efe9915a8dd94a891f5b7462f122e9af4345415c9192e167d2d"
+    },
+    {
+      "path": "harness/스킬 현황.md",
+      "category": "harness",
+      "sha256": "e8dcfe314972284f4216ccc0486711bf1e088ee8565c24e93894cb270a1887b1"
+    },
+    {
+      "path": "scripts/check-harness-inventory.py",
+      "category": "harness",
+      "sha256": "dc606b517a49cbd54636ad1c389939b6ed464fac18b28b79ad03e404d2b6dc0e"
+    },
+    {
+      "path": "scripts/check-work-records.py",
+      "category": "harness",
+      "sha256": "4b301cef2c1a9cef4f816be33f4eb19df222bfa20a31a4c8bbdbeaee2b10753e"
+    },
+    {
+      "path": "scripts/harness_inventory.py",
+      "category": "harness",
+      "sha256": "b94df804acefe96e428bdbed64df1b2fe1b8c4b98dc3bc2a04afca86576635f4"
+    },
+    {
+      "path": "scripts/issue_rule_comments.py",
+      "category": "harness",
+      "sha256": "ed1962e9c50234ff9cf407b2e5ed1facc52ee731dac5772a1a2cb39528dc6278"
+    },
+    {
+      "path": "scripts/tests/test_harness_inventory.py",
+      "category": "harness",
+      "sha256": "4597a44729de4f416a442c7440e3baec25468b3e59b5075913ff6cd9d9e0b137"
+    },
+    {
+      "path": "scripts/tests/test_record_length.py",
+      "category": "harness",
+      "sha256": "1940e1043d5c5b6104082ccd4e723d1977a838445f47c3a320f0d38e08e995be"
+    }
+  ],
+  "changedCount": 17,
+  "changedInventoryEntries": [
+    "skill:create-issue",
+    "codex:.codex/hooks.json:PostToolUse:0:0",
+    "git:pre-commit"
+  ],
+  "deferredSourcesUnchanged": [
+    ".agents/skills/create-task/SKILL.md",
+    "harness/Task 공통 절차.md",
+    "harness/Task 생성 지시서.md",
+    "harness/templates/task.md",
+    "scripts/check-issue-rule-comments.py"
+  ],
+  "deferredReferencesInAdditions": 0,
+  "errors": []
+}

@@ -1,6 +1,6 @@
 #!/bin/sh
 # lumia-harness-inventory-v1
-# inventory-dependencies: ["scripts/check-harness-inventory.py", "scripts/harness_inventory.py", "scripts/install-harness-hooks.py", "scripts/check-work-records.py"]
+# inventory-dependencies: ["scripts/check-harness-inventory.py", "scripts/harness_inventory.py", "scripts/install-harness-hooks.py", "scripts/check-work-records.py", "scripts/check-issue-rule-comments.py", "scripts/issue_rule_comments.py", "scripts/check-rule-comments.py", "scripts/rule_comments.py", "harness/rule-comments.json", "harness/templates/issue.md", "harness/templates/task.md", "harness/templates/task-execution.md", "harness/examples/issue-body-example-42.md", "harness/examples/task-body-example-43-002.md", "harness/examples/task-body-example-db-method.md", "harness/examples/task-body-example-recording.md", "harness/examples/task-execution-example.md"]
 hook_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd) || exit 2
 if [ -f "$hook_dir/pre-commit.harness-original" ]; then
   "$hook_dir/pre-commit.harness-original" "$@" || exit $?
@@ -8,8 +8,8 @@ fi
 root=$(git rev-parse --show-toplevel) || exit 2
 checker="$root/scripts/check-harness-inventory.py"
 if [ ! -f "$checker" ]; then
-  candidate_markers=$(git ls-files --stage -- 'scripts/check-harness-inventory.py' 'harness/스킬 현황.md' 'harness/hook 현황.md' 'harness/스킬과 hook 현황.md') || exit 2
-  if [ -f "$root/harness/스킬 현황.md" ] || [ -f "$root/harness/hook 현황.md" ] || [ -f "$root/harness/스킬과 hook 현황.md" ] || [ -n "$candidate_markers" ]; then
+  candidate_markers=$(git ls-files --stage -- 'scripts/check-harness-inventory.py' 'harness/스킬 현황.md' 'harness/hook 현황.md' 'harness/스킬과 hook 현황.md' 'scripts/check-rule-comments.py' 'scripts/rule_comments.py' 'harness/rule-comments.json' 'scripts/check-issue-rule-comments.py' 'harness/issue-rule-comments.json') || exit 2
+  if [ -f "$root/harness/스킬 현황.md" ] || [ -f "$root/harness/hook 현황.md" ] || [ -f "$root/harness/스킬과 hook 현황.md" ] || [ -f "$root/harness/rule-comments.json" ] || [ -f "$root/harness/issue-rule-comments.json" ] || [ -n "$candidate_markers" ]; then
     echo 'Inventory checker is missing; restore the complete configuration.' >&2
     exit 2
   fi
@@ -23,11 +23,29 @@ fi
 "$python_cmd" -B -X utf8 "$checker" --candidate index || exit $?
 record_checker="$root/scripts/check-work-records.py"
 if [ ! -f "$record_checker" ]; then
-  record_candidate=$(git ls-files --stage -- 'scripts/check-work-records.py') || exit 2
-  if [ -n "$record_candidate" ]; then
+  record_candidate=$(git ls-files --stage -- 'scripts/check-work-records.py' 'scripts/check-rule-comments.py' 'scripts/rule_comments.py' 'harness/rule-comments.json' 'scripts/check-issue-rule-comments.py' 'harness/issue-rule-comments.json') || exit 2
+  if [ -n "$record_candidate" ] || [ -f "$root/harness/rule-comments.json" ] || [ -f "$root/harness/issue-rule-comments.json" ]; then
     echo 'Record checker is missing; restore the staged checker.' >&2
     exit 2
   fi
   exit 0
 fi
-exec "$python_cmd" -B -X utf8 "$record_checker" --candidate index
+"$python_cmd" -B -X utf8 "$record_checker" --candidate index || exit $?
+rule_checker="$root/scripts/check-issue-rule-comments.py"
+current_markers=$(git ls-files --stage -- 'scripts/check-rule-comments.py' 'scripts/rule_comments.py' 'harness/rule-comments.json') || exit 2
+if [ -f "$root/scripts/check-rule-comments.py" ] || [ -f "$root/harness/rule-comments.json" ] || [ -n "$current_markers" ]; then
+  rule_checker="$root/scripts/check-rule-comments.py"
+  if [ ! -f "$rule_checker" ]; then
+    echo 'Current record checker is missing; restore the complete configuration.' >&2
+    exit 2
+  fi
+fi
+if [ ! -f "$rule_checker" ]; then
+  rule_candidate=$(git ls-files --stage -- 'scripts/check-issue-rule-comments.py' 'harness/issue-rule-comments.json') || exit 2
+  if [ -n "$rule_candidate" ] || [ -f "$root/harness/issue-rule-comments.json" ]; then
+    echo 'Issue comment checker is missing; restore the complete configuration.' >&2
+    exit 2
+  fi
+  exit 0
+fi
+exec "$python_cmd" -B -X utf8 "$rule_checker" --candidate index

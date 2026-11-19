@@ -1,0 +1,506 @@
+{
+  "runId": "issue-task-pilot-2-revision",
+  "calls": [
+    {
+      "case": "explicit-issue.md",
+      "command": [
+        "C:\\Python314\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "D:\\my_project\\lumia_island_wiki\\.tmp\\issue-task-pilot-2\\sandbox\\scripts\\check-rule-comments.py",
+        "--draft",
+        "issue.md",
+        "--profile",
+        "issue"
+      ],
+      "expectedExit": 0,
+      "exitCode": 0,
+      "stdout": "{\"mode\": \"explicit-draft\", \"path\": \"issue.md\", \"profile\": \"issue\", \"formalRecord\": false, \"scope\": \"protected comments and current state; semantic acceptance is separate\", \"errors\": []}",
+      "stderr": ""
+    },
+    {
+      "case": "explicit-task-draft.md",
+      "command": [
+        "C:\\Python314\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "D:\\my_project\\lumia_island_wiki\\.tmp\\issue-task-pilot-2\\sandbox\\scripts\\check-rule-comments.py",
+        "--draft",
+        "task-draft.md",
+        "--profile",
+        "task"
+      ],
+      "expectedExit": 0,
+      "exitCode": 0,
+      "stdout": "{\"mode\": \"explicit-draft\", \"path\": \"task-draft.md\", \"profile\": \"task\", \"formalRecord\": false, \"scope\": \"protected comments and current state; semantic acceptance is separate\", \"errors\": []}",
+      "stderr": ""
+    },
+    {
+      "case": "explicit-artifacts/pilot-execution.md",
+      "command": [
+        "C:\\Python314\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "D:\\my_project\\lumia_island_wiki\\.tmp\\issue-task-pilot-2\\sandbox\\scripts\\check-rule-comments.py",
+        "--draft",
+        "artifacts/pilot-execution.md",
+        "--profile",
+        "execution"
+      ],
+      "expectedExit": 0,
+      "exitCode": 0,
+      "stdout": "{\"mode\": \"explicit-draft\", \"path\": \"artifacts/pilot-execution.md\", \"profile\": \"execution\", \"formalRecord\": false, \"scope\": \"protected comments and current state; semantic acceptance is separate\", \"errors\": []}",
+      "stderr": ""
+    },
+    {
+      "case": "explicit-cases/issue-none.md",
+      "command": [
+        "C:\\Python314\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "D:\\my_project\\lumia_island_wiki\\.tmp\\issue-task-pilot-2\\sandbox\\scripts\\check-rule-comments.py",
+        "--draft",
+        "cases/issue-none.md",
+        "--profile",
+        "issue"
+      ],
+      "expectedExit": 0,
+      "exitCode": 0,
+      "stdout": "{\"mode\": \"explicit-draft\", \"path\": \"cases/issue-none.md\", \"profile\": \"issue\", \"formalRecord\": false, \"scope\": \"protected comments and current state; semantic acceptance is separate\", \"errors\": []}",
+      "stderr": ""
+    },
+    {
+      "case": "explicit-cases/issue-unknown.md",
+      "command": [
+        "C:\\Python314\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "D:\\my_project\\lumia_island_wiki\\.tmp\\issue-task-pilot-2\\sandbox\\scripts\\check-rule-comments.py",
+        "--draft",
+        "cases/issue-unknown.md",
+        "--profile",
+        "issue"
+      ],
+      "expectedExit": 0,
+      "exitCode": 0,
+      "stdout": "{\"mode\": \"explicit-draft\", \"path\": \"cases/issue-unknown.md\", \"profile\": \"issue\", \"formalRecord\": false, \"scope\": \"protected comments and current state; semantic acceptance is separate\", \"errors\": []}",
+      "stderr": ""
+    },
+    {
+      "case": "work-rules",
+      "command": [
+        "C:\\Python314\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "scripts/check-rule-comments.py",
+        "--candidate",
+        "work"
+      ],
+      "expectedExit": 0,
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "case": "work-inventory",
+      "command": [
+        "C:\\Python314\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "scripts/check-harness-inventory.py",
+        "--candidate",
+        "work"
+      ],
+      "expectedExit": 0,
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "case": "index-inventory",
+      "command": [
+        "C:\\Python314\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "scripts/check-harness-inventory.py",
+        "--candidate",
+        "index"
+      ],
+      "expectedExit": 0,
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "case": "index-records",
+      "command": [
+        "C:\\Python314\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "scripts/check-work-records.py",
+        "--candidate",
+        "index"
+      ],
+      "expectedExit": 0,
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "case": "index-rules",
+      "command": [
+        "C:\\Python314\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "scripts/check-rule-comments.py",
+        "--candidate",
+        "index"
+      ],
+      "expectedExit": 0,
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "case": "posttooluse-valid",
+      "command": [
+        "python",
+        "-B",
+        "-X",
+        "utf8",
+        "-c",
+        "import subprocess,runpy,sys; r=subprocess.check_output(['git','rev-parse','--show-toplevel'],text=True).strip(); sys.path.insert(0,r+'/scripts'); sys.argv=[r+'/scripts/check-rule-comments.py','--hook']; runpy.run_path(sys.argv[0],run_name='__main__')"
+      ],
+      "expectedExit": 0,
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "case": "precommit-valid",
+      "command": [
+        "C:\\Program Files\\Git\\bin\\sh.exe",
+        "scripts/hooks/pre-commit"
+      ],
+      "expectedExit": 0,
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "case": "posttooluse-missing-rule",
+      "command": [
+        "python",
+        "-B",
+        "-X",
+        "utf8",
+        "-c",
+        "import subprocess,runpy,sys; r=subprocess.check_output(['git','rev-parse','--show-toplevel'],text=True).strip(); sys.path.insert(0,r+'/scripts'); sys.argv=[r+'/scripts/check-rule-comments.py','--hook']; runpy.run_path(sys.argv[0],run_name='__main__')"
+      ],
+      "expectedExit": 0,
+      "exitCode": 0,
+      "stdout": "{\"decision\": \"block\", \"reason\": \"harness/examples/task-body-example-recording.md: task-rule:start: missing or changed identifier/content/boundary\", \"hookSpecificOutput\": {\"hookEventName\": \"PostToolUse\", \"additionalContext\": \"Record comment/state preservation failed. Changes remain on disk. Review and repair only the reported scope; do not infer permission to revise protected rules or legacy enrollment.\"}}",
+      "stderr": ""
+    },
+    {
+      "case": "posttooluse-restored",
+      "command": [
+        "python",
+        "-B",
+        "-X",
+        "utf8",
+        "-c",
+        "import subprocess,runpy,sys; r=subprocess.check_output(['git','rev-parse','--show-toplevel'],text=True).strip(); sys.path.insert(0,r+'/scripts'); sys.argv=[r+'/scripts/check-rule-comments.py','--hook']; runpy.run_path(sys.argv[0],run_name='__main__')"
+      ],
+      "expectedExit": 0,
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "case": "rules-bad-index-restored-worktree",
+      "command": [
+        "C:\\Python314\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "scripts/check-rule-comments.py",
+        "--candidate",
+        "index"
+      ],
+      "expectedExit": 2,
+      "exitCode": 2,
+      "stdout": "",
+      "stderr": "harness/examples/task-body-example-recording.md: task-rule:start: missing or changed identifier/content/boundary"
+    },
+    {
+      "case": "precommit-bad-index-diagnostic",
+      "command": [
+        "C:\\Program Files\\Git\\bin\\sh.exe",
+        "scripts/hooks/pre-commit"
+      ],
+      "expectedExit": 2,
+      "exitCode": 2,
+      "stdout": "",
+      "stderr": "Inventory unverified: Inventory source digest differs: codex:.codex/hooks.json:PostToolUse:0:0\nCandidate/worktree differences: harness/examples/task-body-example-recording.md\nNext: inspect the reported source/dependencies first. Repair unintended content changes. Update inventory only after the intended source and its behavior are verified; then stage and recheck the same candidate."
+    },
+    {
+      "case": "rules-valid-index-bad-worktree",
+      "command": [
+        "C:\\Python314\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "scripts/check-rule-comments.py",
+        "--candidate",
+        "index"
+      ],
+      "expectedExit": 0,
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "case": "precommit-valid-index-bad-worktree",
+      "command": [
+        "C:\\Program Files\\Git\\bin\\sh.exe",
+        "scripts/hooks/pre-commit"
+      ],
+      "expectedExit": 0,
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "errors": [],
+  "originalPreservation": {
+    "files": 83,
+    "changedSources": [],
+    "changedArchive": [],
+    "statusSame": true,
+    "indexSame": true,
+    "headSame": true
+  },
+  "explicitDraftInputsUnchanged": true,
+  "protectedRulesUnchanged": true,
+  "automaticEnrollmentUnchanged": true,
+  "hookDidNotRollback": true,
+  "automaticDispatchObserved": false,
+  "formalRegistrationPerformed": false,
+  "finalReview": {
+    "changedFiles": [
+      {
+        "path": ".agents/skills/create-issue/SKILL.md",
+        "category": "harness",
+        "sha256": "052fa1cfa0d226edc4cf89657059b631b83f02dd40b42577648585a372330eef"
+      },
+      {
+        "path": ".agents/skills/create-task/SKILL.md",
+        "category": "harness",
+        "sha256": "e4ae6950c2784026fb72ee8287d126ea37a61606ed5acaaec6f4f9c17d216c10"
+      },
+      {
+        "path": "README.md",
+        "category": "documents",
+        "sha256": "57ec1b2d66c8809eea8289e754eebc5eb79ae85667bcc95e5c68933c937eee96"
+      },
+      {
+        "path": "STRUCTURE.md",
+        "category": "documents",
+        "sha256": "ad790b809da06b623cbe649202f74024ba62da21a9d3af7bff540cb3a71ed859"
+      },
+      {
+        "path": "docs/작업 기록 작성 기준.md",
+        "category": "harness",
+        "sha256": "3e494e27780dc23dfcbdc53b1131377ed4c10b583d7a8db93aa1990d738cdb33"
+      },
+      {
+        "path": "harness/Issue 공통 절차.md",
+        "category": "harness",
+        "sha256": "79accd8a182de0e299a5bf69092bb809fc65ea5fd1e1d467c6cf38bcbf1a6176"
+      },
+      {
+        "path": "harness/Issue 생성 지시서.md",
+        "category": "harness",
+        "sha256": "fe78eb0d053796380574be08626428556492bbf53f89019ddfa8d36b97f7f842"
+      },
+      {
+        "path": "harness/Task 공통 절차.md",
+        "category": "harness",
+        "sha256": "1079782da6ab2466d523f15f1f5d839454108d7e2a19dcbe78276a6e46bc1a80"
+      },
+      {
+        "path": "harness/Task 생성 지시서.md",
+        "category": "harness",
+        "sha256": "21d21e0e0f286aa3636572aa9d93ed17611255baa11b76ba42d543452d70f9d4"
+      },
+      {
+        "path": "harness/hook 현황.md",
+        "category": "harness",
+        "sha256": "a43904caab38f5b2c5b627c68b1688a8c4ea35ec4891e855378a63baeb595ef9"
+      },
+      {
+        "path": "harness/templates/issue-input.md",
+        "category": "harness",
+        "sha256": "583d267754306a35e4822f657f0977a95468de4c51c63c66433d1ca4baed96c1"
+      },
+      {
+        "path": "harness/templates/issue.md",
+        "category": "harness",
+        "sha256": "e2404228f4c17889aa44eee6446921ef76fb15b59fae171fb820ed8e9a39c8e7"
+      },
+      {
+        "path": "harness/templates/task.md",
+        "category": "harness",
+        "sha256": "9f40b6117487d1c25bcd6c3542974a282485881017c4daac300e76b9a5df41c0"
+      },
+      {
+        "path": "harness/문서 관리.md",
+        "category": "harness",
+        "sha256": "7f4ccd4701500ce1794142ea8ebdb96da7d98548627b39f87337e44bb2d9a639"
+      },
+      {
+        "path": "harness/스킬 현황.md",
+        "category": "harness",
+        "sha256": "c00d57e9a67eca4e6de559b070e6a4da31efaeef4761f64d24a98740de72be41"
+      },
+      {
+        "path": "scripts/check-harness-inventory.py",
+        "category": "harness",
+        "sha256": "dc606b517a49cbd54636ad1c389939b6ed464fac18b28b79ad03e404d2b6dc0e"
+      },
+      {
+        "path": "scripts/check-issue-rule-comments.py",
+        "category": "harness",
+        "sha256": "9b001ac839985c7229333df1623a1be34b7e7a1122c1fc2463f0e28184aa157c"
+      },
+      {
+        "path": "scripts/check-work-records.py",
+        "category": "harness",
+        "sha256": "4b301cef2c1a9cef4f816be33f4eb19df222bfa20a31a4c8bbdbeaee2b10753e"
+      },
+      {
+        "path": "scripts/harness_inventory.py",
+        "category": "harness",
+        "sha256": "b94df804acefe96e428bdbed64df1b2fe1b8c4b98dc3bc2a04afca86576635f4"
+      },
+      {
+        "path": "scripts/issue_rule_comments.py",
+        "category": "harness",
+        "sha256": "ed1962e9c50234ff9cf407b2e5ed1facc52ee731dac5772a1a2cb39528dc6278"
+      },
+      {
+        "path": "scripts/tests/test_harness_inventory.py",
+        "category": "harness",
+        "sha256": "4597a44729de4f416a442c7440e3baec25468b3e59b5075913ff6cd9d9e0b137"
+      },
+      {
+        "path": "scripts/tests/test_pilot_improvements.py",
+        "category": "harness",
+        "sha256": "450e90961299a71b65d46aa033cc5b7d6169fbdd8471376a4dc53f60d38b402b"
+      }
+    ],
+    "documentFiles": [
+      "README.md",
+      "STRUCTURE.md"
+    ],
+    "harnessFiles": [
+      ".agents/skills/create-issue/SKILL.md",
+      ".agents/skills/create-task/SKILL.md",
+      "docs/작업 기록 작성 기준.md",
+      "harness/Issue 공통 절차.md",
+      "harness/Issue 생성 지시서.md",
+      "harness/Task 공통 절차.md",
+      "harness/Task 생성 지시서.md",
+      "harness/hook 현황.md",
+      "harness/templates/issue-input.md",
+      "harness/templates/issue.md",
+      "harness/templates/task.md",
+      "harness/문서 관리.md",
+      "harness/스킬 현황.md",
+      "scripts/check-harness-inventory.py",
+      "scripts/check-issue-rule-comments.py",
+      "scripts/check-work-records.py",
+      "scripts/harness_inventory.py",
+      "scripts/issue_rule_comments.py",
+      "scripts/tests/test_harness_inventory.py",
+      "scripts/tests/test_pilot_improvements.py"
+    ],
+    "linkCount": 294,
+    "draftChecks": [
+      {
+        "file": "issue.md",
+        "exitCode": 0,
+        "stdout": "{\"mode\": \"explicit-draft\", \"path\": \"issue.md\", \"profile\": \"issue\", \"formalRecord\": false, \"scope\": \"protected comments and current state; semantic acceptance is separate\", \"errors\": []}",
+        "stderr": ""
+      },
+      {
+        "file": "task-draft.md",
+        "exitCode": 0,
+        "stdout": "{\"mode\": \"explicit-draft\", \"path\": \"task-draft.md\", \"profile\": \"task\", \"formalRecord\": false, \"scope\": \"protected comments and current state; semantic acceptance is separate\", \"errors\": []}",
+        "stderr": ""
+      },
+      {
+        "file": "artifacts/pilot-execution.md",
+        "exitCode": 0,
+        "stdout": "{\"mode\": \"explicit-draft\", \"path\": \"artifacts/pilot-execution.md\", \"profile\": \"execution\", \"formalRecord\": false, \"scope\": \"protected comments and current state; semantic acceptance is separate\", \"errors\": []}",
+        "stderr": ""
+      },
+      {
+        "file": "cases/issue-none.md",
+        "exitCode": 0,
+        "stdout": "{\"mode\": \"explicit-draft\", \"path\": \"cases/issue-none.md\", \"profile\": \"issue\", \"formalRecord\": false, \"scope\": \"protected comments and current state; semantic acceptance is separate\", \"errors\": []}",
+        "stderr": ""
+      },
+      {
+        "file": "cases/issue-unknown.md",
+        "exitCode": 0,
+        "stdout": "{\"mode\": \"explicit-draft\", \"path\": \"cases/issue-unknown.md\", \"profile\": \"issue\", \"formalRecord\": false, \"scope\": \"protected comments and current state; semantic acceptance is separate\", \"errors\": []}",
+        "stderr": ""
+      }
+    ],
+    "errors": [],
+    "separateReview": "Three required findings corrected and re-reviewed; no remaining required defect",
+    "originalChanged": [],
+    "archiveChanged": []
+  },
+  "pilotComplete": true,
+  "currentOutputDigests": {
+    "report.md": "1f22eff37059f26579cc57cae3a2bf82976b4abc3652306c69f8b4669e27d9ff",
+    "issue.md": "6006c73dce536d9c7fadf437be23538a9c56999e8c2ce93b7764129ac3644754",
+    "task-draft.md": "a77b7d1e0807c70a4ccb3dee82f3414639d2c9c70cdc444f006db47934f6e036",
+    "issue-input.md": "0aeba3be8828c0e3c47f8bdba0262d2989156d025d0e26ec947b1018ac62b985",
+    "artifacts/pilot-execution.md": "d73996e3dde40ac2ca096b4cf7167e384277cadcf162f9bc9c7f7b60868211b3",
+    "artifacts/task-assignment-draft.md": "e72e00f41cf7009e8a8017db9811517d2cb753ea07c163d8c97bf3a7dc9687a3",
+    "artifacts/task-created-draft.md": "82601b6766def71e74f1aceaa9b7cfcb5192cf40c2b708899f45cdfc3c6aedfd",
+    "cases/issue-none.md": "376a1560456d01bff3c2617f86649ca8189b6eba0c636028cf68b425d8f9dac7",
+    "cases/issue-unknown.md": "404f12d3039db87f2eba9d3b449cc216b099c2c71821a0ef6eaacec7f0bec191",
+    "sandbox/.agents/skills/create-issue/SKILL.md": "052fa1cfa0d226edc4cf89657059b631b83f02dd40b42577648585a372330eef",
+    "sandbox/.agents/skills/create-task/SKILL.md": "e4ae6950c2784026fb72ee8287d126ea37a61606ed5acaaec6f4f9c17d216c10",
+    "sandbox/README.md": "57ec1b2d66c8809eea8289e754eebc5eb79ae85667bcc95e5c68933c937eee96",
+    "sandbox/STRUCTURE.md": "ad790b809da06b623cbe649202f74024ba62da21a9d3af7bff540cb3a71ed859",
+    "sandbox/docs/작업 기록 작성 기준.md": "3e494e27780dc23dfcbdc53b1131377ed4c10b583d7a8db93aa1990d738cdb33",
+    "sandbox/harness/Issue 공통 절차.md": "79accd8a182de0e299a5bf69092bb809fc65ea5fd1e1d467c6cf38bcbf1a6176",
+    "sandbox/harness/Issue 생성 지시서.md": "fe78eb0d053796380574be08626428556492bbf53f89019ddfa8d36b97f7f842",
+    "sandbox/harness/Task 공통 절차.md": "1079782da6ab2466d523f15f1f5d839454108d7e2a19dcbe78276a6e46bc1a80",
+    "sandbox/harness/Task 생성 지시서.md": "21d21e0e0f286aa3636572aa9d93ed17611255baa11b76ba42d543452d70f9d4",
+    "sandbox/harness/hook 현황.md": "a43904caab38f5b2c5b627c68b1688a8c4ea35ec4891e855378a63baeb595ef9",
+    "sandbox/harness/templates/issue-input.md": "583d267754306a35e4822f657f0977a95468de4c51c63c66433d1ca4baed96c1",
+    "sandbox/harness/templates/issue.md": "e2404228f4c17889aa44eee6446921ef76fb15b59fae171fb820ed8e9a39c8e7",
+    "sandbox/harness/templates/task.md": "9f40b6117487d1c25bcd6c3542974a282485881017c4daac300e76b9a5df41c0",
+    "sandbox/harness/문서 관리.md": "7f4ccd4701500ce1794142ea8ebdb96da7d98548627b39f87337e44bb2d9a639",
+    "sandbox/harness/스킬 현황.md": "c00d57e9a67eca4e6de559b070e6a4da31efaeef4761f64d24a98740de72be41",
+    "changes.patch": "0ae17acc9d1a162795d0e2af0c133705552b1550469def0467537e3764f6e420",
+    "harness-changes.patch": "366245ed27d11e6c1040b4aa9beddf1cc328ca73a0e22baf5f4b5185b934e8f6"
+  }
+}

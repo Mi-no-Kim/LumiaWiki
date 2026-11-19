@@ -1,0 +1,66 @@
+{
+  "goal": "두 문서의 링크 점검 방법을 비교하고 선정·이유·후속 조건을 정리한다.",
+  "result": "두 문서의 링크 점검 방법을 비교하고 선정·이유·후속 조건을 정리한다.",
+  "acceptance": [
+    {
+      "id": "criteria-수동",
+      "kind": "contains",
+      "path": "execution.md",
+      "value": "수동"
+    },
+    {
+      "id": "criteria-로컬",
+      "kind": "contains",
+      "path": "execution.md",
+      "value": "로컬"
+    },
+    {
+      "id": "criteria-재현",
+      "kind": "contains",
+      "path": "execution.md",
+      "value": "재현"
+    },
+    {
+      "id": "criteria-준비",
+      "kind": "contains",
+      "path": "execution.md",
+      "value": "준비"
+    },
+    {
+      "id": "criteria-범위",
+      "kind": "contains",
+      "path": "execution.md",
+      "value": "범위"
+    },
+    {
+      "id": "criteria-후속",
+      "kind": "contains",
+      "path": "execution.md",
+      "value": "후속"
+    },
+    {
+      "id": "method",
+      "kind": "choice",
+      "value": "manual"
+    }
+  ],
+  "creation": {
+    "parent": "P",
+    "task": "T",
+    "path_checked": true,
+    "collision_checked": true
+  },
+  "note": "원문 검토·방법 비교·논의만 맡긴다. 파일 수정·검사기 작성·실행은 배정하지 않았다.",
+  "expected_before": {
+    "start.md": "# 시작 안내\n\nTask 본문은 현재 상태와 계획을 관리합니다.\n자세한 수행 내용은 별도 수행 기록에 남깁니다.\n\n[기록 방법 보기](guide.md#record)\n",
+    "guide.md": "# 기록 안내\n\n<a id=\"recording\"></a>\n## 기록 방법\n\nTask 본문은 현재 상태와 계획을 관리합니다.\n자세한 수행 내용은 별도 수행 기록에 남깁니다.\n"
+  },
+  "initial_events": [],
+  "events": [
+    {
+      "id": "method",
+      "kind": "choice"
+    }
+  ],
+  "pending": "방법 선택은 모의 사용자 역할이 결정한다."
+}

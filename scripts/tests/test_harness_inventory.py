@@ -3,6 +3,7 @@
 import hashlib
 import json
 import os
+import re
 from pathlib import Path
 import shutil
 import subprocess
@@ -19,6 +20,8 @@ SKILL = '.agents/skills/fixture/SKILL.md'
 HELPER = '.agents/skills/fixture/scripts/helper.py'
 TOOLS = ['scripts/check-harness-inventory.py', 'scripts/harness_inventory.py',
          'scripts/install-harness-hooks.py', 'scripts/check-work-records.py']
+RULE_MARKERS = ['scripts/check-rule-comments.py', 'scripts/rule_comments.py', 'harness/rule-comments.json',
+                'scripts/check-issue-rule-comments.py', 'scripts/issue_rule_comments.py', 'harness/issue-rule-comments.json']
 
 
 def digest(root, files):
@@ -100,7 +103,28 @@ class RepositoryCase(unittest.TestCase):
     def add_hook(self):
         name = 'scripts/hooks/pre-commit'
         self.write(name, (PROJECT / name).read_text(encoding='utf-8'))
-        self.entries.append(self.entry('git:pre-commit', 'git', name, [name, *TOOLS]))
+        rule_files = ['scripts/check-issue-rule-comments.py', 'scripts/issue_rule_comments.py',
+                      'harness/issue-rule-comments.json']
+        for source in rule_files[:2]:
+            self.write(source, (PROJECT / source).read_text(encoding='utf-8'))
+        values = {rule: f'<!-- issue-rule:{rule}\nKeep {rule}. -->'
+                  for rule in ('start', 'state', 'position', 'completion')}
+        policy = {'schema': 1, 'baseline': {'comments': values}}
+        record = 'work/records/harness/issue-hook-fixture/issue.md'
+        policy['targets'] = [{'path': record, 'mode': 'body'}]
+        policy['revisions'] = []
+        self.write(record, '# Fictional hook target\n\n' + '\n\n'.join(policy['baseline']['comments'].values()))
+        self.write(rule_files[2], json.dumps(policy))
+        current = ['scripts/check-rule-comments.py', 'scripts/rule_comments.py', 'harness/rule-comments.json']
+        for source in current:
+            self.write(source, (PROJECT / source).read_text(encoding='utf-8'))
+        current_policy = json.loads((PROJECT / current[-1]).read_text(encoding='utf-8'))
+        current_policy['legacyRecords'] = []
+        self.write(current[-1], json.dumps(current_policy))
+        sources = [target['path'] for target in current_policy['targets']]
+        for source in sources:
+            self.write(source, (PROJECT / source).read_text(encoding='utf-8'))
+        self.entries.append(self.entry('git:pre-commit', 'git', name, [name, *TOOLS, *rule_files[:2], *current, *sources]))
         self.refresh()
 
     def stage(self):
@@ -118,6 +142,37 @@ class RepositoryCase(unittest.TestCase):
 
 
 class CandidateTests(RepositoryCase):
+    def test_crlf_skill_declares_its_external_template_dependency(self):
+        dependency = 'harness/templates/crlf-input.md'
+        original = (self.root / SKILL).read_text(encoding='utf-8')
+        self.write(SKILL, (original + '\n<!-- inventory-dependencies: ["' + dependency + '"] -->\n').replace('\n', '\r\n'))
+        self.write(dependency, 'Required CRLF declaration input\n')
+        self.entries[0]['files'].append(dependency)
+        self.refresh()
+        self.assert_allowed()
+        described = self.run_tool('check-harness-inventory.py', '--candidate', 'work', '--describe')
+        self.assertEqual(0, described.returncode, described.stderr)
+        self.assertIn(dependency, json.loads(described.stdout)['entries'][0]['files'])
+
+    def test_external_skill_template_dependency_is_bound_to_candidate(self):
+        dependency = 'harness/templates/input.md'
+        original = (self.root / SKILL).read_text(encoding='utf-8')
+        self.write(SKILL, original + '\n<!-- inventory-dependencies: ["' + dependency + '"] -->\n')
+        self.write(dependency, 'Required input contract\n')
+        self.entries[0]['files'].append(dependency)
+        self.refresh()
+        self.assert_allowed()
+        self.stage()
+        self.write(dependency, 'Changed input contract\n')
+        self.assert_allowed('index')
+        self.assertNotEqual(0, self.check().returncode)
+
+    def test_unsafe_or_missing_external_skill_dependency_is_rejected(self):
+        original = (self.root / SKILL).read_text(encoding='utf-8')
+        for dependency in ['harness/templates/missing.md', '../outside.md', 'harness-design/source.md']:
+            self.write(SKILL, original + '\n<!-- inventory-dependencies: ["' + dependency + '"] -->\n')
+            self.assertNotEqual(0, self.check().returncode)
+
     def test_both_catalogs_are_required_even_when_no_hook_exists(self):
         self.assert_allowed()
         for document in DOCUMENTS:
@@ -148,6 +203,27 @@ class CandidateTests(RepositoryCase):
         self.assertIn('source digest differs: skill:fixture', result.stderr)
         self.git('add', '--', DOCUMENT)
         self.assert_allowed('index')
+
+    def test_mismatch_diagnostic_ignores_line_endings_and_names_real_difference(self):
+        dependencies = []
+        for number in range(10):
+            name = f'.agents/skills/fixture/scripts/extra-{number:02d}.py'
+            self.write(name, 'VALUE = 1\n')
+            dependencies.append(name)
+        self.entries[0]['files'] = sorted(self.entries[0]['files'] + dependencies)
+        self.refresh()
+        self.stage()
+        # Line-ending-only worktree differences must not displace a real change.
+        for name in dependencies:
+            self.write(name, 'VALUE = 1\r\n')
+        self.write(HELPER, 'VALUE = 9\n')
+        self.git('add', '--', HELPER)
+        self.write(HELPER, 'VALUE = 1\n')
+        result = self.check('index')
+        self.assertNotEqual(0, result.returncode)
+        self.assertIn('Candidate/worktree differences: ' + HELPER, result.stderr)
+        self.assertNotIn('extra-00.py', result.stderr)
+        self.assertIn('Repair unintended content changes', result.stderr)
 
     def test_fifty_skills_stay_usable_and_last_source_change_is_identified(self):
         for number in range(49):
@@ -373,6 +449,46 @@ class CandidateTests(RepositoryCase):
 
 
 class HookTests(RepositoryCase):
+    def test_current_task_comment_gate_uses_the_real_index(self):
+        self.add_hook()
+        self.assertEqual(0, self.install().returncode)
+        record = 'work/records/harness/issue-2/task-001.md'
+        template = (PROJECT / 'harness/templates/task.md').read_text(encoding='utf-8')
+        body = re.search(r'^```markdown\s*\n(.*?)^```\s*$', template, re.M | re.S)[1]
+        self.write(record, body)
+        self.stage()
+        accepted = self.git('commit', '-qm', 'valid current task fixture', check=False)
+        self.assertEqual(0, accepted.returncode, accepted.stderr)
+        policy = json.loads((self.root / 'harness/rule-comments.json').read_text(encoding='utf-8'))
+        broken = body.replace(policy['profiles']['task']['comments']['start'], '')
+        self.write(record, broken)
+        self.git('add', '--', record)
+        before = self.git('rev-parse', 'HEAD').stdout
+        for restore_work in (False, True):
+            if restore_work:
+                self.write(record, body)
+            denied = self.git('commit', '-qm', 'staged task comment violation', check=False)
+            self.assertNotEqual(0, denied.returncode)
+            self.assertIn('task-rule:start', denied.stderr)
+            self.assertEqual(before, self.git('rev-parse', 'HEAD').stdout)
+        self.git('add', '--', record)
+        self.write(record, broken)
+        self.write('README.md', 'Unrelated staged fixture edit\n')
+        self.git('add', '--', 'README.md')
+        accepted = self.git('commit', '-qm', 'valid index with unstaged task violation', check=False)
+        self.assertEqual(0, accepted.returncode, accepted.stderr)
+
+    def test_pre_commit_rejects_a_staged_issue_comment_deletion(self):
+        self.add_hook()
+        self.assertEqual(0, self.install().returncode)
+        record = 'work/records/harness/issue-hook-fixture/issue.md'
+        self.write(record, '# Protected comments were removed\n')
+        self.stage()
+        result = self.git('commit', '-qm', 'Fictional invalid comment candidate', check=False)
+        self.assertNotEqual(0, result.returncode)
+        self.assertIn('issue-rule:start', result.stderr)
+        self.assertEqual('# Protected comments were removed\n', (self.root / record).read_text(encoding='utf-8'))
+
     def install(self, *args):
         return self.run_tool('install-harness-hooks.py', *args)
 
@@ -381,9 +497,13 @@ class HookTests(RepositoryCase):
         self.assertEqual(0, self.install().returncode)
         helper = 'scripts/check-work-records.py'
         definition = 'scripts/hooks/pre-commit'
-        self.write(definition, (self.root / definition).read_text(encoding='utf-8').replace(', "' + helper + '"', ''))
-        self.entries[1]['files'].remove(helper)
-        (self.root / helper).unlink()
+        removed = {helper, *RULE_MARKERS}
+        self.entries[1]['files'] = [n for n in self.entries[1]['files'] if n not in removed]
+        text = (self.root / definition).read_text(encoding='utf-8')
+        dependencies = [n for n in self.entries[1]['files'] if n != definition]
+        self.write(definition, re.sub(r'^# inventory-dependencies: .*$', '# inventory-dependencies: ' + json.dumps(dependencies, ensure_ascii=False), text, flags=re.M))
+        for name in removed:
+            (self.root / name).unlink(missing_ok=True)
         self.refresh()
         self.stage()
         accepted = self.git('commit', '-qm', 'branch before record check', check=False)
@@ -395,11 +515,31 @@ class HookTests(RepositoryCase):
         self.assertNotEqual(0, denied.returncode)
         self.assertIn('Record checker is missing', denied.stderr)
 
+    def test_new_rule_markers_cannot_skip_a_missing_record_checker(self):
+        self.add_hook()
+        self.assertEqual(0, self.install().returncode)
+        helper = 'scripts/check-work-records.py'
+        definition = 'scripts/hooks/pre-commit'
+        self.entries[1]['files'].remove(helper)
+        text = (self.root / definition).read_text(encoding='utf-8').replace(', "' + helper + '"', '')
+        self.write(definition, text)
+        (self.root / helper).unlink()
+        self.refresh()
+        self.stage()
+        denied = self.git('commit', '-qm', 'partial current rule setup', check=False)
+        self.assertNotEqual(0, denied.returncode)
+        self.assertIn('Record checker is missing', denied.stderr)
+
     def test_record_gate_blocks_dates_but_only_warns_for_long_records(self):
         self.add_hook()
         self.assertEqual(0, self.install().returncode)
         record = 'work/records/harness/issue-1/issue.md'
         self.write(record, '# Current decisions\n' + '\n' * 100)
+        policy_path = 'harness/rule-comments.json'
+        policy = json.loads((self.root / policy_path).read_text(encoding='utf-8'))
+        policy['legacyRecords'] = [record]
+        self.write(policy_path, json.dumps(policy))
+        self.refresh()
         self.stage()
         accepted = self.git('commit', '-qm', 'necessary long record', check=False)
         self.assertEqual(0, accepted.returncode, accepted.stderr)
@@ -490,6 +630,10 @@ class HookTests(RepositoryCase):
         self.stage()
         self.assertNotEqual(0, self.git('commit', '-qm', 'partial setup', check=False).returncode)
         (self.root / TOOLS[0]).unlink()
+        self.stage()
+        self.assertNotEqual(0, self.git('commit', '-qm', 'current rules without inventory', check=False).returncode)
+        for name in RULE_MARKERS:
+            (self.root / name).unlink(missing_ok=True)
         self.stage()
         self.assertEqual(0, self.git('commit', '-qm', 'branch predating inventory', check=False).returncode)
 
