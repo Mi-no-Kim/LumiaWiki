@@ -63,9 +63,17 @@ console.log(JSON.stringify({good,bad:await Promise.all(bad.map(x=>attempt(()=>pa
                  'frontend/src/App.tsx', 'backend/src/main/java/Example.java', 'scripts/quality/paths.mjs',
                  'harness-design/no-read.md', '.HARNESS-STATE/no-read.json', 'work/records/artifacts/proof.md',
                  'db/migration/V1.sql', 'package-lock.json', 'scripts/a.py', 'frontend/node_modules/a.js',
+                 'scripts/hooks/commit-msg', 'harness/issue-rule-comments.json',
                  '.env', 'other/new.ts']
         result = self.node(f'console.log(JSON.stringify({json.dumps(names)}.map(paths.formatKind)));')
-        self.assertEqual(result, ['prettier'] * 5 + ['java', 'prettier'] + ['skip'] * 8 + ['unknown'])
+        self.assertEqual(result, ['prettier'] * 5 + ['java', 'prettier'] + ['skip'] * 10 + ['unknown'])
+        extra = ['.agents/skills/example/SKILL.md', '.agents/skills/example/agents/openai.yaml', 'harness/.gitattributes', 'work/records/harness/issue-72/.gitattributes']
+        result = self.node(f'console.log(JSON.stringify({json.dumps(extra)}.map(paths.formatKind)));')
+        self.assertEqual(['prettier', 'prettier', 'skip', 'skip'], result)
+        excluded_skills = ['.agents/skills/fixture/artifacts/proof.md', '.agents/skills/fixture/raw/source.json',
+                           '.agents/skills/fixture/node_modules/package.json', '.agents/skills/fixture/.env.json']
+        result = self.node(f'console.log(JSON.stringify({json.dumps(excluded_skills)}.map(paths.formatKind)));')
+        self.assertEqual(['skip'] * len(excluded_skills), result)
         self.write('docs/current.md', '# Current\n')
         self.write('work/records/artifacts/proof.md', '  immutable evidence  ')
         self.write('backend/src/main/java/Example.java', 'class Example {}')

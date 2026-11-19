@@ -1,0 +1,67 @@
+{
+  "goal": "시작 안내의 링크·중복을 정리하고 선택·확인 근거를 남긴다.",
+  "result": "시작 안내의 링크·중복을 정리하고 선택·확인 근거를 남긴다.",
+  "acceptance": [
+    {
+      "id": "link",
+      "kind": "links",
+      "path": "start.md"
+    },
+    {
+      "id": "layout",
+      "kind": "contains",
+      "path": "start.md",
+      "value": "작업 상태와 상세 기록의 작성 방법을 확인하세요."
+    },
+    {
+      "id": "guide",
+      "kind": "equals",
+      "path": "guide.md",
+      "value": "# 기록 안내\n\n<a id=\"recording\"></a>\n## 기록 방법\n\nTask 본문은 현재 상태와 계획을 관리합니다.\n자세한 수행 내용은 별도 수행 기록에 남깁니다.\n"
+    },
+    {
+      "id": "choice",
+      "kind": "choice",
+      "value": "A"
+    },
+    {
+      "id": "user-note",
+      "kind": "contains",
+      "path": "start.md",
+      "value": "이 안내는 내부 작업자를 위한 것입니다."
+    },
+    {
+      "id": "detail-5",
+      "kind": "absent_text",
+      "path": "start.md",
+      "value": "Task 본문은 현재 상태와 계획을 관리합니다."
+    },
+    {
+      "id": "detail-6",
+      "kind": "absent_text",
+      "path": "start.md",
+      "value": "자세한 수행 내용은 별도 수행 기록에 남깁니다."
+    }
+  ],
+  "creation": {
+    "parent": "P",
+    "task": "T",
+    "path_checked": true,
+    "collision_checked": true
+  },
+  "note": "초기 입력은 모의 중단 뒤 링크만 저장되고 별도 사용자 문장이 추가된 상태다. 본문 다음 행동은 이전 값이고 저장 뒤 확인 근거는 없다. 실제 저장·미수행·미확인을 구별하고 추가 문장을 보존한다.",
+  "expected_before": {
+    "start.md": "# 시작 안내\n\n이 안내는 내부 작업자를 위한 것입니다.\n\nTask 본문은 현재 상태와 계획을 관리합니다.\n자세한 수행 내용은 별도 수행 기록에 남깁니다.\n\n[기록 방법 보기](guide.md#recording)\n",
+    "guide.md": "# 기록 안내\n\n<a id=\"recording\"></a>\n## 기록 방법\n\nTask 본문은 현재 상태와 계획을 관리합니다.\n자세한 수행 내용은 별도 수행 기록에 남깁니다.\n"
+  },
+  "initial_events": [
+    {
+      "id": "selection",
+      "kind": "choice",
+      "value": "A",
+      "reason": "짧은 안내로 링크 용도를 알린다."
+    }
+  ],
+  "events": [],
+  "pending": "없음 — A안 선택은 초기 모의 입력이다."
+}

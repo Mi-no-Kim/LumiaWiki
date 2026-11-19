@@ -1,0 +1,81 @@
+{
+  "baseCommit": "446bc75c794819384cf42ff2c9f946b8449e0229",
+  "sameInputDigests": true,
+  "beforeToolRoot": "D:\\my_project\\lumia_island_wiki\\.tmp\\issue-task-pilot-2\\applied-comparison\\before",
+  "afterToolRoot": "D:\\my_project\\lumia_island_wiki",
+  "errors": [],
+  "rows": [
+    {
+      "case": "short-task",
+      "before": {
+        "case": "short-task",
+        "exitCode": 0,
+        "stdout": "",
+        "stderr": "WARNING: work/records/issues/issue-2/task-001.md: 137 lines > 100; retain necessary current decisions, move needed execution detail to artifacts.",
+        "warning": true
+      },
+      "after": {
+        "case": "short-task",
+        "exitCode": 0,
+        "stdout": "",
+        "stderr": "",
+        "warning": false
+      }
+    },
+    {
+      "case": "long-task",
+      "before": {
+        "case": "long-task",
+        "exitCode": 0,
+        "stdout": "",
+        "stderr": "WARNING: work/records/issues/issue-2/task-001.md: 172 lines > 100; retain necessary current decisions, move needed execution detail to artifacts.",
+        "warning": true
+      },
+      "after": {
+        "case": "long-task",
+        "exitCode": 0,
+        "stdout": "",
+        "stderr": "WARNING: work/records/issues/issue-2/task-001.md: 101 authored lines > 100 (172 total; exact protected policy comments excluded); retain necessary current decisions, move needed execution detail to artifacts.",
+        "warning": true
+      }
+    },
+    {
+      "case": "protected-rule-missing-in-index",
+      "before": {
+        "case": "protected-rule-missing-in-index",
+        "exitCode": 2,
+        "stdout": "",
+        "stderr": "work/records/issues/issue-2/task-001.md: task-rule:start: missing or changed identifier/content/boundary",
+        "warning": false
+      },
+      "after": {
+        "case": "protected-rule-missing-in-index",
+        "exitCode": 2,
+        "stdout": "",
+        "stderr": "work/records/issues/issue-2/task-001.md: task-rule:start: missing or changed identifier/content/boundary",
+        "warning": false
+      }
+    },
+    {
+      "case": "dependency-mismatch",
+      "before": {
+        "case": "dependency-mismatch",
+        "exitCode": 2,
+        "stdout": "",
+        "stderr": "Inventory unverified: Inventory source digest differs: codex:.codex/hooks.json:PostToolUse:0:0\nNext: update the matching inventory entry and stage the exact verified candidate.",
+        "warning": false
+      },
+      "after": {
+        "case": "dependency-mismatch",
+        "exitCode": 2,
+        "stdout": "",
+        "stderr": "Inventory unverified: Inventory source digest differs: codex:.codex/hooks.json:PostToolUse:0:0\nCandidate/worktree differences: harness/examples/task-body-example-recording.md\nNext: inspect the reported source/dependencies first. Repair unintended content changes. Update inventory only after the intended source and its behavior are verified; then stage and recheck the same candidate.",
+        "warning": false
+      }
+    }
+  ],
+  "inputDigests": {
+    "task-small.md": "1398fb434b79a7fd6cad39b598cc468abcf39f9585092c4d326eb128c4056e01",
+    "task-long.md": "053825ac34c7df593e586c95572092429665f54580f8f4a3367793092777e6d9"
+  }
+}

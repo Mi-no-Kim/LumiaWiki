@@ -1,0 +1,691 @@
+--- a/.agents/skills/create-issue/SKILL.md
++++ b/.agents/skills/create-issue/SKILL.md
+@@ -5,7 +5,7 @@
+ 
+ # Issue 본문 생성
+ 
+-<!-- inventory-dependencies: ["harness/templates/issue-input.md", "harness/Issue 생성 지시서.md", "harness/templates/issue.md", "harness/Issue 공통 절차.md"] -->
++<!-- inventory-dependencies: ["harness/templates/issue-input.md", "harness/Issue 생성 지시서.md", "harness/templates/issue.md", "harness/Issue 공통 절차.md", "scripts/check-rule-comments.py", "scripts/check-issue-rule-comments.py", "scripts/rule_comments.py", "scripts/issue_rule_comments.py", "scripts/harness_inventory.py", "harness/rule-comments.json"] -->
+ 
+ ## 적용과 원천
+ 
+@@ -50,3 +50,11 @@
+ 실제 작성 범위·파일 또는 초안 위치·확인 결과·남은 보완을 반환한다. 요약에서도 방법 자체의 결정과 담당·배정 범위의 결정, 확인된 제한과 남은 확인을 구별한다. 요약에서도 초기 질문 목록 확인(1단계 완료 전)과 답 확정(Task 분해·배정 전)을 구별하고 상세 위치를 연결한다. 요청이 본문 재작성을 금지하면 내용 대신 위치와 결과만 요약한다.
+ 
+ 실제 신규 기록을 저장했으면 공통 주석 검사기의 작업 파일 검사로 자동 적용을 확인한다. 기존 기록의 예외 목록을 갱신하거나 생성 기록을 예외에 추가하지 않는다. 생성 후 진행은 실제 본문 주석과 공통 절차가 담당한다.
++
++## 명시 초안의 상태와 검사
++
++사용자가 허용한 초안·격리 시범은 용도와 정식 미등록을 밝힌다. 상태는 그 초안에서 실제로 허용된 활동을 기준으로 쓰고 정식화가 범위 밖이면 번호 부재를 새 막힘으로 추가하지 않는다. 실제 수행 전에 계획을 기록하고 착수·확인·종료에 따라 갱신한다. 수행 후 만든 초기값 사본을 당시 실제 상태의 근거로 쓰지 않는다.
++
++초안은 자동 발견 대상에 등록하지 않는다. 명시 초안 파일이 있는 폴더에서 `python -B -X utf8 <현재 검사기 경로> --draft <명시한 Markdown 파일> --profile <issue|task|execution>`로 한 파일의 보호 주석·상태를 확인한다. 검사기는 파일을 쓰거나 Git을 조작하지 않으며 디렉터리·cwd 밖·보존/개인 경로·링크 경로를 거부한다. 이 결과는 입력 의미·정식 생성 조건·실제 단계 수행의 검수를 대신하지 않는다.
++
++질문 없음이 확인된 입력은 사실·근거만 결정 구역에 남기고 예시 질문 구역을 생략한다. 질문 목록 미확인은 1단계 입력 확인에 두며 `결정 1`로 만들지 않는다. 기존 요청·답을 재사용하고 목록 확인을 불필요한 재승인으로 확대하지 않는다.
+--- a/.agents/skills/create-task/SKILL.md
++++ b/.agents/skills/create-task/SKILL.md
+@@ -5,7 +5,7 @@
+ 
+ # Task 본문 생성
+ 
+-<!-- inventory-dependencies: ["harness/templates/task-input.md", "harness/Task 생성 지시서.md", "harness/templates/task.md", "harness/Task 공통 절차.md"] -->
++<!-- inventory-dependencies: ["harness/templates/task-input.md", "harness/Task 생성 지시서.md", "harness/templates/task.md", "harness/Task 공통 절차.md", "scripts/check-rule-comments.py", "scripts/check-issue-rule-comments.py", "scripts/rule_comments.py", "scripts/issue_rule_comments.py", "scripts/harness_inventory.py", "harness/rule-comments.json"] -->
+ 
+ ## 입력과 원천
+ 
+@@ -30,3 +30,9 @@
+ 신규 실제 기록은 공통 주석 검사기의 작업 파일 검사로 자동 적용을 확인한다. 예외 목록에 추가하지 않는다. 수행 기록은 첫 할 일 착수 때 공통 절차의 최초 생성 안내로 만들며 생성 시 미착수 구역·결과를 만들지 않는다.
+ 
+ 실제 작성 범위·확인 결과·미완료 등록과 실행 제한·다음 행동을 반환한다. 이 skill은 본작업·DB 변경·커밋·GitHub 발급을 수행하지 않는다. 생성 후 전체 계획·진행·기록·종료는 실제 본문 주석과 [Task 공통 절차](../../../harness/Task%20공통%20절차.md)를 따른다.
++
++## 명시 초안의 상태와 검사
++
++사용자가 허용한 초안·격리 시범은 용도와 정식 미등록을 밝힌다. 상태는 그 초안에서 실제로 허용된 활동을 기준으로 쓰고 정식화가 범위 밖이면 번호 부재를 새 막힘으로 추가하지 않는다. 실제 수행 전에 계획을 기록하고 착수·확인·종료에 따라 갱신한다. 수행 후 만든 초기값 사본을 당시 실제 상태의 근거로 쓰지 않는다.
++
++초안은 자동 발견 대상에 등록하지 않는다. 명시 초안 파일이 있는 폴더에서 `python -B -X utf8 <현재 검사기 경로> --draft <명시한 Markdown 파일> --profile <issue|task|execution>`로 한 파일의 보호 주석·상태를 확인한다. 검사기는 파일을 쓰거나 Git을 조작하지 않으며 디렉터리·cwd 밖·보존/개인 경로·링크 경로를 거부한다. 이 결과는 입력 의미·정식 생성 조건·실제 단계 수행의 검수를 대신하지 않는다.
+--- a/docs/작업 기록 작성 기준.md
++++ b/docs/작업 기록 작성 기준.md
+@@ -36,7 +36,7 @@
+ 
+ 기존 문서 검수에서 추가·변경한 내용의 기록 날짜, 필요한 현재 판단의 누락과 해결된 과정의 누적을 함께 확인한다. 자동 검사는 명시적 기록 날짜 필드·신규 날짜형 기록 파일명·본문의 실행 근거 전용 블록만 차단하며 일반 문장의 의미를 판정하지 않는다. 원본 payload는 artifacts의 코드 블록·기계 파일에서 보존한다.
+ 
+-변경된 Task·Issue 기록이 빈 줄 포함 100줄을 초과하면 경고한다. 경고만으로 제출을 실패시키거나 필요한 내용을 삭제·분리하도록 강제하지 않는다. artifacts와 미변경 기록에는 길이 경고를 적용하지 않는다.
++변경된 Task·Issue 기록은 빈 줄을 포함하되 현재 후보의 정식 정책과 정확히 일치하는 실제 독립 보호 주석의 줄을 제외한 작성 분량이 100줄을 초과하면 경고한다. 코드·인용 속 주석, 변조된 주석과 일반 주석은 제외하지 않는다. 보호 주석의 전문·경계 유지 검사는 별도로 계속 적용한다. 경고만으로 제출을 실패시키거나 필요한 내용을 삭제·분리하도록 강제하지 않는다. artifacts와 미변경 기록에는 길이 경고를 적용하지 않는다.
+ 
+ [Phase](<../harness/templates/phase.md>)·[Issue](<../harness/templates/issue.md>)·[Task](<../harness/templates/task.md>) 양식은 해당 시점에 필요한 구역만 채운다. 정식 작성은 새 양식·작성 지시서를 기준으로 하고 이전 필드·설명을 관성적으로 합치거나 복원하지 않는다. 긴 없음 목록·미발생 승인·성공 값을 만들지 않는다. [고정 예외 기록](작업%20기록%20체계.md#format-adoption)은 그대로 유지하며 이번 도입·재개를 이유로 본문·상태·과거 근거를 전환하지 않는다.
+ 
+--- a/harness/Issue 공통 절차.md
++++ b/harness/Issue 공통 절차.md
+@@ -52,11 +52,11 @@
+ 
+ AI가 스스로 결정하도록 허용된 범위를 벗어나는 선택은 결정 전에 사용자와 논의한다.
+ 
+-미결정 항목이 남아 있으면 기존 질문의 문구·순서·번호·표식을 유지한다. 질문을 수정·삭제·이동하지 않으며, 추가할 때는 합의한다. 빈 목록이나 자리표시자는 결정 완료로 보지 않는다.
++미결정 항목이 남아 있으면 기존 질문의 문구·순서·번호·표식을 유지한다. 질문을 수정·삭제·이동하지 않으며, 추가할 때는 합의한다. 미확인인 빈 목록이나 자리표시자는 결정 완료로 보지 않는다. 초기 질문이 없음을 입력·기존 합의의 근거로 확인한 경우에는 그 사실·확인 근거를 결정 구역에 기록하고 가짜 질문이나 `결정 1`을 만들지 않는다. 질문 목록 자체가 미확인이면 1단계의 입력 확인에 확인 대상·시점을 남긴다.
+ 
+ **완료 조건**
+ 
+-- 초기 결정 목록의 모든 항목을 확정했다.
++- 초기 결정 목록의 모든 항목을 확정했거나, 질문 없음이 확인된 근거를 남겼다. 질문이 없어도 아래 배정 조건 확인은 수행한다.
+ - 결정에 따라 각 Task의 담당 결과·범위·완료 조건/확인 방법, 이미 정한 동작·계약·제약과 선행 입력, AI에 위임한 판단·사용자 확인이 필요한 선택을 정했다.
+ - Task 사이의 의존 관계와 생성·실행 선행 조건을 정했다.
+ 
+--- a/harness/Issue 생성 지시서.md
++++ b/harness/Issue 생성 지시서.md
+@@ -19,7 +19,7 @@
+ | 목적·기대 결과·이미 정해진 조건 | 1단계의 각 구역 |
+ | Issue에서 결정할 사항 | 진행 순서 뒤의 결정 구역(Task 분해·배정 전에 답을 확정할 초기 질문) |
+ 
+-- 문구·항목·순서·불확실성, 조건의 적용 범위·근거와 질문의 결정 범위·판단 기준을 보존한다. 입력에 없는 조건·질문·기준을 추가하거나 최초 입력 사본을 만들지 않는다.
++- 문구·항목·순서·불확실성, 조건의 적용 범위·근거와 질문의 결정 범위·판단 기준을 보존한다. 입력에 없는 조건·질문·기준을 추가하거나 최초 입력 사본을 만들지 않는다. 질문 없음이 확인된 입력은 결정 구역에 그 사실·근거를 쓰고 예시 `결정 1` 구역을 만들지 않는다. 질문 목록 미확인은 대상·입력의 확인 항목에 두고 임의의 결정 질문으로 바꾸지 않는다.
+ - 초기 질문에 Task가 만들어야 할 조사·설계 결론이 섞였거나 소속이 애매하면 원문·미정을 유지해 사용자 확인 대상으로 남긴다. 생성 중 질문을 삭제·재분류하거나 답을 대신 확정하지 않으며, 목록의 편집 제한과 배정 전 확정 조건은 [논의·결정](<Issue 공통 절차.md#step-2>)을 따른다.
+ - 제목·체크·번호·표식은 양식에 맞춰 부여하되 질문을 요약·분할·병합·재배열하지 않는다. 결정 번호는 단계 번호와 별개로 유지한다.
+ - 상대링크는 입력·양식 각각의 원래 위치에서 해석하고 최종 Issue 위치에서 같은 원천·구역을 가리키도록 보정한다. 표시 문구는 보존한다. 원래 위치·대상을 확인 못하면 원문 링크를 유지하고 미확인으로 표시한다.
+--- a/harness/Task 공통 절차.md
++++ b/harness/Task 공통 절차.md
+@@ -40,7 +40,9 @@
+ | 완료 | [자기 수용과 필수 종료 처리](#completion-rules)를 충족함. |
+ | 취소 | 목표 달성으로 처리하지 않고 작업을 닫음. |
+ 
+-검증·검수는 현재 위치에, 대기 이유·재개 조건은 막힌 조건에 둔다. 미정·부분 완료·검수 실패를 새 상태로 만들거나 부모/자식·GitHub에 자동 전파하지 않는다. 상태는 권한·준비·수용의 근거가 아니며 재개·부분 막힘은 [착수 확인](#start-check)을 따른다.
++검증·검수는 현재 위치에, 대기 이유·재개 조건은 막힌 조건에 둔다. 미정·부분 완료·검수 실패를 새 상태로 만들거나 부모/자식·GitHub에 자동 전파하지 않는다. 명시적으로 허용된 격리 초안은 용도·정식 미등록을 별도로 밝히고 그 초안의 실제 활동 상태를 기록한다. 정식 번호 부재는 그 자체로 허용된 초안 활동의 중단 사유가 아니다. 정식 Task 생성·부모 수용은 별도 조건을 유지한다.
++
++상태는 권한·준비·수용의 근거가 아니며 재개·부분 막힘은 [착수 확인](#start-check)을 따른다.
+ 
+ <a id="tag-rules"></a>
+ 
+--- a/harness/Task 생성 지시서.md
++++ b/harness/Task 생성 지시서.md
+@@ -70,3 +70,7 @@
+ - 신규·미착수는 예정이며 기존 실제 상태를 초기화하지 않았다.
+ - 링크가 최종 위치에서 같은 원천·구역을 가리킨다. 확인 못한 대상은 원문·미확인 표시를 유지했다.
+ - 실제로 발생하지 않은 준비·수행·검증·승인·완료 결과를 작성하지 않았다.
++
++## 명시적으로 요청된 격리 초안
++
++정식 부모·식별·확정 배정이 부족하면 정식 Task는 생성하지 않는다. 사용자가 초안 작성·시범을 허용했으면 그 제한을 밝힌 초안을 허용된 위치에 작성할 수 있다. 용도와 정식 미등록은 상태와 구별하고, 상태는 초안에서 실제로 허용된 계획·작성·검증 활동에 맞춘다. 정식화가 이번 완료 조건에 없으면 번호 부재를 시범의 막힘·미완료 사유로 추가하지 않는다. 이미 수행한 일을 미착수 초기값으로 소급하지 않는다.
+--- a/harness/hook 현황.md
++++ b/harness/hook 현황.md
+@@ -5,8 +5,8 @@
+ <!-- inventory-table -->
+ | 항목·원천 | 적용 조건 | 동작 | 확인 상태 |
+ |---|---|---|---|
+-| [공통 기록 주석·상태 · Codex PostToolUse](<../.codex/hooks.json>) | 로컬 대화·실행에서 신뢰한 hook의 지원 도구 종료 후(동기) | 기존 명시 보호와 신규 Issue·Task·수행 기록 자동 검사·피드백; 자동 원복 없음 | 확인 |
+-| [현황·기록·공통 주석 검사 · Git pre-commit](<../scripts/hooks/pre-commit>) | Git 커밋 전; 기존 사용자 hook 성공 후 | 현황·기록 검사와 기존 보호·신규 주석/상태 검사; 고정 기존 기록은 새 형식 제외 | 확인 |
++| [공통 기록 주석·상태 · Codex PostToolUse](<../.codex/hooks.json>) | 로컬 대화·실행에서 신뢰한 hook의 지원 도구 종료 후(동기) | 기존 명시 보호와 신규 Issue·Task·수행 기록 자동 검사·피드백; 자동 원복 없음 | 재확인 필요 |
++| [현황·기록·공통 주석 검사 · Git pre-commit](<../scripts/hooks/pre-commit>) | Git 커밋 전; 기존 사용자 hook 성공 후 | 현황·기록 검사와 기존 보호·신규 주석/상태 검사; 고정 기존 기록은 새 형식 제외 | 재확인 필요 |
+ <!-- /inventory-table -->
+ 
+ <details>
+@@ -38,12 +38,12 @@
+         "scripts/issue_rule_comments.py",
+         "scripts/rule_comments.py"
+       ],
+-      "sourceDigest": "e09d36e9ba8f39ae4f3f95e932b71dd22e0596efa32b21fdefd6effd319c24f3",
++      "sourceDigest": "8a268381d9a83f461b3c085b8d7a860d8f4323583bc627f4e930b0fd43f473f6",
+       "title": "공통 기록 주석·상태 · Codex PostToolUse",
+       "purpose": "기존 명시 보호와 신규 Issue·Task·수행 기록 자동 검사·피드백; 자동 원복 없음",
+       "when": "로컬 대화·실행에서 신뢰한 hook의 지원 도구 종료 후(동기)",
+       "verification": {
+-        "status": "verified",
++        "status": "stale",
+         "sourceDigest": "e09d36e9ba8f39ae4f3f95e932b71dd22e0596efa32b21fdefd6effd319c24f3",
+         "environment": "Windows / Python 3.14.2 / git version 2.52.0.windows.1",
+         "scope": "정식 Task 양식의 중복 start 주석이 현재 로컬 도구 종료 후 수동 호출 전에 자동 거부됐고 피드백을 확인했다. 임시 중복 제거·원복 바이트/지문과 정상 통과를 확인했다. 등록 명령의 격리 호출과 실제 자동 관찰을 구분하며 다른 대화·환경·실패 경로의 완전 차단을 주장하지 않는다.",
+@@ -74,12 +74,12 @@
+         "scripts/issue_rule_comments.py",
+         "scripts/rule_comments.py"
+       ],
+-      "sourceDigest": "6fcbef22e6583390405ce277e2f52e45afe7ec53f657cf480311f5ce35aba78e",
++      "sourceDigest": "425fff31abb19af95b333900f72b5b25153ba66920485370096ee540e68a2d33",
+       "title": "현황·기록·공통 주석 검사 · Git pre-commit",
+       "purpose": "현황·기록 검사와 기존 보호·신규 주석/상태 검사; 고정 기존 기록은 새 형식 제외",
+       "when": "Git 커밋 전; 기존 사용자 hook 성공 후",
+       "verification": {
+-        "status": "verified",
++        "status": "stale",
+         "sourceDigest": "6fcbef22e6583390405ce277e2f52e45afe7ec53f657cf480311f5ce35aba78e",
+         "environment": "Windows / Python 3.14.2 / git version 2.52.0.windows.1",
+         "scope": "실제 제출 index로 구성한 격리 전체 회귀 99개로 신규 Task 실제 pre-commit과 CRLF 의존 수집까지 확인했다. 정상 후보·스테이징 주석 삭제 거부·작업 파일만 복구한 위반·정상 index/미스테이징 위반을 구분했다. 기존 hook 연결·복구·부분 구성도 확인했고 실제 설치 wrapper/원래 hook 보존을 대조했다. 실제 index 검사와 별도 검수를 통과했다. 최종 커밋의 hook 실행은 Git 제출에서 확인하며 CI·원격은 수행하지 않았다.",
+--- a/harness/templates/issue-input.md
++++ b/harness/templates/issue-input.md
+@@ -38,6 +38,8 @@
+ 
+ ## Issue에서 결정할 사항
+ 
++질문이 없음을 확인했으면 `없음 — 확인 근거`를 적는다. 전달된 질문이 없다는 사실만 확인했으면 `미확인 — 목록 확인 대상·필요 시점`을 적는다. 두 경우 모두 가짜 결정 질문을 만들지 않는다.
++
+ Issue 파일을 생성할 때 아직 답이 없고, 이번 Issue에서 Task를 분해·배정하기 전에 답을 확정하도록 맡긴 초기 질문을 한 항목에 하나씩 적는다.
+ 
+ 조사·설계 자체를 Task에 맡길 때는 Issue에서 먼저 정할 배정 범위·판정 기준과 Task가 만들어야 할 조사·설계 결론을 구별한다. 예를 들어 두 저장 방식을 비교하도록 맡길 과제라면 조사 대상·비교 기준·담당 결과를 먼저 정하고, 비교 결론은 Task의 결과로 남긴다. 그 결론까지 초기 질문에 넣어 Task 배정 전에 확정하도록 요구하지 않는다.
+--- a/harness/templates/issue.md
++++ b/harness/templates/issue.md
+@@ -7,6 +7,10 @@
+ <a id="recording-guide"></a>
+ 
+ ## 본문 사용
++
++초기 질문 없음이 확인되면 결정 구역에 사실·근거를 쓰고 아래 예시 `decision-1`부터 해당 질문 항목 끝까지만 생략한다. `issue-rule:decisions` 주석은 유지한다. 목록 미확인은 대상·입력에 기록한다.
++
++명시적으로 허용된 격리 초안은 용도와 정식 미등록을 밝힌다. 초안의 상태는 허용된 작성·검증 활동의 실제 상태이며 정식 번호 부재만으로 중단하지 않는다. 정식 단계 완료·등록·부모 수용을 대신 표시하지 않는다.
+ 
+ Phase 하위·독립 Issue는 아래 구조와 주석을 동일하게 사용한다. 독립 Issue에서는 부모 Phase 행만 생략하고 생성 근거는 유지한다.
+ 
+--- a/harness/templates/task.md
++++ b/harness/templates/task.md
+@@ -151,3 +151,7 @@
+ - 확인: <완료 조건별 판정·근거·한계. 상세는 실제 수행 기록의 해당 구역 연결>
+ - 잔여: <미반영·미해결·재개 조건과 다음 행동. 없음을 확인했으면 없음>
+ ```
++
++## 명시적으로 요청된 격리 초안
++
++정식 부모·식별·확정 배정이 부족하면 정식 Task는 생성하지 않는다. 사용자가 초안 작성·시범을 허용했으면 그 제한을 밝힌 초안을 허용된 위치에 작성할 수 있다. 용도와 정식 미등록은 상태와 구별하고, 상태는 초안에서 실제로 허용된 계획·작성·검증 활동에 맞춘다. 정식화가 이번 완료 조건에 없으면 번호 부재를 시범의 막힘·미완료 사유로 추가하지 않는다. 이미 수행한 일을 미착수 초기값으로 소급하지 않는다.
+--- a/harness/문서 관리.md
++++ b/harness/문서 관리.md
+@@ -64,6 +64,20 @@
+ 
+ 사용자 명시 개정은 정책의 revisions에 정확한 path·profile·rule·before·replacement와 실제 승인 기록의 파일/표식 참조를 남긴다. 승인한 한 주석의 새 원문 또는 명시 삭제(null)만 허용하며 파일 삭제·기준 스냅샷 재설정·다른 경로의 예외로 확대하지 않는다. 검사기는 참조 존재·전후 대응을 확인하고 사용자 승인 자체의 진위를 판정하지 않는다.
+ 
++<a id="explicit-draft-check"></a>
++
++명시적으로 허용된 초안은 자동 대상·정책 예외에 추가하지 않고 파일이 있는 작업 폴더에서 검사기를 지정해 한 파일만 검사한다.
++
++```text
++python -B -X utf8 <검사기 경로> --draft <Markdown 파일> --profile <issue|task|execution>
++```
++
++이 모드는 cwd 밖·보존/개인 경로·링크·디렉터리를 거부하고 Git 없이 보호 주석·현재 상태만 대조한다. 원본 쓰기·등록·정식 업무 수용을 뜻하지 않는다. PostToolUse 직접 호출의 종료 코드가 0이어도 JSON `decision: block`이면 위반 피드백이다. 실제 자동 발동은 별도로 관찰해야 한다.
++
++<a id="record-check-failure"></a>
++
++검사 실패 시 보고된 후보·파일·의존과 내용을 먼저 확인한다. 의도하지 않은 주석 훼손은 해당 사본을 복구하고 같은 work/index 대상을 재검사한다. 현황 지문만 바꿔 위반을 정상화하지 않는다. 의도한 원천 변경은 관련 확인 후 현황을 맞춘다. index 위반은 작업 파일만 고쳐 해소되지 않으므로 실제 스테이징 내용을 확인한다. 자동 원복은 없으며 저장 실패·부분 반영은 [복구 절차](#recovery)를 따른다.
++
+ 프로젝트 hook의 신뢰·지원 환경·실제 자동 발동은 정의·수동 호출 성공과 구분한다. 외부 편집·백그라운드 작업은 다음 지원 도구나 커밋까지 탐지가 늦을 수 있다. 오류·타임아웃·지원 밖 경로의 완전 차단이나 규칙의 의미 준수를 증명하지 않으며 [공식 동작과 한계](https://learn.chatgpt.com/docs/hooks)를 따른다.
+ 
+ <a id="create"></a>
+@@ -102,7 +116,7 @@
+ - 논의 응답·추가 요청·새 사실이 영향을 주면 다음 관련 행동 전에 현재 합의·남은 결정·할 일/확인·다음 행동·막힘을 함께 맞춘다. 실제 선택이 없는 요청·권고·무응답은 결정 완료가 아니다. 완료한 작업의 식별자·근거와 미착수 작업을 구별해 보존한다.
+ - 같은 이름의 확인·결과 필드가 여러 구역에 있으면 제목·작업 식별자로 갱신 대상을 확인한다. 조건 거절은 의존 대상의 변경 전에 반환한다. 필요한 원본·권한·참조·필드를 먼저 확인하고, 예기치 않은 저장 실패·부분 반영은 복구 절차로 처리한다.
+ - 기존 결과의 재검수는 [읽기 전용 대조](<../docs/details/operations/검증과 완료.md#read-only-recheck>)부터 수행한다. 검사하려고 기존 문서·체크·상태를 재생성하거나 실제 대상이 없는 검사를 통과로 만들지 않는다. 이 확인만을 위해 스테이징·새 실행 묶음·증명 파일을 만들지 않는다.
+-- 제출 기록 검사는 `python -B -X utf8 scripts/check-work-records.py --candidate index`로 실행한다. CI는 `--candidate HEAD`로 첫 부모와 비교한다. 새 명시적 날짜/근거 블록 위반은 차단하고 변경된 Task·Issue의 100줄 초과는 경고만 한다. 미변경 과거 기록의 정리를 요구하지 않는다.
++- 제출 기록 검사는 `python -B -X utf8 scripts/check-work-records.py --candidate index`로 실행한다. CI는 `--candidate HEAD`로 첫 부모와 비교한다. 새 명시적 날짜/근거 블록 위반은 차단하고 변경된 Task·Issue의 작성 분량 100줄 초과는 경고만 한다. 빈 줄은 세고, 현재 후보 정책과 정확히 일치하는 실제 독립 보호 주석 줄만 제외한다. 미변경 과거 기록의 정리를 요구하지 않는다.
+ - 지속 결론이 바뀌면 담당 본문을 갱신하고, 필요한 경우 [주제 이력](<../docs/문서 참조와 변경 기준.md#history>)에 작업 근거를 연결한다.
+ - 현황의 항목·표시·링크가 달라질 때만 담당 원천을 먼저 저장·확인한 뒤 현황을 맞춘다. 오래된 현황으로 원천을 덮어쓰지 않는다.
+ - 새 작업이나 예정 작업이 담당 기록·계획에 추가되면 현황 표시 대상인지 확인한다. 표시 대상인 작업만 현황의 체크리스트에 연결한다. 착수·상태 변경·종료 시 해당 항목의 체크와 상태 표시를 맞추고, ‘진행 중인 작업’의 표시도 함께 갱신한다.
+--- a/harness/스킬 현황.md
++++ b/harness/스킬 현황.md
+@@ -5,8 +5,8 @@
+ <!-- inventory-table -->
+ | 항목·원천 | 적용 조건 | 동작 | 확인 상태 |
+ |---|---|---|---|
+-| [공통 Issue 생성](<../.agents/skills/create-issue/SKILL.md>) | Phase 하위·독립 과제의 최초 Issue 본문·초안 생성 | 핵심 입력·소속 확인·공통 작성·검증 | 확인 |
+-| [Task 본문 생성](<../.agents/skills/create-task/SKILL.md>) | Issue의 확정 배정으로 최초 Task 생성 | 배정·원본·식별 확인·본문 생성·검증 | 확인 |
++| [공통 Issue 생성](<../.agents/skills/create-issue/SKILL.md>) | Phase 하위·독립 과제의 최초 Issue 본문·초안 생성 | 입력·소속과 질문 없음/미확인 구별, 본문·명시 초안 검사 | 재확인 필요 |
++| [Task 본문 생성](<../.agents/skills/create-task/SKILL.md>) | 확정 배정의 최초 Task 생성 또는 명시적으로 허용된 격리 초안 작성 | 배정·원본·식별 확인, 정식/초안 구별과 명시 파일 검사 | 재확인 필요 |
+ | [작업 결과 검수](<../.agents/skills/review-work/SKILL.md>) | 검수·리뷰·커밋 준비 | 작업 결과와 제출 후보를 검수 | 확인 |
+ | [Rundown 응답](<../.agents/skills/rundown/SKILL.md>) | 프로젝트 응답 | 요약·상태·다음 행동의 응답 형식 지정 | 확인 |
+ | [추가 요청 판단](<../.agents/skills/triage-additional-request/SKILL.md>) | 기존 작업의 추가·변경 요청 | 작업 단위·변경 보존·처리 순서 판단 | 확인 |
+@@ -30,15 +30,21 @@
+         ".agents/skills/create-issue/SKILL.md",
+         "harness/Issue 공통 절차.md",
+         "harness/Issue 생성 지시서.md",
++        "harness/rule-comments.json",
+         "harness/templates/issue-input.md",
+-        "harness/templates/issue.md"
++        "harness/templates/issue.md",
++        "scripts/check-issue-rule-comments.py",
++        "scripts/check-rule-comments.py",
++        "scripts/harness_inventory.py",
++        "scripts/issue_rule_comments.py",
++        "scripts/rule_comments.py"
+       ],
+-      "sourceDigest": "ba052782e23f5417a1d714bbc018a27cefd1270d93fd327b8aab8b74c92abf14",
++      "sourceDigest": "032b3cb3aa8c7d561db1df72fb275255615bf7c16acf386b91bb79e7509ca7e5",
+       "title": "공통 Issue 생성",
+-      "purpose": "핵심 입력·소속 확인·공통 작성·검증",
++      "purpose": "입력·소속과 질문 없음/미확인 구별, 본문·명시 초안 검사",
+       "when": "Phase 하위·독립 과제의 최초 Issue 본문·초안 생성",
+       "verification": {
+-        "status": "verified",
++        "status": "stale",
+         "sourceDigest": "ba052782e23f5417a1d714bbc018a27cefd1270d93fd327b8aab8b74c92abf14",
+         "environment": "Windows / Python 3.14.2 / git version 2.52.0.windows.1",
+         "scope": "독립/Phase 소속의 실제 임시 초안 2건에서 공통 구조·주석·부모 Phase 행의 구분과 권한 경계를 확인했다. 자동 선택·실제 등록·제품 수행은 확인하지 않았다.",
+@@ -53,15 +59,21 @@
+         ".agents/skills/create-task/SKILL.md",
+         "harness/Task 공통 절차.md",
+         "harness/Task 생성 지시서.md",
++        "harness/rule-comments.json",
+         "harness/templates/task-input.md",
+-        "harness/templates/task.md"
++        "harness/templates/task.md",
++        "scripts/check-issue-rule-comments.py",
++        "scripts/check-rule-comments.py",
++        "scripts/harness_inventory.py",
++        "scripts/issue_rule_comments.py",
++        "scripts/rule_comments.py"
+       ],
+-      "sourceDigest": "704d2a4af8388c173389090d6efb212d9a1514be0f0ddf19ad49e6dae5f06b3e",
++      "sourceDigest": "f2123df30d3b96fdc8f1f431ca83ca7e53f4b08ee691f03e33cf6bf11a07388b",
+       "title": "Task 본문 생성",
+-      "when": "Issue의 확정 배정으로 최초 Task 생성",
+-      "purpose": "배정·원본·식별 확인·본문 생성·검증",
++      "when": "확정 배정의 최초 Task 생성 또는 명시적으로 허용된 격리 초안 작성",
++      "purpose": "배정·원본·식별 확인, 정식/초안 구별과 명시 파일 검사",
+       "verification": {
+-        "status": "verified",
++        "status": "stale",
+         "sourceDigest": "704d2a4af8388c173389090d6efb212d9a1514be0f0ddf19ad49e6dae5f06b3e",
+         "environment": "Windows / Python 3.14.2 / git version 2.52.0.windows.1",
+         "scope": "필수 배정 부족 반환 1건과 확정 가상 배정으로 실제 임시 본문 생성 1건을 확인했다. 방법/계획 미정·예정·원본 참조·실행 제한을 유지했다. 실제 부모 등록·수행은 확인하지 않았다.",
+--- a/scripts/check-harness-inventory.py
++++ b/scripts/check-harness-inventory.py
+@@ -22,8 +22,8 @@
+             print(json.dumps(value, ensure_ascii=False, indent=2) if args.describe else value)
+         return 0
+     except (ValueError, OSError, KeyError, TypeError, UnicodeError, subprocess.SubprocessError) as error:
+-        reason = str(error).splitlines()[0][:1000]
+-        print('Inventory unverified: ' + reason + '\nNext: update the matching inventory entry and stage the exact verified candidate.', file=sys.stderr)
++        reason = '\n'.join(str(error).splitlines()[:3])[:1800]
++        print('Inventory unverified: ' + reason + '\nNext: inspect the reported source/dependencies first. Repair unintended content changes. Update inventory only after the intended source and its behavior are verified; then stage and recheck the same candidate.', file=sys.stderr)
+         return 2
+ 
+ 
+--- a/scripts/check-issue-rule-comments.py
++++ b/scripts/check-issue-rule-comments.py
+@@ -5,20 +5,72 @@
+ 
+ import argparse
+ import json
++import os
++from pathlib import Path
+ import subprocess
+ 
+-from harness_inventory import Candidate
++from harness_inventory import Candidate, safe_work_path
+ from issue_rule_comments import POLICY, baseline, fingerprint, inspect
++
++
++def check_draft(filename, profile):
++    """Inspect one explicit Markdown draft without enrolling it or invoking Git."""
++    import rule_comments
++    root = Path.cwd().resolve()
++    requested = Path(filename)
++    candidate = requested if requested.is_absolute() else root / requested
++    # Check lexical containment before resolving, then reject every linked component.
++    candidate = Path(os.path.abspath(candidate))
++    if not candidate.is_relative_to(root):
++        raise ValueError('Draft must stay within the current working directory')
++    relative = candidate.relative_to(root)
++    blocked = {'.git', '.harness-state', 'harness-design', '.aws', '.ssh'}
++    for part in (*root.parts, *relative.parts):
++        if part.casefold() in blocked or part.casefold().startswith('.env'):
++            raise ValueError('Preserved/private paths are not draft inputs')
++    cursor = root
++    for part in relative.parts:
++        cursor = cursor / part
++        if cursor.is_symlink() or cursor.is_junction():
++            raise ValueError('Linked draft paths require explicit review')
++    if candidate.suffix.lower() != '.md' or not candidate.is_file() or candidate.stat().st_size > 20_000_000:
++        raise ValueError('Draft must be an existing bounded Markdown file')
++
++    class PolicySources:
++        def read(self, name):
++            source = safe_work_path(Path(__file__).resolve().parents[1], name)
++            return source.read_bytes() if source.is_file() else None
++
++    policy = rule_comments.read_policy(PolicySources())
++    raw = candidate.read_bytes()
++    actual, errors = rule_comments.comments(raw, profile)
++    for name, expected in policy['profiles'][profile]['comments'].items():
++        if actual.get(name) != expected:
++            errors.append(rule_comments.PROFILES[profile][0] + ':' + name + ': missing or changed identifier/content/boundary')
++    if profile in ('issue', 'task'):
++        errors.extend(rule_comments.check_state(raw))
++    print(json.dumps({'mode': 'explicit-draft', 'path': relative.as_posix(), 'profile': profile,
++                      'formalRecord': False, 'scope': 'protected comments and current state; semantic acceptance is separate',
++                      'errors': errors}, ensure_ascii=False))
++    return 2 if errors else 0
+ 
+ 
+ def main():
+     parser = argparse.ArgumentParser(description=__doc__)
+-    parser.add_argument('--candidate', default='index')
++    parser.add_argument('--candidate', default=None)
++    parser.add_argument('--draft', help='Inspect only this explicit Markdown draft within cwd; never enroll or scan a directory')
++    parser.add_argument('--profile', choices=('issue', 'task', 'execution'))
+     parser.add_argument('--hook', action='store_true', help='Read PostToolUse input; check worktree; return hook feedback')
+     parser.add_argument('--describe-baseline', help='Print an extracted baseline; never writes or approves a revision')
+     args = parser.parse_args()
++    if args.draft and (not args.profile or args.hook or args.candidate or args.describe_baseline):
++        parser.error('--draft requires --profile and cannot combine with candidate/hook/baseline modes')
++    if args.profile and not args.draft:
++        parser.error('--profile requires --draft')
+     hook = args.hook
+     try:
++        if args.draft:
++            return check_draft(args.draft, args.profile)
+         if hook:
+             raw = sys.stdin.buffer.read(4_000_001)
+             if len(raw) > 4_000_000:
+@@ -26,7 +78,7 @@
+             event = json.loads(raw)
+             if not isinstance(event, dict) or event.get('hook_event_name') != 'PostToolUse':
+                 raise ValueError('Expected a PostToolUse event')
+-        view = Candidate('work' if hook else args.candidate, seconds=10)
++        view = Candidate('work' if hook else (args.candidate or 'index'), seconds=10)
+         if args.describe_baseline:
+             raw = view.read(args.describe_baseline)
+             if raw is None:
+--- a/scripts/check-work-records.py
++++ b/scripts/check-work-records.py
+@@ -5,6 +5,7 @@
+ 
+ import argparse
+ import difflib
++import json
+ from pathlib import PurePosixPath
+ import re
+ import subprocess
+@@ -18,12 +19,33 @@
+ PAYLOAD = re.compile(r'^<!--\s*(?:tdd-plan|tdd-evidence|harness-inventory)\s*-->$')
+ 
+ 
+-def inspect_record(name, text, old):
++def authored_line_count(text, fixed_comments=()):
++    """Keep blank lines; omit only exact, live, standalone protected policy comments."""
++    text = text.replace('\r\n', '\n')
++    if not fixed_comments:
++        return len(text.splitlines())
++    from issue_rule_comments import live_markup
++    excluded = set()
++    fixed = set(fixed_comments)
++    for kind, block, (start, end) in live_markup(text.encode('utf-8'), with_spans=True):
++        if kind != 'comment' or block not in fixed:
++            continue
++        first = text.rfind('\n', 0, start) + 1
++        last = text.find('\n', end)
++        last = len(text) if last < 0 else last
++        if text[first:start].strip() or text[end:last].strip():
++            continue
++        excluded.update(range(text.count('\n', 0, start), text.count('\n', 0, end) + 1))
++    return len(text.splitlines()) - len(excluded)
++
++
++def inspect_record(name, text, old, fixed_comments=()):
+     lines = text.splitlines()
+     record = name.startswith('work/records/') and '/artifacts/' not in name and re.fullmatch(r'(?:issue|task-\d+)\.md', PurePosixPath(name).name)
+     errors, warnings = [], []
+-    if record and len(lines) > 100:
+-        warnings.append(f'{name}: {len(lines)} lines > 100; retain necessary current decisions, move needed execution detail to artifacts.')
++    authored = authored_line_count(text, fixed_comments) if record else len(lines)
++    if record and authored > 100:
++        warnings.append(f'{name}: {authored} authored lines > 100 ({len(lines)} total; exact protected policy comments excluded); retain necessary current decisions, move needed execution detail to artifacts.')
+     if old is None and name.startswith('work/records/') and DATED_NAME.search(PurePosixPath(name).stem):
+         errors.append(f'{name}: record filename contains a date; use the work identifier.')
+     changed = set()
+@@ -62,6 +84,10 @@
+         if args.candidate == 'work':
+             raise ValueError('Use an exact index or committed candidate')
+         view = Candidate(args.candidate)
++        policy_raw = view.read('harness/rule-comments.json')
++        policy = json.loads(policy_raw.decode('utf-8-sig')) if policy_raw is not None else {}
++        if policy:
++            from rule_comments import record_profile
+         base = args.base
+         if base is None:
+             if args.candidate == 'index':
+@@ -81,14 +107,16 @@
+         errors = []
+         for name in names:
+             old = previous.read(name) if previous else None
+-            failures, warnings = inspect_record(name, view.read(name).decode('utf-8-sig'), old.decode('utf-8-sig') if old is not None else None)
++            profile = record_profile(name) if policy else None
++            fixed_comments = list(policy.get('profiles', {}).get(profile, {}).get('comments', {}).values())
++            failures, warnings = inspect_record(name, view.read(name).decode('utf-8-sig'), old.decode('utf-8-sig') if old is not None else None, fixed_comments)
+             errors.extend(failures)
+             for warning in warnings:
+                 print('WARNING: ' + warning, file=sys.stderr)
+         for error in errors:
+             print('Record violation: ' + error, file=sys.stderr)
+         return 2 if errors else 0
+-    except (ValueError, OSError, UnicodeError, subprocess.SubprocessError) as error:
++    except (ValueError, OSError, KeyError, TypeError, AttributeError, UnicodeError, subprocess.SubprocessError) as error:
+         print('Record candidate unverified: ' + str(error).splitlines()[0], file=sys.stderr)
+         return 2
+ 
+--- a/scripts/harness_inventory.py
++++ b/scripts/harness_inventory.py
+@@ -333,7 +333,16 @@
+             if not isinstance(item.get(key), str) or not item[key].strip() or len(item[key]) > 2000:
+                 raise ValueError('Inventory needs title/purpose/when: ' + identity)
+         if item.get('sourceDigest') != digest(view, files):
+-            raise ValueError('Inventory source digest differs: ' + identity)
++            differences = []
++            if view.kind == 'index':
++                peer = Candidate('work', cwd=view.root, seconds=10)
++                for name in files:
++                    candidate_raw, working_raw = view.read(name), peer.read(name)
++                    differs = candidate_raw != working_raw if candidate_raw is None or working_raw is None else source_hash(name, candidate_raw) != source_hash(name, working_raw)
++                    if differs:
++                        differences.append(name)
++            context = ('Candidate/worktree differences: ' + ', '.join(differences[:8])) if differences else ('Related source dependencies: ' + ', '.join(files[:8]))
++            raise ValueError('Inventory source digest differs: ' + identity + '\n' + context)
+         validate_verification(view, item)
+     if render_only:
+         return '\n\n'.join(f'## {document}\n\n{render(items)}'
+--- a/scripts/issue_rule_comments.py
++++ b/scripts/issue_rule_comments.py
+@@ -40,7 +40,7 @@
+     return text
+ 
+ 
+-def live_markup(raw, mode='body'):
++def live_markup(raw, mode='body', with_spans=False):
+     text = body_text(raw, mode)
+     cursor, fence = 0, None
+     while cursor < len(text):
+@@ -80,7 +80,7 @@
+                 end = tag_end(text, tag.end())
+                 anchor = ANCHOR.match(text, cursor)
+                 if anchor:
+-                    yield 'anchor', anchor[2]
++                    yield ('anchor', anchor[2], (cursor, anchor.end())) if with_spans else ('anchor', anchor[2])
+                     cursor = anchor.end()
+                     continue
+                 name = tag[1].lower()
+@@ -98,7 +98,7 @@
+         end = text.find('-->', cursor + 4)
+         block_end = len(text) if end < 0 else end + 3
+         block = text[cursor:block_end]
+-        yield 'comment', block
++        yield ('comment', block, (cursor, block_end)) if with_spans else ('comment', block)
+         cursor = block_end
+ 
+ 
+--- a/scripts/tests/test_harness_inventory.py
++++ b/scripts/tests/test_harness_inventory.py
+@@ -204,6 +204,27 @@
+         self.git('add', '--', DOCUMENT)
+         self.assert_allowed('index')
+ 
++    def test_mismatch_diagnostic_ignores_line_endings_and_names_real_difference(self):
++        dependencies = []
++        for number in range(10):
++            name = f'.agents/skills/fixture/scripts/extra-{number:02d}.py'
++            self.write(name, 'VALUE = 1\n')
++            dependencies.append(name)
++        self.entries[0]['files'] = sorted(self.entries[0]['files'] + dependencies)
++        self.refresh()
++        self.stage()
++        # Line-ending-only worktree differences must not displace a real change.
++        for name in dependencies:
++            self.write(name, 'VALUE = 1\r\n')
++        self.write(HELPER, 'VALUE = 9\n')
++        self.git('add', '--', HELPER)
++        self.write(HELPER, 'VALUE = 1\n')
++        result = self.check('index')
++        self.assertNotEqual(0, result.returncode)
++        self.assertIn('Candidate/worktree differences: ' + HELPER, result.stderr)
++        self.assertNotIn('extra-00.py', result.stderr)
++        self.assertIn('Repair unintended content changes', result.stderr)
++
+     def test_fifty_skills_stay_usable_and_last_source_change_is_identified(self):
+         for number in range(49):
+             name = f'.agents/skills/scale-{number:02d}/SKILL.md'
+--- /dev/null
++++ b/scripts/tests/test_pilot_improvements.py
+@@ -0,0 +1,153 @@
++"""Explicit drafts and authored-size warnings; all fixtures use caller TMPDIR."""
++import importlib.util
++import json
++import os
++from pathlib import Path
++import re
++import subprocess
++import sys
++import tempfile
++import unittest
++from unittest import mock
++
++SCRIPTS = Path(__file__).resolve().parents[1]
++ROOT = SCRIPTS.parent
++POLICY = json.loads((ROOT / 'harness/rule-comments.json').read_text(encoding='utf-8'))
++sys.path.insert(0, str(SCRIPTS))
++
++
++def record_checker():
++    spec = importlib.util.spec_from_file_location('pilot_record_checker', SCRIPTS / 'check-work-records.py')
++    module = importlib.util.module_from_spec(spec)
++    spec.loader.exec_module(module)
++    return module
++
++
++def task_body():
++    text = (ROOT / 'harness/templates/task.md').read_text(encoding='utf-8')
++    return re.search(r'^```markdown\n(.*?)^```', text, re.M | re.S)[1]
++
++
++class ExplicitDraftTests(unittest.TestCase):
++    def setUp(self):
++        self.temp = tempfile.TemporaryDirectory(prefix='explicit-draft-')
++        self.addCleanup(self.temp.cleanup)
++        self.root = Path(self.temp.name)
++        self.path = self.root / 'task.md'
++        self.path.write_text(task_body(), encoding='utf-8')
++
++    def run_cli(self, *args):
++        return subprocess.run([sys.executable, '-B', '-X', 'utf8', str(SCRIPTS / 'check-rule-comments.py'), *args],
++                              cwd=self.root, capture_output=True, text=True, encoding='utf-8', timeout=15)
++
++    def test_explicit_draft_is_read_only_and_not_a_formal_record(self):
++        before = self.path.read_bytes()
++        result = self.run_cli('--draft', 'task.md', '--profile', 'task')
++        self.assertEqual(0, result.returncode, result.stderr)
++        data = json.loads(result.stdout)
++        self.assertFalse(data['formalRecord'])
++        self.assertEqual([], data['errors'])
++        self.assertEqual(before, self.path.read_bytes())
++        self.assertFalse((self.root / '.git').exists())
++
++    def test_missing_protected_comment_is_rejected(self):
++        self.path.write_text(task_body().replace(POLICY['profiles']['task']['comments']['start'], ''), encoding='utf-8')
++        result = self.run_cli('--draft', 'task.md', '--profile', 'task')
++        self.assertEqual(2, result.returncode)
++        self.assertIn('task-rule:start', result.stdout)
++
++    def test_invalid_state_is_rejected(self):
++        self.path.write_text(task_body().replace('- 상태: 예정', '- 상태: 검증 중'), encoding='utf-8')
++        result = self.run_cli('--draft', 'task.md', '--profile', 'task')
++        self.assertEqual(2, result.returncode)
++        self.assertIn('current state', result.stdout)
++
++    def test_profile_is_required(self):
++        self.assertEqual(2, self.run_cli('--draft', 'task.md').returncode)
++
++    def test_draft_cannot_mix_with_hook_or_candidate(self):
++        for extra in [('--hook',), ('--candidate', 'work')]:
++            with self.subTest(extra=extra):
++                result = self.run_cli('--draft', 'task.md', '--profile', 'task', *extra)
++                self.assertEqual(2, result.returncode)
++                self.assertIn('cannot combine', result.stderr)
++
++    def test_directory_is_rejected(self):
++        self.assertEqual(2, self.run_cli('--draft', '.', '--profile', 'task').returncode)
++
++    def test_cwd_escape_is_rejected(self):
++        result = self.run_cli('--draft', str(ROOT / 'harness/templates/task.md'), '--profile', 'task')
++        self.assertEqual(2, result.returncode)
++        self.assertIn('within the current', result.stderr)
++
++    def test_preserved_or_private_path_is_rejected_before_read(self):
++        for name in ['harness-design/never.md', '.harness-state/never.md', '.aws/never.md']:
++            with self.subTest(name=name):
++                result = self.run_cli('--draft', name, '--profile', 'task')
++                self.assertEqual(2, result.returncode)
++                self.assertIn('Preserved/private', result.stderr)
++
++    def test_forbidden_cwd_is_rejected_before_read(self):
++        spec = importlib.util.spec_from_file_location('draft_cli', SCRIPTS / 'check-issue-rule-comments.py')
++        module = importlib.util.module_from_spec(spec)
++        spec.loader.exec_module(module)
++        # Mock only the cwd value; do not create or read a preservation directory.
++        for folder in ['harness-design', '.harness-state', '.git', '.aws']:
++            with self.subTest(folder=folder), mock.patch.object(module.Path, 'cwd', return_value=self.root / folder):
++                with self.assertRaisesRegex(ValueError, 'Preserved/private'):
++                    module.check_draft('task.md', 'task')
++
++
++class AuthoredLengthTests(unittest.TestCase):
++    def setUp(self):
++        self.module = record_checker()
++        self.fixed = list(POLICY['profiles']['task']['comments'].values())
++        self.comment = POLICY['profiles']['task']['comments']['tags']
++
++    def test_fixed_live_standalone_comments_do_not_consume_warning_budget(self):
++        errors, warnings = self.module.inspect_record('work/records/harness/issue-1/task-001.md', task_body(), None, self.fixed)
++        self.assertEqual(([], []), (errors, warnings))
++        self.assertLess(self.module.authored_line_count(task_body(), self.fixed), 100)
++        self.assertGreater(len(task_body().splitlines()), 100)
++
++    def test_written_content_above_threshold_still_warns(self):
++        text = '\n'.join(self.fixed) + '\n' + 'authored decision\n' * 101
++        errors, warnings = self.module.inspect_record('work/records/harness/issue-1/task-001.md', text, None, self.fixed)
++        self.assertFalse(errors)
++        self.assertEqual(1, len(warnings))
++        self.assertIn('101 authored lines', warnings[0])
++
++    def test_fenced_or_changed_comments_remain_counted(self):
++        for text in ['```markdown\n' + self.comment + '\n```', self.comment.replace('Task 태그', 'Changed 태그', 1)]:
++            with self.subTest(text=text[:30]):
++                self.assertEqual(len(text.splitlines()), self.module.authored_line_count(text, self.fixed))
++
++    def test_inline_prose_is_not_hidden_by_a_protected_comment(self):
++        text = 'authored decision ' + self.comment + '\n'
++        self.assertEqual(len(text.splitlines()), self.module.authored_line_count(text, self.fixed))
++
++    def test_crlf_and_lf_counts_match(self):
++        self.assertEqual(self.module.authored_line_count(task_body(), self.fixed),
++                         self.module.authored_line_count(task_body().replace('\n', '\r\n'), self.fixed))
++
++    def test_issue_cli_does_not_exclude_task_only_comments(self):
++        with tempfile.TemporaryDirectory(prefix='profile-length-') as folder:
++            root = Path(folder)
++            subprocess.run(['git', 'init', '-q'], cwd=root, check=True, capture_output=True)
++            (root / 'harness').mkdir()
++            (root / 'harness/rule-comments.json').write_text(json.dumps(POLICY), encoding='utf-8')
++            name = 'work/records/harness/issue-1/issue.md'
++            target = root / name
++            target.parent.mkdir(parents=True)
++            issue_comments = list(POLICY['profiles']['issue']['comments'].values())
++            text = '\n'.join(issue_comments) + '\n' + self.comment + '\n'
++            text += 'authored decision\n' * (110 - self.module.authored_line_count(text, issue_comments))
++            target.write_text(text, encoding='utf-8')
++            subprocess.run(['git', 'add', '--', 'harness', 'work'], cwd=root, check=True, capture_output=True)
++            result = subprocess.run([sys.executable, '-B', '-X', 'utf8', str(SCRIPTS / 'check-work-records.py'), '--candidate', 'index'], cwd=root, capture_output=True, text=True, encoding='utf-8')
++            self.assertEqual(0, result.returncode, result.stderr)
++            self.assertIn('110 authored lines', result.stderr)
++
++
++if __name__ == '__main__':
++    unittest.main()

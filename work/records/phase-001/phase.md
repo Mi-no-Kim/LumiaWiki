@@ -8,8 +8,18 @@
 - 구상상 구분: P1
 - GitHub milestone: [Mi-no-Kim/LumiaWiki #1](https://github.com/Mi-no-Kim/LumiaWiki/milestone/1)
 - 상태: 진행 중
-- 현재 진행 위치: 계획 Issue #15와 실행·개발·검증 기반 Issue #42는 완료했다. [Issue #42 전체 수용 결과](issue-42/issue.md#acceptance-result)에 따라 네 Task의 실제 결합·필수 검증을 확인했다. Issue #43~#48은 예정이고 게임 자료 작업은 보류다. Phase의 실제 기능/자료 수용 조건은 남아 있다.
-- 다음 판단/행동: Issue #42의 [PR #66](https://github.com/Mi-no-Kim/LumiaWiki/pull/66) Phase 반영·CI·브랜치 정리를 확인한 뒤 Issue #43의 입력·설계 준비 범위를 검토한다. 실제 자료 조사·확보·처리 보류를 유지한다.
+- 현재 진행 위치: [최신 main 공통 기준 반영](#upstream-main-integration)을 진행한다. Issue #15·#42의 완료와 Phase의 기능/자료 수용 잔여를 유지하며, Issue #43의 실제 진행·Task 결과는 해당 자식 브랜치의 기록을 따른다.
+- 다음 판단/행동: main 반영 후보의 검수·검사를 마쳤다. 반영 커밋을 확인한 뒤 갱신된 Phase를 Issue #43에 순서대로 반영하고 Task 43-002(#68)의 상세 설계 논의를 재개한다. 실제 게임 자료 작업과 DB 변경·연결 실험은 하지 않는다.
+
+<a id="upstream-main-integration"></a>
+
+### 최신 main 공통 기준 반영
+
+- 요청·대상: 사용자가 main → Phase 001 → Issue #43의 순서 반영과 기존 Task 43-002 설계 논의 재개를 요청했다. Phase 원본은 `0239caae788f1724547579eae46f4caa6eb3df71`, main은 `77bc4229f882943d20b9539c5a25ccd9f5769643`이며 원래 작업 폴더의 미추적 파일을 보호하는 분리 작업 트리에서 결합한다.
+- 충돌 판단: main의 새 작성·등록·주석/상태·자동 닫기 기준과 Phase의 TDD·품질 검사·구현 전 사용자 확인 목록을 함께 유지한다. 기존 제품 기록을 새 양식으로 바꾸지 않는다.
+- 도입 경계 보정: [정식 정책](../../../harness/rule-comments.json)의 기존 15개에 도입 전 제품 기록 21개의 정확 경로만 일회성으로 보정했다. Phase 고정 ref의 17개와 Issue 고정 ref `76e26221ce8b334b462273660c9b4b7e79a81e01`에 이미 존재하는 Task 4개가 근거이며, 네 Task의 최초 생성 커밋은 `d6adc6f0eaf3a3111a09ea14e37ba6491f378dc1`이다. 미래 생성 경로나 새 기록은 면제하지 않으며 목록 36개를 이후에도 고정한다.
+- 실행 근거: 기존 TDD hook이 요구하는 [통합 후보·명령·내용 지문](artifacts/main-integration-tdd.md)만 보존한다. 별도 Task 상태 검사 회귀 8개를 통과했으며 이 검사는 스크립트 전체 회귀와 구분한다.
+- 검증 결과·한계: 최종 스크립트 회귀 179개(환경 조건으로 1개 제외), 최종 index의 현황·주석·기록·형식 검사와 자체·별도 검수를 통과했다. 품질 경계의 제외 순서와 현황의 다음 행동 지적을 수정·재확인했다. 기존 Phase 제품 기록 17개는 원본과 같으며 조합 변경 항목은 과거 동작 근거를 보존한 재확인 상태로 표시한다. 게임 원자료 조회·변환, DB 접속·변경·DB 통합 시험과 원격 CI는 수행하지 않았다.
 
 <a id="ci-manual-followup"></a>
 

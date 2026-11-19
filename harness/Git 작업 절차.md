@@ -23,6 +23,16 @@
 2. Push가 허용됐으면 대상 원격·브랜치와 차이를 확인해 해당 브랜치만 명시하여 전송한다. [로컬 보존 브랜치](<../docs/details/git/브랜치 관리 기준.md#remote>)는 제외하고, 원격 커밋과 로컬 커밋의 일치를 확인한다. 예상하지 못한 원격 변경은 덮어쓰지 않는다.
 3. 변경한 담당 기록과 해당하는 부모 진행 요약의 [GitHub 반영](<문서 관리.md#github-update>)을 허용된 범위에서 수행·확인한다. PR 생성·수정이 허용됐으면 head·base와 실제 비교 범위·기존 PR 상태를 확인한다. [PR 기준](<../docs/details/git/PR과 병합 기준.md#prs>)·[참조와 닫기 규칙](<../docs/Git 작업 기준.md#github-closing>)에 맞춰 [템플릿](templates/pr.md)으로 작성하고 실제 번호·URL·head·base를 확인한다.
 
+<a id="closing-check"></a>
+
+## 자동 닫기 표현 검사
+
+- 로컬 커밋은 `python -B -X utf8 scripts/install-harness-hooks.py --hook commit-msg`로 설치한 hook이 기존 사용자 hook 성공 뒤 최종 메시지 파일 전체를 검사한다. 상태·해제는 같은 `--hook commit-msg`에 `--status`·`--remove`를 붙인다. 기본 `pre-commit` 설치와는 독립적이며 두 설치를 한 번에 성공한 것으로 처리하지 않는다. 정의 변경 시 기존 설치를 안전하게 해제한 뒤 재설치하고 각 상태를 확인한다.
+- PR 작성·갱신·병합 직전에는 제목·본문 원문을 UTF-8 임시 파일에 저장하고 `python -B -X utf8 scripts/check-github-closing.py --base <최신 base SHA> --head <최종 head SHA> --pr-file <원문 파일>`을 실행한다. 현재 base에 이미 들어간 과거 커밋은 검사 범위에서 제외한다. 전체 범위를 읽을 수 있도록 이력을 확보하며 얕은 경계·대상 부재를 빈 검사 성공으로 처리하지 않는다.
+- 실제 squash/merge 제목·본문도 UTF-8 임시 파일로 준비해 `python -B -X utf8 scripts/check-github-closing.py --message-file <최종 메시지 파일>`로 확인하고, 확인한 head에 고정해 병합한다. 예전 커밋을 조용히 재작성하거나 위반을 무시해 통과시키지 않는다. 아직 main에 들어가지 않은 위반은 허용된 이력 보정·메시지 수정 후 다시 확인한다.
+- CI는 `GITHUB_EVENT_PATH`를 읽어 PR 제목·본문과 실제 base..head 전체를 검사하며 `edited` 이벤트에도 재실행한다. main push는 before..after의 사후 검사, 수동 실행은 현재 HEAD 메시지 검사다. PR 텍스트를 셸 코드에 삽입하지 않는다. CI 정의·성공·필수 지정과 로컬 설치·실제 실행은 구분한다. 현재 저장소는 필수 상태 검사를 지정하지 않았으므로 CI 추가만으로 병합이 강제 차단된다고 보고하지 않는다.
+- 종료값 0은 지정 범위에서 위반 없음, 1은 닫기 표현 발견, 2는 입력·이력 미확인이다. hook 우회·원격 직접 push를 완전 차단하지 않으므로 최종 원문·현재 SHA·저장소 조건 확인을 유지한다. 정상 확인마다 원문·로그 사본을 보존하지 않는다.
+
 <a id="merge"></a>
 
 ## 상위 단계로 통합할 때

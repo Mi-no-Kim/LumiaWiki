@@ -1,0 +1,87 @@
+{
+  "sample-a": {
+    "scenario": 1,
+    "expected_task_state": "완료",
+    "input_sha": "fdecaf2965a409025056939c1de00b35391bd5e77f859571d37741bcf2ada8c0"
+  },
+  "sample-b": {
+    "scenario": 2,
+    "expected_task_state": "미생성",
+    "input_sha": "60f448897ae6cddc08cf87ac7ef6d7272f4ba1ee480f7d2321d5ed633edd915c"
+  },
+  "sample-c": {
+    "scenario": 2,
+    "expected_task_state": "미생성",
+    "input_sha": "2e83c98ef32e50ae9f8002f4f1e30002c269df7ed39b999ffdfb164ed98936cb"
+  },
+  "sample-d": {
+    "scenario": 2,
+    "expected_task_state": "미생성",
+    "input_sha": "7611c678a5d2a0de24207a1725a46860c7daf1cdedc0300738e025388667cf7c"
+  },
+  "sample-e": {
+    "scenario": 3,
+    "expected_task_state": "완료",
+    "input_sha": "738416919e3059299d8064d361ad43975a0b365b9e6d508aaace1bc96fbd3fcb"
+  },
+  "sample-f": {
+    "scenario": 4,
+    "expected_task_state": "중단",
+    "input_sha": "21a78b1951c59509ef7793713afa0cbfc7ed61f51f7467062dc0a358279ae1a0"
+  },
+  "sample-g": {
+    "scenario": 5,
+    "expected_task_state": "중단",
+    "input_sha": "0d6f0c0751f954a4fe23d5c0b40309b7e7eb84debe25814b41c37d00732d6af6"
+  },
+  "sample-h": {
+    "scenario": 6,
+    "expected_task_state": "완료",
+    "input_sha": "7fe39a1f2442683ceede00d8bba31bdd59093d96e1bb91ad79fbe63ca049d204"
+  },
+  "sample-i": {
+    "scenario": 7,
+    "expected_task_state": "완료",
+    "input_sha": "41c4ffcc33250850953f0c7f4c5676e87cca16059a90df59c3365b6a53c50e82"
+  },
+  "sample-j": {
+    "scenario": 8,
+    "expected_task_state": "진행 중",
+    "input_sha": "f36d014eed34fcf84440e5b759133f98fac589e46e678605cb95309990639a37"
+  },
+  "sample-k": {
+    "scenario": 9,
+    "expected_task_state": "완료",
+    "input_sha": "e3356b7869c871fc94d91aeb5e515f7500b0f7190ccfb183e06f606820c8b7a0"
+  },
+  "sample-l": {
+    "scenario": 10,
+    "expected_task_state": "완료",
+    "input_sha": "86222dbc5ac8b360e37e28698f262114df21377c52d1088868ca1ce952fe8bfb"
+  },
+  "sample-m": {
+    "scenario": 11,
+    "expected_task_state": "완료",
+    "input_sha": "47aed76a9e806779b65269faceb57df2fbbff31caf834fa8b4905659b486f185"
+  },
+  "sample-n": {
+    "scenario": 12,
+    "expected_task_state": "취소",
+    "input_sha": "37bf0fbf112a1d7ec57b69a7fa4a4e22848af4fab8740fdfa1a027516cf49efe"
+  },
+  "sample-o": {
+    "scenario": 13,
+    "expected_task_state": "완료",
+    "input_sha": "31f0d89072341d12a6f7f5d4d895a1d866ced09a8e1d7c92f7afc8951115a24a"
+  },
+  "sample-p": {
+    "scenario": 14,
+    "expected_task_state": "중단",
+    "input_sha": "eca65486a5fdeae507ff0ea70bfd352d9a35044fc92e892e0807345617960315"
+  },
+  "sample-q": {
+    "scenario": 15,
+    "expected_task_state": "완료",
+    "input_sha": "178b67fbab9c0ba5f9ed967f4765d975f3fc9f6f6181e76f599df40321b03df1"
+  }
+}

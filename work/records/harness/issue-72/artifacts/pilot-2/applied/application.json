@@ -1,0 +1,144 @@
+{
+  "baseCommit": "446bc75c794819384cf42ff2c9f946b8449e0229",
+  "appliedFiles": [
+    {
+      "path": ".agents/skills/create-issue/SKILL.md",
+      "rawSha256": "df5146e2d27dd200e1e6ac92e426608666d17daa1bc6a3abf89c61514172b2a5",
+      "normalizedDigest": "541b2adb1c14cb1341e0823ae50f4b41dbef53605069835fcf7110ffa0f100f2"
+    },
+    {
+      "path": "README.md",
+      "rawSha256": "0f0546e7f8b97e37a93d248f60c196623e9afa6dde06d08a23a43b48cd96474b",
+      "normalizedDigest": "4be6eef8104433bccf87487964d1a1ccd18039c217d5d229600faf573f293fe7"
+    },
+    {
+      "path": "STRUCTURE.md",
+      "rawSha256": "cdaa867b856a40c20ca631123dc8acce6858bdb31343f06220240b9c8eafc44a",
+      "normalizedDigest": "5a9d4c9fcf128f9a5bc255046df4d3d13f9c229fea0252708d75a9fc65b01b65"
+    },
+    {
+      "path": "docs/작업 기록 작성 기준.md",
+      "rawSha256": "7826a42856e6df26d18cfcb80ee52fa0b10c54722d4939ffe761ca48c06ef3a3",
+      "normalizedDigest": "3e494e27780dc23dfcbdc53b1131377ed4c10b583d7a8db93aa1990d738cdb33"
+    },
+    {
+      "path": "harness/Issue 공통 절차.md",
+      "rawSha256": "23590cc0b875aaf475ad730ad8d31beee56c8d5cc03978da7d4cee2886dcaaf8",
+      "normalizedDigest": "79accd8a182de0e299a5bf69092bb809fc65ea5fd1e1d467c6cf38bcbf1a6176"
+    },
+    {
+      "path": "harness/Issue 생성 지시서.md",
+      "rawSha256": "c0eab4c93be4b311e018e497cf8441421331a364e607c22dcaa2d58ca921d974",
+      "normalizedDigest": "fe78eb0d053796380574be08626428556492bbf53f89019ddfa8d36b97f7f842"
+    },
+    {
+      "path": "harness/hook 현황.md",
+      "rawSha256": "e584d3dc0cf73c4d0f2828945d9b2ed4b2af38b064553ec390b0f2fa6b28c10c",
+      "normalizedDigest": "7edab80c7760eea1a04bb9965caa15509a757969bac814c2a5c505700ed9e0f0"
+    },
+    {
+      "path": "harness/templates/issue-input.md",
+      "rawSha256": "9d95dc284db4f02d1da151f34a62927a58ef15dc8313c3f8747a0fd36254b8e7",
+      "normalizedDigest": "583d267754306a35e4822f657f0977a95468de4c51c63c66433d1ca4baed96c1"
+    },
+    {
+      "path": "harness/templates/issue.md",
+      "rawSha256": "51ac158b1be156c01f97eeb117e79599c73520d3eb5e55c193a29c06eb564494",
+      "normalizedDigest": "7d67d4a3bebfe8ee020230f3d44ace20385787789d60d1807ff000049047f728"
+    },
+    {
+      "path": "harness/문서 관리.md",
+      "rawSha256": "1c41a6a33c317b00836a7b1b552cfa68ed70b89200a9c7e5b2dd7b8097ede960",
+      "normalizedDigest": "e3699e1ad9fa4efe9915a8dd94a891f5b7462f122e9af4345415c9192e167d2d"
+    },
+    {
+      "path": "harness/스킬 현황.md",
+      "rawSha256": "fe109b7ad5ac219d26fa5f505b6876e7d8f66a898425198e89670225bdb56b3c",
+      "normalizedDigest": "e8dcfe314972284f4216ccc0486711bf1e088ee8565c24e93894cb270a1887b1"
+    },
+    {
+      "path": "scripts/check-harness-inventory.py",
+      "rawSha256": "4b38f320239052e22d401cf11c45e01c6641508fb1a41cb9bf0db494128919bf",
+      "normalizedDigest": "dc606b517a49cbd54636ad1c389939b6ed464fac18b28b79ad03e404d2b6dc0e"
+    },
+    {
+      "path": "scripts/check-work-records.py",
+      "rawSha256": "6d396c9e8f10e4ee085e391d6b7f8ae34deb72518eb432e338be165cd69d6975",
+      "normalizedDigest": "4b301cef2c1a9cef4f816be33f4eb19df222bfa20a31a4c8bbdbeaee2b10753e"
+    },
+    {
+      "path": "scripts/harness_inventory.py",
+      "rawSha256": "95523c67ecb00346d40dfe1ec7c42b31b6bc728002ea7fea9ec4a907e86665e4",
+      "normalizedDigest": "b94df804acefe96e428bdbed64df1b2fe1b8c4b98dc3bc2a04afca86576635f4"
+    },
+    {
+      "path": "scripts/issue_rule_comments.py",
+      "rawSha256": "1ab0c45c19c9e3b86af087434f24a33a7beab6d497a3f3dc06729506ff19a8d0",
+      "normalizedDigest": "ed1962e9c50234ff9cf407b2e5ed1facc52ee731dac5772a1a2cb39528dc6278"
+    },
+    {
+      "path": "scripts/tests/test_harness_inventory.py",
+      "rawSha256": "d066deeae0352efa850cfd0ea09bc022ede5049018d1530f0a8bff544aaa1935",
+      "normalizedDigest": "4597a44729de4f416a442c7440e3baec25468b3e59b5075913ff6cd9d9e0b137"
+    },
+    {
+      "path": "scripts/tests/test_record_length.py",
+      "rawSha256": "18e68b335cb3f41ebeffa0fbbb432483b173323d92f1070a22b3170e2c82ee2a",
+      "normalizedDigest": "1940e1043d5c5b6104082ccd4e723d1977a838445f47c3a320f0d38e08e995be"
+    }
+  ],
+  "errors": [],
+  "commands": [
+    {
+      "command": [
+        "C:\\Python314\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "scripts/tests",
+        "-v"
+      ],
+      "exitCode": 0,
+      "output": "actual-regression.txt",
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "C:\\Python314\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "scripts/check-harness-inventory.py",
+        "--candidate",
+        "work"
+      ],
+      "exitCode": 0,
+      "output": null,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "C:\\Python314\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "scripts/check-rule-comments.py",
+        "--candidate",
+        "work"
+      ],
+      "exitCode": 0,
+      "output": null,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "actualWorkingRepository": "D:\\my_project\\lumia_island_wiki",
+  "deferredSourcesUnchanged": true,
+  "protectionPolicyUnchanged": true
+}

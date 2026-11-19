@@ -51,6 +51,24 @@ AI와 작업할 때는 원하는 결과와 대상, 허용 범위를 전달한다
 - 애플리케이션 개발 기준: [공통 개발 기준](<docs/개발 기준.md#current>)
 - 프로젝트 구성: [스킬 현황](<harness/스킬 현황.md#current>) · [hook 현황](<harness/hook 현황.md#current>)
 
+### 작업 절차 찾기
+
+| 상황                    | 시작점                                                                                               |
+| ----------------------- | ---------------------------------------------------------------------------------------------------- |
+| 새 Issue 작성           | [create-issue](.agents/skills/create-issue/SKILL.md) · [생성·등록](<harness/문서 관리.md#create>)    |
+| 확정 배정으로 Task 작성 | [create-task](.agents/skills/create-task/SKILL.md) · [배정 확인](<harness/문서 관리.md#task-create>) |
+| 기존 작업 진행·재개     | [work 안내](work/README.md#resume) · 담당 기록의 현재 요약                                           |
+| 추가·변경 요청          | [추가 요청 판단](.agents/skills/triage-additional-request/SKILL.md)                                  |
+| 결과 검수               | [작업 결과 검수](.agents/skills/review-work/SKILL.md#common-review)                                  |
+
+### hook 확인과 문제 해결
+
+- 설치 상태·설치/해제: [Git hook 설치 안내](<harness/문서 관리.md#inventory-hook-install>)
+- 검사 대상·명령: [공통 기록 검사](<harness/문서 관리.md#record-rule-comment-check>)
+- 실패 시 점검·수정·재검사: [검사 실패 대응](<harness/문서 관리.md#record-check-failure>)
+
+정의의 존재·설치·실제 자동 발동의 확인 범위는 [hook 현황](<harness/hook 현황.md#current>)에서 구분한다. 파일 위치는 [프로젝트 구조](STRUCTURE.md)에서 확인한다.
+
 작업 결과와 변경 내용, 확인 범위·한계, 미해결 사항과 다음 행동은 대화와 담당 작업 기록에서 확인한다.
 
 ## 접근 제한: harness-design

@@ -27,6 +27,7 @@ const rootFiles = [
 ];
 export const roots = [
   ...rootFiles,
+  '.agents/skills',
   '.github/workflows',
   '.codex/hooks.json',
   '.vscode',
@@ -73,12 +74,15 @@ function excluded(name) {
 
 export function formatKind(input) {
   const name = normalize(input);
+  if (/(?:^|\/)\.git(?:attributes|ignore)$/.test(name)) return 'skip';
   if (
     [
       '.gitignore',
       '.gitattributes',
       '.prettierignore',
       'scripts/hooks/pre-commit',
+      'scripts/hooks/commit-msg',
+      'harness/issue-rule-comments.json',
     ].includes(name) ||
     name.endsWith('.gradle')
   )
@@ -91,6 +95,7 @@ export function formatKind(input) {
     )
   )
     return 'skip';
+  if (/^\.agents\/skills\/.*\.(?:md|json|ya?ml)$/.test(name)) return 'prettier';
   if (/^backend\/src\/.*\.java$/.test(name)) return 'java';
   if (
     rootFiles.includes(name) ||
@@ -161,7 +166,7 @@ export async function collectFiles(root, { docs = false } = {}) {
     if (
       docs &&
       !rootFiles.includes(name) &&
-      !['docs', 'harness', 'work'].includes(name)
+      !['docs', 'harness', 'work', '.agents/skills'].includes(name)
     )
       continue;
     await visit(name);

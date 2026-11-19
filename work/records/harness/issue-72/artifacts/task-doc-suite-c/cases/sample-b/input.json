@@ -1,0 +1,19 @@
+{
+  "goal": "시작 안내의 문제를 줄이기 위한 과제를 준비한다.",
+  "result": null,
+  "acceptance": null,
+  "creation": {
+    "parent": "P",
+    "task": "T",
+    "path_checked": true,
+    "collision_checked": true
+  },
+  "note": "생성 입력을 확인하고 필요한 보완을 반환한다. 다른 원천에 누락된 답은 없다. 문안 제안만 맡길지 실제 수정까지 맡길지와 그 결과의 수용 기준은 아직 결정하지 않았다.",
+  "expected_before": {
+    "start.md": "# 시작 안내\n\nTask 본문은 현재 상태와 계획을 관리합니다.\n자세한 수행 내용은 별도 수행 기록에 남깁니다.\n\n[기록 방법 보기](guide.md#record)\n",
+    "guide.md": "# 기록 안내\n\n<a id=\"recording\"></a>\n## 기록 방법\n\nTask 본문은 현재 상태와 계획을 관리합니다.\n자세한 수행 내용은 별도 수행 기록에 남깁니다.\n"
+  },
+  "initial_events": [],
+  "events": [],
+  "pending": "A/B 안내 방식은 모의 사용자 역할이 결정한다."
+}
