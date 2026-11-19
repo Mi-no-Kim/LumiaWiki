@@ -1,0 +1,52 @@
+{
+  "goal": "시작 안내의 링크·중복을 정리하고 선택·확인 근거를 남긴다.",
+  "result": "시작 안내의 링크·중복을 정리하고 선택·확인 근거를 남긴다.",
+  "acceptance": [
+    {
+      "id": "old-location",
+      "kind": "missing",
+      "path": "guide.md"
+    },
+    {
+      "id": "new-location",
+      "kind": "exists",
+      "path": "guides/recording.md"
+    },
+    {
+      "id": "link-0",
+      "kind": "links",
+      "path": "start.md"
+    },
+    {
+      "id": "link-1",
+      "kind": "links",
+      "path": "index.md"
+    },
+    {
+      "id": "link-2",
+      "kind": "links",
+      "path": "guides/recording.md"
+    },
+    {
+      "id": "body",
+      "kind": "equals",
+      "path": "guides/recording.md",
+      "value": "# 기록 안내\n\n<a id=\"recording\"></a>\n## 기록 방법\n\nTask 본문은 현재 상태와 계획을 관리합니다.\n자세한 수행 내용은 별도 수행 기록에 남깁니다.\n\n[시작 안내로 돌아가기](../start.md)\n"
+    }
+  ],
+  "creation": {
+    "parent": "P",
+    "task": "T",
+    "path_checked": true,
+    "collision_checked": true
+  },
+  "note": "guide.md를 guides/recording.md로 이동하고 세 문서의 들어오고 나가는 현재 상대 링크를 보정한다. 본문·recording 표식은 보존하며 별도 문안 선택은 없다.",
+  "expected_before": {
+    "start.md": "# 시작 안내\n\nTask 본문은 현재 상태와 계획을 관리합니다.\n자세한 수행 내용은 별도 수행 기록에 남깁니다.\n\n[기록 방법 보기](guide.md#recording)\n",
+    "guide.md": "# 기록 안내\n\n<a id=\"recording\"></a>\n## 기록 방법\n\nTask 본문은 현재 상태와 계획을 관리합니다.\n자세한 수행 내용은 별도 수행 기록에 남깁니다.\n\n[시작 안내로 돌아가기](start.md)\n",
+    "index.md": "# 목록\n\n[기록](guide.md#recording)\n"
+  },
+  "initial_events": [],
+  "events": [],
+  "pending": "없음 — 이동 경로·범위는 배정에서 확정됐다."
+}

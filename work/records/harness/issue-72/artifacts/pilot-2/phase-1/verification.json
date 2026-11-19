@@ -1,0 +1,244 @@
+{
+  "baseCommit": "4b371143caba44d6bd384502f337d2891f1f4300",
+  "calls": [
+    {
+      "case": "phase1-regressions",
+      "command": [
+        "C:\\Python314\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "scripts/tests",
+        "-v"
+      ],
+      "expectedExit": 0,
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": "test_both_catalogs_are_required_even_when_no_hook_exists (test_harness_inventory.CandidateTests.test_both_catalogs_are_required_even_when_no_hook_exists) ... ok\ntest_codex_json_and_inline_toml_handlers_are_registered (test_harness_inventory.CandidateTests.test_codex_json_and_inline_toml_handlers_are_registered) ... ok\ntest_commit_candidate_uses_committed_contents (test_harness_inventory.CandidateTests.test_commit_candidate_uses_committed_contents) ... ok\ntest_consistent_work_and_index_are_read_only (test_harness_inventory.CandidateTests.test_consistent_work_and_index_are_read_only) ... ok\ntest_crlf_document_is_accepted (test_harness_inventory.CandidateTests.test_crlf_document_is_accepted) ... ok\ntest_crlf_skill_declares_its_external_template_dependency (test_harness_inventory.CandidateTests.test_crlf_skill_declares_its_external_template_dependency) ... ok\ntest_crlf_text_has_the_same_fingerprint (test_harness_inventory.CandidateTests.test_crlf_text_has_the_same_fingerprint) ... ok\ntest_deleted_skill_without_registration_is_denied (test_harness_inventory.CandidateTests.test_deleted_skill_without_registration_is_denied) ... ok\ntest_duplicate_entry_and_wrong_digest_are_denied (test_harness_inventory.CandidateTests.test_duplicate_entry_and_wrong_digest_are_denied) ... ok\ntest_external_skill_template_dependency_is_bound_to_candidate (test_harness_inventory.CandidateTests.test_external_skill_template_dependency_is_bound_to_candidate) ... ok\ntest_fifty_skills_stay_usable_and_last_source_change_is_identified (test_harness_inventory.CandidateTests.test_fifty_skills_stay_usable_and_last_source_change_is_identified) ... ok\ntest_hook_entry_cannot_be_registered_in_skill_catalog (test_harness_inventory.CandidateTests.test_hook_entry_cannot_be_registered_in_skill_catalog) ... ok\ntest_malformed_codex_document_is_a_controlled_denial (test_harness_inventory.CandidateTests.test_malformed_codex_document_is_a_controlled_denial) ... ok\ntest_mismatch_diagnostic_ignores_line_endings_and_names_real_difference (test_harness_inventory.CandidateTests.test_mismatch_diagnostic_ignores_line_endings_and_names_real_difference) ... ok\ntest_modified_and_new_support_files_are_detected (test_harness_inventory.CandidateTests.test_modified_and_new_support_files_are_detected) ... ok\ntest_modified_skill_and_cosmetic_document_edit_are_denied (test_harness_inventory.CandidateTests.test_modified_skill_and_cosmetic_document_edit_are_denied) ... ok\ntest_new_git_definition_and_dependency_changes_are_detected (test_harness_inventory.CandidateTests.test_new_git_definition_and_dependency_changes_are_detected) ... ok\ntest_new_skill_without_registration_is_denied (test_harness_inventory.CandidateTests.test_new_skill_without_registration_is_denied) ... ok\ntest_preserved_private_and_parent_paths_are_rejected (test_harness_inventory.CandidateTests.test_preserved_private_and_parent_paths_are_rejected) ... ok\ntest_project_feature_config_is_required_even_without_its_own_handler (test_harness_inventory.CandidateTests.test_project_feature_config_is_required_even_without_its_own_handler) ... ok\ntest_staging_other_catalog_cannot_cover_a_stale_skill (test_harness_inventory.CandidateTests.test_staging_other_catalog_cannot_cover_a_stale_skill) ... ok\ntest_standard_index_and_p4_hook_definitions_need_registration (test_harness_inventory.CandidateTests.test_standard_index_and_p4_hook_definitions_need_registration) ... ok\ntest_summary_table_must_match_metadata (test_harness_inventory.CandidateTests.test_summary_table_must_match_metadata) ... ok\ntest_unknown_file_in_hook_definition_directory_is_not_silently_ignored (test_harness_inventory.CandidateTests.test_unknown_file_in_hook_definition_directory_is_not_silently_ignored) ... ok\ntest_unrelated_change_needs_no_inventory_update (test_harness_inventory.CandidateTests.test_unrelated_change_needs_no_inventory_update) ... ok\ntest_unsafe_or_missing_external_skill_dependency_is_rejected (test_harness_inventory.CandidateTests.test_unsafe_or_missing_external_skill_dependency_is_rejected) ... ok\ntest_unstaged_changes_do_not_invalidate_matching_index (test_harness_inventory.CandidateTests.test_unstaged_changes_do_not_invalidate_matching_index) ... ok\ntest_unstaged_document_fix_cannot_validate_staged_source (test_harness_inventory.CandidateTests.test_unstaged_document_fix_cannot_validate_staged_source) ... ok\ntest_verification_binds_evidence_without_recording_dates (test_harness_inventory.CandidateTests.test_verification_binds_evidence_without_recording_dates) ... ok\ntest_verified_digest_cannot_silently_advance_with_source (test_harness_inventory.CandidateTests.test_verified_digest_cannot_silently_advance_with_source) ... ok\ntest_worktree_junction_is_rejected_without_reading_its_target (test_harness_inventory.CandidateTests.test_worktree_junction_is_rejected_without_reading_its_target) ... ok\ntest_branches_predating_record_check_skip_but_unstaged_deletion_denies (test_harness_inventory.HookTests.test_branches_predating_record_check_skip_but_unstaged_deletion_denies) ... ok\ntest_corrupt_installation_metadata_is_preserved (test_harness_inventory.HookTests.test_corrupt_installation_metadata_is_preserved) ... ok\ntest_current_task_comment_gate_uses_the_real_index (test_harness_inventory.HookTests.test_current_task_comment_gate_uses_the_real_index) ... ok\ntest_existing_hook_is_preserved_duplicate_install_is_noop_and_remove_restores (test_harness_inventory.HookTests.test_existing_hook_is_preserved_duplicate_install_is_noop_and_remove_restores) ... ok\ntest_existing_hook_rejection_is_preserved (test_harness_inventory.HookTests.test_existing_hook_rejection_is_preserved) ... ok\ntest_external_custom_hook_location_is_not_modified (test_harness_inventory.HookTests.test_external_custom_hook_location_is_not_modified) ... ok\ntest_hook_skips_only_branches_without_both_inventory_files (test_harness_inventory.HookTests.test_hook_skips_only_branches_without_both_inventory_files) ... ok\ntest_modified_wrapper_or_backup_is_not_removed (test_harness_inventory.HookTests.test_modified_wrapper_or_backup_is_not_removed) ... ok\ntest_new_rule_markers_cannot_skip_a_missing_record_checker (test_harness_inventory.HookTests.test_new_rule_markers_cannot_skip_a_missing_record_checker) ... ok\ntest_pre_commit_rejects_a_staged_issue_comment_deletion (test_harness_inventory.HookTests.test_pre_commit_rejects_a_staged_issue_comment_deletion) ... ok\ntest_real_commit_runs_old_hook_then_rejects_or_accepts_candidate (test_harness_inventory.HookTests.test_real_commit_runs_old_hook_then_rejects_or_accepts_candidate) ... ok\ntest_record_gate_blocks_dates_but_only_warns_for_long_records (test_harness_inventory.HookTests.test_record_gate_blocks_dates_but_only_warns_for_long_records) ... ok\ntest_unstaged_marker_deletion_cannot_skip_staged_inventory (test_harness_inventory.HookTests.test_unstaged_marker_deletion_cannot_skip_staged_inventory) ... ok\ntest_all_removed_or_enrolled_file_deleted_is_denied (test_issue_rule_comments.CandidateTests.test_all_removed_or_enrolled_file_deleted_is_denied) ... ok\ntest_approval_requires_an_active_anchor_not_matching_text_or_quoted_markup (test_issue_rule_comments.CandidateTests.test_approval_requires_an_active_anchor_not_matching_text_or_quoted_markup) ... ok\ntest_each_protected_rule_change_removal_and_rename_are_denied (test_issue_rule_comments.CandidateTests.test_each_protected_rule_change_removal_and_rename_are_denied) ... ok\ntest_enrolled_baseline_cannot_be_redefined_to_accept_unapproved_changes (test_issue_rule_comments.CandidateTests.test_enrolled_baseline_cannot_be_redefined_to_accept_unapproved_changes) ... ok\ntest_explicit_comment_removal_is_supported_without_authorizing_file_deletion (test_issue_rule_comments.CandidateTests.test_explicit_comment_removal_is_supported_without_authorizing_file_deletion) ... ok\ntest_explicit_revision_is_exact_and_does_not_authorize_other_changes (test_issue_rule_comments.CandidateTests.test_explicit_revision_is_exact_and_does_not_authorize_other_changes) ... ok\ntest_hook_reports_the_completed_edit_without_rolling_it_back (test_issue_rule_comments.CandidateTests.test_hook_reports_the_completed_edit_without_rolling_it_back) ... ok\ntest_index_is_independent_of_unstaged_content (test_issue_rule_comments.CandidateTests.test_index_is_independent_of_unstaged_content) ... ok\ntest_missing_approval_baseline_mismatch_and_out_of_scope_rule_are_denied (test_issue_rule_comments.CandidateTests.test_missing_approval_baseline_mismatch_and_out_of_scope_rule_are_denied) ... ok\ntest_missing_or_malformed_policy_is_unverified (test_issue_rule_comments.CandidateTests.test_missing_or_malformed_policy_is_unverified) ... ok\ntest_normal_edit_and_six_other_rules_remain_editable (test_issue_rule_comments.CandidateTests.test_normal_edit_and_six_other_rules_remain_editable) ... ok\ntest_registered_command_works_from_a_subdirectory (test_issue_rule_comments.CandidateTests.test_registered_command_works_from_a_subdirectory) ... ok\ntest_target_cannot_disappear_by_removing_all_comments_and_enrollment_together (test_issue_rule_comments.CandidateTests.test_target_cannot_disappear_by_removing_all_comments_and_enrollment_together) ... ok\ntest_unenrolled_legacy_issue_is_not_forced_to_adopt_the_draft (test_issue_rule_comments.CandidateTests.test_unenrolled_legacy_issue_is_not_forced_to_adopt_the_draft) ... ok\ntest_code_inside_a_real_comment_is_preserved (test_issue_rule_comments.ParserTests.test_code_inside_a_real_comment_is_preserved) ... ok\ntest_escaped_openers_are_not_real_comments (test_issue_rule_comments.ParserTests.test_escaped_openers_are_not_real_comments) ... ok\ntest_indented_code_is_not_a_duplicate_live_rule (test_issue_rule_comments.ParserTests.test_indented_code_is_not_a_duplicate_live_rule) ... ok\ntest_inline_examples_do_not_duplicate_or_swallow_live_rules (test_issue_rule_comments.ParserTests.test_inline_examples_do_not_duplicate_or_swallow_live_rules) ... ok\ntest_markup_in_attributes_is_not_a_real_comment (test_issue_rule_comments.ParserTests.test_markup_in_attributes_is_not_a_real_comment) ... ok\ntest_nested_unclosed_and_duplicate_comments (test_issue_rule_comments.ParserTests.test_nested_unclosed_and_duplicate_comments) ... ok\ntest_quoted_rules_are_not_live_rules (test_issue_rule_comments.ParserTests.test_quoted_rules_are_not_live_rules) ... ok\ntest_raw_text_and_declarations_do_not_contain_live_comments (test_issue_rule_comments.ParserTests.test_raw_text_and_declarations_do_not_contain_live_comments) ... ok\ntest_real_comments_inside_ordinary_html_are_still_checked (test_issue_rule_comments.ParserTests.test_real_comments_inside_ordinary_html_are_still_checked) ... ok\ntest_template_and_line_endings (test_issue_rule_comments.ParserTests.test_template_and_line_endings) ... ok\ntest_crlf_and_lf_counts_match (test_record_length.AuthoredLengthTests.test_crlf_and_lf_counts_match) ... ok\ntest_fenced_or_changed_comments_remain_counted (test_record_length.AuthoredLengthTests.test_fenced_or_changed_comments_remain_counted) ... ok\ntest_fixed_live_standalone_comments_do_not_consume_warning_budget (test_record_length.AuthoredLengthTests.test_fixed_live_standalone_comments_do_not_consume_warning_budget) ... ok\ntest_inline_prose_is_not_hidden_by_a_protected_comment (test_record_length.AuthoredLengthTests.test_inline_prose_is_not_hidden_by_a_protected_comment) ... ok\ntest_issue_cli_does_not_exclude_task_only_comments (test_record_length.AuthoredLengthTests.test_issue_cli_does_not_exclude_task_only_comments) ... ok\ntest_written_content_above_threshold_still_warns (test_record_length.AuthoredLengthTests.test_written_content_above_threshold_still_warns) ... ok\ntest_cli_and_hook_feedback_use_the_shared_policy (test_rule_comments.CurrentRecordTests.test_cli_and_hook_feedback_use_the_shared_policy) ... ok\ntest_cli_keeps_previously_present_issue_policy_protection (test_rule_comments.CurrentRecordTests.test_cli_keeps_previously_present_issue_policy_protection) ... ok\ntest_code_and_raw_html_do_not_supply_live_rules (test_rule_comments.CurrentRecordTests.test_code_and_raw_html_do_not_supply_live_rules) ... ok\ntest_comment_changes_duplicates_nested_and_quotes (test_rule_comments.CurrentRecordTests.test_comment_changes_duplicates_nested_and_quotes) ... ok\ntest_completed_new_record_stays_protected (test_rule_comments.CurrentRecordTests.test_completed_new_record_stays_protected) ... ok\ntest_current_cli_runs_without_optional_legacy_policy_or_records (test_rule_comments.CurrentRecordTests.test_current_cli_runs_without_optional_legacy_policy_or_records) ... ok\ntest_current_five_states_and_legacy_values_are_separate (test_rule_comments.CurrentRecordTests.test_current_five_states_and_legacy_values_are_separate) ... ok\ntest_declared_previous_issue_policy_cannot_disappear (test_rule_comments.CurrentRecordTests.test_declared_previous_issue_policy_cannot_disappear) ... ok\ntest_deleted_new_record_is_not_silently_unenrolled (test_rule_comments.CurrentRecordTests.test_deleted_new_record_is_not_silently_unenrolled) ... ok\ntest_existing_untracked_record_is_exempt_without_edit (test_rule_comments.CurrentRecordTests.test_existing_untracked_record_is_exempt_without_edit) ... ok\ntest_frozen_legacy_list_cannot_capture_new_records (test_rule_comments.CurrentRecordTests.test_frozen_legacy_list_cannot_capture_new_records) ... ok\ntest_index_uses_staged_policy_and_bytes_not_worktree (test_rule_comments.CurrentRecordTests.test_index_uses_staged_policy_and_bytes_not_worktree) ... ok\ntest_new_issue_task_and_execution_are_automatically_enrolled (test_rule_comments.CurrentRecordTests.test_new_issue_task_and_execution_are_automatically_enrolled) ... ok\ntest_phase_and_harness_issue_locations_are_also_automatic (test_rule_comments.CurrentRecordTests.test_phase_and_harness_issue_locations_are_also_automatic) ... ok\ntest_profile_reset_or_source_target_removal_is_rejected (test_rule_comments.CurrentRecordTests.test_profile_reset_or_source_target_removal_is_rejected) ... ok\ntest_quoted_or_duplicate_state_is_not_a_valid_current_summary (test_rule_comments.CurrentRecordTests.test_quoted_or_duplicate_state_is_not_a_valid_current_summary) ... ok\ntest_reference_mode_is_confined_to_explicit_examples (test_rule_comments.CurrentRecordTests.test_reference_mode_is_confined_to_explicit_examples) ... ok\ntest_scoped_user_revision_is_exact_and_needs_real_anchor (test_rule_comments.CurrentRecordTests.test_scoped_user_revision_is_exact_and_needs_real_anchor) ... ok\ntest_state_examples_in_html_attributes_and_raw_text_are_not_summaries (test_rule_comments.CurrentRecordTests.test_state_examples_in_html_attributes_and_raw_text_are_not_summaries) ... ok\ntest_unknown_artifacts_and_phase_bodies_are_not_records (test_rule_comments.CurrentRecordTests.test_unknown_artifacts_and_phase_bodies_are_not_records) ... ok\ntest_unsafe_legacy_paths_and_directory_wildcards_are_invalid (test_rule_comments.CurrentRecordTests.test_unsafe_legacy_paths_and_directory_wildcards_are_invalid) ... ok\ntest_committed_candidate_uses_parent_diff_not_worktree (test_work_records.CandidateTests.test_committed_candidate_uses_parent_diff_not_worktree) ... ok\ntest_initial_index_reads_staged_content_and_warning_succeeds (test_work_records.CandidateTests.test_initial_index_reads_staged_content_and_warning_succeeds) ... ok\ntest_sparse_ci_prepares_missing_parent_documents_only (test_work_records.CandidateTests.test_sparse_ci_prepares_missing_parent_documents_only) ... ok\ntest_unmodified_long_record_does_not_warn (test_work_records.CandidateTests.test_unmodified_long_record_does_not_warn) ... ok\ntest_100_lines_allowed_101_warned_including_blank_lines (test_work_records.RuleTests.test_100_lines_allowed_101_warned_including_blank_lines) ... ok\ntest_execution_blocks_belong_in_artifacts (test_work_records.RuleTests.test_execution_blocks_belong_in_artifacts) ... ok\ntest_explicit_new_record_dates_are_rejected_in_text_and_metadata (test_work_records.RuleTests.test_explicit_new_record_dates_are_rejected_in_text_and_metadata) ... ok\ntest_native_artifact_payload_is_preserved_but_prose_date_is_rejected (test_work_records.RuleTests.test_native_artifact_payload_is_preserved_but_prose_date_is_rejected) ... ok\ntest_needed_decisions_blockers_and_domain_dates_are_allowed (test_work_records.RuleTests.test_needed_decisions_blockers_and_domain_dates_are_allowed) ... ok\ntest_new_dated_record_filename_is_rejected_but_old_name_is_not (test_work_records.RuleTests.test_new_dated_record_filename_is_rejected_but_old_name_is_not) ... ok\ntest_unchanged_old_date_is_not_a_new_violation (test_work_records.RuleTests.test_unchanged_old_date_is_not_a_new_violation) ... ok\n\n----------------------------------------------------------------------\nRan 106 tests in 110.824s\n\nOK"
+    },
+    {
+      "case": "work-inventory",
+      "command": [
+        "C:\\Python314\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "scripts/check-harness-inventory.py",
+        "--candidate",
+        "work"
+      ],
+      "expectedExit": 0,
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "case": "work-comments-with-legacy-policy",
+      "command": [
+        "C:\\Python314\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "scripts/check-rule-comments.py",
+        "--candidate",
+        "work"
+      ],
+      "expectedExit": 0,
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "case": "index-inventory",
+      "command": [
+        "C:\\Python314\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "scripts/check-harness-inventory.py",
+        "--candidate",
+        "index"
+      ],
+      "expectedExit": 0,
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "case": "index-records",
+      "command": [
+        "C:\\Python314\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "scripts/check-work-records.py",
+        "--candidate",
+        "index"
+      ],
+      "expectedExit": 0,
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "case": "index-comments-with-legacy-policy",
+      "command": [
+        "C:\\Python314\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "scripts/check-rule-comments.py",
+        "--candidate",
+        "index"
+      ],
+      "expectedExit": 0,
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "case": "posttooluse-valid",
+      "command": [
+        "python",
+        "-B",
+        "-X",
+        "utf8",
+        "-c",
+        "import subprocess,runpy,sys; r=subprocess.check_output(['git','rev-parse','--show-toplevel'],text=True).strip(); sys.path.insert(0,r+'/scripts'); sys.argv=[r+'/scripts/check-rule-comments.py','--hook']; runpy.run_path(sys.argv[0],run_name='__main__')"
+      ],
+      "expectedExit": 0,
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "case": "precommit-valid",
+      "command": [
+        "C:\\Program Files\\Git\\bin\\sh.exe",
+        "scripts/hooks/pre-commit"
+      ],
+      "expectedExit": 0,
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "case": "posttooluse-bad-rule",
+      "command": [
+        "python",
+        "-B",
+        "-X",
+        "utf8",
+        "-c",
+        "import subprocess,runpy,sys; r=subprocess.check_output(['git','rev-parse','--show-toplevel'],text=True).strip(); sys.path.insert(0,r+'/scripts'); sys.argv=[r+'/scripts/check-rule-comments.py','--hook']; runpy.run_path(sys.argv[0],run_name='__main__')"
+      ],
+      "expectedExit": 0,
+      "exitCode": 0,
+      "stdout": "{\"decision\": \"block\", \"reason\": \"harness/examples/task-body-example-recording.md: task-rule:start: missing or changed identifier/content/boundary\", \"hookSpecificOutput\": {\"hookEventName\": \"PostToolUse\", \"additionalContext\": \"Record comment/state preservation failed. Changes remain on disk. Review and repair only the reported scope; do not infer permission to revise protected rules or legacy enrollment.\"}}",
+      "stderr": ""
+    },
+    {
+      "case": "posttooluse-restored",
+      "command": [
+        "python",
+        "-B",
+        "-X",
+        "utf8",
+        "-c",
+        "import subprocess,runpy,sys; r=subprocess.check_output(['git','rev-parse','--show-toplevel'],text=True).strip(); sys.path.insert(0,r+'/scripts'); sys.argv=[r+'/scripts/check-rule-comments.py','--hook']; runpy.run_path(sys.argv[0],run_name='__main__')"
+      ],
+      "expectedExit": 0,
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "case": "rules-bad-index",
+      "command": [
+        "C:\\Python314\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "scripts/check-rule-comments.py",
+        "--candidate",
+        "index"
+      ],
+      "expectedExit": 2,
+      "exitCode": 2,
+      "stdout": "",
+      "stderr": "harness/examples/task-body-example-recording.md: task-rule:start: missing or changed identifier/content/boundary"
+    },
+    {
+      "case": "precommit-bad-index",
+      "command": [
+        "C:\\Program Files\\Git\\bin\\sh.exe",
+        "scripts/hooks/pre-commit"
+      ],
+      "expectedExit": 2,
+      "exitCode": 2,
+      "stdout": "",
+      "stderr": "Inventory unverified: Inventory source digest differs: codex:.codex/hooks.json:PostToolUse:0:0\nCandidate/worktree differences: harness/examples/task-body-example-recording.md\nNext: inspect the reported source/dependencies first. Repair unintended content changes. Update inventory only after the intended source and its behavior are verified; then stage and recheck the same candidate."
+    },
+    {
+      "case": "precommit-good-index-bad-worktree",
+      "command": [
+        "C:\\Program Files\\Git\\bin\\sh.exe",
+        "scripts/hooks/pre-commit"
+      ],
+      "expectedExit": 0,
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "case": "apply-check-documents.patch",
+      "command": [
+        "git",
+        "apply",
+        "--check",
+        "D:\\my_project\\lumia_island_wiki\\.tmp\\issue-task-pilot-2\\phase-1\\documents.patch"
+      ],
+      "expectedExit": 0,
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "case": "apply-check-harness.patch",
+      "command": [
+        "git",
+        "apply",
+        "--check",
+        "D:\\my_project\\lumia_island_wiki\\.tmp\\issue-task-pilot-2\\phase-1\\harness.patch"
+      ],
+      "expectedExit": 0,
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "case": "apply-check-ready.patch",
+      "command": [
+        "git",
+        "apply",
+        "--check",
+        "D:\\my_project\\lumia_island_wiki\\.tmp\\issue-task-pilot-2\\phase-1\\ready.patch"
+      ],
+      "expectedExit": 0,
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "errors": [],
+  "changedFiles": 17,
+  "linksChecked": 144,
+  "optionalLegacyPolicyIncluded": true,
+  "automaticDispatchObserved": false,
+  "deferredFeaturesIncluded": false,
+  "candidateSourceFilesUnchanged": true
+}

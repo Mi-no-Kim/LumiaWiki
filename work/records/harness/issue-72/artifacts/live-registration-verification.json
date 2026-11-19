@@ -1,0 +1,151 @@
+{
+  "schema": 1,
+  "validation": "github-registration-46346b4-73-74",
+  "source_commit": "46346b46fb1e30aeca66311dc11dbe228ffc133f",
+  "repository": "Mi-no-Kim/LumiaWiki",
+  "planned": {
+    "issue": {
+      "id": 6474138399,
+      "number": 73,
+      "html_url": "https://github.com/Mi-no-Kim/LumiaWiki/issues/73",
+      "title": "[등록 검증] Issue 생성·등록 경로 확인",
+      "state": "open",
+      "state_reason": null,
+      "body": "<!-- registration-check:issue-72:46346b4:issue -->\n## 현재 요약\n- 상태: 예정\n- 현재 진행 위치: 1. 입력·준비 확인 — 본작업 미착수\n- 다음 행동: 실제 발급 번호로 로컬 정식 기록을 작성하고 등록 결과를 확인한다.\n\n## 목적과 기대 결과\n사용자 요청에 따라 Issue 생성의 실제 GitHub 발급·로컬 기록·라벨·원본 연결을 검증한다. 독립 하네스 검증용 Issue이며 제품 구현은 포함하지 않는다. 이번 객체를 실제 업무로 이어가지 않고 검증 후 취소 사유를 남겨 닫는다.\n\n## 진행 순서\n1. 입력·준비 확인: 생성 요청을 기록하며 본작업은 미착수다.\n2. 논의·결정: 미수행.\n3. Task 생성: 미수행. Task 등록은 관련 Issue #72 아래에서 별도로 검증한다.\n4. 최종 검사: 본작업 수용은 미수행. 등록 검증의 결과는 #72에서 관리한다.\n\n## 원본과 관련\n- 원본: 로컬 기록 work/records/harness/issue-73/issue.md (아직 원격 Git 파일로 게시하지 않음).\n- 관련 과제: #72의 생성·등록 기준에 대한 실제 쓰기 검증.\n",
+      "labels": [
+        {
+          "name": "unit:issue",
+          "color": "5319E7",
+          "description": "로컬 Issue에 대응하는 과제"
+        },
+        {
+          "name": "status:planned",
+          "color": "EDEDED",
+          "description": "예정"
+        }
+      ],
+      "milestone": null
+    },
+    "task": {
+      "id": 6474180277,
+      "number": 74,
+      "html_url": "https://github.com/Mi-no-Kim/LumiaWiki/issues/74",
+      "title": "Task 72-001 — [등록 검증] 생성·부모 연결 확인",
+      "state": "open",
+      "state_reason": null,
+      "body": "<!-- registration-check:issue-72:46346b4:task-001 -->\n## 현재 요약\n- 상태: 예정\n- 현재 진행 위치: 계획과 합의 — 본작업 미착수\n- 다음 행동·막힌 조건: 실제 발급·부모 연결을 확인한 뒤 검증용 객체를 취소 종료한다. 본작업 착수 지시는 없다.\n\n## 전달사항 참조\n- 부모 Issue: #72\n- 적용 전달본·식별·확정 근거: work/records/harness/issue-72/artifacts/task-001-assignment.md · r001 · 부모 issue.md#live-registration-validation의 사용자 요청.\n- 담당 결과·범위·완료 조건: 실제 Task 생성과 부모 연결, 번호·URL·라벨·원본/배정 참조를 확인한다. 독립 하네스 Issue 아래이므로 milestone은 설정하지 않는다.\n\n## 계획과 합의\n- 현재 합의: 생성·부모 연결 검증과 검증용 객체의 취소 종료까지 수행한다.\n- 남은 결정·전체 수행 계획: Task 본작업은 미착수이며 상세 계획은 미정이다. 실제 수행 기록은 생성하지 않는다.\n\n## 원본과 관련\n- 원본: 로컬 work/records/harness/issue-72/task-001.md (아직 원격 Git 파일로 게시하지 않음).\n- 관련 과제: #72에서 생성·등록 기준의 실제 쓰기를 검증한다. 등록 확인을 본작업 완료나 부모 전체 수용으로 처리하지 않는다.\n",
+      "labels": [
+        {
+          "name": "status:planned",
+          "color": "EDEDED",
+          "description": "예정"
+        },
+        {
+          "name": "unit:task",
+          "color": "1D76DB",
+          "description": "로컬 Task에 대응하는 실행 단위"
+        }
+      ],
+      "milestone": null
+    },
+    "local_issue_sha256": "d6d6009c60bff739870eeb1ed2df9ce35d2d4c6bc396306e6e2f545cd2932f08",
+    "local_task_sha256": "a20e354639b8650550798f796f4037cd3a1ecae12eb41f46bde7e162b7ad7be4",
+    "task_assignment_sha256": "ddfd47a7bef7fa409ec5bc45f61b56e6e4f181f5a163c77f5597220198400387",
+    "issue_stages_completed": 0,
+    "task_execution_record_created": false,
+    "parent": {
+      "id": 6374098852,
+      "number": 72,
+      "html_url": "https://github.com/Mi-no-Kim/LumiaWiki/issues/72",
+      "state": "open"
+    },
+    "parent_child_numbers": [
+      74
+    ]
+  },
+  "cleanup": {
+    "status": "verified",
+    "issue": {
+      "id": 6474138399,
+      "number": 73,
+      "html_url": "https://github.com/Mi-no-Kim/LumiaWiki/issues/73",
+      "title": "[등록 검증] Issue 생성·등록 경로 확인",
+      "state": "closed",
+      "state_reason": "not_planned",
+      "body": "<!-- registration-check:issue-72:46346b4:issue -->\n## 현재 요약\n- 상태: 취소\n- 현재 진행 위치: 검증 결과와 취소 종료\n- 다음 행동: 없음 — 등록 검증 후 취소 종료했다.\n\n## 목적과 기대 결과\n사용자 요청에 따라 Issue 생성의 실제 GitHub 발급·로컬 기록·라벨·원본 연결을 검증한다. 독립 하네스 검증용 Issue이며 제품 구현은 포함하지 않는다. 이번 객체를 실제 업무로 이어가지 않고 검증 후 취소 사유를 남겨 닫는다.\n\n## 진행 순서\n1. 입력·준비 확인: 생성 요청을 기록하며 본작업은 미착수다.\n2. 논의·결정: 미수행.\n3. Task 생성: 미수행. Task 등록은 관련 Issue #72 아래에서 별도로 검증한다.\n4. 최종 검사: 본작업 수용은 미수행. 등록 검증의 결과는 #72에서 관리한다.\n\n## 원본과 관련\n- 원본: 로컬 기록 work/records/harness/issue-73/issue.md (아직 원격 Git 파일로 게시하지 않음).\n- 관련 과제: #72의 생성·등록 기준에 대한 실제 쓰기 검증.\n\n## 검증 결과와 취소 종료\n- 실제 발급·로컬 본문·원본 연결·단위/예정 라벨을 확인했고, Task #74의 실제 부모 #72를 양방향 재조회로 확인했다.\n- 검증용 객체이며 본작업으로 이어갈 계획이 없어 취소 종료한다. 실제 등록 검증 결과는 부모/담당 #72와 로컬 근거에 보존한다.\n- 본작업의 실행·자기 수용·부모 전체 완료로 처리하지 않는다. 수행 기록은 생성하지 않았다.\n",
+      "labels": [
+        {
+          "name": "unit:issue",
+          "color": "5319E7",
+          "description": "로컬 Issue에 대응하는 과제"
+        },
+        {
+          "name": "status:cancelled",
+          "color": "6E7781",
+          "description": "목표 달성으로 처리하지 않고 취소"
+        }
+      ],
+      "milestone": null
+    },
+    "task": {
+      "id": 6474180277,
+      "number": 74,
+      "html_url": "https://github.com/Mi-no-Kim/LumiaWiki/issues/74",
+      "title": "Task 72-001 — [등록 검증] 생성·부모 연결 확인",
+      "state": "closed",
+      "state_reason": "not_planned",
+      "body": "<!-- registration-check:issue-72:46346b4:task-001 -->\n## 현재 요약\n- 상태: 취소\n- 현재 진행 위치: 취소 결과\n- 다음 행동·막힌 조건: 없음 — 등록 검증 후 취소 종료했다.\n\n## 전달사항 참조\n- 부모 Issue: #72\n- 적용 전달본·식별·확정 근거: work/records/harness/issue-72/artifacts/task-001-assignment.md · r001 · 부모 issue.md#live-registration-validation의 사용자 요청.\n- 담당 결과·범위·완료 조건: 실제 Task 생성과 부모 연결, 번호·URL·라벨·원본/배정 참조를 확인한다. 독립 하네스 Issue 아래이므로 milestone은 설정하지 않는다.\n\n## 계획과 합의\n- 현재 합의: 생성·부모 연결 검증과 검증용 객체의 취소 종료까지 수행한다.\n- 남은 결정·전체 수행 계획: Task 본작업은 미착수이며 상세 계획은 미정이다. 실제 수행 기록은 생성하지 않는다.\n\n## 원본과 관련\n- 원본: 로컬 work/records/harness/issue-72/task-001.md (아직 원격 Git 파일로 게시하지 않음).\n- 관련 과제: #72에서 생성·등록 기준의 실제 쓰기를 검증한다. 등록 확인을 본작업 완료나 부모 전체 수용으로 처리하지 않는다.\n\n## 검증 결과와 취소 종료\n- 실제 발급·로컬 본문·원본 연결·단위/예정 라벨을 확인했고, Task #74의 실제 부모 #72를 양방향 재조회로 확인했다.\n- 검증용 객체이며 본작업으로 이어갈 계획이 없어 취소 종료한다. 실제 등록 검증 결과는 부모/담당 #72와 로컬 근거에 보존한다.\n- 본작업의 실행·자기 수용·부모 전체 완료로 처리하지 않는다. 수행 기록은 생성하지 않았다.\n",
+      "labels": [
+        {
+          "name": "unit:task",
+          "color": "1D76DB",
+          "description": "로컬 Task에 대응하는 실행 단위"
+        },
+        {
+          "name": "status:cancelled",
+          "color": "6E7781",
+          "description": "목표 달성으로 처리하지 않고 취소"
+        }
+      ],
+      "milestone": null
+    },
+    "task_parent_number": 72,
+    "parent_child_numbers": [
+      74
+    ],
+    "parent": {
+      "id": 6374098852,
+      "number": 72,
+      "state": "open",
+      "labels": [
+        "unit:issue",
+        "status:in-progress"
+      ],
+      "sub_issues_summary": {
+        "total": 1,
+        "completed": 1,
+        "percent_completed": 100
+      }
+    },
+    "task_execution_record_created": false
+  },
+  "labels": [
+    {
+      "name": "status:paused",
+      "color": "D93F0B",
+      "description": "중단: 조건에 막히거나 추진을 멈춤",
+      "url": "https://api.github.com/repos/Mi-no-Kim/LumiaWiki/labels/status:paused"
+    },
+    {
+      "name": "status:cancelled",
+      "color": "6E7781",
+      "description": "목표 달성으로 처리하지 않고 취소",
+      "url": "https://api.github.com/repos/Mi-no-Kim/LumiaWiki/labels/status:cancelled"
+    }
+  ],
+  "limits": [
+    "Phase 소속과 milestone 설정은 이번 독립 하네스 경로에서 시험하지 않았다.",
+    "발급·연결 중 오류를 주입하는 실패 복구 실행은 시험하지 않았다.",
+    "Task의 상세 계획·본작업 수행·자기 완료·부모 전체 수용은 수행하지 않았다."
+  ]
+}
