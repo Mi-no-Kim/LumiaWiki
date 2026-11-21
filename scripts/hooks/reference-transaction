@@ -1,0 +1,23 @@
+#!/bin/sh
+# lumia-harness-branch-names-v1
+# inventory-dependencies: ["scripts/check-branch-names.py", "scripts/install-harness-hooks.py"]
+hook_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd) || exit 2
+original="$hook_dir/reference-transaction.harness-original"
+if [ "$OS" = 'Windows_NT' ]; then
+  python_cmd=python
+else
+  python_cmd=python3
+fi
+check_update() {
+  [ "$1" = prepared ] || return 0
+  "$python_cmd" -B -X utf8 -c __LUMIA_BRANCH_NAME_CHECKER__ reference-transaction __LUMIA_BRANCH_ARCHIVE_PIN__ "$@"
+}
+if [ -x "$original" ]; then
+  # Both hooks consume stdin. Keep its final newline when replaying the Git input.
+  input=$(cat && printf '.') || exit 2
+  input=${input%.}
+  printf '%s' "$input" | "$original" "$@" || exit $?
+  printf '%s' "$input" | check_update "$@"
+else
+  check_update "$@"
+fi

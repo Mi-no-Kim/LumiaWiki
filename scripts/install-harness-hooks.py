@@ -8,8 +8,14 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import shlex
 import shutil
 import subprocess
+
+
+BRANCH_HOOKS = ('reference-transaction', 'pre-push')
+BRANCH_CHECKER_MARKER = b'__LUMIA_BRANCH_NAME_CHECKER__'
+BRANCH_ARCHIVE_MARKER = b'__LUMIA_BRANCH_ARCHIVE_PIN__'
 
 
 def sha(data):
@@ -42,13 +48,52 @@ def location(root):
     return directory
 
 
+def source_checkout(root, requested):
+    if requested is None:
+        return root
+    source = requested.resolve(strict=True)
+    top = Path(git(source, 'rev-parse', '--show-toplevel')).resolve()
+    if source != top:
+        raise ValueError('The source must be the top level of a Git worktree')
+    target_common = Path(git(root, 'rev-parse', '--path-format=absolute', '--git-common-dir')).resolve()
+    source_common = Path(git(top, 'rev-parse', '--path-format=absolute', '--git-common-dir')).resolve()
+    if source_common != target_common:
+        raise ValueError('The source worktree must share the target Git repository')
+    return top
+
+
+def wrapper_bytes(root, source_root, event):
+    source = source_root / 'scripts/hooks' / event
+    if source.is_symlink() or source.is_junction() or not source.is_file():
+        raise ValueError('Versioned hook definition is absent or a link')
+    wrapper = source.read_bytes().replace(b'\r\n', b'\n')
+    if event in BRANCH_HOOKS:
+        # These hooks are shared by linked worktrees, even on older checkouts.
+        checker = source_root / 'scripts/check-branch-names.py'
+        if checker.is_symlink() or checker.is_junction() or not checker.is_file():
+            raise ValueError('Branch name checker is absent or a link')
+        if wrapper.count(BRANCH_CHECKER_MARKER) != 1 or wrapper.count(BRANCH_ARCHIVE_MARKER) != 1:
+            raise ValueError('Branch hook placeholders must each occur once')
+        archive = subprocess.run([sys.executable, '-B', '-X', 'utf8', str(checker), 'archive-pin'],
+                                 cwd=root, capture_output=True, timeout=15)
+        if archive.returncode:
+            raise ValueError(archive.stderr.decode('utf-8').strip() or 'Could not inspect the local archive')
+        pin = shlex.quote(archive.stdout.decode('utf-8').strip()).encode('utf-8')
+        payload = shlex.quote(checker.read_text(encoding='utf-8')).encode('utf-8')
+        wrapper = wrapper.replace(BRANCH_ARCHIVE_MARKER, pin).replace(BRANCH_CHECKER_MARKER, payload)
+    return wrapper
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--hook', choices=('pre-commit', 'commit-msg'), default='pre-commit')
+    parser.add_argument('--hook', choices=('pre-commit', 'commit-msg', *BRANCH_HOOKS), default='pre-commit')
+    parser.add_argument('--source-worktree', type=Path, help='Read branch hook sources from a linked worktree')
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument('--status', action='store_true')
     mode.add_argument('--remove', action='store_true')
     args = parser.parse_args()
+    if args.source_worktree is not None and args.hook not in BRANCH_HOOKS:
+        parser.error('--source-worktree is supported only for branch hooks')
     try:
         root = Path(git(Path.cwd(), 'rev-parse', '--show-toplevel')).resolve()
         directory = location(root)
@@ -83,10 +128,7 @@ def main():
             return 0
         if backup.exists():
             raise ValueError('Unowned original-hook backup exists; nothing overwritten')
-        source = root / 'scripts/hooks' / args.hook
-        if source.is_symlink() or source.is_junction() or not source.is_file():
-            raise ValueError('Versioned hook definition is absent or a link')
-        wrapper = source.read_bytes().replace(b'\r\n', b'\n')
+        wrapper = wrapper_bytes(root, source_checkout(root, args.source_worktree), args.hook)
         if hook.is_file() and hook.read_bytes().replace(b'\r\n', b'\n') == wrapper:
             raise ValueError('Unowned inventory wrapper exists; do not nest it')
         original = sha(hook.read_bytes()) if hook.exists() else None
