@@ -8,13 +8,15 @@ Exit codes: 0 matches, 1 mismatch, 2 unconfirmed input/source.
 """
 
 import argparse
+import json
 from pathlib import Path
 import re
 import subprocess
 import sys
 
 
-STATES = ("예정", "진행 중", "검증 중", "대기", "보류", "완료", "취소")
+STATES = ("예정", "진행 중", "중단", "완료", "취소")
+LEGACY_STATES = ("예정", "진행 중", "검증 중", "대기", "보류", "완료", "취소")
 TASK_PATH = re.compile(
     r"work/records/(?:phase-[0-9]+/issue-[0-9]+|issues/issue-[0-9]+|"
     r"harness/issue-[0-9]+)/task-[0-9]+\.md"
@@ -34,7 +36,7 @@ def staged_state(repo, task):
         text = subprocess.run(
             ["git", "-C", root, "show", ":" + task],
             check=True, capture_output=True,
-        ).stdout.decode("utf-8")
+        ).stdout.decode("utf-8").replace("\r\n", "\n")
     except (OSError, subprocess.CalledProcessError, UnicodeError) as error:
         raise ValueError("Git 인덱스의 Task를 읽을 수 없습니다; 경로·스테이징·충돌을 확인하세요") from error
     summaries = re.findall(
@@ -43,8 +45,21 @@ def staged_state(repo, task):
     )
     if len(summaries) != 1:
         raise ValueError("현재 요약 구역이 없거나 중복되어 상태를 확정할 수 없습니다")
-    states = re.findall(r"^- 상태:\s*(.*?)\s*$", summaries[0], flags=re.MULTILINE)
-    if len(states) != 1 or states[0] not in STATES:
+    states = re.findall(r"^- 상태:[ \t]*([^\r\n]*?)[ \t]*$", summaries[0], flags=re.MULTILINE)
+    policy = subprocess.run(["git", "-C", root, "show", ":harness/rule-comments.json"], capture_output=True)
+    if policy.returncode not in (0, 128):
+        raise ValueError("인덱스의 상태 적용 기준을 확인할 수 없습니다")
+    legacy = policy.returncode == 128
+    if not legacy:
+        try:
+            data = json.loads(policy.stdout.decode("utf-8-sig"))
+            if data.get("schema") != 1 or not isinstance(data.get("legacyRecords"), list):
+                raise ValueError("미지원 상태 적용 기준")
+            legacy = task in data["legacyRecords"]
+        except (UnicodeError, json.JSONDecodeError, AttributeError, ValueError) as error:
+            raise ValueError("상태 적용 기준을 읽을 수 없습니다") from error
+    supported = LEGACY_STATES if legacy else STATES
+    if len(states) != 1 or states[0] not in supported:
         raise ValueError("현재 요약의 상태가 없거나 중복·미지원 값입니다")
     return states[0]
 
@@ -53,7 +68,7 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--repo", type=Path, default=Path.cwd())
     parser.add_argument("--task", required=True, help="저장소 상대 Task 경로")
-    parser.add_argument("--expect-state", required=True, choices=STATES,
+    parser.add_argument("--expect-state", required=True, choices=tuple(dict.fromkeys(STATES + LEGACY_STATES)),
                         help="기존 수용 판단에서 정한 상태; 이 검사는 수용을 판단하지 않음")
     args = parser.parse_args(argv)
     try:

@@ -4,6 +4,7 @@ name: Harness inventory
   push:
     branches: [main]
   pull_request:
+    types: [opened, synchronize, reopened, edited, ready_for_review]
   workflow_dispatch:
 
 permissions:
@@ -17,12 +18,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-24.04, windows-latest]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-          fetch-depth: 2
+          fetch-depth: 0
           sparse-checkout-cone-mode: false
           sparse-checkout: |
             /.agents/skills/
@@ -58,6 +59,15 @@ jobs:
       - run: npm ci --ignore-scripts --no-audit --no-fund
       - name: Check exact committed inventory
         run: python -B -X utf8 scripts/check-harness-inventory.py --candidate HEAD
+      - name: Check incoming messages and PR text
+        shell: python
+        run: |
+          import os
+          import subprocess
+          import sys
+          subprocess.run([sys.executable, '-B', '-X', 'utf8', 'scripts/check-github-closing.py',
+                          '--event-file', os.environ['GITHUB_EVENT_PATH'],
+                          '--event-name', os.environ['GITHUB_EVENT_NAME']], check=True)
       - name: Prepare parent document blobs
         run: python -B -X utf8 scripts/quality/record-base.py
       - name: Check changed work records

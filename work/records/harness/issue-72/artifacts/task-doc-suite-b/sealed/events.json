@@ -1,0 +1,103 @@
+{
+  "sample-a": [
+    {
+      "id": "selection",
+      "kind": "choice",
+      "value": "A",
+      "reason": "짧은 안내로 링크 용도를 알린다."
+    }
+  ],
+  "sample-b": [],
+  "sample-c": [],
+  "sample-d": [],
+  "sample-e": [
+    {
+      "id": "method",
+      "kind": "choice",
+      "value": "manual",
+      "reason": "두 파일에서 추가 환경 없이 경로·표식을 대조한다."
+    }
+  ],
+  "sample-f": [
+    {
+      "id": "supply",
+      "kind": "supply",
+      "files": {
+        "guide.md": "# 기록 안내\n\n<a id=\"recording\"></a>\n## 기록 방법\n\nTask 본문은 현재 상태와 계획을 관리합니다.\n자세한 수행 내용은 별도 수행 기록에 남깁니다.\n"
+      }
+    }
+  ],
+  "sample-g": [],
+  "sample-h": [
+    {
+      "id": "extra",
+      "kind": "request",
+      "value": "아직 고르지 않겠다. 처음 읽는 사람과 반복 사용자의 관점에서 더 비교해 달라."
+    },
+    {
+      "id": "selection",
+      "kind": "choice",
+      "value": "A",
+      "reason": "짧은 안내로 링크 용도를 알린다."
+    }
+  ],
+  "sample-i": [
+    {
+      "id": "revision",
+      "kind": "revise",
+      "revision": "r002",
+      "assignment_name": "assignment-r002.md",
+      "assignment_text": "# 시험용 전달사항\n\n- 태그: 조사, 논의, 결정, 실행, 검수\n\n## 목적\n\n두 문서를 함께 정리하고 상세 원문의 첫 문장을 개정한다.\n\n## 기대 결과\n\n두 문서를 함께 정리하고 상세 원문의 첫 문장을 개정한다.\n\n## 이미 정해진 조건\n\n이 문서의 허용 대상·선행 입력·완료 조건을 따른다. 모의 사용자 사건은 실제 사용자 승인으로 쓰지 않는다.\n\n## Task에서 결정할 사항\n\n주어진 선택·위임 범위 안에서 판단하고 미제공 결정은 만들지 않는다.\n\n## 완료 조건과 확인 방법\n\n다음 조건 정의를 실제 파일·선택 근거와 대조한다. 생성 입력의 사본을 Task 현재 값으로 바꾸지 않는다.\n\n```json\n{\n  \"allowed_writes\": [\n    \"start.md\",\n    \"guide.md\"\n  ],\n  \"required_sources\": [\n    \"guide.md\"\n  ],\n  \"criteria\": [\n    {\n      \"id\": \"link\",\n      \"kind\": \"links\",\n      \"path\": \"start.md\"\n    },\n    {\n      \"id\": \"layout\",\n      \"kind\": \"equals\",\n      \"path\": \"start.md\",\n      \"value\": \"# 시작 안내\\n\\n작업 상태와 상세 기록의 작성 방법을 확인하세요.\\n\\n[기록 방법 보기](guide.md#recording)\\n\"\n    },\n    {\n      \"id\": \"guide\",\n      \"kind\": \"equals\",\n      \"path\": \"guide.md\",\n      \"value\": \"# 기록 안내\\n\\n<a id=\\\"recording\\\"></a>\\n## 기록 방법\\n\\nTask 본문에는 현재 상태·계획·유효한 결정을 정리합니다.\\n자세한 수행 내용은 별도 수행 기록에 남깁니다.\\n\"\n    },\n    {\n      \"id\": \"choice\",\n      \"kind\": \"choice\",\n      \"value\": \"A\"\n    }\n  ]\n}\n```\n",
+      "parent_policy": {
+        "criteria": [
+          {
+            "id": "child-result",
+            "kind": "task_complete"
+          },
+          {
+            "id": "link",
+            "kind": "links",
+            "path": "start.md"
+          },
+          {
+            "id": "layout",
+            "kind": "equals",
+            "path": "start.md",
+            "value": "# 시작 안내\n\n작업 상태와 상세 기록의 작성 방법을 확인하세요.\n\n[기록 방법 보기](guide.md#recording)\n"
+          },
+          {
+            "id": "guide",
+            "kind": "equals",
+            "path": "guide.md",
+            "value": "# 기록 안내\n\n<a id=\"recording\"></a>\n## 기록 방법\n\nTask 본문에는 현재 상태·계획·유효한 결정을 정리합니다.\n자세한 수행 내용은 별도 수행 기록에 남깁니다.\n"
+          },
+          {
+            "id": "choice",
+            "kind": "choice",
+            "value": "A"
+          }
+        ]
+      }
+    },
+    {
+      "id": "selection",
+      "kind": "choice",
+      "value": "A",
+      "reason": "짧은 안내로 링크 용도를 알린다."
+    }
+  ],
+  "sample-j": [],
+  "sample-k": [],
+  "sample-l": [],
+  "sample-m": [],
+  "sample-n": [
+    {
+      "id": "cancel",
+      "kind": "cancel",
+      "value": "이 Task는 여기서 취소하자. 최종 안내 방식과 대체 작업은 아직 정하지 않았다."
+    }
+  ],
+  "sample-o": [],
+  "sample-p": [],
+  "sample-q": []
+}

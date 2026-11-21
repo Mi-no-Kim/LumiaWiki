@@ -1,0 +1,37 @@
+{
+  "goal": "시작 안내의 링크·중복을 정리하고 선택·확인 근거를 남긴다.",
+  "result": "시작 안내의 링크·중복을 정리하고 선택·확인 근거를 남긴다.",
+  "acceptance": [
+    {
+      "id": "link",
+      "kind": "links",
+      "path": "start.md"
+    },
+    {
+      "id": "layout",
+      "kind": "equals",
+      "path": "start.md",
+      "value": "# 시작 안내\n\n작업 상태와 상세 기록의 작성 방법을 확인하세요.\n\n[기록 방법 보기](guide.md#recording)\n"
+    },
+    {
+      "id": "guide",
+      "kind": "equals",
+      "path": "guide.md",
+      "value": "# 기록 안내\n\n<a id=\"recording\"></a>\n## 기록 방법\n\nTask 본문은 현재 상태와 계획을 관리합니다.\n자세한 수행 내용은 별도 수행 기록에 남깁니다.\n"
+    },
+    {
+      "id": "choice",
+      "kind": "choice",
+      "value": "A"
+    }
+  ],
+  "creation": null,
+  "note": "생성 입력을 확인하고 필요한 보완을 반환한다. 다른 원천에 누락된 답은 없다.",
+  "expected_before": {
+    "start.md": "# 시작 안내\n\nTask 본문은 현재 상태와 계획을 관리합니다.\n자세한 수행 내용은 별도 수행 기록에 남깁니다.\n\n[기록 방법 보기](guide.md#record)\n",
+    "guide.md": "# 기록 안내\n\n<a id=\"recording\"></a>\n## 기록 방법\n\nTask 본문은 현재 상태와 계획을 관리합니다.\n자세한 수행 내용은 별도 수행 기록에 남깁니다.\n"
+  },
+  "initial_events": [],
+  "events": [],
+  "pending": "A/B 안내 방식은 모의 사용자 역할이 결정한다."
+}

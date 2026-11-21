@@ -5,6 +5,7 @@ sys.dont_write_bytecode = True
 
 import argparse
 import difflib
+import json
 from pathlib import PurePosixPath
 import re
 import subprocess
@@ -18,12 +19,33 @@ DATED_NAME = re.compile(r'(?:^|[-_. ])' + DATE + r'(?:$|[-_. ])')
 PAYLOAD = re.compile(r'^<!--\s*(?:tdd-plan|tdd-evidence|harness-inventory)\s*-->$')
 
 
-def inspect_record(name, text, old):
+def authored_line_count(text, fixed_comments=()):
+    """Keep blank lines; omit only exact, live, standalone protected policy comments."""
+    text = text.replace('\r\n', '\n')
+    if not fixed_comments:
+        return len(text.splitlines())
+    from issue_rule_comments import live_markup
+    excluded = set()
+    fixed = set(fixed_comments)
+    for kind, block, (start, end) in live_markup(text.encode('utf-8'), with_spans=True):
+        if kind != 'comment' or block not in fixed:
+            continue
+        first = text.rfind('\n', 0, start) + 1
+        last = text.find('\n', end)
+        last = len(text) if last < 0 else last
+        if text[first:start].strip() or text[end:last].strip():
+            continue
+        excluded.update(range(text.count('\n', 0, start), text.count('\n', 0, end) + 1))
+    return len(text.splitlines()) - len(excluded)
+
+
+def inspect_record(name, text, old, fixed_comments=()):
     lines = text.splitlines()
     record = name.startswith('work/records/') and '/artifacts/' not in name and re.fullmatch(r'(?:issue|task-\d+)\.md', PurePosixPath(name).name)
     errors, warnings = [], []
-    if record and len(lines) > 100:
-        warnings.append(f'{name}: {len(lines)} lines > 100; retain necessary current decisions, move needed execution detail to artifacts.')
+    authored = authored_line_count(text, fixed_comments) if record else len(lines)
+    if record and authored > 100:
+        warnings.append(f'{name}: {authored} authored lines > 100 ({len(lines)} total; exact protected policy comments excluded); retain necessary current decisions, move needed execution detail to artifacts.')
     if old is None and name.startswith('work/records/') and DATED_NAME.search(PurePosixPath(name).stem):
         errors.append(f'{name}: record filename contains a date; use the work identifier.')
     changed = set()
@@ -62,6 +84,10 @@ def main():
         if args.candidate == 'work':
             raise ValueError('Use an exact index or committed candidate')
         view = Candidate(args.candidate)
+        policy_raw = view.read('harness/rule-comments.json')
+        policy = json.loads(policy_raw.decode('utf-8-sig')) if policy_raw is not None else {}
+        if policy:
+            from rule_comments import record_profile
         base = args.base
         if base is None:
             if args.candidate == 'index':
@@ -81,14 +107,16 @@ def main():
         errors = []
         for name in names:
             old = previous.read(name) if previous else None
-            failures, warnings = inspect_record(name, view.read(name).decode('utf-8-sig'), old.decode('utf-8-sig') if old is not None else None)
+            profile = record_profile(name) if policy else None
+            fixed_comments = list(policy.get('profiles', {}).get(profile, {}).get('comments', {}).values())
+            failures, warnings = inspect_record(name, view.read(name).decode('utf-8-sig'), old.decode('utf-8-sig') if old is not None else None, fixed_comments)
             errors.extend(failures)
             for warning in warnings:
                 print('WARNING: ' + warning, file=sys.stderr)
         for error in errors:
             print('Record violation: ' + error, file=sys.stderr)
         return 2 if errors else 0
-    except (ValueError, OSError, UnicodeError, subprocess.SubprocessError) as error:
+    except (ValueError, OSError, KeyError, TypeError, AttributeError, UnicodeError, subprocess.SubprocessError) as error:
         print('Record candidate unverified: ' + str(error).splitlines()[0], file=sys.stderr)
         return 2
 

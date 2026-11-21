@@ -10,17 +10,17 @@
 
 ## 라벨 목록
 
-| 라벨                 | 설명                             | 색상      |
-| -------------------- | -------------------------------- | --------- |
-| `unit:issue`         | 로컬 Issue에 대응하는 과제       | `#5319E7` |
-| `unit:task`          | 로컬 Task에 대응하는 실행 단위   | `#1D76DB` |
-| `status:planned`     | 예정                             | `#EDEDED` |
-| `status:in-progress` | 진행 중                          | `#0075CA` |
-| `status:verifying`   | 검증 중                          | `#FBCA04` |
-| `status:blocked`     | 구체 조건에 막혀 대기            | `#D93F0B` |
-| `status:on-hold`     | 추진을 미룬 보류                 | `#BFDADC` |
-| `status:completed`   | 자기 완료 조건 충족              | `#0E8A16` |
-| `status:cancelled`   | 목표 달성으로 처리하지 않고 취소 | `#6E7781` |
+| 라벨                 | 설명                              | 색상      |
+| -------------------- | --------------------------------- | --------- |
+| `unit:issue`         | 로컬 Issue에 대응하는 과제        | `#5319E7` |
+| `unit:task`          | 로컬 Task에 대응하는 실행 단위    | `#1D76DB` |
+| `status:planned`     | 예정                              | `#EDEDED` |
+| `status:in-progress` | 진행 중                           | `#0075CA` |
+| `status:paused`      | 중단: 조건에 막히거나 추진을 멈춤 | `#D93F0B` |
+| `status:completed`   | 자기 완료 조건 충족               | `#0E8A16` |
+| `status:cancelled`   | 목표 달성으로 처리하지 않고 취소  | `#6E7781` |
+
+기존 예외 기록의 status:verifying·status:blocked·status:on-hold는 당시 대응으로 유지한다. 이번 도입으로 기존 기록·게시물·라벨을 일괄 변경하지 않는다. 신규 기록은 위 다섯 상태 라벨을 사용하며 정의와 실제 원격 라벨 생성 여부는 구분한다.
 
 <a id="apply"></a>
 
