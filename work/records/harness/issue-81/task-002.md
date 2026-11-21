@@ -1,6 +1,6 @@
-# Task 81-002 — 브랜치 이름 검사 훅 설계
+# Task 81-002 — 브랜치 이름 검사 훅 구현과 격리 검증
 
-- 태그: 조사, 논의, 검수
+- 태그: 조사, 논의, 결정, 실행, 검수
 
 <!-- task-rule:tags
 Task 태그는 전체 활동의 요약이고 할 일 태그는 해당 행동의 표시다. 조사·논의·결정·실행·검수·커밋 중 필요한 여러 개를 쉼표로 구분한다.
@@ -50,10 +50,10 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #84](https://github.co
 상태의 상세 의미·전환과 종료 판단은 공통 절차를 따른다.
 -->
 
-- 상태: 예정
-- 현재 진행 위치: [계획과 합의](#decisions)
-- 다음 행동: 브랜치 생성·전송에 대한 검사 범위와 설계 검토 계획을 확정한다.
-- 막힌 조건: 훅 구현·설치는 채택 여부와 적용 범위, 착수 합의 후 진행할 수 있다. [계획과 합의](#decisions)
+- 상태: 완료
+- 현재 진행 위치: [실제 저장소 훅 적용과 확인](#work-branch-hook-live-install)
+- 다음 행동: 없음. 제출과 상위 반영은 [부모 Issue](issue.md#step-3)에서 확인한다.
+- 막힌 조건: 없음.
 
 <a id="assignment"></a>
 
@@ -67,9 +67,9 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #84](https://github.co
 -->
 
 - 부모 Issue: [Issue #81](issue.md#summary)
-- 적용 전달본: [브랜치 이름 검사 훅 설계](artifacts/task-002-assignment.md)
-- 전달본 식별: `r001`
-- 기준 기록: [브랜치 이름 검사 훅 배정](issue.md#branch-hook-assignment)
+- 적용 전달본: [브랜치 이름 검사 훅 실제 적용](artifacts/task-002-assignment-r003.md)
+- 전달본 식별: `r003`
+- 기준 기록: [실제 적용 완료 조건 합의](issue.md#branch-hook-assignment-r003)
 
 <a id="sequence"></a>
 
@@ -90,11 +90,11 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #84](https://github.co
 사용자 확인 조건에 도달하면 관련 실행 전에 확인하고 통상적인 조정마다 재승인을 요구하지 않는다.
 -->
 
-- 대상·준비: [브랜치 관리 기준](<../../../../docs/details/git/브랜치 관리 기준.md#branches>)과 부모 Issue의 훅 검토 범위를 사용한다. Task 작업 브랜치는 미생성이다.
-- 현재 합의: 확정된 배정은 검사 방안 검토다. 아래 전체 수행 계획은 제안이며, 첫 할 일 착수 전에 합의한다. 훅 구현·설치는 적용 결정과 별도 착수 합의에 따른다.
-- 남은 결정: 정상 브랜치 생성·전송과 보존 예외를 지킬 수 있는지 대조한다. 사용자가 검토 결과를 보고 훅 채택 여부와 적용 범위를 결정한다.
-- Task 전체 확인: 제안한 검사 범위와 검증 계획을 전달본의 완료 조건에 대조하고, 사용자 결정 및 남은 조건을 기록한다.
-- 수행 기록: 미생성 — `artifacts/task-002-execution.md` 예정
+- 대상·준비: 부모 `63c0521`에서 `task/81-002-branch-name-hooks`를 분기했다. [브랜치 관리 기준](<../../../../docs/details/git/브랜치 관리 기준.md#branches>)과 [개정 배정](issue.md#branch-hook-assignment-r003)을 적용한다.
+- 현재 합의: 로컬 생성·이름 변경 및 원격 전송 대상에 동일한 이름 규칙과 `codex` 금지를 적용한다. 기존 로컬 백업을 보호하고 별칭 전송도 거부한다. 사용자는 기본 Git 이름 변경의 훅 한계를 확인하고 검사 명령 `rename`·`copy`를 쓰는 방식을 채택했다. [채택 근거](artifacts/task-002-execution.md#work-branch-hook-implementation)
+- 남은 결정: 없음. 사용자가 실제 설치를 승인했고 공용 훅 경로에서 확인했다.
+- Task 전체 확인: 격리 저장소의 검증과 현황 지문을 대조한다. 실제 복제본의 두 설치본과 허용·거부 동작을 확인하고, 기존 훅과 로컬 백업의 설치 전후 상태를 확인한 다음 Task를 수용한다.
+- 수행 기록: [격리 검증 기록](artifacts/task-002-execution.md#work-branch-hook-implementation)
 
 <a id="execution-plan"></a>
 
@@ -115,11 +115,31 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #84](https://github.co
 
 #### 브랜치 이름 검사 범위 비교와 채택 논의
 
-- 태그: 조사, 논의, 검수
-- [ ] 수행·확인 완료
+- 태그: 조사, 논의, 결정, 검수
+- [x] 수행·확인 완료
 - 할 일: 로컬 생성과 원격 전송의 검사 지점을 비교한다. 기존 브랜치와 보존 예외 처리, 검증 사례를 정리하고 사용자와 채택 여부와 범위를 논의한다.
 - 확인: 저장소 이름 규칙과 검사 사례가 대응하고 사용자 결정의 근거가 기록됐는지 확인한다.
-- 수행 기록: 미착수 · `artifacts/task-002-execution.md#work-branch-hook-design` 예정
+- 수행 기록: [사용자 결정과 적용 범위](artifacts/task-002-execution.md#work-branch-hook-design)
+
+<a id="work-branch-hook-implementation"></a>
+
+#### 브랜치 이름 검사 훅 구현과 격리 검증
+
+- 태그: 실행, 검수
+- [x] 수행·확인 완료
+- 할 일: 로컬 이름 및 원격 전송 검사를 구현하고 설치 진입점·훅 현황·브랜치 기준을 맞춘다.
+- 확인: 독립 로컬 저장소와 전송 대상 저장소에서 두 훅, 원래 훅 연동 및 복구, 정책 위반 시 참조 보존을 확인한다.
+- 수행 기록: [훅 구현과 격리 검증](artifacts/task-002-execution.md#work-branch-hook-implementation)
+
+<a id="work-branch-hook-live-install"></a>
+
+#### 실제 저장소 훅 적용과 확인
+
+- 태그: 실행, 검수
+- [x] 수행·확인 완료
+- 할 일: 같은 Git 디렉터리를 공유하는 Task 작업 트리의 검수한 후보를 기본 체크아웃에서 실행해 이 복제본의 공용 `.git/hooks`에 설치한다. 기본 체크아웃을 포함한 워크트리 10개가 공용 경로를 사용한다.
+- 확인: 설치본의 상태를 조회하고 실제 훅 경로로 정상 입력과 금지 입력을 확인한다. 기존 훅과 백업 참조가 보존됐는지 대조하고 실패 시 복구한다.
+- 수행 기록: [실제 설치 및 로컬 검사](artifacts/task-002-execution.md#work-branch-hook-live-install)
 
 <a id="result"></a>
 
@@ -132,6 +152,6 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #84](https://github.co
 중단·취소·인계 시에는 실제 상태·이유·영향·보존 결과·잔여·해소/재개 조건과 다음 행동을 남긴다.
 -->
 
-- 내용: 미착수
-- 확인: 미수행
-- 잔여: 전체 계획 합의와 검사 방안 검토.
+- 내용: 브랜치 이름·푸시 훅과 검사 후 이름 변경·복사 명령을 구현했다. 승인된 실제 복제본의 공용 경로에 두 훅을 설치했다.
+- 확인: 격리 회귀 8개와 [실제 설치본 검사 6개](artifacts/task-002-execution.md#work-branch-hook-live-install)가 통과했다. 기존 훅, 백업 참조와 검사 전 로컬 참조 상태를 보존했다. 기본 Git 이름 변경의 제한을 확인했고 검사 명령을 채택했다.
+- 잔여: 상위 반영 상태는 [부모 Issue](issue.md#step-3)에서 확인한다.
