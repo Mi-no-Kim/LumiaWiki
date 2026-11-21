@@ -8,8 +8,8 @@
 - 구상상 구분: P1
 - GitHub milestone: [Mi-no-Kim/LumiaWiki #1](https://github.com/Mi-no-Kim/LumiaWiki/milestone/1)
 - 상태: 진행 중
-- 현재 진행 위치: 계획 Issue #15와 기반 #42는 완료했다. [Issue #43](issue-43/issue.md#summary)의 Task 001은 완료했고 공통 8개 표/Java 구현·격리 검증 뒤 승인한 로컬에 적용했으며 단위 30·통합 11건을 통과했다. [결과](https://github.com/Mi-no-Kim/LumiaWiki/blob/9b8773ed5a26b799eac971ea8fe60949e14c4d0a/work/records/phase-001/issue-43/artifacts/task-001-creation.md#current)를 따른다. Task 002~004·Issue #44~#48과 Phase 수용은 남아 있으며 실제 자료 작업은 계속 보류한다.
-- 다음 판단/행동: main을 반영한 Phase `72c27a11dcb878c945914992ae2054125d8bba73`를 Issue #43에 결합·검수한 뒤 Task 43-002(#68)의 상세 설계 논의를 재개한다. 실제 게임 자료 작업과 DB 접속·변경·통합 시험은 하지 않는다.
+- 현재 진행 위치: 계획 Issue #15와 기반 #42는 완료했다. [Issue #43](issue-43/issue.md#summary)의 Task 001은 완료했고 공통 8개 표/Java 구현·격리 검증 뒤 승인한 로컬에 적용했으며 단위 30·통합 11건을 통과했다. [결과](https://github.com/Mi-no-Kim/LumiaWiki/blob/9b8773ed5a26b799eac971ea8fe60949e14c4d0a/work/records/phase-001/issue-43/artifacts/task-001-creation.md#current)를 따른다. [Task 43-002](issue-43/task-002.md#result)는 V2·V3 저장·조회 구현, 격리 검증과 계약 인계를 완료했다. 003~004·Issue #44~#48과 Phase 수용은 남았으며 실제 자료 작업은 보류한다.
+- 다음 판단/행동: [완료한 Task 43-002](issue-43/task-002.md#result)의 부모 통합을 확인한다. 실제 자료 등록은 보류한다.
 
 <a id="upstream-main-integration"></a>
 
@@ -48,7 +48,7 @@
 - 시즌·버전·지역과 시즌 1·v1.0.0의 아이템 기본 정보·분류·능력치·스킬·조합·획득·배달 정보를 등록한다. 정보 항목과 규칙은 [아이템 요구](https://github.com/Mi-no-Kim/LumiaWiki/blob/9b8773ed5a26b799eac971ea8fe60949e14c4d0a/docs/details/product/%EC%95%84%EC%9D%B4%ED%85%9C%20%ED%83%90%EC%83%89%EA%B3%BC%20%EC%83%81%EC%84%B8.md#item-information)와 [공통 데이터 요구](https://github.com/Mi-no-Kim/LumiaWiki/blob/9b8773ed5a26b799eac971ea8fe60949e14c4d0a/docs/details/product/%EA%B2%8C%EC%9E%84%20%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B3%80%EA%B2%BD%20%EA%B4%80%EB%A6%AC.md#season-information)를 따른다.
 - 무기 종류는 초기부터 별도 대상으로 두고 아이템 종류 계층과 연결한다. 역할과 DB 설계로 넘긴 관계의 세부는 [분류 요구](https://github.com/Mi-no-Kim/LumiaWiki/blob/9b8773ed5a26b799eac971ea8fe60949e14c4d0a/docs/details/product/%EC%95%84%EC%9D%B4%ED%85%9C%20%ED%83%90%EC%83%89%EA%B3%BC%20%EC%83%81%EC%84%B8.md#classification)를 따르며, 캐릭터·무기 스킬 기능 자체를 P1에 추가하는 결정은 아니다.
 - 아이템 중심 버전 관리로 기준 자료와 과거 상태를 보존한다. 독립 관리 전환 조건과 별도 사냥 대상의 후속 설계는 [담당 Task](issue-15/task-001.md#version-strategy)에서 연결한다.
-- 아이템 스킬은 대상·버전·연결별 JSON의 저장과 설명 텍스트 표시까지 지원한다. 수식 계산과 외부 조건 처리는 후속 단계로 둔다.
+- 아이템 스킬은 스킬 대상·지정 버전·아이템 버전·기준 패치의 연결과 지정 스킬 버전의 설명 원문을 보존한다. P1 상세는 스킬 설명을 표시하며, 연결에는 계산용 구조를 도입하기 전까지 쓸 [임시 표시 설명](issue-43/artifacts/task-002-execution.md#item-skill-link-description)을 둔다. 계산용 연결 JSON의 설계·저장·검증은 [P3](../phase-003/phase.md#goal)에서 다룬다.
 
 <a id="agreed-search-detail-scope"></a>
 
