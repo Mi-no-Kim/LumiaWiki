@@ -2,6 +2,7 @@ package io.github.minokim.lumiawiki.catalog;
 
 import io.github.minokim.lumiawiki.common.api.ApiFailure;
 import java.util.Map;
+import java.util.function.Function;
 import org.hibernate.exception.ConstraintViolationException;
 
 public final class CatalogErrors {
@@ -36,15 +37,46 @@ public final class CatalogErrors {
           Map.entry("uq_region_map_member_order", new Expected("23505", "regions")),
           Map.entry("ck_region_map_member_order", new Expected("23514", "regions")),
           Map.entry("fk_region_map_member_map", new Expected("23503", "mapVersionId")),
-          Map.entry("fk_region_map_member_region", new Expected("23503", "regionId")));
+          Map.entry("fk_region_map_member_region", new Expected("23503", "regionId")),
+          Map.entry("uq_item_version_item_patch", new Expected("23505", "fromGamePatchId")),
+          Map.entry("fk_item_version_item", new Expected("23503", "itemId")),
+          Map.entry("fk_item_version_patch", new Expected("23503", "fromGamePatchId")),
+          Map.entry("fk_item_version_category", new Expected("23503", "categoryId")),
+          Map.entry("fk_item_version_grade", new Expected("23503", "gradeId")),
+          Map.entry("ck_item_version_equipment_slot", new Expected("23514", "equipmentSlot")),
+          Map.entry("ck_item_version_max_stack_size", new Expected("23514", "maxStackSize")),
+          Map.entry("ck_item_version_name", new Expected("23514", "name")),
+          Map.entry("uq_item_stat_version_type", new Expected("23505", "stats")),
+          Map.entry("fk_item_stat_type", new Expected("23503", "stats")),
+          Map.entry("ck_item_stat_finite", new Expected("23514", "stats")),
+          Map.entry("uq_stat_type_name", new Expected("23505", "name")),
+          Map.entry("uq_stat_type_order", new Expected("23505", "sortOrder")),
+          Map.entry("ck_stat_type_name", new Expected("23514", "name")),
+          Map.entry(
+              "uq_item_skill_definition_version_start_patch",
+              new Expected("23505", "fromGamePatchId")),
+          Map.entry("fk_item_skill_definition_version_owner", new Expected("23503", "skillId")),
+          Map.entry(
+              "fk_item_skill_definition_version_patch", new Expected("23503", "fromGamePatchId")),
+          Map.entry("ck_item_skill_definition_version_name", new Expected("23514", "internalName")),
+          Map.entry(
+              "ck_item_skill_definition_version_description", new Expected("23514", "description")),
+          Map.entry("uq_item_version_skill_link_item_definition", new Expected("23505", "skills")),
+          Map.entry(
+              "fk_item_version_skill_link_definition_version", new Expected("23503", "skills")));
 
   public static RuntimeException translate(RuntimeException failure) {
+    return translate(failure, ApiFailure::invalidInput);
+  }
+
+  static RuntimeException translate(
+      RuntimeException failure, Function<String, ApiFailure> invalidInput) {
     for (Throwable cause = failure; cause != null; cause = cause.getCause()) {
       if (cause instanceof ConstraintViolationException violation) {
         String constraint = violation.getConstraintName();
         Expected expected = constraint == null ? null : EXPECTED.get(constraint);
         if (expected != null && expected.state().equals(violation.getSQLState()))
-          return ApiFailure.invalidInput(expected.field());
+          return invalidInput.apply(expected.field());
       }
     }
     // LW001, unknown constraints, programming and infrastructure failures remain internal errors.
