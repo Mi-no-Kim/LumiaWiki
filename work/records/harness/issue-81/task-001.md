@@ -50,9 +50,9 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #82](https://github.co
 상태의 상세 의미·전환과 종료 판단은 공통 절차를 따른다.
 -->
 
-- 상태: 예정
-- 현재 진행 위치: [확정 전달사항](#assignment)을 대조했고 GitHub #82의 부모 연결을 확인했다.
-- 다음 행동: Task 브랜치를 분기해 Ubuntu 러너를 수정한다.
+- 상태: 진행 중
+- 현재 진행 위치: [Ubuntu 러너 변경](artifacts/task-001-execution.md#work-ubuntu-runner)을 준비했다.
+- 다음 행동: 검수와 커밋 뒤 GitHub Actions 결과를 확인한다.
 - 막힌 조건: 병합과 브랜치 이름 검사 훅 구현은 후속 범위다.
 
 <a id="assignment"></a>
@@ -90,11 +90,11 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #82](https://github.co
 사용자 확인 조건에 도달하면 관련 실행 전에 확인하고 통상적인 조정마다 재승인을 요구하지 않는다.
 -->
 
-- 대상·준비: 원격 main `77bc422`의 `.github/workflows/harness-inventory.yml`. GitHub #82 등록·부모 연결이 끝났으며 Task 브랜치 분기를 준비한다.
+- 대상·준비: 원격 main `77bc422`의 `.github/workflows/harness-inventory.yml`. GitHub #82의 부모 연결을 확인했고 `task/81-001-ubuntu-ci`에서 수행한다.
 - 현재 합의: 사용자가 Ubuntu 24.04 사용과 CI 변경 분리를 승인했다. Python·Windows·실행 조건은 유지한다. 준비된 수정 후보를 대조하고 검수·커밋 뒤 GitHub 검사를 확인한다.
 - 남은 결정: 없음.
 - Task 전체 확인: main 대비 러너 설정의 변경 범위와 GitHub Actions의 Ubuntu·Windows 결과를 대조한다.
-- 수행 기록: 미생성 — `artifacts/task-001-execution.md` 예정 경로.
+- 수행 기록: [Ubuntu 실행 기록](artifacts/task-001-execution.md#work-ubuntu-runner).
 
 <a id="execution-plan"></a>
 
@@ -119,7 +119,7 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #82](https://github.co
 - [ ] 수행·확인 완료
 - 할 일: Ubuntu를 24.04로 교체하고 나머지 설정을 대조한다. 후보를 자체·별도 검수하고 커밋해 GitHub 검사를 확인한다.
 - 확인: 원격 main 대비 한 줄의 환경 변경과 GitHub Actions 결과를 확인한다.
-- 수행 기록: 미착수 — `artifacts/task-001-execution.md#work-ubuntu-runner` 예정.
+- 수행 기록: [환경 변경과 확인](artifacts/task-001-execution.md#work-ubuntu-runner).
 
 <a id="result"></a>
 
@@ -132,6 +132,6 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #82](https://github.co
 중단·취소·인계 시에는 실제 상태·이유·영향·보존 결과·잔여·해소/재개 조건과 다음 행동을 남긴다.
 -->
 
-- 내용: 미수행.
-- 확인: 미수행.
-- 잔여: Ubuntu 실행과 검증이 남았다.
+- 내용: Ubuntu 러너를 24.04로 고정했다.
+- 확인: 원격 main 기준으로 러너 설정 한 줄만 바뀌었다.
+- 잔여: 최종 후보 검수와 원격 실행 결과 확인이 남았다.
