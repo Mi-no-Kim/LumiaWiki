@@ -51,9 +51,9 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #82](https://github.co
 -->
 
 - 상태: 완료
-- 현재 진행 위치: [Ubuntu 러너 변경과 GitHub 검사](artifacts/task-001-execution.md#work-ubuntu-runner)를 완료했다.
-- 다음 행동: [초안 PR #83](https://github.com/Mi-no-Kim/LumiaWiki/pull/83)의 부모 반영 여부는 별도로 판단한다.
-- 막힌 조건: 병합과 브랜치 이름 검사 훅 구현은 후속 범위다.
+- 현재 진행 위치: [Ubuntu 러너 변경과 GitHub 검사](artifacts/task-001-execution.md#work-ubuntu-runner)
+- 다음 행동: 없음. 상위 반영은 [PR #83](https://github.com/Mi-no-Kim/LumiaWiki/pull/83)에서 확인한다.
+- 막힌 조건: 없음.
 
 <a id="assignment"></a>
 
@@ -91,7 +91,7 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #82](https://github.co
 -->
 
 - 대상·준비: 원격 main `77bc422`의 `.github/workflows/harness-inventory.yml`. GitHub #82의 부모 연결을 확인했고 `task/81-001-ubuntu-ci`에서 수행한다.
-- 현재 합의: 사용자가 Ubuntu 24.04 사용과 CI 변경 분리를 승인했다. Python·Windows·실행 조건은 유지한다. 준비된 수정 후보를 대조하고 검수·커밋 뒤 GitHub 검사를 확인한다.
+- 현재 합의: 사용자가 Ubuntu 24.04 사용과 CI 변경 분리를 승인했다. Python·Windows·실행 조건은 유지한다. 사용자는 최신 PR의 Ubuntu·Windows 검사 통과 후 부모 Issue 브랜치에 병합하도록 승인했다.
 - 남은 결정: 없음.
 - Task 전체 확인: main 대비 러너 설정의 변경 범위와 GitHub Actions의 Ubuntu·Windows 결과를 대조한다.
 - 수행 기록: [Ubuntu 실행 기록](artifacts/task-001-execution.md#work-ubuntu-runner).
@@ -134,4 +134,4 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #82](https://github.co
 
 - 내용: Ubuntu 러너를 24.04로 고정했다.
 - 확인: 원격 main 기준 러너 한 줄만 바뀌었고, [Ubuntu·Windows 검사](https://github.com/Mi-no-Kim/LumiaWiki/actions/runs/44907041862)가 통과했다.
-- 잔여: PR #83은 초안으로 유지하며 부모 통합은 보류한다.
+- 잔여: Task 자체 검증은 완료했다. 최종 검사 및 상위 반영 결과는 [PR #83](https://github.com/Mi-no-Kim/LumiaWiki/pull/83)에서 확인한다.
