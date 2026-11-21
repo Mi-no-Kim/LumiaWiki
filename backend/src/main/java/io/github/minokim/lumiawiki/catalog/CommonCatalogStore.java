@@ -65,16 +65,12 @@ public class CommonCatalogStore {
     return locked(RegionMapVersion.class, id);
   }
 
-  private <T> Optional<T> locked(Class<T> type, Long id) {
+  <T extends CatalogRow> Optional<T> locked(Class<T> type, Long id) {
     return Optional.ofNullable(em.find(type, id, LockModeType.PESSIMISTIC_WRITE));
   }
 
   public void lockBasis(boolean patchWrite, boolean mapWrite) {
-    em.createNativeQuery(
-            patchWrite
-                ? "LOCK TABLE public.game_patch IN SHARE ROW EXCLUSIVE MODE"
-                : "LOCK TABLE public.game_patch IN SHARE MODE")
-        .executeUpdate();
+    lockGamePatch(patchWrite);
     em.createNativeQuery(
             mapWrite
                 ? "LOCK TABLE public.region_map_version IN SHARE ROW EXCLUSIVE MODE"
@@ -82,9 +78,40 @@ public class CommonCatalogStore {
         .executeUpdate();
   }
 
+  void lockGamePatch(boolean patchWrite) {
+    em.createNativeQuery(
+            patchWrite
+                ? "LOCK TABLE public.game_patch IN SHARE ROW EXCLUSIVE MODE"
+                : "LOCK TABLE public.game_patch IN SHARE MODE")
+        .executeUpdate();
+  }
+
+  void lockStatTypeOrder() {
+    em.createNativeQuery("LOCK TABLE public.stat_type IN SHARE ROW EXCLUSIVE MODE").executeUpdate();
+  }
+
   public void lockCategoryTree() {
     em.createNativeQuery("LOCK TABLE public.item_category IN SHARE ROW EXCLUSIVE MODE")
         .executeUpdate();
+  }
+
+  void lockStatTypesForStorage() {
+    em.createNativeQuery("LOCK TABLE public.stat_type IN SHARE MODE").executeUpdate();
+  }
+
+  List<ItemVersion> lockVersionsUsingStatType(Long statTypeId) {
+    return em.createQuery(
+            """
+            select v from ItemVersion v
+            where v.id in (
+              select s.itemVersion.id from ItemStat s where s.statType.id = :statTypeId
+            )
+            order by v.id
+            """,
+            ItemVersion.class)
+        .setParameter("statTypeId", statTypeId)
+        .setLockMode(LockModeType.PESSIMISTIC_WRITE)
+        .getResultList();
   }
 
   public List<GamePatch> lockedPatchesForSeason(Long seasonId) {
@@ -103,7 +130,10 @@ public class CommonCatalogStore {
 
   public <T extends CatalogRow> List<T> list(Class<T> type) {
     String order =
-        type == Season.class || type == GamePatch.class || type == ItemGrade.class
+        type == Season.class
+                || type == GamePatch.class
+                || type == ItemGrade.class
+                || type == StatType.class
             ? "e.sortOrder"
             : "e.id";
     return em.createQuery("select e from " + type.getSimpleName() + " e order by " + order, type)
@@ -112,6 +142,64 @@ public class CommonCatalogStore {
 
   public <T extends CatalogRow> Optional<T> find(Class<T> type, Long id) {
     return Optional.ofNullable(em.find(type, id));
+  }
+
+  Optional<Long> findItemIdByVersion(Long versionId) {
+    return em
+        .createQuery("select v.item.id from ItemVersion v where v.id = :id", Long.class)
+        .setParameter("id", versionId)
+        .getResultList()
+        .stream()
+        .findFirst();
+  }
+
+  Optional<ItemVersion> findPreviousItemVersion(Long itemId, long patchOrder) {
+    return em
+        .createQuery(
+            """
+            select v from ItemVersion v
+            where v.item.id = :itemId and v.fromGamePatch.sortOrder < :patchOrder
+            order by v.fromGamePatch.sortOrder desc
+            """,
+            ItemVersion.class)
+        .setParameter("itemId", itemId)
+        .setParameter("patchOrder", patchOrder)
+        .setMaxResults(1)
+        .getResultList()
+        .stream()
+        .findFirst();
+  }
+
+  Optional<ItemVersion> readItemVersion(Long versionId) {
+    return em
+        .createQuery(
+            """
+            select v from ItemVersion v
+            join fetch v.item
+            left join fetch v.skillLinks l
+            left join fetch l.skillVersion
+            where v.id = :id
+            """,
+            ItemVersion.class)
+        .setParameter("id", versionId)
+        .getResultList()
+        .stream()
+        .findFirst();
+  }
+
+  Optional<Long> findItemVersionWithFutureSkill() {
+    return em
+        .createQuery(
+            """
+            select l.itemVersion.id from ItemVersionSkillLink l
+            where l.skillVersion.fromGamePatch.sortOrder > l.itemVersionPatch.sortOrder
+            order by l.itemVersion.id
+            """,
+            Long.class)
+        .setMaxResults(1)
+        .getResultList()
+        .stream()
+        .findFirst();
   }
 
   /**
