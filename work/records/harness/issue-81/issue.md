@@ -31,10 +31,10 @@ Issue별 체크와 실제 기록은 이 본문에서 관리한다. 공통 문서
 현재 하려는 행동의 진행 단계나 허용 범위를 판단할 수 없으면 현재 위치는 실제 확인 구역 링크로, 다음 행동은 `미정 — 진행 단계·허용 범위 확인 필요`로 쓴다.
 공통 절차의 완료·취소·미완료 인계 처리를 마쳐 남은 행동이 없을 때만 현재 위치를 실제 종료 근거 링크로, 다음 행동을 `없음 — 같은 근거 링크`로 쓴다. 미완료 인계의 재개 행동은 유지한다. -->
 
-- 상태: 진행 중
-- 현재 진행 위치: [3. Task 생성](#step-3)
-- 다음 행동: 3번 — [Task 81-002](task-002.md#summary)의 제출 및 부모 반영 결과를 확인한다.
-- 막힌 조건: 4번 — [Task 81-002](task-002.md#summary)의 수용·제출 결과가 준비되면 최종 검사에 착수한다.
+- 상태: 완료
+- 현재 진행 위치: [검토·수용·종료 기록](#completion-review)
+- 다음 행동: 없음 — [검토·수용·종료 기록](#completion-review)
+- 막힌 조건: 없음.
 
 <a id="sequence"></a>
 
@@ -59,7 +59,7 @@ GitHub Actions의 기본 Ubuntu 이미지 변경으로 생긴 검사 실패를 �
 
 #### 기대 결과
 
-Ubuntu CI의 호스트 이미지는 24.04로 고정하고 GitHub 검사로 확인한다. 브랜치 이름 검증은 별도 검토 항목으로 다룬다.
+Ubuntu CI의 호스트 이미지를 24.04로 고정하고 GitHub 검사로 확인한다. 브랜치 이름 검사 훅을 구현해 격리 검증하고 승인된 복제본에 적용한다.
 
 <a id="conditions"></a>
 
@@ -76,7 +76,7 @@ Ubuntu CI의 호스트 이미지는 24.04로 고정하고 GitHub 검사로 확�
 - 생성 근거: 사용자 요청에 따라 Ubuntu CI 정비와 브랜치 이름 훅 논의를 하나의 독립 하네스 정비 Issue에서 관리한다.
 - GitHub Issue: [Mi-no-Kim/LumiaWiki #81](https://github.com/Mi-no-Kim/LumiaWiki/issues/81) 발급을 확인했다.
 - 대상·입력: [PR #79의 실패](https://github.com/Mi-no-Kim/LumiaWiki/actions/runs/44896193283/job/136822256502), [러너 전환 공지](https://github.com/actions/runner-images/issues/14748), 원격 main의 현황 검사 워크플로.
-- 범위·권한: Ubuntu 러너 조사·수정·검증과 독립 Issue·Task 등록이 허용됐다. 훅은 제안 검토 범위다.
+- 범위·권한: Ubuntu 러너 조사·수정·검증과 독립 Issue·Task 등록이 허용됐다. 훅 적용 범위는 [실제 적용 배정](#branch-hook-assignment-r003)을 따른다.
 - 적용 지침: [브랜치 단계와 이름](<../../../../docs/details/git/브랜치 관리 기준.md#branches>) · [작업 순서](<../../../../harness/Git 작업 절차.md#commit>).
 - 준비 근거: 원격 main `77bc422`에서 Issue 브랜치를 준비했다.
 
@@ -123,7 +123,7 @@ Issue별 최소 활동 기준과 전체 수용 조건을 기록한다. 판단 �
 
 - [x] 단계 완료
 - 공통 절차: [3. Task 생성](<../../../../harness/Issue 공통 절차.md#step-3>)
-- 진행 기록: Task 81-001 [#82](https://github.com/Mi-no-Kim/LumiaWiki/issues/82)와 Task 81-002 [#84](https://github.com/Mi-no-Kim/LumiaWiki/issues/84)의 하위 연결을 확인했다. Task 81-002의 결과를 기다린다.
+- 진행 기록: Task 81-001 [#82](https://github.com/Mi-no-Kim/LumiaWiki/issues/82)와 Task 81-002 [#84](https://github.com/Mi-no-Kim/LumiaWiki/issues/84)의 하위 연결과 두 결과의 부모 반영을 확인했다.
 
 <a id="task-creation"></a>
 
@@ -148,10 +148,10 @@ Issue별 최소 활동 기준과 전체 수용 조건을 기록한다. 판단 �
 
 ### 4. 최종 검사
 
-- [ ] 단계 완료
+- [x] 단계 완료
 - 공통 절차: [4. 최종 검사](<../../../../harness/Issue 공통 절차.md#step-4>)
-- 진행 기록: 미수행
-- 상세 기록: [전체 수용 조건](#acceptance-criteria) · [검토·수용·종료 기록 위치](#decisions)
+- 진행 기록: 두 Task의 통합, 수용 조건과 검수 결과를 대조했다. 사용자가 전체 결과를 수용하고 완료 처리를 승인했다.
+- 상세 기록: [전체 수용 조건](#acceptance-criteria) · [검토·수용·종료 기록](#completion-review)
 
 <!-- issue-rule:review-records
 검토·수용·종료가 실제로 발생할 때만 초기 질문 목록 뒤에 `검토·수용·종료 기록`을 만든다. 미수행 상태에는 빈 결과 구역·미래 표식을 만들지 않는다.
@@ -190,3 +190,12 @@ Issue별 최소 활동 기준과 전체 수용 조건을 기록한다. 판단 �
 ### 실제 적용 완료 조건 합의
 
 사용자는 실제 훅 적용이 Task 81-002의 종료 조건임을 확인했다. [r002](artifacts/task-002-assignment-r002.md) `b80a4ffaed6c`를 보존하고, 설치와 동작 확인 조건을 [r003](artifacts/task-002-assignment-r003.md) `07651330d08b`에 반영했다. 격리 검증과 검사 명령 채택 근거는 이어서 사용한다. 실제 설치 실행은 공용 경로와 적용·복구 방안을 제시하고 승인받은 뒤 진행한다.
+
+<a id="completion-review"></a>
+
+## 검토·수용·종료 기록
+
+- Ubuntu 24.04 조건 충족. 부모 브랜치의 현황 검사 워크플로와 [81-001 통합 PR #83](https://github.com/Mi-no-Kim/LumiaWiki/pull/83)의 실행 근거를 대조했다.
+- 브랜치 이름 검사 훅 적용 조건 충족. [81-002 통합 PR #85](https://github.com/Mi-no-Kim/LumiaWiki/pull/85)의 병합 커밋 `6aad5c1`과 [CI를 통과한 후보](https://github.com/Mi-no-Kim/LumiaWiki/actions/runs/44921002085)의 파일 트리가 일치한다. 설치된 두 훅과 보존 참조는 [실제 검증 기록](artifacts/task-002-execution.md#work-branch-hook-live-install)과 일치한다.
+- 두 하위 Task는 GitHub에서 완료로 닫혔다. 사용자가 기술 조건과 검수 결과를 바탕으로 Issue 전체를 수용하고 완료 처리와 `main` 대상 PR 생성을 승인했다. Issue 자체를 완료했다. `main` 반영과 대상 CI는 상위 통합 PR에서 확인한다. [Issue #81](https://github.com/Mi-no-Kim/LumiaWiki/issues/81)
+- 원격 `main` `77bc422` 대비 Issue 브랜치 `6aad5c1`과 이 기록의 변경 18개 파일을 검토했다. 로컬 검사·기존 검수 도구 회귀 137개가 통과했다. 자체·별도 검수에서 제출 준비를 막는 지적은 없었다. `main` 대상 CI는 PR 게시 후 확인한다.
