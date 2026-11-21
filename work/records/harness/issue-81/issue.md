@@ -1,0 +1,201 @@
+# Issue 81 — Ubuntu CI와 브랜치 이름 검증 정비
+
+공통 절차: [Issue 공통 절차](<../../../../harness/Issue 공통 절차.md>)
+
+기록 지침: 본문의 규칙 주석 · [기록 작성 기준](<../../../../docs/작업 기록 작성 기준.md#recording-boundary>)
+
+<!-- issue-rule:recording
+Issue별 체크와 실제 기록은 이 본문에서 관리한다. 공통 문서에는 Issue별 체크·실적을 쓰지 않는다. 공통 판단 조건은 공통 절차를 따른다.
+현재 유효한 값·이유·근거·한계·남은 일을 갱신한다. 단계 기록은 수행·확인 요지와 상세 위치를 연결하고 미수행이면 그대로 적는다.
+상세 원자료는 담당 Task나 기존 근거에 한 번만 두며 같은 항목의 실행 경과를 누적하지 않는다. 대상은 커밋·실행 ID·내용 지문으로 식별하고 기록 날짜를 추가하지 않는다.
+전달된 입력과 추가 필요 자료를 구분하고 미정·미확인의 확인/결정 방법·필요 시점을 남긴다. 입력 원문·순서·불확실성, 링크·표식·규칙 식별자를 유지한다.
+모든 `issue-rule:` 주석은 해당 조건에서 준수한다. 식별자는 규칙을 구분하며, 그 자체로 변경 보호·훅 검사 대상을 늘리지 않는다.
+변경 보호 대상은 `issue-rule:start`·`issue-rule:state`·`issue-rule:position`·`issue-rule:completion` 네 주석이다. 사용자가 명시적으로 변경을 요청한 범위 외에는 이 네 주석의 식별자·내용·경계를 수정·삭제하지 않는다. -->
+
+<!-- issue-rule:start
+착수·재개·조건 변경·주요 단계 전환·수용 판단 전에 공통 절차와 해당 단계 규칙을 읽고 본문·실제 상태를 대조한다. -->
+
+<a id="summary"></a>
+
+## 현재 요약
+
+<!-- issue-rule:state
+상태는 '- 상태: 값' 한 줄에 예정·진행 중·중단·완료·취소 중 하나만 쓴다. 검사와 필수 종료 처리를 모두 마친 뒤에만 완료로 바꾼다. -->
+
+<!-- issue-rule:position
+현재 진행 위치는 현재 요약을 제외한 본문 안 실제 작업·근거 구역의 링크 하나만 쓴다. 표시명·번호·표식을 맞추고 설명·결과·다음 행동을 덧붙이지 않는다. -->
+
+<!-- issue-rule:summary
+다음 행동은 `N번 — 대상과 행동` 형식으로 현재 허용된 행동 하나를 쓴다.
+막힌 조건에는 제한 번호·행동·미충족·해소 조건과 상세 위치를 연결한다. 번호 미정이어도 아는 조건을 유지하고, 제한 미확인은 확인 대상·방법을 적는다. 후속 단계의 막힘을 현재 단계의 허용된 보완 금지로 확대하지 않는다.
+현재 하려는 행동의 진행 단계나 허용 범위를 판단할 수 없으면 현재 위치는 실제 확인 구역 링크로, 다음 행동은 `미정 — 진행 단계·허용 범위 확인 필요`로 쓴다.
+공통 절차의 완료·취소·미완료 인계 처리를 마쳐 남은 행동이 없을 때만 현재 위치를 실제 종료 근거 링크로, 다음 행동을 `없음 — 같은 근거 링크`로 쓴다. 미완료 인계의 재개 행동은 유지한다. -->
+
+- 상태: 완료
+- 현재 진행 위치: [검토·수용·종료 기록](#completion-review)
+- 다음 행동: 없음 — [검토·수용·종료 기록](#completion-review)
+- 막힌 조건: 없음.
+
+<a id="sequence"></a>
+
+## 진행 순서
+
+<a id="step-1"></a>
+
+### 1. 입력·준비 확인
+
+- [x] 단계 완료
+- 공통 절차: [1. 입력·준비 확인](<../../../../harness/Issue 공통 절차.md#step-1>)
+- 진행 기록: PR #79의 실패와 원격 main에서 남은 Ubuntu 설정을 확인했다.
+- 상세 기록: [결정 목록](#decisions)
+
+<a id="purpose"></a>
+
+#### 목적
+
+GitHub Actions의 기본 Ubuntu 이미지 변경으로 생긴 검사 실패를 막고, 규칙에 맞지 않는 브랜치 이름을 예방할 방법을 검토한다.
+
+<a id="expected-results"></a>
+
+#### 기대 결과
+
+Ubuntu CI의 호스트 이미지를 24.04로 고정하고 GitHub 검사로 확인한다. 브랜치 이름 검사 훅을 구현해 격리 검증하고 승인된 복제본에 적용한다.
+
+<a id="conditions"></a>
+
+#### 이미 정해진 조건
+
+- 조건: Ubuntu CI는 24.04를 사용한다. 43-002 제품 변경과 분리하며 기존 Python·Windows 설정과 검사 범위를 유지한다.
+  - 적용 범위: 이 독립 하네스 정비의 GitHub Actions Ubuntu 러너.
+  - 확정 근거: 사용자가 Ubuntu 24.04 통일과 독립 Issue·Task 등록을 승인했다.
+
+<a id="scope"></a>
+
+#### 대상·범위·권한
+
+- 생성 근거: 사용자 요청에 따라 Ubuntu CI 정비와 브랜치 이름 훅 논의를 하나의 독립 하네스 정비 Issue에서 관리한다.
+- GitHub Issue: [Mi-no-Kim/LumiaWiki #81](https://github.com/Mi-no-Kim/LumiaWiki/issues/81) 발급을 확인했다.
+- 대상·입력: [PR #79의 실패](https://github.com/Mi-no-Kim/LumiaWiki/actions/runs/44896193283/job/136822256502), [러너 전환 공지](https://github.com/actions/runner-images/issues/14748), 원격 main의 현황 검사 워크플로.
+- 범위·권한: Ubuntu 러너 조사·수정·검증과 독립 Issue·Task 등록이 허용됐다. 훅 적용 범위는 [실제 적용 배정](#branch-hook-assignment-r003)을 따른다.
+- 적용 지침: [브랜치 단계와 이름](<../../../../docs/details/git/브랜치 관리 기준.md#branches>) · [작업 순서](<../../../../harness/Git 작업 절차.md#commit>).
+- 준비 근거: 원격 main `77bc422`에서 Issue 브랜치를 준비했다.
+
+<a id="plan"></a>
+
+#### 완료 조건과 확인 방법
+
+<!-- issue-rule:completion
+Issue별 최소 활동 기준과 전체 수용 조건을 기록한다. 판단 조건은 공통 절차, 조건별 기록 형식은 기록 지침을 따른다. -->
+
+<!-- issue-rule:criteria
+최소 활동 기준과 Issue 전체 수용 조건은 조건별 한 행에 적는다.
+1단계의 상세 범위·전체 수용 조건이 미정이면 결정 항목·필요 시점을 연결하고 2단계의 결정 근거로 갱신한다. 별도 착수 판정값은 만들지 않는다. -->
+
+<a id="activity-criteria"></a>
+
+##### 시작할 논의의 최소 기준
+
+| 완료 조건                                | 확인 방법                                           |
+| ---------------------------------------- | --------------------------------------------------- |
+| 실패 근거와 현재 Ubuntu 러너를 식별한다. | PR #79의 설치 오류와 원격 main 워크플로를 대조한다. |
+
+<a id="acceptance-criteria"></a>
+
+##### Issue 전체의 수용 조건
+
+| 완료 조건                                            | 확인 방법                                                                                 |
+| ---------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| Ubuntu CI가 24.04를 사용한다.                        | 워크플로 차이와 GitHub Actions의 실제 검사 결과를 확인한다.                               |
+| 브랜치 이름 검사 훅을 승인된 실제 복제본에 적용한다. | Task 81-002의 격리 검증과 실제 설치·동작 확인, 기존 훅 및 로컬 백업 보존 결과를 확인한다. |
+
+<a id="step-2"></a>
+
+### 2. 논의·결정
+
+- [x] 단계 완료
+- 공통 절차: [2. 논의·결정](<../../../../harness/Issue 공통 절차.md#step-2>)
+- 진행 기록: Ubuntu 24.04 적용을 Task 81-001에, 브랜치 이름 검사 훅의 구현·격리 검증·실제 적용 확인을 Task 81-002에 배정했다.
+- 상세 기록: [결정](#decisions) · [Task 배정](#task-creation)
+
+<a id="step-3"></a>
+
+### 3. Task 생성
+
+- [x] 단계 완료
+- 공통 절차: [3. Task 생성](<../../../../harness/Issue 공통 절차.md#step-3>)
+- 진행 기록: Task 81-001 [#82](https://github.com/Mi-no-Kim/LumiaWiki/issues/82)와 Task 81-002 [#84](https://github.com/Mi-no-Kim/LumiaWiki/issues/84)의 하위 연결과 두 결과의 부모 반영을 확인했다.
+
+<a id="task-creation"></a>
+
+<!-- issue-rule:task-records
+배정 정보와 실제 생성 정보를 구분한다. 2단계에서 배정을 확정할 때 담당 결과·근거 결정을 채운다.
+실제 생성 후 Task 링크·생성 조건 충족 근거·남은 실행 제한을 연결한다. 미확정 배정은 미정, 미생성 Task는 미생성으로 둔다.
+상세 계획·진행·검증의 원본은 Task가 소유한다. 생성 허용 여부와 결과 준비 중의 위치·체크·다음 행동은 공통 절차의 3단계를 따른다. -->
+
+전달사항 작성 전 [경로·식별 기준](<../../../../docs/작업 기록 체계.md#paths>)으로 순번 충돌을 확인하고, Task 식별자·저장 경로·확인 근거를 배정 결정에 남겨 Task 생성 입력으로 넘긴다.
+
+- 담당 결과: Ubuntu CI 러너를 24.04로 고정하고 실행 결과를 확인한다.
+  - 근거 결정: [Ubuntu 작업 배정](#ubuntu-assignment).
+  - 전달사항: [Ubuntu 고정](artifacts/task-001-assignment.md) `r001` · 내용 지문 `1285d7a3551f`.
+  - Task: [Task 81-001](task-001.md#summary) · [GitHub #82](https://github.com/Mi-no-Kim/LumiaWiki/issues/82).
+  - 결과 근거: [통합 PR #83](https://github.com/Mi-no-Kim/LumiaWiki/pull/83) · [러너 변경의 Ubuntu·Windows 검사 통과](https://github.com/Mi-no-Kim/LumiaWiki/actions/runs/44907041862).
+- 담당 결과: 브랜치 이름 검사 훅을 구현·격리 검증하고, 승인된 실제 복제본에 적용해 동작을 확인한다.
+  - 근거 결정: [실제 적용 완료 조건 합의](#branch-hook-assignment-r003).
+  - 전달사항: [브랜치 이름 검사 훅 실제 적용](artifacts/task-002-assignment-r003.md) `r003` · 내용 지문 `07651330d08b`.
+  - Task: [Task 81-002](task-002.md#summary) · [GitHub #84](https://github.com/Mi-no-Kim/LumiaWiki/issues/84). 실제 저장소에 설치하고 동작을 확인했다.
+
+<a id="step-4"></a>
+
+### 4. 최종 검사
+
+- [x] 단계 완료
+- 공통 절차: [4. 최종 검사](<../../../../harness/Issue 공통 절차.md#step-4>)
+- 진행 기록: 두 Task의 통합, 수용 조건과 검수 결과를 대조했다. 사용자가 전체 결과를 수용하고 완료 처리를 승인했다.
+- 상세 기록: [전체 수용 조건](#acceptance-criteria) · [검토·수용·종료 기록](#completion-review)
+
+<!-- issue-rule:review-records
+검토·수용·종료가 실제로 발생할 때만 초기 질문 목록 뒤에 `검토·수용·종료 기록`을 만든다. 미수행 상태에는 빈 결과 구역·미래 표식을 만들지 않는다.
+각 수용 조건에 확인 기록·판정·이유·근거·한계를 연결하고 실제 종료 처리·반영/미반영·잔여·재개 조건·다음 행동을 현재 내용으로 갱신한다.
+개별 Task의 검증 전문은 연결하고 중복 작성하지 않는다. 사실·관찰 기록과 새 결정의 추가는 구분한다. -->
+
+<a id="decisions"></a>
+
+## 결정
+
+<!-- issue-rule:decisions
+질문 원문·순서는 유지한다. 질문별 결정 내용·이유·자료·근거와 누가 어떤 방식으로 확정했는지는 이 구역에 기록한다. 다른 구역에는 적용 내용과 근거 결정 링크를 둔다. -->
+
+이번 Ubuntu 적용 범위에 대한 추가 초기 질문은 없다. 사용자가 Ubuntu 24.04와 별도 작업 구조를 선택했다.
+
+<a id="ubuntu-assignment"></a>
+
+### Ubuntu 작업 배정
+
+사용자는 Ubuntu 24.04 통일·독립 Issue 및 실행 Task 등록·수정 진행을 승인했다. 원격 main의 현황 검사 파일 한 곳을 대상으로 하며 사용할 실행 순번 001은 새 Issue의 첫 배정이다. [확정 전달본](artifacts/task-001-assignment.md) `r001`을 기준으로 한다. 브랜치 이름 검증과 43-002 제품 변경은 이번 배정 범위 밖이다.
+
+<a id="branch-hook-assignment"></a>
+
+### 브랜치 이름 검사 훅 배정
+
+사용자는 브랜치 이름을 훅으로 검사하는 방안을 제안했고, Ubuntu CI 작업과 함께 이 Issue의 두 번째 하위 Task로 관리하기로 했다. 기존 001과 별도로 순번 002의 본문·전달사항 경로와 GitHub 하위 Task의 중복이 없음을 확인했다. [확정 전달본](artifacts/task-002-assignment.md) `r001`을 기준으로 한다. 훅의 채택 여부와 로컬 생성·원격 전송의 검사 범위는 Task에서 논의한다.
+
+<a id="branch-hook-assignment-r002"></a>
+
+### 브랜치 이름 검사 훅 배정 개정
+
+사용자는 로컬 생성·이름 변경과 푸시 대상 검사, 브랜치 이름 안의 `codex` 금지, 기존 로컬 백업 보존과 원격 전송 차단을 확정하고 구현·격리 검증을 요청했다. 기존 설계 전달본 [r001](artifacts/task-002-assignment.md) `617fec6b420d`를 보존하고 [r002](artifacts/task-002-assignment-r002.md) `b80a4ffaed6c`로 갱신했다. 작업 번호와 자식 이슈는 그대로이며 실제 저장소의 훅 설치는 격리 결과 제시 후 결정한다.
+
+<a id="branch-hook-assignment-r003"></a>
+
+### 실제 적용 완료 조건 합의
+
+사용자는 실제 훅 적용이 Task 81-002의 종료 조건임을 확인했다. [r002](artifacts/task-002-assignment-r002.md) `b80a4ffaed6c`를 보존하고, 설치와 동작 확인 조건을 [r003](artifacts/task-002-assignment-r003.md) `07651330d08b`에 반영했다. 격리 검증과 검사 명령 채택 근거는 이어서 사용한다. 실제 설치 실행은 공용 경로와 적용·복구 방안을 제시하고 승인받은 뒤 진행한다.
+
+<a id="completion-review"></a>
+
+## 검토·수용·종료 기록
+
+- Ubuntu 24.04 조건 충족. 부모 브랜치의 현황 검사 워크플로와 [81-001 통합 PR #83](https://github.com/Mi-no-Kim/LumiaWiki/pull/83)의 실행 근거를 대조했다.
+- 브랜치 이름 검사 훅 적용 조건 충족. [81-002 통합 PR #85](https://github.com/Mi-no-Kim/LumiaWiki/pull/85)의 병합 커밋 `6aad5c1`과 [CI를 통과한 후보](https://github.com/Mi-no-Kim/LumiaWiki/actions/runs/44921002085)의 파일 트리가 일치한다. 설치된 두 훅과 보존 참조는 [실제 검증 기록](artifacts/task-002-execution.md#work-branch-hook-live-install)과 일치한다.
+- 두 하위 Task는 GitHub에서 완료로 닫혔다. 사용자가 기술 조건과 검수 결과를 바탕으로 Issue 전체를 수용하고 완료 처리와 `main` 대상 PR 생성을 승인했다. Issue 자체를 완료했다. `main` 반영과 대상 CI는 상위 통합 PR에서 확인한다. [Issue #81](https://github.com/Mi-no-Kim/LumiaWiki/issues/81)
+- 원격 `main` `77bc422` 대비 Issue 브랜치 `6aad5c1`과 이 기록의 변경 18개 파일을 검토했다. 로컬 검사·기존 검수 도구 회귀 137개가 통과했다. 자체·별도 검수에서 제출 준비를 막는 지적은 없었다. `main` 대상 CI는 PR 게시 후 확인한다.
