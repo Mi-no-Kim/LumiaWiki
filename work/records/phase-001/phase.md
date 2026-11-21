@@ -8,8 +8,8 @@
 - 구상상 구분: P1
 - GitHub milestone: [Mi-no-Kim/LumiaWiki #1](https://github.com/Mi-no-Kim/LumiaWiki/milestone/1)
 - 상태: 진행 중
-- 현재 진행 위치: 계획 Issue #15와 기반 #42는 완료했다. [Issue #43](issue-43/issue.md#summary)의 Task 001은 완료했고 공통 8개 표/Java 구현·격리 검증 뒤 승인한 로컬에 적용했으며 단위 30·통합 11건을 통과했다. [결과](https://github.com/Mi-no-Kim/LumiaWiki/blob/9b8773ed5a26b799eac971ea8fe60949e14c4d0a/work/records/phase-001/issue-43/artifacts/task-001-creation.md#current)를 따른다. [Task 43-002](issue-43/task-002.md#result)는 V2·V3 저장·조회 구현, 격리 검증과 계약 인계를 완료했다. 003~004·Issue #44~#48과 Phase 수용은 남았으며 실제 자료 작업은 보류한다.
-- 다음 판단/행동: [완료한 Task 43-002](issue-43/task-002.md#result)의 부모 통합을 확인한다. 실제 자료 등록은 보류한다.
+- 현재 진행 위치: 계획 Issue #15와 기반 #42는 완료했다. [Issue #43](issue-43/issue.md#summary)의 Task 001은 완료했고 공통 8개 표/Java 구현·격리 검증 뒤 승인한 로컬에 적용했으며 단위 30·통합 11건을 통과했다. [결과](https://github.com/Mi-no-Kim/LumiaWiki/blob/9b8773ed5a26b799eac971ea8fe60949e14c4d0a/work/records/phase-001/issue-43/artifacts/task-001-creation.md#current)를 따른다. [Task 43-002](issue-43/task-002.md#result)는 V2·V3 저장·조회 구현, 격리 검증과 계약 인계를 완료했고 PR #79로 부모 Issue에 반영했다. 003~004·Issue #44~#48과 Phase 수용은 남았으며 실제 자료 작업은 보류한다.
+- 다음 판단/행동: 43-002 제출용 브랜치 정리를 마친 뒤 [Task 43-003](issue-43/task-003.md#summary)의 관계 저장·조회 설계를 준비한다. 실제 자료 등록은 보류한다.
 
 <a id="upstream-main-integration"></a>
 

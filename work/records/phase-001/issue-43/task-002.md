@@ -52,8 +52,8 @@ GitHub sub-issue: [Mi-no-Kim/LumiaWiki #68](https://github.com/Mi-no-Kim/LumiaWi
 -->
 
 - 상태: 완료
-- 현재 진행 위치: [후속 저장·조회 구현과 두 격리 DB의 V3 통합 검증](artifacts/task-002-execution.md#isolated-v3-results)과 [#44·43-004 계약 인계](artifacts/task-002-execution.md#storage-handoff)를 마쳤고 [V2 이관 행의 삭제·복귀를 보완·검증](artifacts/task-002-execution.md#v3-existence-regression)했다.
-- 다음 행동: [부모 Issue](issue.md#summary)로 통합할 PR을 제출한다.
+- 현재 진행 위치: [후속 저장·조회 구현과 두 격리 DB의 V3 통합 검증](artifacts/task-002-execution.md#isolated-v3-results)과 [#44·43-004 계약 인계](artifacts/task-002-execution.md#storage-handoff)를 마쳤고 [V2 이관 행의 삭제·복귀를 보완·검증](artifacts/task-002-execution.md#v3-existence-regression)했다. [부모 통합 결과](#result)까지 확인했다.
+- 다음 행동: PR #79 제출용 브랜치 정리를 마친 뒤 후속 관계 저장·조회 설계는 [Task 43-003](task-003.md#summary)에서 이어간다.
 - 막힌 조건: V3 실행 승인은 위 두 임시 PostgreSQL DB의 검증에 한정된다. 실제 자료 등록·교정과 기존 개발 DB 적용은 보류한다.
 
 <a id="assignment"></a>
@@ -308,4 +308,6 @@ GitHub sub-issue: [Mi-no-Kim/LumiaWiki #68](https://github.com/Mi-no-Kim/LumiaWi
 - 내용: [최초 V2와 후속 V3](#work-storage)의 마이그레이션·매핑·저장·조회·정정 구현을 작성했다.
 - 확인: [두 격리 DB의 V2 통합 검사 4건](artifacts/task-002-execution.md#isolated-v2-results), [최종 단위 검사 42건과 V3 격리 통합 검사 8건](artifacts/task-002-execution.md#v3-existence-regression)을 통과했다.
 - 자기 수용: 담당 저장·조회·참조 검사, 원본과 표시 캐시의 일치 및 후속 인계를 확인해 완료로 판정한다.
-- 후속: PR 제출, 부모 통합 확인과 브랜치 정리가 남았다. 기존 개발 DB 적용과 실제 자료 등록은 보류한다.
+- 부모 통합: [PR #79](https://github.com/Mi-no-Kim/LumiaWiki/pull/79)를 `issue/43-item-persistence`에 squash 병합했다. 병합 커밋 `c64a809`의 변경은 검수한 PR 후보와 일치했고 [Issue 브랜치 Quality 검사](https://github.com/Mi-no-Kim/LumiaWiki/actions/runs/44928768626)를 통과했다.
+- GitHub 표시: [Task #68](https://github.com/Mi-no-Kim/LumiaWiki/issues/68)의 완료 종료와 `status:completed` 라벨을 확인했다.
+- 후속: 기존 개발 DB 적용과 실제 자료 등록은 보류한다.
