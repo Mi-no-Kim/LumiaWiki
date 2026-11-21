@@ -33,8 +33,8 @@ Issue별 체크와 실제 기록은 이 본문에서 관리한다. 공통 문서
 
 - 상태: 진행 중
 - 현재 진행 위치: [3. Task 생성](#step-3)
-- 다음 행동: 3번 — Task 81-002의 검토 결과가 준비되면 확인한다.
-- 막힌 조건: 4번 — [브랜치 이름 검사 방안](task-002.md#summary)의 결과가 준비되면 최종 검사에 착수한다.
+- 다음 행동: 3번 — [Task 81-002](task-002.md#summary)의 제출 및 부모 반영 결과를 확인한다.
+- 막힌 조건: 4번 — [Task 81-002](task-002.md#summary)의 수용·제출 결과가 준비되면 최종 검사에 착수한다.
 
 <a id="sequence"></a>
 
@@ -103,10 +103,10 @@ Issue별 최소 활동 기준과 전체 수용 조건을 기록한다. 판단 �
 
 ##### Issue 전체의 수용 조건
 
-| 완료 조건                                     | 확인 방법                                                             |
-| --------------------------------------------- | --------------------------------------------------------------------- |
-| Ubuntu CI가 24.04를 사용한다.                 | 워크플로 차이와 GitHub Actions의 실제 검사 결과를 확인한다.           |
-| 브랜치 이름 검사 방안의 적용 범위를 검토한다. | Task 81-002의 검사 범위, 예외 처리, 검증 계획과 채택 결정을 확인한다. |
+| 완료 조건                                            | 확인 방법                                                                                 |
+| ---------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| Ubuntu CI가 24.04를 사용한다.                        | 워크플로 차이와 GitHub Actions의 실제 검사 결과를 확인한다.                               |
+| 브랜치 이름 검사 훅을 승인된 실제 복제본에 적용한다. | Task 81-002의 격리 검증과 실제 설치·동작 확인, 기존 훅 및 로컬 백업 보존 결과를 확인한다. |
 
 <a id="step-2"></a>
 
@@ -114,7 +114,7 @@ Issue별 최소 활동 기준과 전체 수용 조건을 기록한다. 판단 �
 
 - [x] 단계 완료
 - 공통 절차: [2. 논의·결정](<../../../../harness/Issue 공통 절차.md#step-2>)
-- 진행 기록: Ubuntu 24.04 적용을 Task 81-001에, 브랜치 이름 검사 훅 설계와 채택 검토를 Task 81-002에 배정했다.
+- 진행 기록: Ubuntu 24.04 적용을 Task 81-001에, 브랜치 이름 검사 훅의 구현·격리 검증·실제 적용 확인을 Task 81-002에 배정했다.
 - 상세 기록: [결정](#decisions) · [Task 배정](#task-creation)
 
 <a id="step-3"></a>
@@ -123,7 +123,7 @@ Issue별 최소 활동 기준과 전체 수용 조건을 기록한다. 판단 �
 
 - [x] 단계 완료
 - 공통 절차: [3. Task 생성](<../../../../harness/Issue 공통 절차.md#step-3>)
-- 진행 기록: Task 81-001 [#82](https://github.com/Mi-no-Kim/LumiaWiki/issues/82)와 Task 81-002 [#84](https://github.com/Mi-no-Kim/LumiaWiki/issues/84)의 하위 연결을 확인했다. Task 81-002의 검토 결과를 기다린다.
+- 진행 기록: Task 81-001 [#82](https://github.com/Mi-no-Kim/LumiaWiki/issues/82)와 Task 81-002 [#84](https://github.com/Mi-no-Kim/LumiaWiki/issues/84)의 하위 연결을 확인했다. Task 81-002의 결과를 기다린다.
 
 <a id="task-creation"></a>
 
@@ -139,10 +139,10 @@ Issue별 최소 활동 기준과 전체 수용 조건을 기록한다. 판단 �
   - 전달사항: [Ubuntu 고정](artifacts/task-001-assignment.md) `r001` · 내용 지문 `1285d7a3551f`.
   - Task: [Task 81-001](task-001.md#summary) · [GitHub #82](https://github.com/Mi-no-Kim/LumiaWiki/issues/82).
   - 결과 근거: [통합 PR #83](https://github.com/Mi-no-Kim/LumiaWiki/pull/83) · [러너 변경의 Ubuntu·Windows 검사 통과](https://github.com/Mi-no-Kim/LumiaWiki/actions/runs/44907041862).
-- 담당 결과: 브랜치 이름 검사 훅의 적용 범위·예외·검증 방안을 정리하고 채택 여부를 검토한다.
-  - 근거 결정: [브랜치 이름 검사 훅 배정](#branch-hook-assignment).
-  - 전달사항: [브랜치 이름 검사 훅 설계](artifacts/task-002-assignment.md) `r001` · 내용 지문 `617fec6b420d`.
-  - Task: [Task 81-002](task-002.md#summary) · [GitHub #84](https://github.com/Mi-no-Kim/LumiaWiki/issues/84). 훅 구현·설치는 채택 여부와 적용 범위, 착수 합의가 필요하다.
+- 담당 결과: 브랜치 이름 검사 훅을 구현·격리 검증하고, 승인된 실제 복제본에 적용해 동작을 확인한다.
+  - 근거 결정: [실제 적용 완료 조건 합의](#branch-hook-assignment-r003).
+  - 전달사항: [브랜치 이름 검사 훅 실제 적용](artifacts/task-002-assignment-r003.md) `r003` · 내용 지문 `07651330d08b`.
+  - Task: [Task 81-002](task-002.md#summary) · [GitHub #84](https://github.com/Mi-no-Kim/LumiaWiki/issues/84). 실제 저장소에 설치하고 동작을 확인했다.
 
 <a id="step-4"></a>
 
@@ -178,3 +178,15 @@ Issue별 최소 활동 기준과 전체 수용 조건을 기록한다. 판단 �
 ### 브랜치 이름 검사 훅 배정
 
 사용자는 브랜치 이름을 훅으로 검사하는 방안을 제안했고, Ubuntu CI 작업과 함께 이 Issue의 두 번째 하위 Task로 관리하기로 했다. 기존 001과 별도로 순번 002의 본문·전달사항 경로와 GitHub 하위 Task의 중복이 없음을 확인했다. [확정 전달본](artifacts/task-002-assignment.md) `r001`을 기준으로 한다. 훅의 채택 여부와 로컬 생성·원격 전송의 검사 범위는 Task에서 논의한다.
+
+<a id="branch-hook-assignment-r002"></a>
+
+### 브랜치 이름 검사 훅 배정 개정
+
+사용자는 로컬 생성·이름 변경과 푸시 대상 검사, 브랜치 이름 안의 `codex` 금지, 기존 로컬 백업 보존과 원격 전송 차단을 확정하고 구현·격리 검증을 요청했다. 기존 설계 전달본 [r001](artifacts/task-002-assignment.md) `617fec6b420d`를 보존하고 [r002](artifacts/task-002-assignment-r002.md) `b80a4ffaed6c`로 갱신했다. 작업 번호와 자식 이슈는 그대로이며 실제 저장소의 훅 설치는 격리 결과 제시 후 결정한다.
+
+<a id="branch-hook-assignment-r003"></a>
+
+### 실제 적용 완료 조건 합의
+
+사용자는 실제 훅 적용이 Task 81-002의 종료 조건임을 확인했다. [r002](artifacts/task-002-assignment-r002.md) `b80a4ffaed6c`를 보존하고, 설치와 동작 확인 조건을 [r003](artifacts/task-002-assignment-r003.md) `07651330d08b`에 반영했다. 격리 검증과 검사 명령 채택 근거는 이어서 사용한다. 실제 설치 실행은 공용 경로와 적용·복구 방안을 제시하고 승인받은 뒤 진행한다.
