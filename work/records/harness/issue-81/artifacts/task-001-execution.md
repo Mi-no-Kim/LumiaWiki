@@ -21,5 +21,5 @@ Task당 한 파일을 쓰고 이 주석은 머리말에 한 번만 둔다. 착�
 - 할 일: [Ubuntu 러너를 고정하고 검사한다](../task-001.md#work-ubuntu-runner)
 
 - 조치·판단: `ubuntu-latest`를 `ubuntu-24.04`로 교체했다. 원격 main `77bc422`에서 분기했다. 사용자가 지정한 24.04를 사용한다.
-- 확인: 원격 main과 비교해 Ubuntu 러너 한 줄만 바뀌었음을 확인했다. Python `3.14`와 Windows, 실행 조건이 유지된다.
-- 잔여: 커밋 후보 검수와 GitHub Actions의 Ubuntu·Windows 결과 확인이 남았다.
+- 확인: 원격 main과 비교해 Ubuntu 러너 한 줄만 바뀌었음을 확인했다. Python `3.14`와 Windows, 실행 조건이 유지된다. 자체·별도 검수 후 `9c60ae1`을 [초안 PR #83](https://github.com/Mi-no-Kim/LumiaWiki/pull/83)으로 올렸다. [실행 44907041862](https://github.com/Mi-no-Kim/LumiaWiki/actions/runs/44907041862)의 Ubuntu 24.04·Windows 현황 검사 모두 통과했다.
+- 잔여: 부모 통합은 보류한다. 브랜치 이름 훅은 [Issue #81의 후속 검토](../issue.md#decisions)에서 다룬다.
