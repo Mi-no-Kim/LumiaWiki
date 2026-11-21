@@ -4,6 +4,14 @@
 
 기준은 부모 commit `8a21c74`다. 최초 설정·의존 설치와 무동작 export 골격은 테스트 실행 준비 예외이며 기능 로직을 넣지 않는다. 이후 경로·포맷·후보·hook·CI 분류 동작은 실제 assertion Red→Green으로 검증한다. 실제 CI를 위해 검수한 진행 후보를 제출할 수 있으며 자기 수용 전에는 진행 중으로 유지한다.
 
+<a id="inventory-ubuntu-runner"></a>
+
+## 하네스 현황 검사 Ubuntu 실행 환경 보완
+
+[PR #79의 Ubuntu 검사](https://github.com/Mi-no-Kim/LumiaWiki/actions/runs/44896193283/job/136822256502)는 가장 최신 이미지가 Ubuntu 26.04를 가리키면서 Python 3.14.2 설치에서 실패했다. [공식 이미지 전환 공지](https://github.com/actions/runner-images/issues/14748)와 [배포 목록](https://github.com/actions/python-versions/blob/main/versions-manifest.json)을 대조했다.
+
+하네스 현황 검사의 Ubuntu 러너를 품질 검사와 같은 Ubuntu 24.04로 지정한다. Python 버전·Windows 검사·실행 조건은 유지한다. 원격 부모의 기존 설정과 비교해 Ubuntu 러너 한 줄만 바뀌었음을 확인했다.
+
 <!-- tdd-plan -->
 ```json
 {
@@ -278,6 +286,25 @@
       ],
       "expectedFailures": [
         "test_quality.QualityTests.test_new_unclassified_index_path_requires_review_without_hook_state"
+      ]
+    },
+    {
+      "id": "pin-inventory-ubuntu-2404",
+      "kind": "environment",
+      "reason": "GitHub의 ubuntu-latest가 26.04로 바뀌어 고정 Python 3.14.2의 x64 배포본을 찾지 못했다. 기존 품질 검사와 같은 Ubuntu 24.04에서 같은 Python과 검사 범위를 유지한다.",
+      "targets": [
+        ".github/workflows/harness-inventory.yml"
+      ],
+      "tests": [],
+      "settings": [],
+      "adapter": "command",
+      "command": [
+        "python",
+        "-B",
+        "-X",
+        "utf8",
+        "-c",
+        "import pathlib, subprocess; path = '.github/workflows/harness-inventory.yml'; base = subprocess.check_output(['git','show','76e26221ce8b334b462273660c9b4b7e79a81e01:.github/workflows/harness-inventory.yml']); old = b'os: [ubuntu-latest, windows-latest]'; new = b'os: [ubuntu-24.04, windows-latest]'; actual = pathlib.Path(path).read_bytes().replace(b'\\r\\n', b'\\n'); assert base.count(old) == 1 and actual == base.replace(old, new); print('Only the Ubuntu runner label changed. Python pin and Windows retained.')"
       ]
     }
   ]
@@ -1451,6 +1478,60 @@
           "scripts/tdd_core.py": "af70059b700e486d37f0a2c7329b36d92c9ea90d9a312be2a020a60fa490dc87",
           "scripts/test-python.py": "52dc15ac99df8a9d4b861e80aa6fc41dffab7ac064238d5d03c5c51f4febc69c",
           "scripts/tests/test_quality.py": "fd07b5411301b9f09b363b17f94ba6a076ab00b5e4c410bc0c69dc9b6f87d421"
+        },
+        "ok": true
+      }
+    },
+    {
+      "id": "pin-inventory-ubuntu-2404",
+      "kind": "environment",
+      "spec": "66902ec1bf009d5eb08b52149d7fae909a20dfbca1fc55d787894bdd2bf764ee",
+      "worktree": "a16a0827bd3a6778b2e7",
+      "finished": true,
+      "baseline": "76e26221ce8b334b462273660c9b4b7e79a81e01",
+      "task": "work/records/phase-001/issue-42/artifacts/task-004-tdd.md",
+      "final": {
+        "runId": "55b0143eab254a4a999a69e988096a17",
+        "started": 1795258406.8906705,
+        "finishedAt": 1795258408.3020175,
+        "command": [
+          "python",
+          "-B",
+          "-X",
+          "utf8",
+          "-c",
+          "import pathlib, subprocess; path = '.github/workflows/harness-inventory.yml'; base = subprocess.check_output(['git','show','76e26221ce8b334b462273660c9b4b7e79a81e01:.github/workflows/harness-inventory.yml']); old = b'os: [ubuntu-latest, windows-latest]'; new = b'os: [ubuntu-24.04, windows-latest]'; actual = pathlib.Path(path).read_bytes().replace(b'\\r\\n', b'\\n'); assert base.count(old) == 1 and actual == base.replace(old, new); print('Only the Ubuntu runner label changed. Python pin and Windows retained.')"
+        ],
+        "exitCode": 0,
+        "result": {
+          "tests": 0,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "names": [],
+          "failedNames": []
+        },
+        "manifest": {
+          ".codex/hooks.json": "816cb983d2faded1df2b58fc7da4b371c5990800df09768b324a8674448e31d4",
+          ".gitattributes": "4437511f6b3b866745490f0fcd2332d1e6194980fc028232ce0a84cec608d85b",
+          ".github/workflows/harness-inventory.yml": "385a3bc296235dd41a1757f3ddadbde1fb8f95ca0ed77330bf1ba8091c6648c7",
+          "backend/build.gradle": "52b40fbbcdbb75b4ee5d5997811157a0ed61562cbd87c9eb6c3d859a88dd7960",
+          "backend/gradle/wrapper/gradle-wrapper.properties": "ce6651f61cd5c8827ffa10f4ebc400d9363745b0de5616cc4fc8140627c6a943",
+          "backend/settings.gradle": "46d05a549b9d8eb3fd16af7d914377c9bf1bce8d234f941b210838b54eaa1bb9",
+          "backend/src/main/resources/application.yaml": "d10d1ef05ddbec053c30bf2bc705e4c5f19a2b688baccd61a4f48af556bb40e0",
+          "backend/src/test/resources/application-test.yaml": "e6aa7eb8da29c749b63e7330c634631d82f8710dc4fb6dee5ef883df1ce12e72",
+          "frontend/package-lock.json": "e54e76e4ab1a402d4df0827152d1bf5c62142cd59e2798518b7ed2715931fc97",
+          "frontend/package.json": "aae2e6358d704e1807f860f58272e3f8024cfdc092860bd0b0b4f7d58e76a228",
+          "frontend/src/test/setup.ts": "268e7200d092daa3225eb06790ed72842e5d3234a53980c90ff463d7b81528d3",
+          "frontend/tsconfig.json": "a95c02606228195fa68a509c2f5c0102c92a084db2b9261dfd73e5631e07fb21",
+          "frontend/vite.config.mjs": "2e55a2050f22641deaad0ac4b9b6723ad76aadab22ab037b9d38b1697a458367",
+          "frontend/vitest.config.mjs": "f07e4974ad24bc562f5a975e8af587eb6fdfb402863825c718cfdf9a8b684eec",
+          "package-lock.json": "539f24e43b65266883d2aa1a83428d75484cf059eeedcedf4043d09dc6d8a5e3",
+          "package.json": "0e57b51524c8151aafb0155a93c5f61c30901819bde6cee895c0106f6dfcab85",
+          "scripts/tdd-check.py": "6e2be41bfa97471f7d213de8c927fc7189fb27bb5864708d3e8d51444f49934d",
+          "scripts/tdd-run.py": "d866be6895e8d146d28d7a0280dca62f403173365d0962cdf586c83258ec8010",
+          "scripts/tdd_core.py": "af70059b700e486d37f0a2c7329b36d92c9ea90d9a312be2a020a60fa490dc87",
+          "scripts/test-python.py": "52dc15ac99df8a9d4b861e80aa6fc41dffab7ac064238d5d03c5c51f4febc69c"
         },
         "ok": true
       }
