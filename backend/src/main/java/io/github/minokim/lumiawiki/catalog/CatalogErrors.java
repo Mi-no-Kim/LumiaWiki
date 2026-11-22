@@ -43,7 +43,6 @@ public final class CatalogErrors {
           Map.entry("fk_item_version_patch", new Expected("23503", "fromGamePatchId")),
           Map.entry("fk_item_version_category", new Expected("23503", "categoryId")),
           Map.entry("fk_item_version_grade", new Expected("23503", "gradeId")),
-          Map.entry("ck_item_version_equipment_slot", new Expected("23514", "equipmentSlot")),
           Map.entry("ck_item_version_max_stack_size", new Expected("23514", "maxStackSize")),
           Map.entry("ck_item_version_name", new Expected("23514", "name")),
           Map.entry("uq_item_stat_version_type", new Expected("23505", "stats")),

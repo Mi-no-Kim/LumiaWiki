@@ -27,10 +27,6 @@ public class ItemVersion extends CatalogRow {
   @JoinColumn(name = "grade_id")
   private ItemGrade grade;
 
-  @Enumerated(EnumType.STRING)
-  @Column(name = "equipment_slot", columnDefinition = "text")
-  private EquipmentSlot equipmentSlot;
-
   @Column(name = "max_stack_size")
   private Integer maxStackSize;
 
@@ -75,9 +71,8 @@ public class ItemVersion extends CatalogRow {
     this.deleted = deleted;
   }
 
-  void changeDetails(ItemGrade grade, EquipmentSlot equipmentSlot, Integer maxStackSize) {
+  void changeDetails(ItemGrade grade, Integer maxStackSize) {
     this.grade = grade;
-    this.equipmentSlot = equipmentSlot;
     this.maxStackSize = maxStackSize;
   }
 

@@ -18,6 +18,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
@@ -184,12 +185,17 @@ class CommonCatalogIntegrationTests {
 
   private static VersionInput itemInput(
       long category, long grade, String name, List<SkillInput> skills) {
-    return new VersionInput(category, grade, null, name, null, null, null, null, skills);
+    return new VersionInput(category, grade, name, null, null, null, null, skills);
   }
 
   @Test
-  void itemStorageInstallsThroughV3AndRevalidatesWithoutPendingMigrations() throws Exception {
+  void itemStorageInstallsThroughV4AndRevalidatesWithoutPendingMigrations() throws Exception {
     try (var connection = migrationConnection()) {
+      assertEquals(
+          "0",
+          scalar(
+              connection,
+              "select count(*) from information_schema.columns where table_schema='public' and table_name='item_version' and column_name='equipment_slot'"));
       assertEquals(
           "16",
           scalar(
@@ -217,9 +223,111 @@ class CommonCatalogIntegrationTests {
               "select has_function_privilege('lumia_app','public.reject_common_pk_update()','EXECUTE')"));
     }
     Flyway flyway = context.getBean(Flyway.class);
+    assertEquals("4", flyway.info().current().getVersion().getVersion());
     flyway.validate();
     assertEquals(0, flyway.info().pending().length);
     assertEquals(0, flyway.migrate().migrationsExecuted);
+  }
+
+  @Test
+  void itemStorageReadsEquipmentSlotsFromTheCurrentCategoryTree() {
+    long season = service.createSeason(31, "synthetic equipment season", null, null, null).getId();
+    long first = service.createPatch(season, 0, 1, null, null).getId();
+    long later = service.createPatch(season, 0, 2, null, null).getId();
+    long grade = service.createGrade("synthetic equipment grade", 710).getId();
+    long allItems = service.createCategory("아이템", null).getId();
+    long equipment = service.createCategory("장비", allItems).getId();
+    long materials = service.createCategory("재료", null).getId();
+    long nonEquipment = service.createCategory("무기", materials).getId();
+    var slots =
+        Map.of(
+            "무기", EquipmentSlot.WEAPON,
+            "옷", EquipmentSlot.CHEST,
+            "머리", EquipmentSlot.HEAD,
+            "장식", EquipmentSlot.ACCESSORY,
+            "팔", EquipmentSlot.ACCESSORY,
+            "다리", EquipmentSlot.LEG);
+    for (var entry : slots.entrySet()) {
+      long branch = service.createCategory(entry.getKey(), equipment).getId();
+      long leaf = service.createCategory("synthetic leaf", branch).getId();
+      var original = items.createItem(null, first, itemInput(leaf, grade, "equipment", null));
+      assertEquals(entry.getValue(), items.getItemVersion(original.id()).equipmentSlot());
+
+      var changed =
+          items.createItemVersion(
+              original.itemId(), later, itemInput(nonEquipment, grade, "material", null));
+      assertNull(items.getItemVersion(changed.id()).equipmentSlot());
+      assertEquals(leaf, items.getItemVersion(original.id()).categoryId());
+      assertEquals(entry.getValue(), items.getItemVersion(original.id()).equipmentSlot());
+
+      service.updateCategory(leaf, entry.getKey() + " synthetic leaf", materials);
+      assertEquals(leaf, items.getItemVersion(original.id()).categoryId());
+      assertNull(items.getItemVersion(original.id()).equipmentSlot());
+    }
+  }
+
+  @Test
+  void itemStoragePreservesEquipmentSlotsWhenCategoryNamesChange() {
+    long season = service.createSeason(39, "synthetic equipment rename", null, null, null).getId();
+    long first = service.createPatch(season, 0, 1, null, null).getId();
+    long later = service.createPatch(season, 0, 2, null, null).getId();
+    long grade = service.createGrade("synthetic equipment rename grade", 719).getId();
+    long catalog = service.createCategory("synthetic equipment rename tree", null).getId();
+    long equipment = service.createCategory("장비", catalog).getId();
+    long clothing = service.createCategory("옷", equipment).getId();
+    long armor = service.createCategory("synthetic armor", clothing).getId();
+    var original = items.createItem(null, first, itemInput(armor, grade, "original armor", null));
+    var changed =
+        items.createItemVersion(
+            original.itemId(), later, itemInput(armor, grade, "current armor", null));
+    assertEquals(EquipmentSlot.CHEST, original.equipmentSlot());
+
+    service.updateCategory(clothing, "상의", equipment);
+    assertEquals(EquipmentSlot.CHEST, items.getItemVersion(original.id()).equipmentSlot());
+    service.updateCategory(equipment, "개편 장비", catalog);
+    assertEquals(EquipmentSlot.CHEST, items.getItemVersion(original.id()).equipmentSlot());
+    assertEquals(EquipmentSlot.CHEST, items.getItemVersion(changed.id()).equipmentSlot());
+    assertEquals(armor, items.getItemVersion(changed.id()).categoryId());
+
+    long head = service.createCategory("머리", equipment).getId();
+    assertEquals(
+        EquipmentSlot.HEAD,
+        items.createItem(null, later, itemInput(head, grade, "head item", null)).equipmentSlot());
+  }
+
+  @Test
+  @org.junit.jupiter.api.Timeout(20)
+  void itemStorageReadsOneCategoryHierarchyWhenAncestorsMoveConcurrently() {
+    long season =
+        service.createSeason(40, "synthetic equipment ancestry move", null, null, null).getId();
+    long patch = service.createPatch(season, 0, 1, null, null).getId();
+    long grade = service.createGrade("synthetic equipment ancestry grade", 718).getId();
+    long catalog = service.createCategory("synthetic equipment ancestry tree", null).getId();
+    long equipment = service.createCategory("장비", catalog).getId();
+    long clothing = service.createCategory("옷", equipment).getId();
+    long outer = service.createCategory("synthetic outer category", clothing).getId();
+    long inner = service.createCategory("synthetic inner category", outer).getId();
+    var version = items.createItem(null, patch, itemInput(inner, grade, "ancestry item", null));
+    var transaction = new TransactionTemplate(context.getBean(PlatformTransactionManager.class));
+    var catalogStore = context.getBean(CommonCatalogStore.class);
+
+    try (var editor = Executors.newSingleThreadExecutor()) {
+      transaction.executeWithoutResult(ignored -> {
+        var cached = catalogStore.find(ItemCategory.class, inner).orElseThrow();
+        assertEquals(outer, cached.getParent().getId());
+        var moving =
+            editor.submit(() ->
+                transaction.executeWithoutResult(write -> {
+                  service.updateCategory(inner, "synthetic inner category", clothing);
+                  service.updateCategory(outer, "synthetic outer category", inner);
+                }));
+        assertDoesNotThrow(() -> moving.get(5, TimeUnit.SECONDS));
+        // The reader still holds the old inner -> outer entity. The DB read sees the whole new
+        // path.
+        assertEquals(outer, cached.getParent().getId());
+        assertEquals(EquipmentSlot.CHEST, items.getItemVersion(version.id()).equipmentSlot());
+      });
+    }
   }
 
   @Test
@@ -401,10 +509,6 @@ class CommonCatalogIntegrationTests {
       rejected(app, "23514", "update public.item_version set max_stack_size=0 where id=" + version);
       rejected(
           app,
-          "23514",
-          "update public.item_version set equipment_slot='invalid' where id=" + version);
-      rejected(
-          app,
           "23503",
           "update public.item_version set grade_id=9223372036854775807 where id=" + version);
       String statInsert =
@@ -440,29 +544,13 @@ class CommonCatalogIntegrationTests {
             null,
             patch,
             new VersionInput(
-                category,
-                grade,
-                EquipmentSlot.ACCESSORY,
-                "synthetic stats item",
-                null,
-                null,
-                null,
-                original,
-                List.of()));
+                category, grade, "synthetic stats item", null, null, null, original, List.of()));
     assertNull(created.maxStackSize());
     var version =
         items.updateItemVersion(
             created.id(),
             new VersionInput(
-                category,
-                grade,
-                EquipmentSlot.ACCESSORY,
-                created.name(),
-                null,
-                null,
-                new MaxStackChange(7),
-                null,
-                null));
+                category, grade, created.name(), null, null, new MaxStackChange(7), null, null));
     var expected =
         List.of(
             new StatValue(Long.toString(statA), "-0.02"),
@@ -472,13 +560,11 @@ class CommonCatalogIntegrationTests {
     var later = items.recordItemExistence(version.itemId(), laterPatch, true);
     assertEquals(expected, later.stats());
     assertEquals(grade, later.gradeId());
-    assertEquals(EquipmentSlot.ACCESSORY, later.equipmentSlot());
     assertEquals(7, later.maxStackSize());
     var replacement =
         new VersionInput(
             category,
             grade,
-            EquipmentSlot.ACCESSORY,
             version.name(),
             null,
             null,
@@ -512,7 +598,6 @@ class CommonCatalogIntegrationTests {
             new VersionInput(
                 category,
                 grade,
-                EquipmentSlot.ACCESSORY,
                 version.name(),
                 null,
                 null,
@@ -714,7 +799,6 @@ class CommonCatalogIntegrationTests {
     return new VersionInput(
         category,
         grade,
-        null,
         "synthetic order item",
         null,
         null,
@@ -775,7 +859,7 @@ class CommonCatalogIntegrationTests {
   }
 
   @Test
-  void itemStorageUpgradesV1AndV2WithoutChangingExistingRows() throws Exception {
+  void itemStorageUpgradesV1V2AndV3WithoutChangingExistingRows() throws Exception {
     String name = "catalog_item_upgrade";
     String url = createIsolatedDatabase(name);
     Flyway v1 =
@@ -839,6 +923,45 @@ class CommonCatalogIntegrationTests {
       assertNull(scalar(app, "select to_regclass('public.item_stat')"));
     }
 
+    Flyway v3 =
+        Flyway.configure()
+            .dataSource(url, "lumia_migrator", MIGRATOR_PASSWORD)
+            .locations("classpath:db/migration")
+            .target("3")
+            .load();
+    assertEquals(1, v3.migrate().migrationsExecuted);
+    long weaponCategory;
+    long equipmentVersion;
+    try (var app = DriverManager.getConnection(url, "lumia_app", APP_PASSWORD)) {
+      weaponCategory =
+          Long.parseLong(
+              scalar(
+                  app,
+                  """
+                  with root as (
+                    insert into public.item_category(name) values ('장비') returning id
+                  )
+                  insert into public.item_category(name,parent_id)
+                  select '무기',id from root returning id
+                  """));
+      long item =
+          Long.parseLong(scalar(app, "insert into public.item default values returning id"));
+      equipmentVersion =
+          Long.parseLong(
+              scalar(
+                  app,
+                  """
+                  insert into public.item_version(
+                    item_id,from_game_patch_id,category_id,name,equipment_slot,max_stack_size)
+                  values (%d,%d,%d,'legacy V3 item','CHEST',6) returning id
+                  """
+                      .formatted(item, patch, weaponCategory)));
+      assertEquals(
+          "CHEST",
+          scalar(
+              app, "select equipment_slot from public.item_version where id=" + equipmentVersion));
+    }
+
     try (var upgraded = startProduct(name)) {
       var common = upgraded.getBean(CommonCatalogService.class);
       assertEquals("upgrade season", common.get(Season.class, season).getDisplayName());
@@ -852,6 +975,22 @@ class CommonCatalogIntegrationTests {
                     + patch));
       }
       var upgradedItems = upgraded.getBean(ItemCatalogService.class);
+      var upgradedEquipment = upgradedItems.getItemVersion(equipmentVersion);
+      assertEquals(weaponCategory, upgradedEquipment.categoryId());
+      assertEquals(patch, upgradedEquipment.fromGamePatchId());
+      assertEquals("legacy V3 item", upgradedEquipment.name());
+      assertEquals(6, upgradedEquipment.maxStackSize());
+      assertEquals(EquipmentSlot.WEAPON, upgradedEquipment.equipmentSlot());
+      long equipmentRoot;
+      try (var app = upgraded.getBean(DataSource.class).getConnection()) {
+        equipmentRoot =
+            Long.parseLong(
+                scalar(
+                    app, "select parent_id from public.item_category where id=" + weaponCategory));
+      }
+      common.updateCategory(weaponCategory, "전투 도구", equipmentRoot);
+      assertEquals(
+          EquipmentSlot.WEAPON, upgradedItems.getItemVersion(equipmentVersion).equipmentSlot());
       var old = upgradedItems.getItemVersion(legacyVersion);
       assertEquals("legacy V2 item", old.name());
       assertEquals(patch, old.fromGamePatchId());
@@ -896,7 +1035,7 @@ class CommonCatalogIntegrationTests {
       var created =
           upgradedItems.createItem(null, patch, itemInput(category, grade, "upgrade item", null));
       assertEquals(patch, upgradedItems.getItemVersion(created.id()).fromGamePatchId());
-      assertEquals("3", upgraded.getBean(Flyway.class).info().current().getVersion().getVersion());
+      assertEquals("4", upgraded.getBean(Flyway.class).info().current().getVersion().getVersion());
     }
   }
 

@@ -34,7 +34,6 @@ public class ItemCatalogService {
   public record VersionInput(
       Long categoryId,
       Long gradeId,
-      EquipmentSlot equipmentSlot,
       String name,
       String imagePath,
       Boolean deleted,
@@ -149,9 +148,7 @@ public class ItemCatalogService {
               boolean deleted = input.deleted() == null ? version.isDeleted() : input.deleted();
               version.change(category, input.name(), input.imagePath(), deleted);
               version.changeDetails(
-                  grade,
-                  input.equipmentSlot(),
-                  nextStackSize(input.maxStackChange(), version.getMaxStackSize()));
+                  grade, nextStackSize(input.maxStackChange(), version.getMaxStackSize()));
               if (input.skills() != null) replaceSkills(version, input.skills(), change);
               if (input.stats() != null) replaceStats(version, input.stats(), change);
               return version;
@@ -171,7 +168,6 @@ public class ItemCatalogService {
         new VersionInput(
             previous.getCategory().getId(),
             gradeId(previous),
-            previous.getEquipmentSlot(),
             previous.getName(),
             previous.getImagePath(),
             deleted,
@@ -294,7 +290,6 @@ public class ItemCatalogService {
             Boolean.TRUE.equals(input.deleted()));
     version.changeDetails(
         grade,
-        input.equipmentSlot(),
         nextStackSize(
             input.maxStackChange(), previous == null ? null : previous.getMaxStackSize()));
     if (input.skills() != null) {
@@ -410,7 +405,7 @@ public class ItemCatalogService {
     return version.getGrade() == null ? null : version.getGrade().getId();
   }
 
-  private static Version view(ItemVersion version) {
+  private Version view(ItemVersion version) {
     List<SkillLink> skills =
         version.getSkillLinks().stream()
             .map(link ->
@@ -429,7 +424,7 @@ public class ItemCatalogService {
         version.getFromGamePatch().getId(),
         version.getCategory().getId(),
         gradeId(version),
-        version.getEquipmentSlot(),
+        store.readEquipmentSlot(version.getCategory().getId()),
         version.getMaxStackSize(),
         version.getName(),
         version.getImagePath(),

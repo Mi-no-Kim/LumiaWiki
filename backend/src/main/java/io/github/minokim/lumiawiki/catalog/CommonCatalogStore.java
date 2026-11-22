@@ -170,6 +170,33 @@ public class CommonCatalogStore {
         .findFirst();
   }
 
+  EquipmentSlot readEquipmentSlot(Long categoryId) {
+    // Resolve the whole path in one statement, independent of previously loaded category entities.
+    List<?> roles =
+        em.createNativeQuery(
+                """
+                WITH RECURSIVE category_path AS (
+                  SELECT c.id, c.parent_id, c.equipment_role, ARRAY[c.id] AS visited, 0 AS depth
+                  FROM public.item_category c WHERE c.id = :categoryId
+                  UNION ALL
+                  SELECT parent.id, parent.parent_id, parent.equipment_role,
+                         child.visited || parent.id, child.depth + 1
+                  FROM category_path child JOIN public.item_category parent ON parent.id = child.parent_id
+                  WHERE NOT parent.id = ANY(child.visited)
+                )
+                SELECT branch.equipment_role
+                FROM category_path branch
+                JOIN public.item_category parent ON parent.id = branch.parent_id
+                WHERE parent.equipment_role = 'ROOT'
+                ORDER BY branch.depth
+                LIMIT 1
+                """)
+            .setParameter("categoryId", categoryId)
+            .getResultList();
+    if (roles.isEmpty() || roles.getFirst() == null) return null;
+    return EquipmentCategoryRole.valueOf((String) roles.getFirst()).slot();
+  }
+
   Optional<ItemVersion> readItemVersion(Long versionId) {
     return em
         .createQuery(
