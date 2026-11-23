@@ -50,10 +50,10 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #97](https://github.co
 상태의 상세 의미·전환과 종료 판단은 공통 절차를 따른다.
 -->
 
-- 상태: 예정
-- 현재 진행 위치: [전달사항 참조](#assignment)
-- 다음 행동: Task 95-001 근거를 바탕으로 파일별 유입·승인 대조
-- 막힌 조건: 실행 전 등록과 선행 입력 확인 · [부모 배정](issue.md#task-creation)의 Task 95-001 결과
+- 상태: 진행 중
+- 현재 진행 위치: [Phase와 #43의 변경 출처와 승인 증거 대조](#work-trace)
+- 다음 행동: 파일·발언 대조 결과를 검수하고 Task PR로 제출
+- 막힌 조건: 파일별 정정 실행은 Task 95-003 사용자 결정 뒤 가능
 
 <a id="assignment"></a>
 
@@ -90,11 +90,11 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #97](https://github.co
 사용자 확인 조건에 도달하면 관련 실행 전에 확인하고 통상적인 조정마다 재승인을 요구하지 않는다.
 -->
 
-- 대상·준비: [전달사항](#assignment) 참조. GitHub 번호·부모 연결 확인. 전체 계획 구체화 예정.
-- 현재 합의: 배정과 실행 경계는 확정 전달본을 따른다. 상세 계획은 미정.
+- 대상·준비: GitHub #97과 Task 95-001의 [보존 근거](artifacts/task-001-execution.md#work-preserve), 지정 Phase·#43 기준 및 당시 대화를 사용한다.
+- 현재 합의: 당시 사용자 발언, 유입·변경 주체, 파일 단위 실제 diff와 현재 영향 및 미확인을 남기고 Task 95-003 판단 자료로 제공한다. #43·프런트·공유 개발 DB는 조사에서 변경하지 않는다.
 - 남은 결정: 없음
 - Task 전체 확인: [완료 조건](artifacts/task-002-assignment.md#acceptance)에 따라 확인한다.
-- 수행 기록: 미생성 — `artifacts/task-002-execution.md`
+- 수행 기록: [95-002 수행 기록](artifacts/task-002-execution.md#work-trace)
 
 <a id="execution-plan"></a>
 
@@ -111,7 +111,15 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #97](https://github.co
 할 일 삭제·분할·병합에도 수행 사실·유효한 근거·원래 식별자와 연결을 보존한다.
 -->
 
-미정. 선행 조건 확인 뒤 결과·검수·제출을 포함한 전체 계획을 확정한다.
+<a id="work-trace"></a>
+
+#### Phase와 #43의 변경 출처와 승인 증거 대조
+
+- 태그: 조사, 검수, 커밋
+- [ ] 수행·확인 완료
+- 할 일: 42-001과 당시 대화에서 사용자 제공 범위 및 변경을 대조하고 Phase와 #43 PR·파일별 영향을 연결한다. 실제 기록을 자체·별도 검수하고 CI와 Issue 반영을 확인한다.
+- 확인: 출처·사용자 발언·커밋·PR 대응, 미확인의 보존, 정정 판단에 필요한 원본·영향과 제출 결과를 확인한다.
+- 수행 기록: [파일 유입·사용자 발언·현재 영향 대조](artifacts/task-002-execution.md#work-trace)
 
 <a id="result"></a>
 
@@ -124,6 +132,6 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #97](https://github.co
 중단·취소·인계 시에는 실제 상태·이유·영향·보존 결과·잔여·해소/재개 조건과 다음 행동을 남긴다.
 -->
 
-- 내용: 미수행
-- 확인: 미수행
-- 잔여: 전체 계획과 선행 조건 확인 후 착수
+- 내용: Phase와 #43의 변경·현재 영향을 [파일별 Git 이력](artifacts/task-002-execution.md#file-map)으로 기록했다. 제공 직후 3개 파일의 내용 출력과 AI가 복원한 5개 파일을 식별했다. 프런트 최초 유입, #42의 Task 수준 지시, #43의 DDL·Java 범주별 지시와 별도 DB 변경 승인을 대조했다.
+- 확인: [당시 사용자 발언](artifacts/task-002-execution.md#user-source), [Phase 공통](artifacts/task-002-execution.md#phase-changes), [#43 전용](artifacts/task-002-execution.md#issue-43-only)에서 근거와 한계를 확인했다. 일부 초기 바이트 원본 및 개별 파일·구현 상세에 대한 직접 승인은 미확인이다.
+- 잔여: 제출 후보 별도 검수·PR CI·부모 반영, Task 95-003 사용자 결정
