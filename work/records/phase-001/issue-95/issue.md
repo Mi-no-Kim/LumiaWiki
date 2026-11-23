@@ -125,7 +125,7 @@ Issue별 최소 활동 기준과 전체 수용 조건을 기록한다. 판단 �
 
 - [x] 단계 완료
 - 공통 절차: [2. 논의·결정](<../../../../harness/Issue 공통 절차.md#step-2>)
-- 진행 기록: 사용자가 확정한 배정을 연결했다. 정정 항목의 사용자 결정은 Task 3에서 진행한다.
+- 진행 기록: [Task 95-003](task-003.md#result)에서 사용자가 Phase 코드 정정 대상 없음과 기록만 통합하는 범위를 확정했다.
 - 상세 기록: [결정](#decisions) · [Task 배정](#task-creation)
 
 <a id="step-3"></a>
@@ -134,7 +134,7 @@ Issue별 최소 활동 기준과 전체 수용 조건을 기록한다. 판단 �
 
 - [x] 단계 완료
 - 공통 절차: [3. Task 생성](<../../../../harness/Issue 공통 절차.md#step-3>)
-- 진행 기록: 다섯 Task의 번호·제목·부모 #95·milestone #1을 GitHub에서 다시 읽어 로컬 순번과 대조했다. 각 Task의 결과 반영은 진행 중이다.
+- 진행 기록: 다섯 Task의 번호·부모 #95·milestone #1을 로컬 순번과 대조했다. 95-001·002·003·005는 Issue 반영을 확인했고 95-004는 취소했다.
 
 <a id="task-creation"></a>
 
@@ -198,8 +198,8 @@ Issue별 최소 활동 기준과 전체 수용 조건을 기록한다. 판단 �
 ### 기록만 Phase에 남기기로 한 결정
 
 - 확인된 결정: 사용자는 Phase에 정정할 문제가 없고 `issue/43-item-persistence`의 `catalog`가 문제 범위라고 결정했다. [Task 95-003](task-003.md#result) · [사용자 결정](codex://threads/01a2087d-5143-7523-86d6-a03744fed8e5)
-- 실제 반영: 95-001 증거 보존, 95-002 출처 조사, 95-003 결정은 각각 PR #101, #102, #103으로 Issue 브랜치에 반영됐다. Phase 코드 정정·격리 검증은 미수행이다. 남은 범위는 기록 검수·상위 통합과 인계다.
-- 종료 범위: 사용자가 조사·결정·인계 기록만 Phase에 병합하도록 승인했다. 95-004는 Phase 코드 정정 대상이 없어 취소 처리한다. 95-005는 기록 정정·검수·#43 인계를 담당한다. [최초 수용 조건과 배정](https://github.com/Mi-no-Kim/LumiaWiki/blob/856b5e24bc6b40efdc88e9c85d971fd3e5d17c72/work/records/phase-001/issue-95/issue.md#acceptance-criteria)
+- 실제 반영: 증거 보존·출처 조사·사용자 결정·기록 검수는 각각 PR #101·#102·#103·#104로 Issue에 반영됐다. Phase 코드 정정·격리 검증은 미수행이다. 상위 Phase 반영과 원래 대화 인계는 별도로 확인한다.
+- 종료 범위: 사용자가 조사·결정·인계 기록만 Phase에 병합하도록 승인했다. 95-004는 정정 대상이 없어 취소했고, 95-005에서 기록 검수와 #43 인계를 준비했다. [최초 수용 조건과 배정](https://github.com/Mi-no-Kim/LumiaWiki/blob/856b5e24bc6b40efdc88e9c85d971fd3e5d17c72/work/records/phase-001/issue-95/issue.md#acceptance-criteria)
 - 상위 통합: Issue의 기록 후보를 수용하면 Phase로 문서만 merge commit으로 통합한다. 실제 SHA·diff·Phase 병합 후 CI를 별도로 확인한 뒤 원래 대화로 인계한다.
 - 다음 작업: Spring 파일 변경 승인 규칙·hook은 별도 하네스 Issue로 다룬다. #43의 `catalog` 정정은 #43에서 범위를 확인하고 재개한다.
 
