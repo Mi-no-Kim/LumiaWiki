@@ -50,10 +50,10 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #96](https://github.co
 상태의 상세 의미·전환과 종료 판단은 공통 절차를 따른다.
 -->
 
-- 상태: 진행 중
-- 현재 진행 위치: [작업 상태와 복구 근거 확인](#work-preserve)
-- 다음 행동: 검수한 보존 기록을 Task PR로 제출하고 부모 반영 확인
-- 막힌 조건: Task 종료 처리는 별도 검수와 PR 반영 뒤 가능
+- 상태: 완료
+- 현재 진행 위치: [결과](#result)
+- 다음 행동: 없음 — [결과](#result)
+- 막힌 조건: 없음
 
 <a id="assignment"></a>
 
@@ -116,7 +116,7 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #96](https://github.co
 #### 작업 상태와 복구 근거 확인
 
 - 태그: 조사, 검수, 커밋
-- [ ] 수행·확인 완료
+- [x] 수행·확인 완료
 - 할 일: 지정 SHA와 관련 PR을 맞추고 기존 변경, 철회 패치, V1 백업과 이전 격리 복원 결과를 찾을 수 있는 경로를 남긴다. 실제 후보 자체·별도 검수와 CI를 거쳐 부모 Issue에 통합한다.
 - 확인: GitHub 원격·Git 객체·로컬 경로·지문, 이전 복원 결과의 원본과 Task PR의 squash 반영을 대조한다.
 - 수행 기록: [Phase·#43 상태와 복구 근거 대조](artifacts/task-001-execution.md#work-preserve)
@@ -134,4 +134,5 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #96](https://github.co
 
 - 내용: Phase·#43 기준, 관련 PR과 두 워크트리의 변경 6개, 철회 패치, V1 백업을 식별했다.
 - 확인: 원격 조회, Git 객체, 실제 파일과 지문 대조로 다시 찾을 수 있음을 확인했다. V1 복원 결과는 이전 실행 기록을 대조했다. 이번 검증에서 개발 DB와의 통신은 없었다. [수행 기록](artifacts/task-001-execution.md#work-preserve)
-- 잔여: 제출 후보 별도 검수·CI와 Issue squash 반영 확인
+- 반영: [PR #101](https://github.com/Mi-no-Kim/LumiaWiki/pull/101)의 [Quality](https://github.com/Mi-no-Kim/LumiaWiki/actions/runs/45181376196) 및 [Ubuntu·Windows Inventory](https://github.com/Mi-no-Kim/LumiaWiki/actions/runs/45181376161)가 통과했다. 부모 `9a19ac2607950f3c23faced12c0811eb24585392`에서 제출한 두 기록 내용과 일치함을 대조했고 [GitHub #96](https://github.com/Mi-no-Kim/LumiaWiki/issues/96)의 완료 종료를 확인했다.
+- 잔여: 없음

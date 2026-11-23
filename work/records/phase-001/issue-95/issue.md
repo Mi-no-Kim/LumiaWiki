@@ -33,7 +33,7 @@ Issue별 체크와 실제 기록은 이 본문에서 관리한다. 공통 문서
 
 - 상태: 진행 중
 - 현재 진행 위치: [3. Task 생성](#step-3)
-- 다음 행동: 3번 — 95-001의 작업 상태와 보존 근거 검수
+- 다음 행동: 3번 — 95-002의 변경 출처와 승인 범위 대조
 - 막힌 조건: 후속 정정 — 파일별 승인 미발생 — 다섯 Task 등록 및 조사 후 사용자가 항목별 결정
 
 <a id="sequence"></a>
@@ -149,7 +149,7 @@ Issue별 최소 활동 기준과 전체 수용 조건을 기록한다. 판단 �
 - 담당 결과: 작업 상태와 증거 보존
   - 근거 결정: [Task 배정의 근거](#assignment-decision)
   - 전달사항: [95-001 r001](artifacts/task-001-assignment.md)
-  - Task: [95-001](task-001.md#summary) · [GitHub #96](https://github.com/Mi-no-Kim/LumiaWiki/issues/96)
+  - Task: [95-001](task-001.md#summary) · [GitHub #96](https://github.com/Mi-no-Kim/LumiaWiki/issues/96) · [PR #101](https://github.com/Mi-no-Kim/LumiaWiki/pull/101) 반영
 - 담당 결과: 변경 출처와 승인 범위 대조
   - 근거 결정: [Task 배정의 근거](#assignment-decision)
   - 전달사항: [95-002 r001](artifacts/task-002-assignment.md)
