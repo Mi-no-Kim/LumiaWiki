@@ -50,10 +50,10 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #96](https://github.co
 상태의 상세 의미·전환과 종료 판단은 공통 절차를 따른다.
 -->
 
-- 상태: 예정
-- 현재 진행 위치: [전달사항 참조](#assignment)
-- 다음 행동: 기준 SHA, PR과 보존 근거 대조
-- 막힌 조건: 전체 수행 계획 구체화 후 착수
+- 상태: 진행 중
+- 현재 진행 위치: [작업 상태와 복구 근거 확인](#work-preserve)
+- 다음 행동: 검수한 보존 기록을 Task PR로 제출하고 부모 반영 확인
+- 막힌 조건: Task 종료 처리는 별도 검수와 PR 반영 뒤 가능
 
 <a id="assignment"></a>
 
@@ -90,11 +90,11 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #96](https://github.co
 사용자 확인 조건에 도달하면 관련 실행 전에 확인하고 통상적인 조정마다 재승인을 요구하지 않는다.
 -->
 
-- 대상·준비: [전달사항](#assignment) 참조. GitHub 번호·부모 연결 확인. 전체 계획 구체화 예정.
-- 현재 합의: 배정과 실행 경계는 확정 전달본을 따른다. 상세 계획은 미정.
+- 대상·준비: GitHub #96과 부모 #95를 확인하고 등록 커밋 `856b5e2`에서 Task 브랜치를 분기했다.
+- 현재 합의: 사용자 배정에 따라 원격 ref·PR, Git 객체, 기존 변경과 복구 근거를 읽기 전용으로 대조하고 Task PR로 제출한다. 개발 DB와 기존 워크트리의 파일·Git 상태는 변경 범위 밖이다.
 - 남은 결정: 없음
 - Task 전체 확인: [완료 조건](artifacts/task-001-assignment.md#acceptance)에 따라 확인한다.
-- 수행 기록: 미생성 — `artifacts/task-001-execution.md`
+- 수행 기록: [95-001 수행 기록](artifacts/task-001-execution.md#work-preserve)
 
 <a id="execution-plan"></a>
 
@@ -111,7 +111,15 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #96](https://github.co
 할 일 삭제·분할·병합에도 수행 사실·유효한 근거·원래 식별자와 연결을 보존한다.
 -->
 
-미정. 선행 조건 확인 뒤 결과·검수·제출을 포함한 전체 계획을 확정한다.
+<a id="work-preserve"></a>
+
+#### 작업 상태와 복구 근거 확인
+
+- 태그: 조사, 검수, 커밋
+- [ ] 수행·확인 완료
+- 할 일: 지정 SHA와 관련 PR을 맞추고 기존 변경, 철회 패치, V1 백업과 이전 격리 복원 결과를 찾을 수 있는 경로를 남긴다. 실제 후보 자체·별도 검수와 CI를 거쳐 부모 Issue에 통합한다.
+- 확인: GitHub 원격·Git 객체·로컬 경로·지문, 이전 복원 결과의 원본과 Task PR의 squash 반영을 대조한다.
+- 수행 기록: [Phase·#43 상태와 복구 근거 대조](artifacts/task-001-execution.md#work-preserve)
 
 <a id="result"></a>
 
@@ -124,6 +132,6 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #96](https://github.co
 중단·취소·인계 시에는 실제 상태·이유·영향·보존 결과·잔여·해소/재개 조건과 다음 행동을 남긴다.
 -->
 
-- 내용: 미수행
-- 확인: 미수행
-- 잔여: 전체 계획과 선행 조건 확인 후 착수
+- 내용: Phase·#43 기준, 관련 PR과 두 워크트리의 변경 6개, 철회 패치, V1 백업을 식별했다.
+- 확인: 원격 조회, Git 객체, 실제 파일과 지문 대조로 다시 찾을 수 있음을 확인했다. V1 복원 결과는 이전 실행 기록을 대조했다. 이번 검증에서 개발 DB와의 통신은 없었다. [수행 기록](artifacts/task-001-execution.md#work-preserve)
+- 잔여: 제출 후보 별도 검수·CI와 Issue squash 반영 확인
