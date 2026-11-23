@@ -33,7 +33,7 @@ Issue별 체크와 실제 기록은 이 본문에서 관리한다. 공통 문서
 
 - 상태: 진행 중
 - 현재 진행 위치: [3. Task 생성](#step-3)
-- 다음 행동: 3번 — 95-002의 변경 출처와 승인 범위 대조
+- 다음 행동: 3번 — 95-003에서 Phase 파일별 처리와 격리 검증 기준 확정
 - 막힌 조건: 후속 정정 — 파일별 승인 미발생 — 다섯 Task 등록 및 조사 후 사용자가 항목별 결정
 
 <a id="sequence"></a>
@@ -153,7 +153,7 @@ Issue별 최소 활동 기준과 전체 수용 조건을 기록한다. 판단 �
 - 담당 결과: 변경 출처와 승인 범위 대조
   - 근거 결정: [Task 배정의 근거](#assignment-decision)
   - 전달사항: [95-002 r001](artifacts/task-002-assignment.md)
-  - Task: [95-002](task-002.md#summary) · [GitHub #97](https://github.com/Mi-no-Kim/LumiaWiki/issues/97)
+  - Task: [95-002](task-002.md#summary) · [GitHub #97](https://github.com/Mi-no-Kim/LumiaWiki/issues/97) · [PR #102](https://github.com/Mi-no-Kim/LumiaWiki/pull/102) 반영
 - 담당 결과: 정정 범위 확정
   - 근거 결정: [Task 배정의 근거](#assignment-decision)
   - 전달사항: [95-003 r001](artifacts/task-003-assignment.md)

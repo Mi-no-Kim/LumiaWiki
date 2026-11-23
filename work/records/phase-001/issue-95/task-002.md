@@ -50,10 +50,10 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #97](https://github.co
 상태의 상세 의미·전환과 종료 판단은 공통 절차를 따른다.
 -->
 
-- 상태: 진행 중
-- 현재 진행 위치: [Phase와 #43의 변경 출처와 승인 증거 대조](#work-trace)
-- 다음 행동: 파일·발언 대조 결과를 검수하고 Task PR로 제출
-- 막힌 조건: 파일별 정정 실행은 Task 95-003 사용자 결정 뒤 가능
+- 상태: 완료
+- 현재 진행 위치: [결과](#result)
+- 다음 행동: 없음 — [결과](#result)
+- 막힌 조건: 없음
 
 <a id="assignment"></a>
 
@@ -116,7 +116,7 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #97](https://github.co
 #### Phase와 #43의 변경 출처와 승인 증거 대조
 
 - 태그: 조사, 검수, 커밋
-- [ ] 수행·확인 완료
+- [x] 수행·확인 완료
 - 할 일: 42-001과 당시 대화에서 사용자 제공 범위 및 변경을 대조하고 Phase와 #43 PR·파일별 영향을 연결한다. 실제 기록을 자체·별도 검수하고 CI와 Issue 반영을 확인한다.
 - 확인: 출처·사용자 발언·커밋·PR 대응, 미확인의 보존, 정정 판단에 필요한 원본·영향과 제출 결과를 확인한다.
 - 수행 기록: [파일 유입·사용자 발언·현재 영향 대조](artifacts/task-002-execution.md#work-trace)
@@ -134,4 +134,5 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #97](https://github.co
 
 - 내용: Phase와 #43의 변경·현재 영향을 [파일별 Git 이력](artifacts/task-002-execution.md#file-map)으로 기록했다. 제공 직후 3개 파일의 내용 출력과 AI가 복원한 5개 파일을 식별했다. 프런트 최초 유입, #42의 Task 수준 지시, #43의 DDL·Java 범주별 지시와 별도 DB 변경 승인을 대조했다.
 - 확인: [당시 사용자 발언](artifacts/task-002-execution.md#user-source), [Phase 공통](artifacts/task-002-execution.md#phase-changes), [#43 전용](artifacts/task-002-execution.md#issue-43-only)에서 근거와 한계를 확인했다. 일부 초기 바이트 원본 및 개별 파일·구현 상세에 대한 직접 승인은 미확인이다.
-- 잔여: 제출 후보 별도 검수·PR CI·부모 반영, Task 95-003 사용자 결정
+- 반영: [PR #102](https://github.com/Mi-no-Kim/LumiaWiki/pull/102)의 [Quality](https://github.com/Mi-no-Kim/LumiaWiki/actions/runs/45183635517)와 [Ubuntu·Windows Inventory](https://github.com/Mi-no-Kim/LumiaWiki/actions/runs/45183635382)가 통과했다. 부모 `9e63ce896e3a075e5add2d55924d557422f7533b`와 제출한 두 파일이 일치하며 [GitHub #97](https://github.com/Mi-no-Kim/LumiaWiki/issues/97)의 완료 종료를 확인했다.
+- 잔여: 일부 제공 파일의 원본 바이트 및 개별 변경에 대한 직접 승인 근거는 미확인으로 인계했다. [Task 95-003](task-003.md#summary)에서 현재의 파일별 처리를 결정한다.
