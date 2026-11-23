@@ -11,16 +11,18 @@ import unittest
 SCRIPTS = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(SCRIPTS))
 from harness_inventory import Candidate
-from rule_comments import PROFILES, POLICY, comments, inspect, record_names
+from rule_comments import ALL_PROFILES, PLAN_PROFILES, PROFILES, POLICY, comments, inspect, record_names
 
 LEGACY = 'work/records/harness/issue-1/issue.md'
 ISSUE = 'work/records/issues/issue-2/issue.md'
 TASK = 'work/records/issues/issue-2/task-001.md'
 EXECUTION = 'work/records/issues/issue-2/artifacts/task-001-execution.md'
+PLAN = 'work/records/issues/issue-2/artifacts/task-001-plan.md'
+ASSIGNMENT = 'work/records/issues/issue-2/artifacts/task-001-assignment.md'
 
 
 def values(profile):
-    prefix, rules, _ = PROFILES[profile]
+    prefix, rules, _ = ALL_PROFILES[profile]
     return {r: f'<!-- {prefix}:{r}\nKeep {r}.\n-->' for r in rules}
 
 
@@ -67,6 +69,140 @@ class CurrentRecordTests(unittest.TestCase):
     def commit(self):
         self.git('add', '--', 'harness', 'work')
         self.git('-c', 'core.hooksPath=' + str(self.root / 'no-hooks'), 'commit', '-qm', 'Fixture adoption')
+
+    def adopt_separate_plans(self, compatible=()):
+        self.policy.update(schema=2, compatibleTasks=list(compatible), taskPlanMigrations={})
+        for profile, (_, _, source) in PLAN_PROFILES.items():
+            self.write(source, '# Source\n\n```markdown\n' + body(profile) + '```\n')
+            self.policy['profiles'][profile] = {'source': source, 'comments': values(profile)}
+            self.policy['targets'].append({'path': source, 'profile': profile, 'mode': 'template'})
+        self.save()
+
+    def separate_task(self, plan='미작성', state='예정'):
+        return (body('task-with-plan', state) + '\n- 상세 계획: ' + plan
+                + '\n- 적용 전달본: [r001](artifacts/task-001-assignment.md)\n'
+                + '- 현재 진행 위치: [배정](#assignment)\n- 다음 행동: 상세 계획을 작성한다.\n'
+                + '\n<a id="assignment"></a>\n<a id="summary"></a>\n')
+
+    def plan_body(self, agreed='합의', checked=' ', evidence='미생성'):
+        return (
+            values('task-plan')['recording'] + '\n'
+            '- Task: [Task](../task-001.md#summary)\n'
+            '- 적용 전달본: [r001](task-001-assignment.md)\n'
+            f'- 계획 합의: {agreed}\n'
+            '\n<a id="stage-verify"></a>\n\n## 1. stage-verify — 확인\n\n'
+            '- 태그: 검수\n'
+            f'- [{checked}] 단계 완료\n'
+            '- 선행 입력: 없음\n- 완료 기준: 결과\n- 확인: 대조\n'
+            '- 확인·결정 지점: 없음\n'
+            f'- 수행 기록: {evidence}\n\n'
+            '### 세부 작업\n\n1. 실제 결과와 기준을 대조한다.\n'
+        )
+
+    def test_only_new_tasks_require_separate_plan_format(self):
+        self.write(TASK, body('task'))
+        self.commit()
+        self.adopt_separate_plans((TASK,))
+        self.assertEqual([], self.errors(previous='HEAD'))
+        new_task = TASK.replace('001', '002')
+        self.write(new_task, body('task'))
+        self.assertTrue(any('separate-task-rule' in error for error in self.errors(previous='HEAD')))
+        self.write(new_task, self.separate_task().replace('task-001-assignment.md', 'task-002-assignment.md'))
+        self.write(ASSIGNMENT.replace('001', '002'), 'Assigned work\n')
+        self.assertEqual([], self.errors(previous='HEAD'))
+        self.commit()
+        self.policy['compatibleTasks'].append(new_task)
+        self.save()
+        self.write(new_task, body('task'))
+        self.assertTrue(any('adoption and migration' in error for error in self.errors(previous='HEAD')))
+
+    def test_separate_plan_link_order_and_completion_are_checked(self):
+        self.adopt_separate_plans()
+        linked = '[계획](artifacts/task-001-plan.md)'
+        self.write(TASK, self.separate_task(linked))
+        self.assertTrue(any('linked Task plan is missing' in error for error in self.errors()))
+        self.write(ASSIGNMENT, 'Assigned work\n')
+        self.write(PLAN, self.plan_body(agreed='제안'))
+        self.assertEqual([], self.errors())
+        self.write(TASK, self.separate_task(linked) + '\n- [x] 단계 완료\n')
+        self.assertTrue(any('only in the plan' in error for error in self.errors()))
+        self.write(TASK, self.separate_task(linked).replace('[배정](#assignment)', '[단계](artifacts/task-002-plan.md#stage-verify)'))
+        self.assertTrue(any('current position must link' in error for error in self.errors()))
+        self.write(TASK, self.separate_task(linked))
+        self.write(PLAN, self.plan_body().replace('## 1.', '## 2.'))
+        self.assertTrue(any('sequential stage order' in error for error in self.errors()))
+        anchor = '<a id="stage-verify"></a>'
+        self.write(PLAN, self.plan_body().replace(anchor, '') + '\n' + anchor + '\n')
+        self.assertTrue(any('unique stage anchors' in error for error in self.errors()))
+        self.write(PLAN, self.plan_body(checked='x'))
+        self.assertTrue(any('confirmed execution evidence' in error for error in self.errors()))
+        self.write(PLAN, self.plan_body(checked='x', evidence='[근거](task-001-execution.md#work-verify)'))
+        self.write(EXECUTION, body('execution') + '\n<a id="work-verify"></a>\n'
+                   '- 할 일: [단계](task-001-plan.md#stage-verify)\n')
+        self.write(TASK, self.separate_task(linked, state='완료'))
+        self.assertEqual([], self.errors())
+        self.write(PLAN, self.plan_body())
+        self.assertTrue(any('completion is missing or inconsistent' in error for error in self.errors()))
+
+    def test_individual_migration_needs_approval_and_preserves_state(self):
+        self.write(TASK, body('task', '진행 중'))
+        self.adopt_separate_plans((TASK,))
+        self.commit()
+        self.write(TASK, self.separate_task(state='진행 중'))
+        self.assertTrue(any('task-rule:' in error for error in self.errors(previous='HEAD')))
+        self.policy['taskPlanMigrations'][TASK] = ISSUE + '#approved-migration'
+        self.save()
+        with self.assertRaisesRegex(ValueError, 'Approval record reference'):
+            self.errors(previous='HEAD')
+        self.write(ISSUE, body('issue') + '\n<a id="approved-migration"></a>\n')
+        self.write(ASSIGNMENT, 'Assigned work\n')
+        self.assertEqual([], self.errors(previous='HEAD'))
+        self.write(TASK, self.separate_task(state='예정'))
+        self.assertTrue(any('must preserve the current state' in error for error in self.errors(previous='HEAD')))
+
+    def test_individual_migration_preserves_completed_work_and_original_anchors(self):
+        original = (
+            body('task', '진행 중') + '\n<a id="work-previous"></a>\n\n'
+            '#### 확인 완료\n\n- [x] 수행·확인 완료\n'
+            '- 수행 기록: [근거](artifacts/task-001-execution.md#work-previous).\n'
+        )
+        evidence = body('execution') + '\n<a id="work-previous"></a>\n'
+        self.write(TASK, original)
+        self.write(EXECUTION, evidence + '- 할 일: [기존 할 일](../task-001.md#work-previous)\n')
+        self.adopt_separate_plans((TASK,))
+        self.commit()
+        self.policy['taskPlanMigrations'][TASK] = ISSUE + '#approved-migration'
+        self.save()
+        self.write(ISSUE, body('issue') + '\n<a id="approved-migration"></a>\n')
+        self.write(ASSIGNMENT, 'Assigned work\n')
+        linked = '[계획](artifacts/task-001-plan.md)'
+        self.write(TASK, self.separate_task(linked, '진행 중'))
+        self.write(PLAN, self.plan_body())
+        errors = self.errors(previous='HEAD')
+        self.assertTrue(any('preserve completed work' in error for error in errors))
+        self.assertTrue(any('preserve existing Task work anchors' in error for error in errors))
+        self.write(TASK, self.separate_task(linked, '진행 중') + '\n<a id="work-previous"></a>\n')
+        self.write(EXECUTION, evidence + '\n<a id="work-new"></a>\n'
+                   '- 할 일: [대체 단계](task-001-plan.md#stage-verify)\n')
+        self.write(PLAN, self.plan_body(checked='x', evidence='[대체 근거](task-001-execution.md#work-new)'))
+        self.assertTrue(any('preserve completed work' in error for error in self.errors(previous='HEAD')))
+        self.write(PLAN, self.plan_body(checked='x', evidence='[근거](task-001-execution.md#work-previous)'))
+        self.assertTrue(any('confirmed execution evidence' in error for error in self.errors(previous='HEAD')))
+        self.write(EXECUTION, evidence + '- 할 일: [단계](task-001-plan.md#stage-verify)\n')
+        self.assertEqual([], self.errors(previous='HEAD'))
+
+    def test_new_task_without_plan_still_requires_assignment_and_next_action(self):
+        self.adopt_separate_plans()
+        valid = self.separate_task()
+        self.write(ASSIGNMENT, 'Assigned work\n')
+        self.write(TASK, valid)
+        self.assertEqual([], self.errors())
+        missing = '\n'.join(line for line in valid.splitlines()
+                            if not line.startswith(('- 적용 전달본:', '- 다음 행동:'))) + '\n'
+        self.write(TASK, missing)
+        errors = self.errors()
+        self.assertTrue(any('one existing assignment' in error for error in errors))
+        self.assertTrue(any('one next action' in error for error in errors))
 
     def test_existing_untracked_record_is_exempt_without_edit(self):
         before = (self.root / LEGACY).read_bytes()

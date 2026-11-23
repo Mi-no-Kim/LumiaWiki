@@ -120,6 +120,7 @@ class RepositoryCase(unittest.TestCase):
             self.write(source, (PROJECT / source).read_text(encoding='utf-8'))
         current_policy = json.loads((PROJECT / current[-1]).read_text(encoding='utf-8'))
         current_policy['legacyRecords'] = []
+        current_policy['compatibleTasks'] = []
         self.write(current[-1], json.dumps(current_policy))
         sources = [target['path'] for target in current_policy['targets']]
         for source in sources:
@@ -453,14 +454,17 @@ class HookTests(RepositoryCase):
         self.add_hook()
         self.assertEqual(0, self.install().returncode)
         record = 'work/records/harness/issue-2/task-001.md'
-        template = (PROJECT / 'harness/templates/task.md').read_text(encoding='utf-8')
+        template = (PROJECT / 'harness/templates/task-with-plan.md').read_text(encoding='utf-8')
         body = re.search(r'^```markdown\s*\n(.*?)^```\s*$', template, re.M | re.S)[1]
+        body = (body.replace('<확정 전달사항 링크>', '[r001](artifacts/task-001-assignment.md)')
+                .replace('<허용된 다음 행동>', '상세 계획을 작성한다.'))
+        self.write('work/records/harness/issue-2/artifacts/task-001-assignment.md', 'Fixture assignment\n')
         self.write(record, body)
         self.stage()
         accepted = self.git('commit', '-qm', 'valid current task fixture', check=False)
         self.assertEqual(0, accepted.returncode, accepted.stderr)
         policy = json.loads((self.root / 'harness/rule-comments.json').read_text(encoding='utf-8'))
-        broken = body.replace(policy['profiles']['task']['comments']['start'], '')
+        broken = body.replace(policy['profiles']['task-with-plan']['comments']['recording'], '')
         self.write(record, broken)
         self.git('add', '--', record)
         before = self.git('rev-parse', 'HEAD').stdout
@@ -469,7 +473,7 @@ class HookTests(RepositoryCase):
                 self.write(record, body)
             denied = self.git('commit', '-qm', 'staged task comment violation', check=False)
             self.assertNotEqual(0, denied.returncode)
-            self.assertIn('task-rule:start', denied.stderr)
+            self.assertIn('separate-task-rule:recording', denied.stderr)
             self.assertEqual(before, self.git('rev-parse', 'HEAD').stdout)
         self.git('add', '--', record)
         self.write(record, broken)

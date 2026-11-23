@@ -49,7 +49,8 @@ lumia_island_wiki/
 │   ├── examples/                  정식 양식의 공용 예시
 │   └── templates/                 본문·입력·수행 기록, GitHub 게시, PR 양식
 │       ├── issue-input.md / issue.md  Issue 생성 입력 / 최초 본문
-│       ├── task-input.md / task.md    확정 배정 전달사항 / 최초 Task 본문
+│       ├── task-input.md / task-with-plan.md    확정 배정 전달사항 / 신규 Task 본문
+│       ├── task-plan.md                         별도 상세 계획
 │       └── task-execution.md          첫 할 일 착수 때 수행 기록 최초 생성
 └── work/                           실제 계획·진행·작업 근거
     ├── README.md                   기록 탐색과 사용 안내

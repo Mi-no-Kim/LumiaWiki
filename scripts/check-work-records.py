@@ -87,7 +87,7 @@ def main():
         policy_raw = view.read('harness/rule-comments.json')
         policy = json.loads(policy_raw.decode('utf-8-sig')) if policy_raw is not None else {}
         if policy:
-            from rule_comments import record_profile
+            from rule_comments import effective_profile
         base = args.base
         if base is None:
             if args.candidate == 'index':
@@ -107,7 +107,7 @@ def main():
         errors = []
         for name in names:
             old = previous.read(name) if previous else None
-            profile = record_profile(name) if policy else None
+            profile = effective_profile(name, policy) if policy else None
             fixed_comments = list(policy.get('profiles', {}).get(profile, {}).get('comments', {}).values())
             failures, warnings = inspect_record(name, view.read(name).decode('utf-8-sig'), old.decode('utf-8-sig') if old is not None else None, fixed_comments)
             errors.extend(failures)
