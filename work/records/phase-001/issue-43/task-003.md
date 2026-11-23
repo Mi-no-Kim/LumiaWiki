@@ -51,9 +51,9 @@ GitHub sub-issue: [Mi-no-Kim/LumiaWiki #69](https://github.com/Mi-no-Kim/LumiaWi
 -->
 
 - 상태: 진행 중
-- 현재 진행 위치: [V4](#work-equipment-slot)와 [V5](#work-submission)를 검수하고 별도 로컬 커밋으로 보존했다.
-- 다음 행동: [43-003의 원격 제출과 부모 반영](#work-submission) 범위를 확인한다. 다음 Task는 [43-004](task-004.md#summary)다.
-- 막힌 조건: 개발 DB 적용과 [#45 실제 자료 작업](issue.md#data-timing)은 보류 상태다.
+- 현재 진행 위치: [PR #91](https://github.com/Mi-no-Kim/LumiaWiki/pull/91)로 V4·V5를 부모에 반영했다. 승인한 [개발 DB V2~V5 적용과 기동 검증](artifacts/task-003-execution.md#development-db-v5)을 마쳤다.
+- 다음 행동: [수용 검수 결과](artifacts/task-003-execution.md#acceptance-review)를 기준으로 종료에 필요한 사용자 확인과 미확인 범위를 대조한다. 다음 Task는 [43-004](task-004.md#summary)다.
+- 막힌 조건: [#45 실제 자료 작업](issue.md#data-timing)과 자료 의존 항목의 수용은 보류 상태다.
 
 <a id="assignment"></a>
 <a id="goal"></a>
@@ -178,4 +178,7 @@ GitHub sub-issue: [Mi-no-Kim/LumiaWiki #69](https://github.com/Mi-no-Kim/LumiaWi
 
 - 내용: [V4 장착 부위 정정](artifacts/task-003-execution.md#work-equipment-slot)과 [V5 제작·획득·배달 관계](artifacts/task-003-execution.md#work-storage)를 구현했다.
 - 확인: 개정 V4는 단위 43건·격리 통합 21건, 개정 V4를 포함한 V5는 단위 43건·격리 통합 29건을 통과했다. 두 후보의 포맷·JAR와 조합 분리안 실행 비용을 확인했다.
-- 잔여: [원격 제출과 부모 반영](#work-submission)이 남았다. [자료 의존 항목](#decisions)의 수용은 보류한다.
+- 부모 반영: [PR #91](https://github.com/Mi-no-Kim/LumiaWiki/pull/91)을 `f21439d`로 squash 병합했고 [병합 후 CI](https://github.com/Mi-no-Kim/LumiaWiki/actions/runs/45150664705)를 확인했다.
+- 개발 DB 적용: 승인한 기존 DB를 V1에서 V5로 갱신했다. [백업 복원과 적용 전후 검증](artifacts/task-003-execution.md#development-db-v5)을 마쳤다.
+- 수용 검수: V4·V5의 합의한 구현 범위는 병합 커밋의 격리 통합 23건과 추가 동시성 검증에서 수용 기준을 충족했다. [배정 대조와 관찰](artifacts/task-003-execution.md#acceptance-review)을 따른다.
+- 잔여: V5 최초 구현의 기능별 사전 실패 근거와 사용자 직접 확인은 미확인이다. [자료 의존 항목](#decisions)의 수용과 종료 처리는 남아 있다.
