@@ -154,6 +154,8 @@ Task 005에서 합의한 큰 순서는 실행 기반·DB 저장/조회 준비→
 
 ## 보유 Issue
 
+- [Issue #95: Phase 001 백엔드 변경 승인 재검토 및 정정](issue-95/issue.md#summary)
+
 - [Issue #15: Phase 001 구체화 및 Issue·Task 실행 계획 수립](issue-15/issue.md#summary)
 
 - [Issue #42: 실행·개발·검증 기반](issue-42/issue.md#summary)
