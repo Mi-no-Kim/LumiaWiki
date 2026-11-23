@@ -154,6 +154,8 @@ Task 005에서 합의한 큰 순서는 실행 기반·DB 저장/조회 준비→
 
 ## 보유 Issue
 
+- [Issue #95: Phase 001 백엔드 변경 승인 재검토 및 정정](issue-95/issue.md#summary)
+
 - [Issue #15: Phase 001 구체화 및 Issue·Task 실행 계획 수립](issue-15/issue.md#summary)
 
 - [Issue #42: 실행·개발·검증 기반](issue-42/issue.md#summary)
@@ -163,3 +165,11 @@ Task 005에서 합의한 큰 순서는 실행 기반·DB 저장/조회 준비→
 - [Issue #46: 제작 관계와 재료 수량](issue-46/issue.md#summary)
 - [Issue #47: 기본 루트 계산](issue-47/issue.md#summary)
 - [Issue #48: P1 통합 확인과 잔여 정리](issue-48/issue.md#summary)
+
+<a id="backend-approval-review"></a>
+
+### 백엔드 변경 출처와 승인 재검토
+
+[Issue #95](issue-95/issue.md#closure-scope)에서 Phase 기준 `cc7338c`와 #43 기준 `1dc6fa1`의 백엔드 변경을 조사했다. 사용자는 Phase 코드에 정정할 대상이 없다고 결정하고, 조사 및 결정 기록만 Phase에 반영하도록 승인했다. [출처 대조](issue-95/artifacts/task-002-execution.md#work-trace)에는 당시 제공 파일과 후속 변경, 확인된 발언과 직접 승인 미확인을 남겼다.
+
+사용자가 후속 정정 대상으로 지목한 범위는 #43 브랜치의 `catalog`다. 기존 변경을 보존한 뒤 Phase → #43 부모 → 43-003 순서로 반영하고, 사용자와 범위를 확인한 뒤 #43에서 재개한다. [#43 인계와 V5 조건](issue-95/artifacts/task-005-execution.md#resume-v5)
