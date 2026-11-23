@@ -50,10 +50,10 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #100](https://github.c
 상태의 상세 의미·전환과 종료 판단은 공통 절차를 따른다.
 -->
 
-- 상태: 예정
-- 현재 진행 위치: [전달사항 참조](#assignment)
-- 다음 행동: Task 95-004 반영 내용과 관련 기록 대조
-- 막힌 조건: 실행 전 등록과 선행 입력 확인 · [부모 배정](issue.md#task-creation)의 Task 95-004 결과
+- 상태: 진행 중
+- 현재 진행 위치: [기록 통합 후보 검수와 #43 인계 준비](#work-records)
+- 다음 행동: 문서 통합 후보의 자체·별도 검수와 Task PR 제출
+- 막힌 조건: 최종 수용은 Task PR의 CI와 Issue squash 반영 확인 뒤 가능
 
 <a id="assignment"></a>
 
@@ -67,9 +67,9 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #100](https://github.c
 -->
 
 - 부모 Issue: [Issue #95](issue.md#summary)
-- 적용 전달본: [95-005 전달사항 r001](artifacts/task-005-assignment.md)
-- 전달본 식별: r001
-- 기준 기록: [Issue #95의 배정 근거](issue.md#assignment-decision)
+- 적용 전달본: [95-005 전달사항 r002](artifacts/task-005-assignment-r002.md)
+- 전달본 식별: r002
+- 기준 기록: [Issue #95 기록 통합 범위](issue.md#closure-scope)
 
 <a id="sequence"></a>
 
@@ -90,11 +90,11 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #100](https://github.c
 사용자 확인 조건에 도달하면 관련 실행 전에 확인하고 통상적인 조정마다 재승인을 요구하지 않는다.
 -->
 
-- 대상·준비: [전달사항](#assignment) 참조. GitHub 번호·부모 연결 확인. 전체 계획 구체화 예정.
-- 현재 합의: 배정과 실행 경계는 확정 전달본을 따른다. 상세 계획은 미정.
+- 대상·준비: #95 아래 GitHub #100, 95-001·002·003의 실제 반영과 95-004 취소, 최신 Issue 부모 `f4b2160`을 확인했다.
+- 현재 합의: [사용자가 승인한 문서 통합 범위](issue.md#closure-scope)에 따라 Phase 목록·현황, 조사·결정·검증 한계와 #43 인계 조건을 정리한다.
 - 남은 결정: 없음
-- Task 전체 확인: [완료 조건](artifacts/task-005-assignment.md#acceptance)에 따라 확인한다.
-- 수행 기록: 미생성 — `artifacts/task-005-execution.md`
+- Task 전체 확인: [r002 완료 조건](artifacts/task-005-assignment-r002.md#acceptance)에 따라 확인한다.
+- 수행 기록: [95-005 수행 기록](artifacts/task-005-execution.md#work-records)
 
 <a id="execution-plan"></a>
 
@@ -111,7 +111,15 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #100](https://github.c
 할 일 삭제·분할·병합에도 수행 사실·유효한 근거·원래 식별자와 연결을 보존한다.
 -->
 
-미정. 선행 조건 확인 뒤 결과·검수·제출을 포함한 전체 계획을 확정한다.
+<a id="work-records"></a>
+
+#### 기록 통합 후보 검수와 #43 인계 준비
+
+- 태그: 조사, 실행, 검수, 커밋
+- [ ] 수행·확인 완료
+- 할 일: Phase와 #95 기록의 승인·출처·수용·취소 표기를 맞추고 #43 영향과 V5 호환 조건을 정리한다. 실제 기록을 검수하고 Task PR로 #95에 반영한다.
+- 확인: 합의와 Phase 기준 대비 실제 문서 범위, Task별 근거와 보존 지문, #43 재개 조건을 대조한다. 별도 검수·CI와 부모 반영을 확인한다.
+- 수행 기록: [통합 후보 검수 및 #43 인계 자료](artifacts/task-005-execution.md#work-records)
 
 <a id="result"></a>
 
@@ -124,6 +132,6 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #100](https://github.c
 중단·취소·인계 시에는 실제 상태·이유·영향·보존 결과·잔여·해소/재개 조건과 다음 행동을 남긴다.
 -->
 
-- 내용: 미수행
-- 확인: 미수행
-- 잔여: 전체 계획과 선행 조건 확인 후 착수
+- 내용: Phase 코드 정정 대상 없음과 95-004 취소, 문서 통합 범위를 Phase 기록과 현황에 연결했다. [#43 영향과 재개 조건](artifacts/task-005-execution.md#catalog-handoff)을 정리했다.
+- 확인: 문서 후보와 실제 제품 파일 diff, 사용자 결정과 Task 결과를 대조했다. 공유 개발 DB 변경과 V5 재검증은 미수행이다. [검수 근거](artifacts/task-005-execution.md#work-records)
+- 잔여: 별도 검수·Task PR·CI와 Issue 반영, 상위 Issue의 Phase 병합과 원래 대화 인계

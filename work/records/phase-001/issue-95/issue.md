@@ -161,9 +161,9 @@ Issue별 최소 활동 기준과 전체 수용 조건을 기록한다. 판단 �
   - 근거 결정: [Task 배정의 근거](#assignment-decision)
   - 전달사항: [95-004 r001](artifacts/task-004-assignment.md)
   - Task: [95-004](task-004.md#summary) · [GitHub #99](https://github.com/Mi-no-Kim/LumiaWiki/issues/99) · 정정 대상 없음으로 취소
-- 담당 결과: 기록 정정과 통합 후보 검수
-  - 근거 결정: [Task 배정의 근거](#assignment-decision)
-  - 전달사항: [95-005 r001](artifacts/task-005-assignment.md)
+- 담당 결과: 기록 정정과 통합 후보 검수, #43 인계
+  - 근거 결정: [기록만 Phase에 남기기로 한 결정](#closure-scope)
+  - 전달사항: [95-005 r002](artifacts/task-005-assignment-r002.md) · [이전 r001](artifacts/task-005-assignment.md)
   - Task: [95-005](task-005.md#summary) · [GitHub #100](https://github.com/Mi-no-Kim/LumiaWiki/issues/100)
 
 <a id="step-4"></a>
