@@ -43,7 +43,7 @@
         "scripts/issue_rule_comments.py",
         "scripts/rule_comments.py"
       ],
-      "sourceDigest": "de6f1be9e13c298501a0ddf1781556d11b765cd54391d5528be28ffab5bfd890",
+      "sourceDigest": "81fb08bb98b3e2e15da1efd5920211b9c38739df58eae88c548cadcad99d3b29",
       "title": "공통 기록 주석·상태 · Codex PostToolUse",
       "purpose": "기존 명시 보호와 신규 Issue·Task·수행 기록 자동 검사·피드백; 자동 원복 없음",
       "when": "로컬 대화·실행에서 신뢰한 hook의 지원 도구 종료 후(동기)",
@@ -103,7 +103,7 @@
         "scripts/issue_rule_comments.py",
         "scripts/rule_comments.py"
       ],
-      "sourceDigest": "5e1b4905043b1475e9405653aa422c7be2dddb2cb52813fce287f8e4be6a921b",
+      "sourceDigest": "2c417b894f33a600b33d71b9e683e9d454afff6ab4b490a88a33bd6cbd3cccb4",
       "title": "현황·기록·공통 주석 검사 · Git pre-commit",
       "purpose": "현황·기록 검사와 기존 보호·신규 주석/상태 검사; 고정 기존 기록은 새 형식 제외",
       "when": "Git 커밋 전; 기존 사용자 hook 성공 후",
