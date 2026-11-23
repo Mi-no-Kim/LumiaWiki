@@ -457,13 +457,25 @@ class HookTests(RepositoryCase):
         template = (PROJECT / 'harness/templates/task-with-plan.md').read_text(encoding='utf-8')
         body = re.search(r'^```markdown\s*\n(.*?)^```\s*$', template, re.M | re.S)[1]
         body = (body.replace('<확정 전달사항 링크>', '[r001](artifacts/task-001-assignment.md)')
+                .replace('<실제 개정 식별>', '`r001`')
+                .replace('<배정 확정 근거 링크>', '[배정](issue.md#assignment-001)')
+                .replace('<유효한 결정·제약과 근거>', '기록을 확인하고 대조 결과를 남긴다.')
                 .replace('<허용된 다음 행동>', '상세 계획을 작성한다.'))
-        self.write('work/records/harness/issue-2/artifacts/task-001-assignment.md', 'Fixture assignment\n')
+        policy = json.loads((self.root / 'harness/rule-comments.json').read_text(encoding='utf-8'))
+        issue_comments = '\n\n'.join(policy['profiles']['issue']['comments'].values())
+        self.write('work/records/harness/issue-2/issue.md',
+                   f'# Fixture Issue\n\n{issue_comments}\n\n## 현재 요약\n\n- 상태: 예정\n\n'
+                   '<a id="assignment-001"></a>\n\n'
+                   '- 전달사항: [확정 전달사항](artifacts/task-001-assignment.md) (`r001`).\n')
+        self.write('work/records/harness/issue-2/artifacts/task-001-assignment.md',
+                   '## 목적\n\n기록을 확인한다.\n\n## 기대 결과\n\n검사 근거를 남긴다.\n\n'
+                   '## 이미 정해진 조건\n\n없음\n\n## Task에서 결정할 사항\n\n미정\n\n'
+                   '## 완료 조건과 확인 방법\n\n- 완료 조건: 검사 근거를 남긴다.\n'
+                   '  - 확인 방법: 실제 기록을 대조한다.\n')
         self.write(record, body)
         self.stage()
         accepted = self.git('commit', '-qm', 'valid current task fixture', check=False)
         self.assertEqual(0, accepted.returncode, accepted.stderr)
-        policy = json.loads((self.root / 'harness/rule-comments.json').read_text(encoding='utf-8'))
         broken = body.replace(policy['profiles']['task-with-plan']['comments']['recording'], '')
         self.write(record, broken)
         self.git('add', '--', record)

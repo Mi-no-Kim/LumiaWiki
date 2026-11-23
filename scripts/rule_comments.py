@@ -1,5 +1,6 @@
 """Current record profiles, frozen legacy paths and read-only comment checks."""
 
+import hashlib
 import json
 from collections import Counter
 from pathlib import Path
@@ -22,6 +23,11 @@ PLAN_PROFILES = {
 }
 ALL_PROFILES = {**PROFILES, **PLAN_PROFILES}
 STAGE_ID = r'stage-[a-z0-9]+(?:-[a-z0-9]+)*'
+ASSIGNMENT_SECTIONS = ('목적', '기대 결과', '이미 정해진 조건', 'Task에서 결정할 사항', '완료 조건과 확인 방법')
+PLAN_PROGRESS = re.compile(
+    r'- 계획 합의: (?:제안|합의)(?: — .+)?|- \[[ x]\] 단계 완료|'
+    r'- 수행 기록: (?:미생성|\[[^\]]+\]\([^\s)]+\)\.?)'
+)
 PARENT = r'work/records/(?:phase-[0-9]+/issue-[0-9]+|issues/issue-[0-9]+|harness/issue-[0-9]+)'
 RECORDS = {
     'issue': re.compile(PARENT + r'/issue\.md\Z'),
@@ -301,6 +307,102 @@ def task_assignment(raw, task):
     return re.findall(r'^- 적용 전달본: \[[^\]]+\]\(artifacts/(' + basename + r')\)$', visible_text(raw), re.M)
 
 
+def anchored_body(raw, anchor):
+    """Read the section owned by one real anchor, excluding the next anchored section."""
+    anchors = [(value, start, end) for kind, value, (start, end) in live_markup(raw, with_spans=True)
+               if kind == 'anchor']
+    indexes = [index for index, item in enumerate(anchors) if item[0] == anchor]
+    if len(indexes) != 1:
+        return b''
+    index = indexes[0]
+    start = anchors[index][2]
+    stop = anchors[index + 1][1] if index + 1 < len(anchors) else None
+    return body_text(raw, 'body')[start:stop].encode('utf-8')
+
+
+def field_values(raw, label):
+    """Return the raw field value only on a line visible outside code or comments."""
+    prefix = f'- {label}: '
+    return [line.lstrip()[len(prefix):].strip()
+            for line, visible in zip(body_text(raw, 'body').split('\n'), visible_text(raw).split('\n'))
+            if visible.lstrip().startswith(prefix) and line.lstrip().startswith(prefix)]
+
+
+def assignment_errors(assignment):
+    visible = visible_text(assignment).split('\n')
+    source = body_text(assignment, 'body').split('\n')
+    headings = [(index, line[3:]) for index, line in enumerate(visible) if line.startswith('## ')]
+    if tuple(title for _, title in headings) != ASSIGNMENT_SECTIONS:
+        return ['assignment requires the five input sections in order']
+    for index, (start, title) in enumerate(headings):
+        end = headings[index + 1][0] if index + 1 < len(headings) else len(visible)
+        section = '\n'.join(visible[start + 1:end]).strip()
+        if index in (2, 3):
+            raw_section = '\n'.join(source[start + 1:end]).strip()
+            if re.fullmatch(r'(없음|미정|미확인|`(?:없음|미정|미확인)`)', raw_section):
+                continue
+            label = '조건' if index == 2 else '결정할 사항'
+            entries = re.findall(r'^- ' + label + r':[ \t]*(.*)$', section, re.M)
+            if not entries or any(not entry.strip() for entry in entries):
+                return ['assignment section is missing required content: ' + title]
+        elif index < 2:
+            prose = re.sub(r'\[[^\]]+\]\((?:<[^>]+>|[^)]+)\)', '', section).strip()
+            if prose in ('없음', '미정', '미확인') or not any(character.isalnum() for character in prose):
+                return ['assignment section is missing required content: ' + title]
+    pairs = re.findall(r'^- 완료 조건: (\S.*)\n[ \t]+- 확인 방법: (\S.*)$', section, re.M)
+    if (not pairs or len(pairs) != len(re.findall(r'^- 완료 조건:', section, re.M))
+            or any(value.strip() in ('없음', '미정', '미확인') for pair in pairs for value in pair)):
+        return ['assignment requires a confirmation method for each completion condition']
+    return []
+
+
+def assignment_revision(assigned):
+    revision = re.search(r'-assignment-(r\d+)\.md$', assigned)
+    return revision[1] if revision else 'r001'
+
+
+def assignment_binding_errors(view, raw, folder, assigned):
+    expected_revision = assignment_revision(assigned)
+    identities = field_values(raw, '전달본 식별')
+    if identities not in ([expected_revision], [f'`{expected_revision}`']):
+        return ['Task assignment revision differs from its assignment file']
+    references = field_values(raw, '기준 기록')
+    match = re.fullmatch(r'\[[^\]]+\]\(issue\.md#([a-zA-Z0-9-]+)\)\.?', references[0]) if len(references) == 1 else None
+    parent = view.read(f'{folder}/issue.md')
+    parent_values = field_values(anchored_body(parent, match[1]), '전달사항') if parent is not None and match else []
+    expected = r'\[[^\]]+\]\(artifacts/' + re.escape(assigned) + r'\) \(`?' + expected_revision + r'`?\)\.?'
+    if len(parent_values) != 1 or not re.fullmatch(expected, parent_values[0]):
+        return ['Task assignment and parent agreement must identify the same revision']
+    return []
+
+
+def plan_fingerprint(raw):
+    """Hash the agreed plan text while omitting only the structured progress fields."""
+    source = body_text(raw, 'body').split('\n')
+    visible = visible_text(raw).split('\n')
+    material = '\n'.join(line.rstrip() for line, shown in zip(source, visible)
+                         if not (PLAN_PROGRESS.fullmatch(line) and PLAN_PROGRESS.fullmatch(shown)))
+    return hashlib.sha256(material.rstrip('\n').encode('utf-8')).hexdigest()
+
+
+def plan_approval_errors(raw, task, plan, agreement_line):
+    reference = re.fullmatch(r'합의 — \[[^\]]+\]\(\.\./' + re.escape(task) + r'#([a-zA-Z0-9-]+)\)\.?',
+                             agreement_line)
+    if not reference:
+        return ['agreed plan requires a link to the owning Task agreement']
+    section = anchored_body(raw, reference[1])
+    fingerprints = field_values(section, '계획 지문')
+    if len(fingerprints) != 1 or not re.fullmatch(r'[0-9a-f]{64}', fingerprints[0]):
+        return ['Task agreement requires one recorded plan fingerprint']
+    evidence = field_values(section, '합의 근거')
+    if (len(evidence) != 1 or evidence[0].strip('`') in ('없음', '미정', '미확인')
+            or not any(character.isalnum() for character in evidence[0])):
+        return ['Task agreement requires a recorded agreement response or reference']
+    if fingerprints[0] != plan_fingerprint(plan):
+        return ['plan fingerprint differs from the recorded agreement']
+    return []
+
+
 def work_anchors(raw):
     return {value for kind, value in live_markup(raw or b'') if kind == 'anchor' and value.startswith('work-')}
 
@@ -339,7 +441,7 @@ def check_migration(view, previous, name, raw):
     return errors
 
 
-def check_plan(view, name, raw, policy):
+def check_plan(view, name, raw, policy, *, validate_agreement=True):
     folder, task, plan_link, execution_link = task_paths(name)
     plan = view.read(f'{folder}/{plan_link}')
     execution = view.read(f'{folder}/{execution_link}')
@@ -348,8 +450,17 @@ def check_plan(view, name, raw, policy):
     errors = []
     assigned = task_assignment(raw, task)
     assignment_fields = re.findall(r'^- 적용 전달본:', visible, re.M)
-    if len(assignment_fields) != 1 or len(assigned) != 1 or view.read(f'{folder}/artifacts/{assigned[0]}') is None:
+    assignment = view.read(f'{folder}/artifacts/{assigned[0]}') if len(assigned) == 1 else None
+    if len(assignment_fields) != 1 or assignment is None:
         errors.append('Task must link one existing assignment')
+    elif validate_agreement:
+        errors.extend(assignment_errors(assignment))
+        errors.extend(assignment_binding_errors(view, raw, folder, assigned[0]))
+    if validate_agreement:
+        summaries = re.findall(r'^- 현재 합의: (.*(?:\n {1,3}\S[^\n]*)*)', visible, re.M)
+        prose = re.sub(r'\[[^\]]+\]\((?:<[^>]+>|[^)]+)\)', '', summaries[0]) if len(summaries) == 1 else ''
+        if not any(character.isalnum() for character in prose):
+            errors.append('Task requires a current agreement summary beyond links')
     summary = re.search(r'^## 현재 요약\s*\n(.*?)(?=^#{1,2} |\Z)', visible, re.M | re.S)
     next_actions = re.findall(r'^- 다음 행동:[ \t]*(.*)$', summary[1], re.M) if summary else []
     if len(next_actions) != 1 or not next_actions[0].strip():
@@ -376,12 +487,19 @@ def check_plan(view, name, raw, policy):
         list(live_markup(raw)).count(('anchor', 'summary')) != 1
     ):
         errors.append('plan must link the owning Task summary')
-    plan_assignment = re.findall(r'^- 적용 전달본: \[[^\]]+\]\(([^\s/)]+)\)$', plan_text, re.M)
-    if len(assigned) != 1 or assigned != plan_assignment:
+    plan_assignments = re.findall(r'^- 적용 전달본: \[([^\]]+)\]\(([^\s/)]+)\)$', plan_text, re.M)
+    if len(assigned) != 1 or assigned != [filename for _, filename in plan_assignments]:
         errors.append('Task and plan must link the same existing assignment')
+    elif validate_agreement and plan_assignments[0][0] != assignment_revision(assigned[0]):
+        errors.append('plan assignment revision differs from its assignment file')
+    agreement_lines = field_values(plan, '계획 합의')
     agreement = re.findall(r'^- 계획 합의: (제안|합의)(?: — .+)?$', plan_text, re.M)
+    if len(agreement_lines) != len(agreement):
+        errors.append('plan requires one valid agreement field')
     if len(agreement) != 1 or ((execution is not None or state == '완료') and agreement != ['합의']):
         errors.append('execution requires an agreed plan')
+    elif validate_agreement and agreement == ['합의'] and len(agreement_lines) == 1:
+        errors.extend(plan_approval_errors(raw, task, plan, agreement_lines[0]))
 
     heading = re.compile(r'^## (\d+)\. (' + STAGE_ID + r') — \S.*$', re.M)
     headings = list(heading.finditer(plan_text))
@@ -402,11 +520,14 @@ def check_plan(view, name, raw, policy):
     evidence = [(value, start, end) for kind, value, (start, end) in live_markup(execution or b'', with_spans=True)
                 if kind == 'anchor' and value.startswith('work-')]
     evidence_backlinks = {}
+    evidence_with_checks = set()
     for index, (anchor, _, start) in enumerate(evidence):
         end = evidence[index + 1][1] if index + 1 < len(evidence) else len(evidence_source)
         section = visible_text(evidence_source[start:end].encode('utf-8'))
         backlinks = re.findall(r'^- 할 일: \[[^\]]+\]\(([^\s)]+)\)$', section, re.M)
         evidence_backlinks.setdefault(anchor, []).extend(backlinks or [None])
+        if re.search(r'^- 확인:[ \t]*\S', section, re.M):
+            evidence_with_checks.add(anchor)
     for index, match in enumerate(headings):
         end = headings[index + 1].start() if index + 1 < len(headings) else len(plan_text)
         section = plan_text[match.end():end]
@@ -426,6 +547,8 @@ def check_plan(view, name, raw, policy):
             expected_backlink = Path(plan_link).name + '#' + match[2]
             if agreement != ['합의'] or not link or evidence_backlinks.get(link[1]) != [expected_backlink]:
                 errors.append(match[2] + ': a completed stage requires confirmed execution evidence')
+            elif validate_agreement and link[1] not in evidence_with_checks:
+                errors.append(match[2] + ': a completed stage requires recorded verification notes')
     return errors
 
 
@@ -490,7 +613,18 @@ def inspect(view, previous=None):
         if mode == 'body' and profile in ('issue', 'task', 'task-with-plan'):
             errors.extend(name + ': ' + failure for failure in check_state(raw))
         if mode == 'body' and profile == 'task-with-plan':
-            errors.extend(name + ': ' + failure for failure in check_plan(view, name, raw, data))
+            historical = False
+            if (previous is not None and name in previous_names
+                    and record_state(raw) in ('완료', '취소') and not field_values(raw, '계획 지문')
+                    and raw == previous.read(name)):
+                # Preserve an untouched pre-existing verdict, including its recorded evidence.
+                folder, task, plan, execution = task_paths(name)
+                evidence = [f'{folder}/{plan}', f'{folder}/{execution}']
+                evidence.extend(f'{folder}/artifacts/{item}' for item in task_assignment(raw, task))
+                historical = all(view.read(path) == previous.read(path) for path in evidence)
+            errors.extend(name + ': ' + failure for failure in check_plan(
+                view, name, raw, data, validate_agreement=not historical
+            ))
             if previous is not None and name in migrations and name not in old.get('taskPlanMigrations', {}):
                 errors.extend(name + ': ' + failure for failure in check_migration(view, previous, name, raw))
     return errors

@@ -5,7 +5,7 @@ description: 작업 결과·설계·문서의 자체 검수나 별도 검수를 
 
 # 작업 결과 검수
 
-<!-- inventory-dependencies: ["harness/rule-comments.json"] -->
+<!-- inventory-dependencies: ["docs/details/operations/검증과 완료.md", "docs/details/operations/별도 검수.md", "harness/rule-comments.json"] -->
 
 ## 적용과 역할
 
