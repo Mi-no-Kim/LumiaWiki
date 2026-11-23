@@ -21,7 +21,7 @@ Task당 한 파일을 쓰고 이 주석은 머리말에 한 번만 둔다. 착�
 - 할 일: [기록 통합 후보 검수와 #43 인계 준비](../task-005.md#work-records)
 - 조치·판단: Phase 보유 목록과 현황, Issue의 출처·수용, Task 95-004 취소 근거를 대조했다. [95-001 보존 결과](task-001-execution.md#work-preserve), [95-002 파일별 조사](task-002-execution.md#file-map), [95-003 사용자 결정](task-003-execution.md#work-decide)을 재사용하고 아래 #43 재개 자료를 정리했다.
 - 확인: Phase 기준 `cc7338c16bf3ef4fd3fb0b758bb41d048f6e1dff` 대비 후보는 [`work/records/phase-001/issue-95/`](../issue.md#summary), [Phase 계획](../../phase.md#backend-approval-review)과 [현황](../../../../현황.md#current)의 Markdown 변경이다. 코드·설정·Compose·SQL·프런트 파일은 기준과 동일하다. 원래 보존 문서 6개, 철회 패치, V1 백업의 SHA-256을 Task 95-001과 대조해 8개가 일치했다. 실제 백엔드 동작·격리 DB·V5 갱신을 이번에 재실행하지 않았다.
-- 잔여: Task PR squash 결과, Issue PR 안내·CI와 Phase merge SHA·diff·병합 후 CI를 확인하고 [원래 대화](codex://threads/01a20764-c112-72f3-9e64-9b461020cf7a)에 실제 링크와 결과를 인계한다.
+- 잔여: 95-005 PR의 부모 반영 결과는 [Task 결과](../task-005.md#result)에 기록했다. 상위 Issue에서 Phase merge SHA·diff·병합 후 CI와 [원래 대화](codex://threads/01a20764-c112-72f3-9e64-9b461020cf7a) 인계를 확인한다.
 - 검수: `f4b2160` 대비 실제 인덱스 6개와 Phase 기준 대비 누적 Markdown 18개를 자체·별도 검수했다. 별도 검토자는 로컬·고정 참조 51개, Task별 실제 근거와 V5 지문·checksum을 대조했다. 주석·공백 검사를 통과했고 필수 지적은 없다.
 
 <a id="catalog-handoff"></a>

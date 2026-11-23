@@ -50,10 +50,10 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #100](https://github.c
 상태의 상세 의미·전환과 종료 판단은 공통 절차를 따른다.
 -->
 
-- 상태: 진행 중
-- 현재 진행 위치: [기록 통합 후보 검수와 #43 인계 준비](#work-records)
-- 다음 행동: 문서 통합 후보의 자체·별도 검수와 Task PR 제출
-- 막힌 조건: 최종 수용은 Task PR의 CI와 Issue squash 반영 확인 뒤 가능
+- 상태: 완료
+- 현재 진행 위치: [결과](#result)
+- 다음 행동: 없음 — [결과](#result)
+- 막힌 조건: 없음
 
 <a id="assignment"></a>
 
@@ -116,7 +116,7 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #100](https://github.c
 #### 기록 통합 후보 검수와 #43 인계 준비
 
 - 태그: 조사, 실행, 검수, 커밋
-- [ ] 수행·확인 완료
+- [x] 수행·확인 완료
 - 할 일: Phase와 #95 기록의 승인·출처·수용·취소 표기를 맞추고 #43 영향과 V5 호환 조건을 정리한다. 실제 기록을 검수하고 Task PR로 #95에 반영한다.
 - 확인: 합의와 Phase 기준 대비 실제 문서 범위, Task별 근거와 보존 지문, #43 재개 조건을 대조한다. 별도 검수·CI와 부모 반영을 확인한다.
 - 수행 기록: [통합 후보 검수 및 #43 인계 자료](artifacts/task-005-execution.md#work-records)
@@ -134,4 +134,5 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #100](https://github.c
 
 - 내용: Phase 코드 정정 대상 없음과 95-004 취소, 문서 통합 범위를 Phase 기록과 현황에 연결했다. [#43 영향과 재개 조건](artifacts/task-005-execution.md#catalog-handoff)을 정리했다.
 - 확인: 문서 후보와 실제 제품 파일 diff, 사용자 결정과 Task 결과를 대조했다. 공유 개발 DB 변경과 V5 재검증은 미수행이다. [검수 근거](artifacts/task-005-execution.md#work-records)
-- 잔여: 별도 검수·Task PR·CI와 Issue 반영, 상위 Issue의 Phase 병합과 원래 대화 인계
+- 반영: [PR #104](https://github.com/Mi-no-Kim/LumiaWiki/pull/104)의 [Quality](https://github.com/Mi-no-Kim/LumiaWiki/actions/runs/45193878120)와 [Ubuntu·Windows Inventory](https://github.com/Mi-no-Kim/LumiaWiki/actions/runs/45193878138)를 통과했다. Issue의 squash `ee82099ba75d7816424fd654a101254405795f77`와 제출 범위의 파일 내용이 일치한다.
+- 잔여: Task 자체 범위에는 없음. [Issue 상위 통합](issue.md#integration-acceptance)에서 Phase 반영과 원래 대화 인계를 확인한다.

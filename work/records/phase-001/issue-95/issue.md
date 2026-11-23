@@ -31,10 +31,10 @@ Issue별 체크와 실제 기록은 이 본문에서 관리한다. 공통 문서
 현재 하려는 행동의 진행 단계나 허용 범위를 판단할 수 없으면 현재 위치는 실제 확인 구역 링크로, 다음 행동은 `미정 — 진행 단계·허용 범위 확인 필요`로 쓴다.
 공통 절차의 완료·취소·미완료 인계 처리를 마쳐 남은 행동이 없을 때만 현재 위치를 실제 종료 근거 링크로, 다음 행동을 `없음 — 같은 근거 링크`로 쓴다. 미완료 인계의 재개 행동은 유지한다. -->
 
-- 상태: 진행 중
-- 현재 진행 위치: [3. Task 생성](#step-3)
-- 다음 행동: 3번 — 95-005에서 문서 통합 후보와 #43 인계 조건 검수
-- 막힌 조건: 4번·Phase 기록 통합 — 필요한 Task 결과 확인과 최종 기록 검수 뒤 진행
+- 상태: 완료
+- 현재 진행 위치: [검토·수용·종료 기록](#integration-acceptance)
+- 다음 행동: 없음 — [검토·수용·종료 기록](#integration-acceptance)
+- 막힌 조건: 없음
 
 <a id="sequence"></a>
 
@@ -164,16 +164,16 @@ Issue별 최소 활동 기준과 전체 수용 조건을 기록한다. 판단 �
 - 담당 결과: 기록 정정과 통합 후보 검수, #43 인계
   - 근거 결정: [기록만 Phase에 남기기로 한 결정](#closure-scope)
   - 전달사항: [95-005 r002](artifacts/task-005-assignment-r002.md) · [이전 r001](artifacts/task-005-assignment.md)
-  - Task: [95-005](task-005.md#summary) · [GitHub #100](https://github.com/Mi-no-Kim/LumiaWiki/issues/100)
+  - Task: [95-005](task-005.md#summary) · [GitHub #100](https://github.com/Mi-no-Kim/LumiaWiki/issues/100) · [PR #104](https://github.com/Mi-no-Kim/LumiaWiki/pull/104) 반영
 
 <a id="step-4"></a>
 
 ### 4. 최종 검사
 
-- [ ] 단계 완료
+- [x] 단계 완료
 - 공통 절차: [4. 최종 검사](<../../../../harness/Issue 공통 절차.md#step-4>)
-- 진행 기록: 미수행
-- 상세 기록: [전체 수용 조건](#acceptance-criteria) · [검토·수용·종료 기록 위치](#decisions)
+- 진행 기록: 실제 Task 결과와 취소 사유, 기록 범위와 #43 인계를 개정 수용 조건에 대조했다.
+- 상세 기록: [검토·수용·종료 기록](#integration-acceptance)
 
 <!-- issue-rule:review-records
 검토·수용·종료가 실제로 발생할 때만 초기 질문 목록 뒤에 `검토·수용·종료 기록`을 만든다. 미수행 상태에는 빈 결과 구역·미래 표식을 만들지 않는다.
@@ -202,3 +202,15 @@ Issue별 최소 활동 기준과 전체 수용 조건을 기록한다. 판단 �
 - 종료 범위: 사용자가 조사·결정·인계 기록만 Phase에 병합하도록 승인했다. 95-004는 Phase 코드 정정 대상이 없어 취소 처리한다. 95-005는 기록 정정·검수·#43 인계를 담당한다. [최초 수용 조건과 배정](https://github.com/Mi-no-Kim/LumiaWiki/blob/856b5e24bc6b40efdc88e9c85d971fd3e5d17c72/work/records/phase-001/issue-95/issue.md#acceptance-criteria)
 - 상위 통합: Issue의 기록 후보를 수용하면 Phase로 문서만 merge commit으로 통합한다. 실제 SHA·diff·Phase 병합 후 CI를 별도로 확인한 뒤 원래 대화로 인계한다.
 - 다음 작업: Spring 파일 변경 승인 규칙·hook은 별도 하네스 Issue로 다룬다. #43의 `catalog` 정정은 #43에서 범위를 확인하고 재개한다.
+
+<a id="integration-acceptance"></a>
+
+### 검토·수용·종료 기록
+
+| 수용 조건                    | 실제 결과와 한계                                                                                                                                                                                                      |
+| ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Task 결과와 취소 근거        | 95-001·002·003·005의 #95 반영은 [Task 목록](#task-creation)의 PR과 각 결과에서 확인했다. 95-004는 정정 후보가 없어 미수행 상태로 취소됐다.                                                                            |
+| 변경 출처·승인과 사용자 결론 | [출처 조사](artifacts/task-002-execution.md#work-trace)와 [정정 범위 결정](artifacts/task-003-execution.md#work-decide)을 연결했다. 일부 초기 원본 바이트와 파일별 직접 승인 근거는 미확인이다.                       |
+| 기록 후보와 #43 인계         | [95-005 검수](artifacts/task-005-execution.md#work-records)에서 문서만 바뀐 후보, 보존 지문 8개와 [#43 재개 조건](artifacts/task-005-execution.md#resume-v5)을 대조했다. 제품·설정 변경과 이번 격리 V5 실행은 없었다. |
+
+사용자는 기록만 Phase에 남기는 범위를 승인했다. Issue의 자체·별도 검수에서 `ee82099` 대비 상태·수용 기록과 Phase 기준 대비 Markdown 18개를 대조해 개정 수용 조건을 충족한다고 판정했다. 상위 Phase 통합과 병합 후 CI·원래 대화 인계는 통합 PR 및 GitHub Issue 종료 근거에 실제 결과를 남긴다.
