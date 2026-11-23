@@ -50,10 +50,10 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #98](https://github.co
 상태의 상세 의미·전환과 종료 판단은 공통 절차를 따른다.
 -->
 
-- 상태: 예정
-- 현재 진행 위치: [전달사항 참조](#assignment)
-- 다음 행동: Task 95-002 근거를 바탕으로 사용자 결정표 준비
-- 막힌 조건: 실행 전 등록과 선행 입력 확인 · [부모 배정](issue.md#task-creation)의 Task 95-002 결과
+- 상태: 진행 중
+- 현재 진행 위치: [Phase 파일별 처리와 격리 검증 조건 논의](#work-decide)
+- 다음 행동: 사용자 결정 기록을 검수하고 부모 Issue 대상 Task PR 제출
+- 막힌 조건: Task 종료는 결정 기록과 실제 Issue 반영 확인 뒤 가능
 
 <a id="assignment"></a>
 
@@ -90,11 +90,11 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #98](https://github.co
 사용자 확인 조건에 도달하면 관련 실행 전에 확인하고 통상적인 조정마다 재승인을 요구하지 않는다.
 -->
 
-- 대상·준비: [전달사항](#assignment) 참조. GitHub 번호·부모 연결 확인. 전체 계획 구체화 예정.
-- 현재 합의: 배정과 실행 경계는 확정 전달본을 따른다. 상세 계획은 미정.
-- 남은 결정: 각 파일·변경을 유지·복원·제거·보류 중 어떻게 처리할지와 그 격리 검증 기준을 사용자가 결정한다.
+- 대상·준비: GitHub #98과 [Task 95-002의 출처 대조](artifacts/task-002-execution.md#work-trace)를 확인했다. 원격 Phase는 조사 기준 `cc7338c`와 일치한다.
+- 현재 합의: 당시 승인 여부와 현재 정정 여부를 따로 판단한다. 사용자는 Phase에 정정할 문제가 없고 문제가 되는 대상은 `issue/43-item-persistence`의 `catalog`라고 결정했다. 이 Task의 Phase 코드 정정 목록은 비어 있다. [결정 논의](codex://threads/01a2087d-5143-7523-86d6-a03744fed8e5)
+- 남은 결정: 없음. [사용자가 승인한 종료 범위](issue.md#closure-scope)에 따라 95-005에 전달한다.
 - Task 전체 확인: [완료 조건](artifacts/task-003-assignment.md#acceptance)에 따라 확인한다.
-- 수행 기록: 미생성 — `artifacts/task-003-execution.md`
+- 수행 기록: [95-003 수행 기록](artifacts/task-003-execution.md#work-decide)
 
 <a id="execution-plan"></a>
 
@@ -111,7 +111,15 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #98](https://github.co
 할 일 삭제·분할·병합에도 수행 사실·유효한 근거·원래 식별자와 연결을 보존한다.
 -->
 
-미정. 선행 조건 확인 뒤 결과·검수·제출을 포함한 전체 계획을 확정한다.
+<a id="work-decide"></a>
+
+#### Phase 파일별 처리와 격리 검증 조건 논의
+
+- 태그: 조사, 논의, 결정, 검수, 커밋
+- [ ] 수행·확인 완료
+- 할 일: 사용자에게 제시한 파일별 처리안과 격리 검증 기준을 보존하고, Phase 코드 정정 대상이 없다는 결론과 기록만 병합하는 범위를 95-005에 넘긴다. 결정 기록을 자체·별도 검수한 후 PR로 부모 반영을 확인한다.
+- 확인: 사용자 결정 원문과 빈 Phase 정정 범위, 미확인 근거, 95-004 취소와 95-005 인계 조건을 대조한다.
+- 수행 기록: [사용자 결정 원문과 적용 범위](artifacts/task-003-execution.md#work-decide)
 
 <a id="result"></a>
 
@@ -124,6 +132,6 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #98](https://github.co
 중단·취소·인계 시에는 실제 상태·이유·영향·보존 결과·잔여·해소/재개 조건과 다음 행동을 남긴다.
 -->
 
-- 내용: 미수행
-- 확인: 미수행
-- 잔여: 전체 계획과 선행 조건 확인 후 착수
+- 내용: 사용자는 Phase 백엔드에서 정정할 파일·변경이 없다고 판단하고, #43의 `catalog`를 후속 정정 대상으로 지목했다.
+- 확인: [Task 95-002의 파일·승인 근거](artifacts/task-002-execution.md#work-trace)와 [현재 사용자 결정](codex://threads/01a2087d-5143-7523-86d6-a03744fed8e5)을 연결했다. 제품 변경·격리 검증은 미수행이다.
+- 잔여: 결정 기록의 검수·PR·Issue 반영을 확인한다. #43 인계는 Task 95-005에서 처리한다.
