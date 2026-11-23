@@ -8,5 +8,7 @@ class ItemStorageMigrationTests {
   @Test
   void packagesTheFollowupMigrationAtTheProductFlywayLocation() {
     assertNotNull(getClass().getResource("/db/migration/V3__complete_item_storage.sql"));
+    assertNotNull(getClass().getResource("/db/migration/V4__derive_item_equipment_slot.sql"));
+    assertNotNull(getClass().getResource("/db/migration/V5__create_item_relations.sql"));
   }
 }

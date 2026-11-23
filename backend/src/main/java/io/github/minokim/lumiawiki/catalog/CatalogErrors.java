@@ -1,6 +1,7 @@
 package io.github.minokim.lumiawiki.catalog;
 
 import io.github.minokim.lumiawiki.common.api.ApiFailure;
+import java.sql.SQLException;
 import java.util.Map;
 import java.util.function.Function;
 import org.hibernate.exception.ConstraintViolationException;
@@ -43,7 +44,22 @@ public final class CatalogErrors {
           Map.entry("fk_item_version_patch", new Expected("23503", "fromGamePatchId")),
           Map.entry("fk_item_version_category", new Expected("23503", "categoryId")),
           Map.entry("fk_item_version_grade", new Expected("23503", "gradeId")),
-          Map.entry("ck_item_version_equipment_slot", new Expected("23514", "equipmentSlot")),
+          Map.entry("ck_item_version_recipe_complete", new Expected("23514", "recipe")),
+          Map.entry("ck_item_version_recipe_materials", new Expected("23514", "recipe.materialB")),
+          Map.entry("ck_item_version_delivery_price", new Expected("23514", "delivery.price")),
+          Map.entry(
+              "fk_item_version_material_a",
+              new Expected("23503", "recipe.materialA.itemVersionId")),
+          Map.entry(
+              "fk_item_version_material_b",
+              new Expected("23503", "recipe.materialB.itemVersionId")),
+          Map.entry("ck_item_acquisition_method_details", new Expected("23514", "method")),
+          Map.entry("fk_item_acquisition_item", new Expected("23503", "itemId")),
+          Map.entry("fk_item_acquisition_version_owner", new Expected("23503", "itemVersionId")),
+          Map.entry("fk_item_acquisition_version_patch", new Expected("23503", "gamePatchId")),
+          Map.entry("fk_item_acquisition_patch", new Expected("23503", "gamePatchId")),
+          Map.entry("fk_item_acquisition_region", new Expected("23503", "regionId")),
+          Map.entry("ex_item_acquisition_region", new Expected("23P01", "regionId")),
           Map.entry("ck_item_version_max_stack_size", new Expected("23514", "maxStackSize")),
           Map.entry("ck_item_version_name", new Expected("23514", "name")),
           Map.entry("uq_item_stat_version_type", new Expected("23505", "stats")),
@@ -81,5 +97,17 @@ public final class CatalogErrors {
     }
     // LW001, unknown constraints, programming and infrastructure failures remain internal errors.
     return failure;
+  }
+
+  // PostgreSQL's Hibernate dialect does not always extract the name of an exclusion constraint.
+  // Acquisition creation and correction each write a single row with one exclusion constraint.
+  static RuntimeException translateAcquisition(
+      RuntimeException failure, Function<String, ApiFailure> invalidInput) {
+    for (Throwable cause = failure; cause != null; cause = cause.getCause()) {
+      if (cause instanceof SQLException sql && "23P01".equals(sql.getSQLState())) {
+        return invalidInput.apply("regionId");
+      }
+    }
+    return translate(failure, invalidInput);
   }
 }

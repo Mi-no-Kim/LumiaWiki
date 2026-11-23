@@ -123,11 +123,24 @@ class ItemCatalogServiceTests {
     assertNull(legacy.maxStackSize());
     assertTrue(legacy.stats().isEmpty());
 
-    var missingGrade = new VersionInput(7L, null, null, "name", null, null, null, null, null);
+    var missingGrade = new VersionInput(7L, null, "name", null, null, null, null, null);
     var error =
         assertThrows(ApiFailure.class, () -> service.createItem(null, ITEM_PATCH, missingGrade));
     assertEquals("gradeId", error.fields().getFirst().field());
     verify(store, never()).persist(any());
+  }
+
+  @Test
+  void readsEquipmentSlotUsingTheVersionCategoryId() {
+    var version = stubItemVersion();
+    var sword = id(new ItemCategory("검", null), 22L);
+    version.change(sword, version.getName(), null, false);
+    when(store.readItemVersion(42L)).thenReturn(Optional.of(version));
+    when(store.readEquipmentSlot(22L)).thenReturn(EquipmentSlot.WEAPON);
+
+    var readBack = service.getItemVersion(42L);
+    assertEquals(22L, readBack.categoryId());
+    assertEquals(EquipmentSlot.WEAPON, readBack.equipmentSlot());
   }
 
   @Test
@@ -149,7 +162,6 @@ class ItemCatalogServiceTests {
     stubItemVersion();
     var set = service.updateItemVersion(42L, detailedInput(new MaxStackChange(12), null));
     assertEquals(8L, set.gradeId());
-    assertEquals(EquipmentSlot.ACCESSORY, set.equipmentSlot());
     assertEquals(12, set.maxStackSize());
     assertEquals(12, service.updateItemVersion(42L, detailedInput(null, null)).maxStackSize());
     var unknown = service.updateItemVersion(42L, detailedInput(new MaxStackChange(null), null));
@@ -266,12 +278,11 @@ class ItemCatalogServiceTests {
   }
 
   private static VersionInput versionInput(String name, List<SkillInput> skills) {
-    return new VersionInput(7L, 8L, null, name, null, null, null, null, skills);
+    return new VersionInput(7L, 8L, name, null, null, null, null, skills);
   }
 
   private static VersionInput detailedInput(MaxStackChange maxStack, List<StatInput> stats) {
-    return new VersionInput(
-        7L, 8L, EquipmentSlot.ACCESSORY, "item", null, null, maxStack, stats, null);
+    return new VersionInput(7L, 8L, "item", null, null, maxStack, stats, null);
   }
 
   private ItemSkillDefinitionVersion skill(long definitionId, long patchId, long skillVersionId) {
