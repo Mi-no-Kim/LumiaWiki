@@ -50,10 +50,10 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #88](https://github.co
 상태의 상세 의미·전환과 종료 판단은 공통 절차를 따른다.
 -->
 
-- 상태: 진행 중
-- 현재 진행 위치: [로컬 결과와 수용 확인](#result)
-- 다음 행동: 검수한 Task 후보를 부모 Issue 브랜치로 제출하고 실제 반영 결과를 확인한다.
-- 막힌 조건: Task 결과의 상위 반영과 연결 확인이 남았다. 부모 등록 기록은 `c6364f0`에 보존했다.
+- 상태: 완료
+- 현재 진행 위치: [수용 및 부모 반영 확인](#result)
+- 다음 행동: 없음. 후속 작업은 [부모 Issue](issue.md#step-3)의 배정을 따른다.
+- 막힌 조건: 없음.
 
 <a id="assignment"></a>
 
@@ -163,5 +163,5 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #88](https://github.co
 -->
 
 - 내용: 신규 Task의 짧은 본문·별도 계획과 호환 검사, 명시 승인 전환 절차를 구현했다. [후속 전달 기준](artifacts/task-001-execution.md#handoff-contract)을 남겼다.
-- 확인: r001의 세 수용 조건을 로컬 결과와 대조했다. 실제 양식 사례·완료 재검수 지적을 보완한 후보의 전체 회귀 134개와 필수 근거를 확인했다. [검증 범위](artifacts/task-001-execution.md#work-handoff)
-- 잔여: 검수한 이 Task의 제출·상위 반영. 실제 기존 기록 전환은 별도 명시 요청 사항이다.
+- 확인: r001의 세 수용 조건을 로컬 결과와 대조했다. 실제 양식 사례·완료 재검수 지적을 보완한 후보의 전체 회귀 134개와 필수 근거를 확인했다. [PR #92](https://github.com/Mi-no-Kim/LumiaWiki/pull/92)의 부모 반영을 [`68a4862`](https://github.com/Mi-no-Kim/LumiaWiki/commit/68a4862468f2f499ab3de7e5ae9ca255d1dfd0b9)에서 대조했다. [검증 범위](artifacts/task-001-execution.md#work-handoff)
+- 잔여: 없음.
