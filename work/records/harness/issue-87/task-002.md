@@ -50,10 +50,10 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #89](https://github.co
 상태의 상세 의미·전환과 종료 판단은 공통 절차를 따른다.
 -->
 
-- 상태: 예정
-- 현재 진행 위치: [전달사항 참조](#assignment)
-- 다음 행동: 별도 착수 요청 시 입력을 대조하고 전체 계획을 합의한다.
-- 막힌 조건: 본작업에는 별도 착수 요청과 전체 계획 합의가 필요하다. 선행 결과는 [확정 전달사항](artifacts/task-002-assignment.md#scope)을 따른다.
+- 상태: 진행 중
+- 현재 진행 위치: [4. 결과 검수와 87-003에 전달](#work-final-review)
+- 다음 행동: [사용자가 승인한 제출 범위](artifacts/task-002-execution.md#work-final-review)에서 실제 인덱스를 검수한 뒤 커밋하고 `issue/87-task-workflow` 대상 PR을 제출한다.
+- 막힌 조건: 3/4단계. 제출 검수·PR 확인, 부모 반영·87-003 인계와 종료 확인이 남았다.
 
 <a id="assignment"></a>
 
@@ -67,8 +67,8 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #89](https://github.co
 -->
 
 - 부모 Issue: [Issue #87](issue.md#summary)
-- 적용 전달본: [확정 전달사항](artifacts/task-002-assignment.md)
-- 전달본 식별: `r001`
+- 적용 전달본: [확정 전달사항](artifacts/task-002-assignment-r002.md)
+- 전달본 식별: `r002`
 - 기준 기록: [Issue의 배정·정식 생성 근거](issue.md#assignment-002)
 
 <a id="sequence"></a>
@@ -90,11 +90,12 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #89](https://github.co
 사용자 확인 조건에 도달하면 관련 실행 전에 확인하고 통상적인 조정마다 재승인을 요구하지 않는다.
 -->
 
-- 대상·준비: 선행 입력은 [Task 87-001](task-001.md#summary)의 확정 결과다. 착수 요청·전체 계획 합의 및 위 선행 입력을 확인한다.
-- 현재 합의: 결정 1·3·4에 따라 단위별 계획·실행·재개 명령을 연결한다. 근거는 [결정 1](issue.md#decision-1), [결정 3](issue.md#decision-3), [결정 4](issue.md#decision-4)에 있다.
-- 남은 결정: 공용 절차 재사용 범위와 호출 간 상태 전환, 기존 스킬의 개정 위치를 착수 전 계획에서 정한다. 세부 질문은 [확정 전달사항의 결정할 사항](artifacts/task-002-assignment.md#decisions)을 따른다.
-- Task 전체 확인: [전달본의 완료 조건과 확인 방법](artifacts/task-002-assignment.md#acceptance)을 따른다. 상세 확인 순서는 전체 계획에서 정한다.
-- 수행 기록: 미생성 — `artifacts/task-002-execution.md` (예정).
+- 대상·준비: 기존 `task-improvement` 워크트리의 `task/87-002-workflow-skills`에 [87-001](artifacts/task-001-execution.md#handoff-contract)과 [87-004](artifacts/task-004-execution.md#handoff-contract) 결과가 반영됐다. 87-004 부모 반영 기준은 `55432ebc5909`다.
+- 현재 합의: [결정 1](issue.md#decision-1)·[결정 3](issue.md#decision-3)·[결정 4](issue.md#decision-4)에 따라 계획·실행·재개를 연결한다. `run`은 명시된 범위를 우선하고 승인된 다음 행동을 이어가며, 상태 대조가 필요하면 `resume`을 사용한다. [진행·재개 방식과 응답 근거](artifacts/task-002-plan.md#command-agreement).
+- 계획 합의: 사용자가 [r002와 전체 수행 계획](artifacts/task-002-plan.md)을 확정하고 착수를 지시했다.
+- 연결 기준: [1단계 검수 결과](artifacts/task-002-execution.md#work-pending-plan)에 따른다. 권한·완료 기준이 바뀌면 관련 실행 전에 합의한다.
+- Task 전체 확인: [r002의 완료 조건과 확인 방법](artifacts/task-002-assignment-r002.md#acceptance)을 따른다.
+- 수행 기록: [Task 87-002 수행 기록](artifacts/task-002-execution.md).
 
 <a id="execution-plan"></a>
 
@@ -113,13 +114,43 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #89](https://github.co
 
 <a id="work-pending-plan"></a>
 
-#### 미정 — 착수 전 전체 계획 합의
+#### 1. 명령별 역할과 공용 절차 확정
 
-- 태그: 미확인.
+- 태그: 조사, 논의, 결정
+- [x] 수행·확인 완료
+- 할 일: [세부 순서](artifacts/task-002-plan.md#stage-contract).
+- 확인: [단계 완료 기준](artifacts/task-002-plan.md#stage-contract).
+- 수행 기록: [명령별 역할과 공용 절차 확정](artifacts/task-002-execution.md#work-pending-plan).
+
+<a id="work-skill-linkage"></a>
+
+#### 2. 여섯 스킬과 진행·재개 절차 연결
+
+- 태그: 실행, 검수
+- [x] 수행·확인 완료
+- 할 일: [세부 순서](artifacts/task-002-plan.md#stage-skills).
+- 확인: [단계 완료 기준](artifacts/task-002-plan.md#stage-skills).
+- 수행 기록: [스킬과 절차 연결](artifacts/task-002-execution.md#work-skill-linkage).
+
+<a id="work-command-validation"></a>
+
+#### 3. 명령과 진행·재개 사례 검증
+
+- 태그: 실행, 검수
+- [x] 수행·확인 완료
+- 할 일: [세부 순서](artifacts/task-002-plan.md#stage-validation).
+- 확인: [단계 완료 기준](artifacts/task-002-plan.md#stage-validation).
+- 수행 기록: [명령과 진행·재개 사례 검증](artifacts/task-002-execution.md#work-command-validation).
+
+<a id="work-final-review"></a>
+
+#### 4. 결과 검수와 87-003에 전달
+
+- 태그: 검수
 - [ ] 수행·확인 완료
-- 할 일: 착수 전 계획에서 작업 순서·선행 조건·사용자 확인 시점을 정한다.
-- 확인: 착수 전 계획에서 단계별 확인 방법을 정한다.
-- 수행 기록: 미생성.
+- 할 일: [세부 순서](artifacts/task-002-plan.md#stage-review).
+- 확인: [단계 완료 기준](artifacts/task-002-plan.md#stage-review).
+- 수행 기록: [결과 검수와 인계](artifacts/task-002-execution.md#work-final-review).
 
 <a id="result"></a>
 
@@ -132,6 +163,6 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #89](https://github.co
 중단·취소·인계 시에는 실제 상태·이유·영향·보존 결과·잔여·해소/재개 조건과 다음 행동을 남긴다.
 -->
 
-- 내용: 미발생.
-- 확인: 미수행.
-- 잔여: 본작업 착수 요청과 계획 합의가 남았다.
+- 내용: 여섯 프로젝트 스킬, 공용 진행·재개 기준과 기존 생성·검수 연결을 구현했다.
+- 확인: [명시 호출·회귀·모의 사례](artifacts/task-002-execution.md#work-command-validation)와 [최종 로컬 자가·별도 검수](artifacts/task-002-execution.md#work-final-review)를 통과했다.
+- 잔여: 승인된 커밋·PR 제출, 부모 반영과 인계·종료 처리.

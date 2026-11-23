@@ -5,7 +5,7 @@ description: Issue의 확정 배정으로 최초 Task 본문을 작성·검증�
 
 # Task 생성과 등록
 
-<!-- inventory-dependencies: ["harness/templates/task-input.md", "harness/Task 생성 지시서.md", "harness/templates/task-with-plan.md", "harness/Task 공통 절차.md", "docs/작업 기록 체계.md", "harness/문서 관리.md", "harness/templates/github-task.md"] -->
+<!-- inventory-dependencies: ["harness/templates/task-input.md", "harness/Task 생성 지시서.md", "harness/templates/task-with-plan.md", "harness/Task 공통 절차.md", "docs/작업 기록 체계.md", "harness/문서 관리.md", "harness/templates/github-task.md", ".agents/skills/task-plan/SKILL.md"] -->
 
 ## 입력과 원천
 
@@ -33,3 +33,5 @@ GitHub 등록이 요청 범위에 포함되면 로컬 작성·검증과 부모 �
 신규 실제 기록은 공통 주석 검사기의 작업 파일 검사로 자동 적용을 확인한다. 예외 목록에 추가하지 않는다. 수행 기록은 첫 할 일 착수 때 공통 절차의 최초 생성 안내로 만들며 생성 시 미착수 구역·결과를 만들지 않는다.
 
 실제 작성 범위·GitHub 번호·URL과 등록/연결 확인 결과·미반영·실행 제한·다음 행동을 반환하며 본문 작성만으로 기본 생성 범위를 완료했다고 보고하지 않는다. 생성만 요청했다면 그 결과를 반환하고 본작업에는 착수하지 않는다. 같은 요청에서 착수도 명시했다면 등록과 필수 준비를 확인한 뒤 그 범위에서 이어가며 재승인받지 않는다. 상세 계획 합의·수행·DB 변경·브랜치 조작·커밋·push·PR을 생성 권한만으로 허용하지 않는다. 생성 후 전체 계획·진행·기록·종료는 실제 본문 주석과 [Task 공통 절차](../../../harness/Task%20공통%20절차.md)를 따른다.
+
+등록된 Task에서 계획·합의를 요청하면 [task-plan](../task-plan/SKILL.md)으로 연결한다.
