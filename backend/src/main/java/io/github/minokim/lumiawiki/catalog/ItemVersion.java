@@ -30,6 +30,30 @@ public class ItemVersion extends CatalogRow {
   @Column(name = "max_stack_size")
   private Integer maxStackSize;
 
+  @Column(name = "material_a_item_id")
+  private Long materialAItemId;
+
+  @Column(name = "material_a_version_id")
+  private Long materialAVersionId;
+
+  @Column(name = "material_b_item_id")
+  private Long materialBItemId;
+
+  @Column(name = "material_b_version_id")
+  private Long materialBVersionId;
+
+  @Column(name = "craft_output_count")
+  private Integer craftOutputCount;
+
+  @Column(name = "delivery_acquire_count")
+  private Integer deliveryAcquireCount;
+
+  @Column(name = "deliverable")
+  private Boolean deliverable;
+
+  @Column(name = "delivery_price")
+  private Integer deliveryPrice;
+
   @Column(name = "name", nullable = false, columnDefinition = "text")
   private String name;
 
@@ -49,6 +73,10 @@ public class ItemVersion extends CatalogRow {
   @OneToMany(mappedBy = "itemVersion", cascade = CascadeType.PERSIST, orphanRemoval = true)
   @OrderBy("id ASC")
   private List<ItemVersionSkillLink> skillLinks = new ArrayList<>();
+
+  @OneToMany(mappedBy = "itemVersion", cascade = CascadeType.PERSIST, orphanRemoval = true)
+  @OrderBy("id ASC")
+  private List<ItemAcquisition> acquisitions = new ArrayList<>();
 
   protected ItemVersion() {}
 
@@ -78,5 +106,31 @@ public class ItemVersion extends CatalogRow {
 
   void rebuildStatCache() {
     statJson = ItemStatCache.build(stats);
+  }
+
+  ItemCatalogService.Recipe recipe() {
+    if (craftOutputCount == null) return null;
+    return new ItemCatalogService.Recipe(
+        new ItemCatalogService.Material(materialAItemId, materialAVersionId),
+        new ItemCatalogService.Material(materialBItemId, materialBVersionId),
+        craftOutputCount);
+  }
+
+  void changeRecipe(ItemCatalogService.Recipe recipe) {
+    materialAItemId = recipe == null ? null : recipe.materialA().itemId();
+    materialAVersionId = recipe == null ? null : recipe.materialA().itemVersionId();
+    materialBItemId = recipe == null ? null : recipe.materialB().itemId();
+    materialBVersionId = recipe == null ? null : recipe.materialB().itemVersionId();
+    craftOutputCount = recipe == null ? null : recipe.outputCount();
+  }
+
+  ItemCatalogService.Delivery delivery() {
+    return new ItemCatalogService.Delivery(deliveryAcquireCount, deliverable, deliveryPrice);
+  }
+
+  void changeDelivery(ItemCatalogService.Delivery delivery) {
+    deliveryAcquireCount = delivery.acquireCount();
+    deliverable = delivery.deliverable();
+    deliveryPrice = delivery.price();
   }
 }

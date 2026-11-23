@@ -8,8 +8,8 @@
 - 구상상 구분: P1
 - GitHub milestone: [Mi-no-Kim/LumiaWiki #1](https://github.com/Mi-no-Kim/LumiaWiki/milestone/1)
 - 상태: 진행 중
-- 현재 진행 위치: 계획 Issue #15와 기반 #42는 완료했다. [Issue #43](issue-43/issue.md#summary)의 Task 001은 완료했고 공통 8개 표/Java 구현·격리 검증 뒤 승인한 로컬에 적용했으며 단위 30·통합 11건을 통과했다. [결과](https://github.com/Mi-no-Kim/LumiaWiki/blob/9b8773ed5a26b799eac971ea8fe60949e14c4d0a/work/records/phase-001/issue-43/artifacts/task-001-creation.md#current)를 따른다. [Task 43-002](issue-43/task-002.md#result)는 V2·V3 저장·조회 구현, 격리 검증과 계약 인계를 완료했고 PR #79로 부모 Issue에 반영했다. [Task 43-003](issue-43/task-003.md#summary)은 V4 장착 부위 정정을 격리 검증했다. 004·Issue #44~#48과 Phase 수용은 남았으며 실제 자료 작업은 보류한다.
-- 다음 판단/행동: Task 43-003의 V4 제출 범위를 검수한다. 43-002 제출용 브랜치 정리는 별도 후속이다. 실제 자료 등록은 보류한다.
+- 현재 진행 위치: 계획 Issue #15와 기반 #42는 완료했다. [Issue #43](issue-43/issue.md#summary)의 Task 001은 완료했고 공통 8개 표/Java 구현·격리 검증 뒤 승인한 로컬에 적용했으며 단위 30·통합 11건을 통과했다. [결과](https://github.com/Mi-no-Kim/LumiaWiki/blob/9b8773ed5a26b799eac971ea8fe60949e14c4d0a/work/records/phase-001/issue-43/artifacts/task-001-creation.md#current)를 따른다. [Task 43-002](issue-43/task-002.md#result)는 V2·V3 저장·조회 구현, 격리 검증과 계약 인계를 완료했고 PR #79로 부모 Issue에 반영했다. [Task 43-003](issue-43/task-003.md#summary)은 V4·V5를 검증하고 각각 로컬 커밋했다. 004·Issue #44~#48과 Phase 수용은 남았으며 실제 자료 작업은 보류한다.
+- 다음 판단/행동: Task 43-003의 원격 제출과 부모 반영 범위를 확인한다. 43-002 제출용 브랜치 정리는 별도 후속이다. 실제 자료 등록은 보류한다.
 
 <a id="upstream-main-integration"></a>
 

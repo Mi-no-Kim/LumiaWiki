@@ -51,8 +51,8 @@ GitHub sub-issue: [Mi-no-Kim/LumiaWiki #69](https://github.com/Mi-no-Kim/LumiaWi
 -->
 
 - 상태: 진행 중
-- 현재 진행 위치: [V4 장착 부위 정정](#work-equipment-slot)의 격리 검증과 실제 후보 검수를 마쳤다.
-- 다음 행동: 분리한 V4 후보의 제출을 판단한다.
+- 현재 진행 위치: [V4](#work-equipment-slot)와 [V5](#work-submission)를 검수하고 별도 로컬 커밋으로 보존했다.
+- 다음 행동: [43-003의 원격 제출과 부모 반영](#work-submission) 범위를 확인한다. 다음 Task는 [43-004](task-004.md#summary)다.
 - 막힌 조건: 개발 DB 적용과 [#45 실제 자료 작업](issue.md#data-timing)은 보류 상태다.
 
 <a id="assignment"></a>
@@ -92,7 +92,7 @@ GitHub sub-issue: [Mi-no-Kim/LumiaWiki #69](https://github.com/Mi-no-Kim/LumiaWi
 사용자 확인 조건에 도달하면 관련 실행 전에 확인하고 통상적인 조정마다 재승인을 요구하지 않는다.
 -->
 
-- 대상·준비: [43-001 공통 참조](task-001.md#plan), [43-002 아이템 버전](task-002.md#plan), [제작·획득](<../../../../docs/details/product/아이템 탐색과 상세.md#acquisition-methods>)·[정정 기준](<../../../../docs/details/product/게임 데이터 변경 관리.md#change-and-correction>)을 적용한다. V4 구현과 합성 자료 격리 검증을 승인받았다.
+- 대상·준비: [43-001 공통 참조](task-001.md#plan), [43-002 아이템 버전](task-002.md#plan), [제작·획득](<../../../../docs/details/product/아이템 탐색과 상세.md#acquisition-methods>)·[정정 기준](<../../../../docs/details/product/게임 데이터 변경 관리.md#change-and-correction>)을 적용한다. V4·V5 구현과 합성 자료 격리 검증을 승인받았다.
 - 브랜치: 부모 `issue/43-item-persistence`의 `169c79c`에서 `task/43-003-item-relations`로 분기해 미커밋 제작 설계를 이어받았다. PR #79 병합 결과와 제출 브랜치 정리 잔여는 [43-002](task-002.md#result)에 있다.
 
 - 현재 합의 <a id="activity"></a>
@@ -139,20 +139,20 @@ GitHub sub-issue: [Mi-no-Kim/LumiaWiki #69](https://github.com/Mi-no-Kim/LumiaWi
 #### 저장·조회 계약과 확인 경로를 합의한다
 
 - 태그: 조사, 논의, 결정, 검수
-- [ ] 수행·확인 완료
-- 할 일: DB 구조와 Spring 저장 흐름, #45 자료에 의존하는 선택과 직접 확인 경로를 합의한다.
+- [x] 수행·확인 완료
+- 할 일: [구현안](artifacts/task-003-implementation-plan.md#scope)의 DB 구조와 Spring 저장 흐름을 검토하고, #45 자료에 의존하는 선택과 직접 확인 경로를 합의한다.
 - 확인: 배정·참조 기준과 검증 입력·기대 결과를 대조한다.
-- 수행 기록: `artifacts/task-003-execution.md#work-contract` 예정
+- 수행 기록: [V5 합의](artifacts/task-003-execution.md#work-contract)
 
 <a id="work-storage"></a>
 
 #### 관계 저장·조회·정정을 구현하고 격리 검증한다
 
 - 태그: 실행, 검수
-- [ ] 수행·확인 완료
+- [x] 수행·확인 완료
 - 할 일: 권한·대상을 확인한 뒤 마이그레이션·매핑·저장·조회·정정을 TDD로 구현하고 격리 검증한다. 제작 구현 후 같은 데이터로 별도 조합 표의 조회·사용처 조회·재료 버전 변경 비용을 비교한다.
 - 확인: 서로 다른 재료의 복수 생산(V06), 임시 아이템의 검색 제외·참조 보존, 부분 입력·동일 재료·소속 불일치 거부(V07)를 대조한다. 한 패치의 신규 추가·조합 교체·재료 변경에서 최종 조합 기준의 하위 우선 저장·자체 변경 보존·전체 롤백을 확인한다. 획득 행 개별 변경·다른 행 보존·참조 일치, 두 DB 세션의 충돌과 Spring·DB 오류 일치, 출현량·무한, 사냥 불일치 경고와 저장, 배달·정정, 삭제 버전의 빈 관계와 삭제 전 보존을 확인한다(V05·V11·V12).
-- 수행 기록: `artifacts/task-003-execution.md#work-storage` 예정
+- 수행 기록: [V5 구현과 확인](artifacts/task-003-execution.md#work-storage)
 
 <a id="work-submission"></a>
 <a id="work-handoff"></a>
@@ -163,7 +163,7 @@ GitHub sub-issue: [Mi-no-Kim/LumiaWiki #69](https://github.com/Mi-no-Kim/LumiaWi
 - [ ] 수행·확인 완료
 - 할 일: #44에 획득·배달 표시, #46에 제작·수량, #47에 획득 가능 여부·배달 원자료 계약을 넘긴다. 제출은 권한과 자체·별도 검수 조건을 충족한 뒤 처리한다.
 - 확인: 검증·잔여·제출 후보를 완료 조건과 대조한다. 필수 실제 자료가 빠진 범위는 수용을 보류한다. 재귀·순환·총량·잔여·합산 캐시는 #46, 임시 아이템의 루트 취급은 #47에 연결한다.
-- 수행 기록: `artifacts/task-003-execution.md#work-submission` 예정
+- 수행 기록: [후속 조회·계산 계약](artifacts/task-003-execution.md#work-submission)
 
 <a id="result"></a>
 
@@ -176,6 +176,6 @@ GitHub sub-issue: [Mi-no-Kim/LumiaWiki #69](https://github.com/Mi-no-Kim/LumiaWi
 중단·취소·인계 시에는 실제 상태·이유·영향·보존 결과·잔여·해소/재개 조건과 다음 행동을 남긴다.
 -->
 
-- 내용: [V4 장착 부위 정정](artifacts/task-003-execution.md#work-equipment-slot)을 구현했다.
-- 확인: 개정 V4 분리 후보의 단위 43건·격리 통합 21건·포맷·JAR 검사를 통과했다.
-- 잔여: 제작·획득·배달의 [저장·조회 계약](#work-contract)과 [자료 의존 항목](#decisions)을 처리한다.
+- 내용: [V4 장착 부위 정정](artifacts/task-003-execution.md#work-equipment-slot)과 [V5 제작·획득·배달 관계](artifacts/task-003-execution.md#work-storage)를 구현했다.
+- 확인: 개정 V4는 단위 43건·격리 통합 21건, 개정 V4를 포함한 V5는 단위 43건·격리 통합 29건을 통과했다. 두 후보의 포맷·JAR와 조합 분리안 실행 비용을 확인했다.
+- 잔여: [원격 제출과 부모 반영](#work-submission)이 남았다. [자료 의존 항목](#decisions)의 수용은 보류한다.

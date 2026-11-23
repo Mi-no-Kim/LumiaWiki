@@ -153,6 +153,15 @@ public class CommonCatalogStore {
         .findFirst();
   }
 
+  Optional<Long> findPatchIdByItemVersion(Long versionId) {
+    return em
+        .createQuery("select v.fromGamePatch.id from ItemVersion v where v.id = :id", Long.class)
+        .setParameter("id", versionId)
+        .getResultList()
+        .stream()
+        .findFirst();
+  }
+
   Optional<ItemVersion> findPreviousItemVersion(Long itemId, long patchOrder) {
     return em
         .createQuery(
@@ -162,6 +171,54 @@ public class CommonCatalogStore {
             order by v.fromGamePatch.sortOrder desc
             """,
             ItemVersion.class)
+        .setParameter("itemId", itemId)
+        .setParameter("patchOrder", patchOrder)
+        .setMaxResults(1)
+        .getResultList()
+        .stream()
+        .findFirst();
+  }
+
+  Map<Long, ItemPatchPlan.ActiveVersion> itemVersionsAtPatch(long patchOrder) {
+    List<?> rows =
+        em.createNativeQuery(
+                """
+                select distinct on (v.item_id) v.item_id, v.id, v.from_game_patch_id, v.is_deleted,
+                       v.material_a_item_id, v.material_a_version_id,
+                       v.material_b_item_id, v.material_b_version_id, v.craft_output_count
+                from public.item_version v
+                join public.game_patch patch on patch.id = v.from_game_patch_id
+                where patch.sort_order <= :patchOrder
+                order by v.item_id, patch.sort_order desc
+                """)
+            .setParameter("patchOrder", patchOrder)
+            .getResultList();
+    Map<Long, ItemPatchPlan.ActiveVersion> versions = new LinkedHashMap<>();
+    for (Object result : rows) {
+      Object[] row = (Object[]) result;
+      var recipe =
+          row[8] == null
+              ? null
+              : new ItemCatalogService.Recipe(
+                  new ItemCatalogService.Material((Long) row[4], (Long) row[5]),
+                  new ItemCatalogService.Material((Long) row[6], (Long) row[7]),
+                  (Integer) row[8]);
+      versions.put(
+          (Long) row[0],
+          new ItemPatchPlan.ActiveVersion((Long) row[1], (Long) row[2], (Boolean) row[3], recipe));
+    }
+    return versions;
+  }
+
+  Optional<Long> findEffectiveItemVersionId(Long itemId, long patchOrder) {
+    return em
+        .createQuery(
+            """
+            select v.id from ItemVersion v where v.item.id = :itemId
+              and v.fromGamePatch.sortOrder <= :patchOrder
+            order by v.fromGamePatch.sortOrder desc
+            """,
+            Long.class)
         .setParameter("itemId", itemId)
         .setParameter("patchOrder", patchOrder)
         .setMaxResults(1)
@@ -227,6 +284,67 @@ public class CommonCatalogStore {
         .getResultList()
         .stream()
         .findFirst();
+  }
+
+  boolean acquisitionRegionUnavailable(Long versionId, Long regionId) {
+    return (Boolean)
+        em.createNativeQuery(
+                """
+                select exists (
+                  select 1 from public.item_version v
+                  join public.game_patch start_patch on start_patch.id = v.from_game_patch_id
+                  where v.id = :versionId and
+                """
+                    + unavailableRegion(":regionId")
+                    + ")")
+            .setParameter("versionId", versionId)
+            .setParameter("regionId", regionId)
+            .getSingleResult();
+  }
+
+  Optional<Long> findAcquisitionOutsideMap() {
+    List<?> ids =
+        em.createNativeQuery(
+                """
+                select a.id from public.item_acquisition a
+                join public.item_version v on v.id = a.item_version_id
+                join public.game_patch start_patch on start_patch.id = v.from_game_patch_id
+                where a.region_id is not null and
+                """
+                    + unavailableRegion("a.region_id")
+                    + " order by a.id limit 1")
+            .getResultList();
+    return ids.isEmpty() ? Optional.empty() : Optional.of(((Number) ids.getFirst()).longValue());
+  }
+
+  // A region must appear at the version's start and after every map boundary within its interval.
+  private static String unavailableRegion(String reference) {
+    return """
+    exists (
+      select 1 from public.game_patch q
+      where q.sort_order >= start_patch.sort_order
+        and (q.id = start_patch.id or exists (
+          select 1 from public.region_map_version boundary where boundary.from_game_patch_id = q.id
+        ))
+        and not exists (
+          select 1 from public.item_version next_version
+          join public.game_patch next_patch on next_patch.id = next_version.from_game_patch_id
+          where next_version.item_id = v.item_id
+            and next_patch.sort_order > start_patch.sort_order
+            and next_patch.sort_order <= q.sort_order
+        )
+        and not exists (
+          select 1 from public.region_map_member member
+          where member.region_id = %s and member.map_version_id = (
+            select map.id from public.region_map_version map
+            join public.game_patch map_patch on map_patch.id = map.from_game_patch_id
+            where map_patch.sort_order <= q.sort_order
+            order by map_patch.sort_order desc limit 1
+          )
+        )
+    )
+    """
+        .formatted(reference);
   }
 
   /**

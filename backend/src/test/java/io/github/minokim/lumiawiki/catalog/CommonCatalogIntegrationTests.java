@@ -2,7 +2,11 @@ package io.github.minokim.lumiawiki.catalog;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import io.github.minokim.lumiawiki.catalog.ItemCatalogService.Material;
 import io.github.minokim.lumiawiki.catalog.ItemCatalogService.MaxStackChange;
+import io.github.minokim.lumiawiki.catalog.ItemCatalogService.PatchItem;
+import io.github.minokim.lumiawiki.catalog.ItemCatalogService.Recipe;
+import io.github.minokim.lumiawiki.catalog.ItemCatalogService.RecipeChange;
 import io.github.minokim.lumiawiki.catalog.ItemCatalogService.SkillInput;
 import io.github.minokim.lumiawiki.catalog.ItemCatalogService.StatInput;
 import io.github.minokim.lumiawiki.catalog.ItemCatalogService.StatValue;
@@ -16,8 +20,11 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -47,6 +54,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.testcontainers.images.builder.Transferable;
 import org.testcontainers.postgresql.PostgreSQLContainer;
+import tools.jackson.databind.json.JsonMapper;
 
 /** Real product DDL and JPA against a new, disposable database; no host DB settings are read. */
 @Tag("integration")
@@ -66,7 +74,8 @@ class CommonCatalogIntegrationTests {
     CommonCatalogService.class,
     CommonCatalogStore.class,
     ItemCatalogService.class,
-    ItemSkillReferenceCheck.class
+    ItemSkillReferenceCheck.class,
+    ItemAcquisitionReferenceCheck.class
   })
   static class CatalogTestApplication {
     @Bean
@@ -74,6 +83,11 @@ class CommonCatalogIntegrationTests {
       return () -> {
         if (rejectReferences.get()) throw ApiFailure.invalidInput("syntheticReference");
       };
+    }
+
+    @Bean
+    HuntingAcquisitionCheck syntheticHuntingDetails() {
+      return (versionId, regionId) -> regionId == null;
     }
   }
 
@@ -189,7 +203,7 @@ class CommonCatalogIntegrationTests {
   }
 
   @Test
-  void itemStorageInstallsThroughV4AndRevalidatesWithoutPendingMigrations() throws Exception {
+  void itemStorageInstallsThroughV5AndRevalidatesWithoutPendingMigrations() throws Exception {
     try (var connection = migrationConnection()) {
       assertEquals(
           "0",
@@ -197,22 +211,22 @@ class CommonCatalogIntegrationTests {
               connection,
               "select count(*) from information_schema.columns where table_schema='public' and table_name='item_version' and column_name='equipment_slot'"));
       assertEquals(
-          "16",
+          "17",
           scalar(
               connection,
               "select count(*) from pg_tables where schemaname='public' and tableowner='lumia_migrator'"));
       assertEquals(
-          "15",
+          "16",
           scalar(
               connection,
               "select count(*) from information_schema.columns where table_schema='public' and column_name='id' and identity_generation='ALWAYS'"));
       assertEquals(
-          "15",
+          "16",
           scalar(
               connection,
               "select count(*) from pg_trigger where not tgisinternal and tgname like 'trg_%_reject_pk_update'"));
       assertEquals(
-          "18",
+          "25",
           scalar(
               connection,
               "select count(*) from pg_constraint where contype='f' and connamespace='public'::regnamespace and not condeferrable and confdeltype='r'"));
@@ -223,10 +237,722 @@ class CommonCatalogIntegrationTests {
               "select has_function_privilege('lumia_app','public.reject_common_pk_update()','EXECUTE')"));
     }
     Flyway flyway = context.getBean(Flyway.class);
-    assertEquals("4", flyway.info().current().getVersion().getVersion());
+    assertEquals("5", flyway.info().current().getVersion().getVersion());
     flyway.validate();
     assertEquals(0, flyway.info().pending().length);
     assertEquals(0, flyway.migrate().migrationsExecuted);
+  }
+
+  @Test
+  void itemRelationsEnforceAgreedConstraintsAndPreserveUnclassifiedCounts() throws Exception {
+    long season = service.createSeason(32, "synthetic relation season", null, null, null).getId();
+    long patch = service.createPatch(season, 0, 1, null, null).getId();
+    long later = service.createPatch(season, 0, 2, null, null).getId();
+    long grade = service.createGrade("synthetic relation grade", 711).getId();
+    long category = service.createCategory("synthetic relation category", null).getId();
+    long forest = service.createRegion("synthetic forest").getId();
+    long shore = service.createRegion("synthetic shore").getId();
+    service.saveMap(
+        null,
+        patch,
+        List.of(
+            new CatalogViews.MapRegion(forest, "숲", 10),
+            new CatalogViews.MapRegion(shore, "해안", 20)));
+    var first = items.createItem(null, patch, itemInput(category, grade, "first", null));
+    var second = items.createItem(null, patch, itemInput(category, grade, "second", null));
+    var crafted = items.createItem(null, patch, itemInput(category, grade, "crafted", null));
+
+    try (var app = appConnection()) {
+      String recipe =
+          """
+          update public.item_version set material_a_item_id=%d,material_a_version_id=%d,
+             material_b_item_id=%d,material_b_version_id=%d,craft_output_count=3 where id=%d
+          """;
+      rejected(
+          app,
+          "23514",
+          "update public.item_version set craft_output_count=3 where id=" + crafted.id());
+      rejected(
+          app,
+          "23514",
+          recipe.formatted(first.itemId(), first.id(), first.itemId(), first.id(), crafted.id()));
+      rejected(
+          app,
+          "23503",
+          recipe.formatted(
+              first.itemId(), second.id(), second.itemId(), second.id(), crafted.id()));
+      execute(
+          app,
+          recipe.formatted(first.itemId(), first.id(), second.itemId(), second.id(), crafted.id()));
+      rejected(
+          app, "23514", "update public.item_version set delivery_price=2 where id=" + crafted.id());
+      execute(
+          app,
+          "update public.item_version set deliverable=false,delivery_acquire_count=0 where id="
+              + crafted.id());
+
+      String acquisition =
+          """
+          insert into public.item_acquisition(item_id,item_version_id,game_patch_id,method,region_id,spawn_count)
+          values (%d,%d,%d,'%s',%s,%s)
+          """;
+      execute(
+          app,
+          acquisition.formatted(crafted.itemId(), crafted.id(), patch, "CHEST", forest, "null"));
+      execute(app, acquisition.formatted(crafted.itemId(), crafted.id(), patch, "CHEST", shore, 0));
+      execute(
+          app,
+          acquisition.formatted(
+              crafted.itemId(), crafted.id(), patch, "GATHERING", forest, "null"));
+      execute(
+          app,
+          acquisition.formatted(crafted.itemId(), crafted.id(), patch, "GATHERING", shore, "null"));
+      execute(
+          app,
+          acquisition.formatted(crafted.itemId(), crafted.id(), patch, "HUNTING", "null", "null"));
+      rejected(
+          app,
+          "23P01",
+          acquisition.formatted(
+              crafted.itemId(), crafted.id(), patch, "GATHERING", forest, "null"));
+      rejected(
+          app,
+          "23P01",
+          acquisition.formatted(
+              crafted.itemId(), crafted.id(), patch, "GATHERING", "null", "null"));
+      rejected(
+          app,
+          "23P01",
+          acquisition.formatted(crafted.itemId(), crafted.id(), patch, "HUNTING", "null", "null"));
+      rejected(
+          app,
+          "23P01",
+          acquisition.formatted(crafted.itemId(), crafted.id(), patch, "HUNTING", shore, "null"));
+      rejected(
+          app,
+          "23514",
+          acquisition.formatted(crafted.itemId(), crafted.id(), patch, "CHEST", "null", "null"));
+      rejected(
+          app,
+          "23514",
+          acquisition.formatted(crafted.itemId(), crafted.id(), patch, "HUNTING", shore, 0));
+      rejected(
+          app,
+          "23503",
+          acquisition.formatted(crafted.itemId(), first.id(), patch, "CHEST", shore, "null"));
+      rejected(
+          app,
+          "23503",
+          acquisition.formatted(second.itemId(), second.id(), later, "CHEST", shore, "null"));
+      assertEquals(
+          "1:1",
+          scalar(
+              app,
+              """
+              select count(*) filter (where spawn_count is null)::text || ':' ||
+                     count(*) filter (where spawn_count = 0)::text
+              from public.item_acquisition where method='CHEST' and item_version_id=
+              """
+                  + crafted.id()));
+      execute(app, "delete from public.item_acquisition where item_version_id=" + crafted.id());
+    }
+  }
+
+  @Test
+  void itemRelationsRoundTripDeliveryAndEditIndividualAcquisitions() {
+    long season =
+        service.createSeason(33, "synthetic acquisition season", null, null, null).getId();
+    long patch = service.createPatch(season, 0, 1, null, null).getId();
+    long inheritedPatch = service.createPatch(season, 0, 2, null, null).getId();
+    long later = service.createPatch(season, 0, 3, null, null).getId();
+    long boundary = service.createPatch(season, 0, 4, null, null).getId();
+    long grade = service.createGrade("synthetic acquisition grade", 712).getId();
+    long category = service.createCategory("synthetic acquisition category", null).getId();
+    long forest = service.createRegion("synthetic gathering forest").getId();
+    long shore = service.createRegion("synthetic gathering shore").getId();
+    long absent = service.createRegion("synthetic absent region").getId();
+    var map =
+        List.of(
+            new CatalogViews.MapRegion(forest, "숲", 10),
+            new CatalogViews.MapRegion(shore, "해안", 20));
+    service.saveMap(null, patch, map);
+    var version =
+        items.createItem(
+            null,
+            patch,
+            new VersionInput(
+                category,
+                grade,
+                "synthetic source",
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                new ItemCatalogService.Delivery(0, false, null)));
+    // Keep the region references within this fixture's maps in the shared test database.
+    items.recordItemExistence(version.itemId(), boundary, true);
+    assertEquals(
+        new ItemCatalogService.Delivery(0, false, null),
+        items.getItemVersion(version.id()).delivery());
+
+    var chest =
+        items.createAcquisition(
+            version.id(),
+            new ItemCatalogService.AcquisitionInput(AcquisitionMethod.CHEST, forest, null));
+    var hunting =
+        items.createAcquisition(
+            version.id(),
+            new ItemCatalogService.AcquisitionInput(AcquisitionMethod.HUNTING, null, null));
+    var gathering =
+        items.createAcquisition(
+            version.id(),
+            new ItemCatalogService.AcquisitionInput(AcquisitionMethod.GATHERING, shore, null));
+    assertEquals(List.of("HUNTING_DETAIL_MISMATCH"), hunting.warnings());
+    assertNull(chest.spawnCount());
+    assertEquals(
+        "regionId",
+        assertThrows(
+                ApiFailure.class,
+                () ->
+                    items.createAcquisition(
+                        version.id(),
+                        new ItemCatalogService.AcquisitionInput(
+                            AcquisitionMethod.GATHERING, null, null)))
+            .fields()
+            .getFirst()
+            .field());
+    assertEquals(
+        "regionId",
+        assertThrows(
+                ApiFailure.class,
+                () ->
+                    items.createAcquisition(
+                        version.id(),
+                        new ItemCatalogService.AcquisitionInput(
+                            AcquisitionMethod.CHEST, absent, 0)))
+            .fields()
+            .getFirst()
+            .field());
+    assertEquals(
+        0,
+        items
+            .updateAcquisition(
+                version.id(),
+                chest.id(),
+                new ItemCatalogService.AcquisitionInput(AcquisitionMethod.CHEST, forest, 0))
+            .spawnCount());
+    items.deleteAcquisition(version.id(), gathering.id());
+    assertEquals(
+        List.of(chest.id(), hunting.id()),
+        items.getItemVersion(version.id()).acquisitions().stream()
+            .map(ItemCatalogService.Acquisition::id)
+            .toList());
+    var inherited =
+        items.createItemVersion(
+            version.itemId(),
+            inheritedPatch,
+            itemInput(category, grade, "synthetic inherited source", null));
+    assertEquals(version.delivery(), inherited.delivery());
+    assertEquals(2, inherited.acquisitions().size());
+    assertNotEquals(chest.id(), inherited.acquisitions().getFirst().id());
+    assertEquals(0, inherited.acquisitions().getFirst().spawnCount());
+    assertTrue(
+        inherited.acquisitions().stream()
+            .allMatch(row ->
+                inherited.itemId().equals(row.itemId())
+                    && inherited.id().equals(row.itemVersionId())
+                    && row.gamePatchId().equals(inheritedPatch)));
+    assertThrows(ApiFailure.class, () -> service.saveMap(null, later, List.of(map.getLast())));
+    var deleted = items.recordItemExistence(version.itemId(), later, true);
+    assertTrue(items.getItemVersion(deleted.id()).acquisitions().isEmpty());
+    assertEquals(2, items.getItemVersion(version.id()).acquisitions().size());
+    service.saveMap(null, later, List.of(map.getLast()));
+  }
+
+  @Test
+  void itemRelationsRejectConcurrentGlobalAndRegionalRowsInEitherOrder() throws Exception {
+    long season = service.createSeason(36, "synthetic acquisition race", null, null, null).getId();
+    long patch = service.createPatch(season, 0, 1, null, null).getId();
+    long boundary = service.createPatch(season, 0, 2, null, null).getId();
+    long grade = service.createGrade("synthetic acquisition race grade", 715).getId();
+    long category = service.createCategory("synthetic acquisition race category", null).getId();
+    long forest = service.createRegion("synthetic race forest").getId();
+    service.saveMap(null, patch, List.of(new CatalogViews.MapRegion(forest, "숲", 10)));
+    var owner =
+        items.createItem(
+            null, patch, itemInput(category, grade, "synthetic acquisition race item", null));
+    items.recordItemExistence(owner.itemId(), boundary, true);
+    String insert =
+        """
+        insert into public.item_acquisition(item_id,item_version_id,game_patch_id,method,region_id)
+        values (%d,%d,%d,'GATHERING',%s)
+        """;
+    for (boolean globalFirst : List.of(true, false)) {
+      String leading = globalFirst ? "null" : Long.toString(forest);
+      var request =
+          new ItemCatalogService.AcquisitionInput(
+              AcquisitionMethod.GATHERING, globalFirst ? forest : null, null);
+      try (var first = appConnection();
+          var worker = Executors.newSingleThreadExecutor()) {
+        first.setAutoCommit(false);
+        String firstPid = scalar(first, "select pg_backend_pid()");
+        execute(first, insert.formatted(owner.itemId(), owner.id(), patch, leading));
+        var waiter =
+            worker.submit(() ->
+                assertThrows(ApiFailure.class, () -> items.createAcquisition(owner.id(), request)));
+        boolean blocked;
+        try {
+          blocked =
+              waitForDatabaseLock(
+                  """
+                  select exists (select 1 from pg_stat_activity
+                    where %s = any(pg_blocking_pids(pid))
+                      and lower(query) like '%%insert into%%item_acquisition%%')::text
+                  """
+                      .formatted(firstPid));
+        } finally {
+          first.commit();
+        }
+        try {
+          assertTrue(blocked);
+          var failure = waiter.get(10, TimeUnit.SECONDS);
+          var spring =
+              assertThrows(ApiFailure.class, () -> items.createAcquisition(owner.id(), request));
+          assertEquals(spring.fields(), failure.fields());
+          assertEquals(spring.operation(), failure.operation());
+          assertEquals(1, items.getItemVersion(owner.id()).acquisitions().size());
+        } finally {
+          execute(first, "delete from public.item_acquisition where item_version_id=" + owner.id());
+          first.commit();
+        }
+      }
+    }
+  }
+
+  @Test
+  void itemRelationsRevalidateMapMembershipInEitherWriteOrder() throws Exception {
+    long season = service.createSeason(37, "synthetic map race", null, null, null).getId();
+    long patch = service.createPatch(season, 0, 1, null, null).getId();
+    long later = service.createPatch(season, 0, 2, null, null).getId();
+    long boundary = service.createPatch(season, 0, 3, null, null).getId();
+    long grade = service.createGrade("synthetic map race grade", 716).getId();
+    long category = service.createCategory("synthetic map race category", null).getId();
+    long forest = service.createRegion("synthetic map race forest").getId();
+    long shore = service.createRegion("synthetic map race shore").getId();
+    var shoreOnly = List.of(new CatalogViews.MapRegion(shore, "해안", 10));
+    service.saveMap(
+        null, patch, List.of(new CatalogViews.MapRegion(forest, "숲", 20), shoreOnly.getFirst()));
+    var owner =
+        items.createItem(null, patch, itemInput(category, grade, "synthetic map item", null));
+    items.recordItemExistence(owner.itemId(), boundary, true);
+    var chest = new ItemCatalogService.AcquisitionInput(AcquisitionMethod.CHEST, forest, null);
+    String pendingMapLock =
+        """
+        select exists(select 1 from pg_locks
+          where relation = 'public.region_map_version'::regclass and not granted and mode = '%s')::text
+        """;
+    runConcurrentWrites(
+        () -> items.createAcquisition(owner.id(), chest),
+        () -> assertThrows(ApiFailure.class, () -> service.saveMap(null, later, shoreOnly)),
+        waiting ->
+            assertTrue(waitForDatabaseLock(pendingMapLock.formatted("ShareRowExclusiveLock"))));
+    var saved = items.getItemVersion(owner.id()).acquisitions().getFirst();
+    items.deleteAcquisition(owner.id(), saved.id());
+    runConcurrentWrites(
+        () -> service.saveMap(null, later, shoreOnly),
+        () -> {
+          var failure =
+              assertThrows(ApiFailure.class, () -> items.createAcquisition(owner.id(), chest));
+          assertEquals("regionId", failure.fields().getFirst().field());
+        },
+        waiting -> assertTrue(waitForDatabaseLock(pendingMapLock.formatted("ShareLock"))));
+    assertTrue(items.getItemVersion(owner.id()).acquisitions().isEmpty());
+  }
+
+  @Test
+  void itemRelationsSaveMaterialsFirstAndPropagateTheFinalRecipeAcrossPatches() {
+    long season = service.createSeason(34, "synthetic crafting season", null, null, null).getId();
+    long first = service.createPatch(season, 0, 1, null, null).getId();
+    long second = service.createPatch(season, 0, 2, null, null).getId();
+    long third = service.createPatch(season, 0, 3, null, null).getId();
+    long grade = service.createGrade("synthetic crafting grade", 713).getId();
+    long category = service.createCategory("synthetic crafting category", null).getId();
+    var initial =
+        items.savePatchItems(
+            first,
+            List.of(
+                new PatchItem(
+                    "sword",
+                    null,
+                    null,
+                    withRecipe(category, grade, "검", new Material("blade"), new Material("hilt"))),
+                new PatchItem("blade", null, null, itemInput(category, grade, "칼날", null)),
+                new PatchItem("hilt", null, false, itemInput(category, grade, "손잡이", null))));
+    var sword = initial.get(0);
+    var blade = initial.get(1);
+    var hilt = initial.get(2);
+    assertEquals(
+        new Recipe(
+            new Material(blade.itemId(), blade.id()), new Material(hilt.itemId(), hilt.id()), 3),
+        items.getItemVersion(sword.id()).recipe());
+    assertFalse(hilt.searchable());
+    assertNull(hilt.recipe());
+    var kit =
+        items.createItem(
+            null,
+            first,
+            withRecipe(
+                category,
+                grade,
+                "장비 세트",
+                new Material(sword.itemId(), sword.id()),
+                new Material(hilt.itemId(), hilt.id())));
+
+    var next =
+        items.savePatchItems(
+            second,
+            List.of(
+                new PatchItem(
+                    null,
+                    sword.itemId(),
+                    null,
+                    withRecipe(
+                        category,
+                        grade,
+                        "개량 검",
+                        new Material("steel"),
+                        new Material(hilt.itemId(), hilt.id()))),
+                new PatchItem(
+                    null, blade.itemId(), null, itemInput(category, grade, "기존 칼날 수정", null)),
+                new PatchItem("steel", null, null, itemInput(category, grade, "강철판", null))));
+    var swordSecond = next.getFirst();
+    var steel = next.getLast();
+    var kitSecond = effectiveVersion(kit.itemId(), second);
+    assertEquals(second, kitSecond.fromGamePatchId());
+    assertEquals(swordSecond.id(), kitSecond.recipe().materialA().itemVersionId());
+    assertEquals(steel.id(), swordSecond.recipe().materialA().itemVersionId());
+    assertEquals("개량 검", swordSecond.name());
+    assertEquals(blade.id(), items.getItemVersion(sword.id()).recipe().materialA().itemVersionId());
+    assertEquals(sword.id(), items.getItemVersion(kit.id()).recipe().materialA().itemVersionId());
+
+    var directlyChanged =
+        items.createItemVersion(sword.itemId(), third, itemInput(category, grade, "이름 바꾼 검", null));
+    var kitBeforeMaterialChange = effectiveVersion(kit.itemId(), third);
+    var hiltThird =
+        items.createItemVersion(hilt.itemId(), third, itemInput(category, grade, "새 손잡이", null));
+    var swordThird = effectiveVersion(sword.itemId(), third);
+    var kitThird = effectiveVersion(kit.itemId(), third);
+    assertEquals(directlyChanged.id(), swordThird.id());
+    assertEquals(kitBeforeMaterialChange.id(), kitThird.id());
+    assertEquals(third, swordThird.fromGamePatchId());
+    assertEquals(hiltThird.id(), swordThird.recipe().materialB().itemVersionId());
+    assertEquals(swordThird.id(), kitThird.recipe().materialA().itemVersionId());
+    assertEquals("이름 바꾼 검", swordThird.name());
+    assertEquals(
+        hilt.id(), items.getItemVersion(swordSecond.id()).recipe().materialB().itemVersionId());
+  }
+
+  @Test
+  void itemRelationsRejectACycleAcrossConcurrentRecipeCorrections() throws Exception {
+    long season = service.createSeason(38, "synthetic recipe race", null, null, null).getId();
+    long patch = service.createPatch(season, 0, 1, null, null).getId();
+    long category = service.createCategory("synthetic recipe race category", null).getId();
+    long grade = service.createGrade("synthetic recipe race grade", 717).getId();
+    var fillerF = items.createItem(null, patch, itemInput(category, grade, "F", null));
+    var fillerG = items.createItem(null, patch, itemInput(category, grade, "G", null));
+    var a = items.createItem(null, patch, itemInput(category, grade, "A", null));
+    var c = items.createItem(null, patch, itemInput(category, grade, "C", null));
+    var b =
+        items.createItem(
+            null,
+            patch,
+            withRecipe(
+                category,
+                grade,
+                "B",
+                new Material(c.itemId(), c.id()),
+                new Material(fillerF.itemId(), fillerF.id())));
+    var d =
+        items.createItem(
+            null,
+            patch,
+            withRecipe(
+                category,
+                grade,
+                "D",
+                new Material(a.itemId(), a.id()),
+                new Material(fillerG.itemId(), fillerG.id())));
+    var aCorrection =
+        withRecipe(
+            category,
+            grade,
+            "A corrected",
+            new Material(b.itemId(), b.id()),
+            new Material(fillerF.itemId(), fillerF.id()));
+    var cCorrection =
+        withRecipe(
+            category,
+            grade,
+            "C corrected",
+            new Material(d.itemId(), d.id()),
+            new Material(fillerG.itemId(), fillerG.id()));
+
+    var jdbc = new JdbcTemplate(context.getBean(DataSource.class));
+    runConcurrentWrites(
+        () -> items.updateItemVersion(a.id(), aCorrection),
+        () -> {
+          var failure =
+              assertThrows(ApiFailure.class, () -> items.updateItemVersion(c.id(), cCorrection));
+          assertEquals("recipe", failure.fields().getFirst().field());
+        },
+        waiting -> {
+          int holdingPid = jdbc.queryForObject("select pg_backend_pid()", Integer.class);
+          assertTrue(
+              waitForDatabaseLock(
+                  """
+                  select exists (select 1 from pg_stat_activity
+                    where %d = any(pg_blocking_pids(pid)))::text
+                  """
+                      .formatted(holdingPid)));
+        });
+    var corrected = items.getItemVersion(a.id());
+    assertEquals("A corrected", corrected.name());
+    assertEquals(b.id(), corrected.recipe().materialA().itemVersionId());
+    var rejected = items.getItemVersion(c.id());
+    assertEquals("C", rejected.name());
+    assertNull(rejected.recipe());
+  }
+
+  @Test
+  void itemRelationsRollBackNewMaterialsIfUpperVersionFails() throws Exception {
+    long season = service.createSeason(35, "synthetic crafting rollback", null, null, null).getId();
+    long patch = service.createPatch(season, 0, 1, null, null).getId();
+    long grade = service.createGrade("synthetic crafting rollback grade", 714).getId();
+    long category = service.createCategory("synthetic crafting rollback category", null).getId();
+    try (var migrator = migrationConnection();
+        var app = appConnection()) {
+      String itemCount = "select count(*) from public.item";
+      String before = scalar(app, itemCount);
+      execute(
+          migrator,
+          "alter table public.item_version add constraint ck_test_upper_save_failure check (name <> 'synthetic failing upper')");
+      try {
+        var failure =
+            assertThrows(
+                RuntimeException.class,
+                () ->
+                    items.savePatchItems(
+                        patch,
+                        List.of(
+                            new PatchItem(
+                                "upper",
+                                null,
+                                null,
+                                withRecipe(
+                                    category,
+                                    grade,
+                                    "synthetic failing upper",
+                                    new Material("lowerA"),
+                                    new Material("lowerB"))),
+                            new PatchItem(
+                                "lowerA",
+                                null,
+                                null,
+                                itemInput(category, grade, "synthetic rolled back A", null)),
+                            new PatchItem(
+                                "lowerB",
+                                null,
+                                null,
+                                itemInput(category, grade, "synthetic rolled back B", null)))));
+        assertTrue(
+            java.util.stream.Stream.iterate(
+                    (Throwable) failure, java.util.Objects::nonNull, Throwable::getCause)
+                .anyMatch(cause ->
+                    cause instanceof SQLException sql
+                        && "23514".equals(sql.getSQLState())
+                        && sql.getMessage().contains("ck_test_upper_save_failure")));
+        assertEquals(before, scalar(app, itemCount));
+        assertEquals(
+            "0",
+            scalar(
+                app, "select count(*) from public.item_version where from_game_patch_id=" + patch));
+      } finally {
+        execute(
+            migrator, "alter table public.item_version drop constraint ck_test_upper_save_failure");
+      }
+    }
+  }
+
+  private ItemCatalogService.Version effectiveVersion(long itemId, long patchId) {
+    long patchOrder = service.get(GamePatch.class, patchId).getSortOrder();
+    long version =
+        context
+            .getBean(CommonCatalogStore.class)
+            .findEffectiveItemVersionId(itemId, patchOrder)
+            .orElseThrow();
+    return items.getItemVersion(version);
+  }
+
+  private static VersionInput withRecipe(
+      long category, long grade, String name, Material a, Material b) {
+    return new VersionInput(
+        category,
+        grade,
+        name,
+        null,
+        null,
+        null,
+        null,
+        null,
+        new RecipeChange(new Recipe(a, b, 3)),
+        null);
+  }
+
+  @Test
+  void itemRelationsCompareInlineAndSeparateRecipesOnTheSameData() throws Exception {
+    try (var admin =
+        DriverManager.getConnection(
+            database.getJdbcUrl(), "lumiawiki", "synthetic-catalog-admin")) {
+      execute(
+          admin,
+          """
+          create temporary table compare_inline as
+          select id, 'synthetic item ' || id as name,
+                 case when id % 4 = 0 then id % 100 end as material_a_item_id,
+                 case when id % 4 = 0 then id % 100 + 10000 end as material_a_version_id,
+                 case when id % 4 = 0 then id % 100 + 100 end as material_b_item_id,
+                 case when id % 4 = 0 then id % 100 + 10100 end as material_b_version_id,
+                 case when id % 4 = 0 then 3 end as output_count
+          from generate_series(1, 20000) as input(id)
+          """);
+      execute(admin, "create temporary table compare_base as select id,name from compare_inline");
+      execute(
+          admin,
+          """
+          create temporary table compare_recipe as
+          select id,material_a_item_id,material_a_version_id,material_b_item_id,material_b_version_id,output_count
+          from compare_inline where output_count is not null
+          """);
+      for (String table : List.of("compare_inline", "compare_base", "compare_recipe")) {
+        execute(admin, "alter table " + table + " add primary key (id)");
+      }
+      for (String table : List.of("compare_inline", "compare_recipe")) {
+        execute(admin, "create index on " + table + "(material_a_item_id)");
+        execute(admin, "create index on " + table + "(material_b_item_id)");
+      }
+      for (String table : List.of("compare_inline", "compare_base", "compare_recipe")) {
+        execute(admin, "analyze " + table);
+      }
+      String inlineRead =
+          """
+          select id, name, material_a_version_id, material_b_version_id, output_count
+          from compare_inline where id in (4,5) order by id
+          """;
+      String separateRead =
+          """
+          select id, name, material_a_version_id, material_b_version_id, output_count
+          from compare_base left join compare_recipe using(id) where id in (4,5) order by id
+          """;
+      assertEquals(
+          scalar(admin, "select json_agg(t)::text from (" + inlineRead + ") t"),
+          scalar(admin, "select json_agg(t)::text from (" + separateRead + ") t"));
+      String usages =
+          "select array_agg(id order by id)::text from %s where material_a_item_id=4 or material_b_item_id=4";
+      assertEquals(
+          scalar(admin, usages.formatted("compare_inline")),
+          scalar(admin, usages.formatted("compare_recipe")));
+      String update =
+          """
+          with updated as (update %s set material_a_version_id=%d where material_a_item_id=4 returning id)
+          select count(*)::text from updated
+          """;
+      assertEquals("200", scalar(admin, update.formatted("compare_inline", 30004)));
+      assertEquals("200", scalar(admin, update.formatted("compare_recipe", 30004)));
+      System.out.println(
+          "recipe comparison bytes (inline vs base+recipe): "
+              + scalar(
+                  admin,
+                  """
+                  select pg_total_relation_size('compare_inline')::text || ':' ||
+                          (pg_total_relation_size('compare_base') + pg_total_relation_size('compare_recipe'))::text
+                  """));
+      JsonMapper plans = JsonMapper.builder().build();
+      compareRecipeCost(admin, plans, "version lookup", inlineRead, separateRead);
+      compareRecipeCost(
+          admin,
+          plans,
+          "material usage",
+          usages.formatted("compare_inline"),
+          usages.formatted("compare_recipe"));
+      compareRecipeCost(
+          admin,
+          plans,
+          "material version change",
+          update.formatted("compare_inline", 40004),
+          update.formatted("compare_recipe", 40004));
+    }
+  }
+
+  private record RecipeCost(double milliseconds, long localBlocks, long dirtiedBlocks) {}
+
+  private static void compareRecipeCost(
+      Connection connection, JsonMapper plans, String operation, String inline, String separate)
+      throws SQLException {
+    var inlineSamples = new ArrayList<RecipeCost>();
+    var separateSamples = new ArrayList<RecipeCost>();
+    connection.setAutoCommit(false);
+    try {
+      measureRecipeCost(connection, plans, inline);
+      measureRecipeCost(connection, plans, separate);
+      for (int sample = 0; sample < 7; sample++) {
+        // Alternate the execution order so both layouts run first in the paired samples.
+        if (sample % 2 == 0) {
+          inlineSamples.add(measureRecipeCost(connection, plans, inline));
+          separateSamples.add(measureRecipeCost(connection, plans, separate));
+        } else {
+          separateSamples.add(measureRecipeCost(connection, plans, separate));
+          inlineSamples.add(measureRecipeCost(connection, plans, inline));
+        }
+      }
+    } finally {
+      connection.rollback();
+      connection.setAutoCommit(true);
+    }
+    var byTime = Comparator.comparingDouble(RecipeCost::milliseconds);
+    inlineSamples.sort(byTime);
+    separateSamples.sort(byTime);
+    RecipeCost inlineMedian = inlineSamples.get(inlineSamples.size() / 2);
+    RecipeCost separateMedian = separateSamples.get(separateSamples.size() / 2);
+    System.out.printf(
+        Locale.ROOT,
+        "recipe cost %s: inline %.3f ms, %d local blocks, %d dirtied; separate %.3f ms, %d local blocks, %d dirtied%n",
+        operation,
+        inlineMedian.milliseconds(),
+        inlineMedian.localBlocks(),
+        inlineMedian.dirtiedBlocks(),
+        separateMedian.milliseconds(),
+        separateMedian.localBlocks(),
+        separateMedian.dirtiedBlocks());
+  }
+
+  private static RecipeCost measureRecipeCost(Connection connection, JsonMapper plans, String sql)
+      throws SQLException {
+    try {
+      var result =
+          plans
+              .readTree(
+                  scalar(connection, "explain (analyze, buffers, timing off, format json) " + sql))
+              .get(0);
+      var root = result.path("Plan");
+      return new RecipeCost(
+          result.path("Execution Time").asDouble(),
+          root.path("Local Hit Blocks").asLong() + root.path("Local Read Blocks").asLong(),
+          root.path("Local Dirtied Blocks").asLong());
+    } finally {
+      connection.rollback();
+    }
   }
 
   @Test
@@ -859,7 +1585,7 @@ class CommonCatalogIntegrationTests {
   }
 
   @Test
-  void itemStorageUpgradesV1V2AndV3WithoutChangingExistingRows() throws Exception {
+  void itemStorageUpgradesV1V2AndV3WithoutChangingExistingCategoryReferences() throws Exception {
     String name = "catalog_item_upgrade";
     String url = createIsolatedDatabase(name);
     Flyway v1 =
@@ -932,6 +1658,8 @@ class CommonCatalogIntegrationTests {
     assertEquals(1, v3.migrate().migrationsExecuted);
     long weaponCategory;
     long equipmentVersion;
+    long preservedStatType;
+    long preservedSkillVersion;
     try (var app = DriverManager.getConnection(url, "lumia_app", APP_PASSWORD)) {
       weaponCategory =
           Long.parseLong(
@@ -960,8 +1688,51 @@ class CommonCatalogIntegrationTests {
           "CHEST",
           scalar(
               app, "select equipment_slot from public.item_version where id=" + equipmentVersion));
+      preservedStatType =
+          Long.parseLong(
+              scalar(
+                  app,
+                  "insert into public.stat_type(name,sort_order) values ('retained stat',10) returning id"));
+      execute(
+          app,
+          "insert into public.item_stat(item_version_id,stat_type_id,value) values (%d,%d,12.5)"
+              .formatted(equipmentVersion, preservedStatType));
+      execute(
+          app,
+          """
+          update public.item_version set stat_json=jsonb_build_array(jsonb_build_object('statTypeId','%d'::text,'value',12.5))
+          where id=%d
+          """
+              .formatted(preservedStatType, equipmentVersion));
+      long skillId =
+          Long.parseLong(
+              scalar(app, "insert into public.item_skill_definition default values returning id"));
+      preservedSkillVersion =
+          Long.parseLong(
+              scalar(
+                  app,
+                  """
+                  insert into public.item_skill_definition_version(item_skill_definition_id,from_game_patch_id,internal_name,description)
+                  values (%d,%d,'retained skill','retained original') returning id
+                  """
+                      .formatted(skillId, patch)));
+      execute(
+          app,
+          """
+          insert into public.item_version_skill_link(item_version_id,item_version_patch_id,
+            item_skill_definition_id,item_skill_definition_version_id,description)
+          values (%d,%d,%d,%d,'retained link')
+          """
+              .formatted(equipmentVersion, patch, skillId, preservedSkillVersion));
     }
 
+    Flyway v4 =
+        Flyway.configure()
+            .dataSource(url, "lumia_migrator", MIGRATOR_PASSWORD)
+            .locations("classpath:db/migration")
+            .target("4")
+            .load();
+    assertEquals(1, v4.migrate().migrationsExecuted);
     try (var upgraded = startProduct(name)) {
       var common = upgraded.getBean(CommonCatalogService.class);
       assertEquals("upgrade season", common.get(Season.class, season).getDisplayName());
@@ -973,6 +1744,24 @@ class CommonCatalogIntegrationTests {
                 app,
                 "select season_id::text || ':' || sort_order from public.game_patch where id="
                     + patch));
+        assertEquals(
+            "0:0",
+            scalar(
+                app,
+                """
+                select num_nonnulls(material_a_item_id, material_a_version_id, material_b_item_id,
+                                    material_b_version_id, craft_output_count,
+                                    delivery_acquire_count, deliverable, delivery_price)::text || ':' ||
+                       (select count(*) from public.item_acquisition)::text
+                from public.item_version where id=
+                """
+                    + legacyVersion));
+        assertEquals(
+            "12.5",
+            scalar(
+                app,
+                "select value::text from public.item_stat where item_version_id="
+                    + equipmentVersion));
       }
       var upgradedItems = upgraded.getBean(ItemCatalogService.class);
       var upgradedEquipment = upgradedItems.getItemVersion(equipmentVersion);
@@ -991,6 +1780,11 @@ class CommonCatalogIntegrationTests {
       common.updateCategory(weaponCategory, "전투 도구", equipmentRoot);
       assertEquals(
           EquipmentSlot.WEAPON, upgradedItems.getItemVersion(equipmentVersion).equipmentSlot());
+      assertEquals(
+          List.of(new StatValue(Long.toString(preservedStatType), "12.5")),
+          upgradedEquipment.stats());
+      assertEquals(preservedSkillVersion, upgradedEquipment.skills().getFirst().skillVersionId());
+      assertEquals("retained link", upgradedEquipment.skills().getFirst().description());
       var old = upgradedItems.getItemVersion(legacyVersion);
       assertEquals("legacy V2 item", old.name());
       assertEquals(patch, old.fromGamePatchId());
@@ -1035,7 +1829,7 @@ class CommonCatalogIntegrationTests {
       var created =
           upgradedItems.createItem(null, patch, itemInput(category, grade, "upgrade item", null));
       assertEquals(patch, upgradedItems.getItemVersion(created.id()).fromGamePatchId());
-      assertEquals("4", upgraded.getBean(Flyway.class).info().current().getVersion().getVersion());
+      assertEquals("5", upgraded.getBean(Flyway.class).info().current().getVersion().getVersion());
     }
   }
 

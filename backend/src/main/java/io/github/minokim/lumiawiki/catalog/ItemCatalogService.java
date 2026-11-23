@@ -5,9 +5,12 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.TreeSet;
 import java.util.function.Supplier;
 import java.util.regex.Pattern;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +30,40 @@ public class ItemCatalogService {
   /** A supplied change with a null value marks the maximum as unconfirmed. */
   public record MaxStackChange(Integer value) {}
 
+  public record Material(Long itemId, Long itemVersionId, String requestKey) {
+    public Material(Long itemId, Long itemVersionId) {
+      this(itemId, itemVersionId, null);
+    }
+
+    public Material(String requestKey) {
+      this(null, null, requestKey);
+    }
+  }
+
+  public record Recipe(Material materialA, Material materialB, Integer outputCount) {}
+
+  /** An omitted change retains the recipe. A supplied change with a null value clears it. */
+  public record RecipeChange(Recipe value) {}
+
+  /** Omit the group to retain it, or supply nulls to clear individual values. */
+  public record Delivery(Integer acquireCount, Boolean deliverable, Integer price) {}
+
+  public record AcquisitionInput(AcquisitionMethod method, Long regionId, Integer spawnCount) {}
+
+  public record Acquisition(
+      Long id,
+      Long itemId,
+      Long itemVersionId,
+      Long gamePatchId,
+      AcquisitionMethod method,
+      Long regionId,
+      Integer spawnCount,
+      List<String> warnings) {}
+
+  /** A request key is required for a new item and can be referenced by recipes in the same call. */
+  public record PatchItem(
+      String requestKey, Long itemId, Boolean searchable, VersionInput version) {}
+
   /**
    * Omitted stats, skills and max-stack changes retain their values during a correction and inherit
    * from the preceding version during an append. An empty list explicitly clears it.
@@ -39,7 +76,22 @@ public class ItemCatalogService {
       Boolean deleted,
       MaxStackChange maxStackChange,
       List<StatInput> stats,
-      List<SkillInput> skills) {}
+      List<SkillInput> skills,
+      RecipeChange recipeChange,
+      Delivery delivery) {
+    public VersionInput(
+        Long categoryId,
+        Long gradeId,
+        String name,
+        String imagePath,
+        Boolean deleted,
+        MaxStackChange maxStackChange,
+        List<StatInput> stats,
+        List<SkillInput> skills) {
+      this(
+          categoryId, gradeId, name, imagePath, deleted, maxStackChange, stats, skills, null, null);
+    }
+  }
 
   public record SkillLink(
       Long id,
@@ -68,10 +120,14 @@ public class ItemCatalogService {
       boolean searchable,
       String statJson,
       List<StatValue> stats,
-      List<SkillLink> skills) {
+      List<SkillLink> skills,
+      Recipe recipe,
+      Delivery delivery,
+      List<Acquisition> acquisitions) {
     public Version {
       stats = List.copyOf(stats);
       skills = List.copyOf(skills);
+      acquisitions = List.copyOf(acquisitions);
     }
   }
 
@@ -81,6 +137,8 @@ public class ItemCatalogService {
   private record ResolvedSkill(ItemSkillDefinitionVersion version, String description) {}
 
   private record ResolvedStat(StatType type, BigDecimal value) {}
+
+  private record LockedPatchPlan(ItemPatchPlan plan, Map<Long, Item> items) {}
 
   private record Change(String operation, ApiFailure.Target target) {
     static Change of(String operation, String type, Long id) {
@@ -99,9 +157,16 @@ public class ItemCatalogService {
   }
 
   private final CommonCatalogStore store;
+  private final List<HuntingAcquisitionCheck> huntingChecks;
 
   public ItemCatalogService(CommonCatalogStore store) {
+    this(store, List.of());
+  }
+
+  @Autowired
+  public ItemCatalogService(CommonCatalogStore store, List<HuntingAcquisitionCheck> huntingChecks) {
     this.store = store;
+    this.huntingChecks = List.copyOf(huntingChecks);
   }
 
   public Version createItem(Boolean searchable, Long fromGamePatchId, VersionInput input) {
@@ -109,6 +174,7 @@ public class ItemCatalogService {
     validate(input, change);
     lockVersionBasis();
     GamePatch patch = reference(GamePatch.class, fromGamePatchId, "fromGamePatchId", change);
+    lockExplicitMaterialItems(input, change);
     ItemVersion result =
         write(
             change,
@@ -123,11 +189,12 @@ public class ItemCatalogService {
   public Version createItemVersion(Long itemId, Long fromGamePatchId, VersionInput input) {
     Change change = Change.of("CREATE_ITEM_VERSION", "ITEM_VERSION", null);
     validate(input, change);
+    requireId(itemId, "itemId", change);
     lockVersionBasis();
-    Item item = lockItem(itemId, change);
     GamePatch patch = reference(GamePatch.class, fromGamePatchId, "fromGamePatchId", change);
-    ItemVersion previous = store.findPreviousItemVersion(itemId, patch.getSortOrder()).orElse(null);
-    return view(write(change, () -> newVersion(item, patch, input, previous, change)));
+    return writePatchItems(
+            patch, List.of(new PatchItem(null, itemId, null, input)), true, false, change)
+        .getFirst();
   }
 
   public Version updateItemVersion(Long versionId, VersionInput input) {
@@ -136,45 +203,180 @@ public class ItemCatalogService {
     requireId(versionId, "id", change);
     lockVersionBasis();
     Long itemId = store.findItemIdByVersion(versionId).orElseThrow(ApiFailure::notFound);
-    lockItem(itemId, change);
+    if (input.recipeChange() == null) {
+      lockItem(itemId, change);
+    } else {
+      Long patchId = store.findPatchIdByItemVersion(versionId).orElseThrow(ApiFailure::notFound);
+      GamePatch patch = reference(GamePatch.class, patchId, "fromGamePatchId", change);
+      lockPatchPlan(patch, List.of(new PatchItem(null, itemId, null, input)), change);
+    }
     ItemVersion version =
         store.locked(ItemVersion.class, versionId).orElseThrow(ApiFailure::notFound);
-    ItemCategory category = reference(ItemCategory.class, input.categoryId(), "categoryId", change);
-    ItemGrade grade = reference(ItemGrade.class, input.gradeId(), "gradeId", change);
-    return view(
-        write(
-            change,
-            () -> {
-              boolean deleted = input.deleted() == null ? version.isDeleted() : input.deleted();
-              version.change(category, input.name(), input.imagePath(), deleted);
-              version.changeDetails(
-                  grade, nextStackSize(input.maxStackChange(), version.getMaxStackSize()));
-              if (input.skills() != null) replaceSkills(version, input.skills(), change);
-              if (input.stats() != null) replaceStats(version, input.stats(), change);
-              return version;
-            }));
+    return view(write(change, () -> correctVersion(version, input, change)));
   }
 
   public Version recordItemExistence(Long itemId, Long fromGamePatchId, boolean deleted) {
     Change change = Change.of("CREATE_ITEM_VERSION", "ITEM_VERSION", null);
+    requireId(itemId, "itemId", change);
     lockVersionBasis();
-    Item item = lockItem(itemId, change);
     GamePatch patch = reference(GamePatch.class, fromGamePatchId, "fromGamePatchId", change);
-    ItemVersion previous =
-        store
-            .findPreviousItemVersion(itemId, patch.getSortOrder())
-            .orElseThrow(() -> change.invalid("fromGamePatchId"));
-    VersionInput input =
-        new VersionInput(
-            previous.getCategory().getId(),
-            gradeId(previous),
-            previous.getName(),
-            previous.getImagePath(),
-            deleted,
-            null,
-            null,
-            null);
-    return view(write(change, () -> newVersion(item, patch, input, previous, change)));
+    VersionInput input = new VersionInput(null, null, null, null, deleted, null, null, null);
+    return writePatchItems(
+            patch, List.of(new PatchItem(null, itemId, null, input)), true, true, change)
+        .getFirst();
+  }
+
+  public List<Version> savePatchItems(Long patchId, List<PatchItem> inputs) {
+    Change change = Change.of("SAVE_PATCH_ITEMS", "GAME_PATCH", patchId);
+    if (inputs == null || inputs.isEmpty()) throw change.invalid("changes");
+    for (PatchItem input : inputs) {
+      if (input == null) throw change.invalid("changes");
+      validate(input.version(), change);
+    }
+    lockVersionBasis();
+    GamePatch patch = reference(GamePatch.class, patchId, "gamePatchId", change);
+    return writePatchItems(patch, List.copyOf(inputs), false, false, change);
+  }
+
+  private LockedPatchPlan lockPatchPlan(GamePatch patch, List<PatchItem> inputs, Change change) {
+    var initial =
+        ItemPatchPlan.build(patch.getId(), inputs, store.itemVersionsAtPatch(patch.getSortOrder()));
+    Map<Long, Item> locked = new LinkedHashMap<>();
+    for (Long id : initial.itemLocks()) locked.put(id, lockItem(id, change));
+    var plan =
+        ItemPatchPlan.build(patch.getId(), inputs, store.itemVersionsAtPatch(patch.getSortOrder()));
+    if (!locked.keySet().containsAll(plan.itemLocks())) {
+      throw change.invalid("changes", "ITEM_RELATIONS_CHANGED", "재료 사용처가 바뀌었습니다. 다시 시도해 주세요.");
+    }
+    return new LockedPatchPlan(plan, locked);
+  }
+
+  private List<Version> writePatchItems(
+      GamePatch patch,
+      List<PatchItem> inputs,
+      boolean appendOnly,
+      boolean existenceOnly,
+      Change change) {
+    LockedPatchPlan locked = lockPatchPlan(patch, inputs, change);
+    ItemPatchPlan plan = locked.plan();
+    return write(
+        change,
+        () -> {
+          Map<ItemPatchPlan.Key, ItemVersion> saved = new LinkedHashMap<>();
+          for (ItemPatchPlan.Entry entry : plan.ordered()) {
+            Long itemId = entry.key().itemId();
+            Item item = locked.items().get(itemId);
+            if (item == null) {
+              Boolean searchable = entry.input().searchable();
+              item = new Item(searchable == null || searchable);
+              store.persist(item);
+            } else if (entry.input() != null && entry.input().searchable() != null) {
+              item.setSearchable(entry.input().searchable());
+            }
+            ItemVersion previous =
+                entry.previous() == null
+                    ? itemId == null
+                        ? null
+                        : store.findPreviousItemVersion(itemId, patch.getSortOrder()).orElse(null)
+                    : reference(
+                        ItemVersion.class, entry.previous().versionId(), "itemVersionId", change);
+            boolean samePatch =
+                previous != null && previous.getFromGamePatch().getId().equals(patch.getId());
+            if (samePatch && appendOnly && entry.input() != null)
+              throw change.invalid("fromGamePatchId");
+
+            Recipe recipe =
+                entry.materialA() == null
+                    ? null
+                    : new Recipe(
+                        resolvePatchMaterial(entry.materialA(), plan, saved, change),
+                        resolvePatchMaterial(entry.materialB(), plan, saved, change),
+                        entry.outputCount());
+            ItemVersion version;
+            if (entry.input() == null && samePatch) {
+              previous.changeRecipe(recipe);
+              version = previous;
+            } else {
+              VersionInput input;
+              if (entry.input() == null || existenceOnly) {
+                if (previous == null) throw change.invalid("fromGamePatchId");
+                boolean deleted =
+                    entry.input() == null
+                        ? previous.isDeleted()
+                        : entry.input().version().deleted();
+                input =
+                    new VersionInput(
+                        previous.getCategory().getId(),
+                        gradeId(previous),
+                        previous.getName(),
+                        previous.getImagePath(),
+                        deleted,
+                        null,
+                        null,
+                        null);
+              } else {
+                input = entry.input().version();
+              }
+              VersionInput resolved =
+                  new VersionInput(
+                      input.categoryId(),
+                      input.gradeId(),
+                      input.name(),
+                      input.imagePath(),
+                      input.deleted(),
+                      input.maxStackChange(),
+                      input.stats(),
+                      input.skills(),
+                      new RecipeChange(recipe),
+                      input.delivery());
+              version =
+                  samePatch
+                      ? correctVersion(previous, resolved, change)
+                      : newVersion(item, patch, resolved, previous, change);
+            }
+            saved.put(entry.key(), version);
+            store.flush();
+          }
+          return plan.requested().stream().map(saved::get).map(this::view).toList();
+        });
+  }
+
+  private static Material resolvePatchMaterial(
+      ItemPatchPlan.Key key,
+      ItemPatchPlan plan,
+      Map<ItemPatchPlan.Key, ItemVersion> saved,
+      Change change) {
+    ItemVersion version = saved.get(key);
+    if (version != null) return new Material(version.getItem().getId(), version.getId());
+    var active = plan.active().get(key.itemId());
+    if (active == null) throw change.invalid("recipe");
+    return new Material(key.itemId(), active.versionId());
+  }
+
+  private void lockExplicitMaterialItems(VersionInput input, Change change) {
+    var ids = new TreeSet<Long>();
+    Recipe recipe = input.recipeChange() == null ? null : input.recipeChange().value();
+    if (recipe != null) {
+      for (Material material : new Material[] {recipe.materialA(), recipe.materialB()}) {
+        if (material == null || material.requestKey() != null) throw change.invalid("recipe");
+        requireId(material.itemId(), "recipe.itemId", change);
+        ids.add(material.itemId());
+      }
+    }
+    for (Long id : ids) lockItem(id, change);
+  }
+
+  private ItemVersion correctVersion(ItemVersion version, VersionInput input, Change change) {
+    ItemCategory category = reference(ItemCategory.class, input.categoryId(), "categoryId", change);
+    ItemGrade grade = reference(ItemGrade.class, input.gradeId(), "gradeId", change);
+    boolean deleted = input.deleted() == null ? version.isDeleted() : input.deleted();
+    version.change(category, input.name(), input.imagePath(), deleted);
+    version.changeDetails(grade, nextStackSize(input.maxStackChange(), version.getMaxStackSize()));
+    applyRelations(version, version, input, change);
+    if (deleted) version.getAcquisitions().clear();
+    if (input.skills() != null) replaceSkills(version, input.skills(), change);
+    if (input.stats() != null) replaceStats(version, input.stats(), change);
+    return version;
   }
 
   public void setItemSearchable(Long itemId, boolean searchable) {
@@ -188,6 +390,100 @@ public class ItemCatalogService {
   public Version getItemVersion(Long id) {
     requireId(id);
     return view(store.readItemVersion(id).orElseThrow(ApiFailure::notFound));
+  }
+
+  public Acquisition createAcquisition(Long versionId, AcquisitionInput input) {
+    Change change = Change.of("CREATE_ITEM_ACQUISITION", "ITEM_VERSION", versionId);
+    ItemVersion owner = lockAcquisitionOwner(versionId, change);
+    return acquisitionView(
+        writeAcquisition(
+            change,
+            () -> {
+              validateAcquisition(owner, null, input, change);
+              var row =
+                  new ItemAcquisition(owner, input.method(), input.regionId(), input.spawnCount());
+              owner.getAcquisitions().add(row);
+              store.persist(row);
+              return row;
+            }));
+  }
+
+  public Acquisition updateAcquisition(Long versionId, Long id, AcquisitionInput input) {
+    Change change = Change.of("UPDATE_ITEM_ACQUISITION", "ITEM_ACQUISITION", id);
+    ItemVersion owner = lockAcquisitionOwner(versionId, change);
+    return acquisitionView(
+        writeAcquisition(
+            change,
+            () -> {
+              ItemAcquisition row = acquisition(owner, id, change);
+              validateAcquisition(owner, id, input, change);
+              row.change(input.method(), input.regionId(), input.spawnCount());
+              return row;
+            }));
+  }
+
+  public void deleteAcquisition(Long versionId, Long id) {
+    Change change = Change.of("DELETE_ITEM_ACQUISITION", "ITEM_ACQUISITION", id);
+    ItemVersion owner = lockAcquisitionOwner(versionId, change);
+    write(change, () -> owner.getAcquisitions().remove(acquisition(owner, id, change)));
+  }
+
+  private ItemVersion lockAcquisitionOwner(Long versionId, Change change) {
+    requireId(versionId, "itemVersionId", change);
+    store.lockBasis(false, false);
+    Long itemId = store.findItemIdByVersion(versionId).orElseThrow(ApiFailure::notFound);
+    lockItem(itemId, change);
+    return store.locked(ItemVersion.class, versionId).orElseThrow(ApiFailure::notFound);
+  }
+
+  private static ItemAcquisition acquisition(ItemVersion owner, Long id, Change change) {
+    requireId(id, "id", change);
+    return owner.getAcquisitions().stream()
+        .filter(row -> id.equals(row.getId()))
+        .findFirst()
+        .orElseThrow(ApiFailure::notFound);
+  }
+
+  private void validateAcquisition(
+      ItemVersion owner, Long excludedId, AcquisitionInput input, Change change) {
+    if (owner.isDeleted()) throw change.invalid("itemVersionId");
+    if (input == null || input.method() == null) throw change.invalid("method");
+    Long regionId = input.regionId();
+    if (input.method() == AcquisitionMethod.CHEST && regionId == null)
+      throw change.invalid("regionId");
+    if (input.method() != AcquisitionMethod.CHEST && input.spawnCount() != null)
+      throw change.invalid("spawnCount");
+    if (regionId != null) {
+      reference(Region.class, regionId, "regionId", change);
+      if (store.acquisitionRegionUnavailable(owner.getId(), regionId))
+        throw change.invalid("regionId");
+    }
+    boolean overlaps =
+        owner.getAcquisitions().stream()
+            .filter(row -> !Objects.equals(excludedId, row.getId()) || excludedId == null)
+            .filter(row -> row.getMethod() == input.method())
+            .anyMatch(row ->
+                row.getRegionId() == null
+                    || regionId == null
+                    || regionId.equals(row.getRegionId()));
+    if (overlaps) throw change.invalid("regionId");
+  }
+
+  private Acquisition acquisitionView(ItemAcquisition row) {
+    Long versionId = row.getItemVersion().getId();
+    boolean differs =
+        row.getMethod() == AcquisitionMethod.HUNTING
+            && huntingChecks.stream()
+                .anyMatch(check -> check.differs(versionId, row.getRegionId()));
+    return new Acquisition(
+        row.getId(),
+        row.getItemId(),
+        versionId,
+        row.getGamePatchId(),
+        row.getMethod(),
+        row.getRegionId(),
+        row.getSpawnCount(),
+        differs ? List.of("HUNTING_DETAIL_MISMATCH") : List.of());
   }
 
   public StatType createStatType(String name, Long sortOrder) {
@@ -292,6 +588,7 @@ public class ItemCatalogService {
         grade,
         nextStackSize(
             input.maxStackChange(), previous == null ? null : previous.getMaxStackSize()));
+    applyRelations(version, previous, input, change);
     if (input.skills() != null) {
       replaceSkills(version, input.skills(), change);
     } else if (previous != null) {
@@ -303,11 +600,68 @@ public class ItemCatalogService {
       replaceStats(version, copyStats(previous), change);
     }
     store.persist(version);
+    if (previous != null && !version.isDeleted()) {
+      for (ItemAcquisition row : previous.getAcquisitions()) {
+        if (row.getRegionId() != null
+            && store.acquisitionRegionUnavailable(version.getId(), row.getRegionId())) {
+          throw change.invalid("regionId");
+        }
+        version
+            .getAcquisitions()
+            .add(
+                new ItemAcquisition(
+                    version, row.getMethod(), row.getRegionId(), row.getSpawnCount()));
+      }
+    }
     return version;
   }
 
+  private void applyRelations(
+      ItemVersion version, ItemVersion previous, VersionInput input, Change change) {
+    Recipe recipe =
+        input.recipeChange() == null
+            ? previous == null ? null : previous.recipe()
+            : input.recipeChange().value();
+    if (version.isDeleted()) recipe = null;
+    if (recipe != null) {
+      Material a = validateMaterial(recipe.materialA(), version, "recipe.materialA", change);
+      Material b = validateMaterial(recipe.materialB(), version, "recipe.materialB", change);
+      if (recipe.outputCount() == null) throw change.invalid("recipe.outputCount");
+      if (a.itemId().equals(b.itemId())) throw change.invalid("recipe.materialB");
+    }
+    version.changeRecipe(recipe);
+    Delivery delivery =
+        input.delivery() != null ? input.delivery() : previous == null ? null : previous.delivery();
+    if (delivery != null) {
+      if (delivery.price() != null && !Boolean.TRUE.equals(delivery.deliverable())) {
+        throw change.invalid("delivery.price");
+      }
+      version.changeDelivery(delivery);
+    }
+  }
+
+  private Material validateMaterial(
+      Material material, ItemVersion owner, String field, Change change) {
+    if (material == null || material.requestKey() != null) throw change.invalid(field);
+    requireId(material.itemId(), field + ".itemId", change);
+    ItemVersion target =
+        reference(ItemVersion.class, material.itemVersionId(), field + ".itemVersionId", change);
+    if (!material.itemId().equals(target.getItem().getId())
+        || owner.getItem().getId().equals(material.itemId())
+        || !material
+            .itemVersionId()
+            .equals(
+                store
+                    .findEffectiveItemVersionId(
+                        material.itemId(), owner.getFromGamePatch().getSortOrder())
+                    .orElse(null))) {
+      throw change.invalid(field + ".itemVersionId");
+    }
+    return material;
+  }
+
   private void lockVersionBasis() {
-    store.lockGamePatch(false);
+    store.lockBasis(false, false);
     store.lockStatTypesForStorage();
   }
 
@@ -432,7 +786,10 @@ public class ItemCatalogService {
         version.getItem().isSearchable(),
         version.getStatJson(),
         ItemStatCache.read(version.getStatJson()),
-        skills);
+        skills,
+        version.recipe(),
+        version.delivery(),
+        version.getAcquisitions().stream().map(this::acquisitionView).toList());
   }
 
   private static SkillVersion skillView(ItemSkillDefinitionVersion version) {
@@ -456,6 +813,14 @@ public class ItemCatalogService {
       return result;
     } catch (RuntimeException failure) {
       throw CatalogErrors.translate(failure, change::invalid);
+    }
+  }
+
+  private <T> T writeAcquisition(Change change, Supplier<T> action) {
+    try {
+      return write(change, action);
+    } catch (RuntimeException failure) {
+      throw CatalogErrors.translateAcquisition(failure, change::invalid);
     }
   }
 

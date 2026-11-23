@@ -8,9 +8,9 @@
 - 실제 GitHub Issue: [Mi-no-Kim/LumiaWiki #43](https://github.com/Mi-no-Kim/LumiaWiki/issues/43)
 - 소속 Phase: [Phase 001](../phase.md#summary)
 - 상태: 진행 중
-- 현재 진행 위치: Task 001의 공통 8개 표/Java·격리/로컬 검증 결과를 [PR #71](https://github.com/Mi-no-Kim/LumiaWiki/pull/71)로 이 Issue 브랜치에 반영했고 전용 Task 브랜치를 정리했다. 단위 30·통합 11건의 [생성/검증 결과](artifacts/task-001-creation.md#current)와 PR CI 8개 통과를 확인했다. [Task 43-002](task-002.md#result)는 아이템·능력치·스킬 저장·조회 구현, 격리 DB 검증과 계약 인계를 완료했고 [PR #79](https://github.com/Mi-no-Kim/LumiaWiki/pull/79)의 부모 통합과 병합 후 CI를 확인했다. [Task 43-003](task-003.md#summary)은 V4 장착 부위 정정을 격리 검증했고 004는 예정이다. 실제 자료 작업은 보류한다.
+- 현재 진행 위치: Task 001의 공통 8개 표/Java·격리/로컬 검증 결과를 [PR #71](https://github.com/Mi-no-Kim/LumiaWiki/pull/71)로 이 Issue 브랜치에 반영했고 전용 Task 브랜치를 정리했다. 단위 30·통합 11건의 [생성/검증 결과](artifacts/task-001-creation.md#current)와 PR CI 8개 통과를 확인했다. [Task 43-002](task-002.md#result)는 아이템·능력치·스킬 저장·조회 구현, 격리 DB 검증과 계약 인계를 완료했고 [PR #79](https://github.com/Mi-no-Kim/LumiaWiki/pull/79)의 부모 통합과 병합 후 CI를 확인했다. [Task 43-003](task-003.md#summary)은 V4·V5를 검증하고 각각 로컬 커밋했다. 004는 예정이다. 실제 자료 작업은 보류한다.
 - 허용 범위: 승인한 Task 001의 제출·부모 통합·브랜치 정리를 마쳤다. 43-002는 구현과 격리 검증을 마쳤다. 기존 개발 DB 적용과 실제 자료 등록은 보류한다.
-- 다음 판단/행동: [V4 장착 부위 정정](task-003.md#work-equipment-slot)의 제출 검수를 진행한다. 43-002 제출용 브랜치 정리는 별도 후속이다. 실제 자료 보류와 신규 표 생성 직전 전체 구조·정확한 대상 확인을 유지한다.
+- 다음 판단/행동: [43-003의 원격 제출과 부모 반영](task-003.md#work-submission) 범위를 확인한다. 43-002 제출용 브랜치 정리는 별도 후속이다. 실제 자료 보류와 신규 표 생성 직전 전체 구조·정확한 대상 확인을 유지한다.
 - 작성 근거: [Task 005](../issue-15/task-005.md#summary) · [전체 실행 순서](../issue-15/artifacts/task-005-issue-outline.md#sequence). 실제 자료 작업 보류를 유지한다.
 
 <a id="parent-integration"></a>
