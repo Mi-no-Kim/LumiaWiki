@@ -50,10 +50,10 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #98](https://github.co
 상태의 상세 의미·전환과 종료 판단은 공통 절차를 따른다.
 -->
 
-- 상태: 진행 중
-- 현재 진행 위치: [Phase 파일별 처리와 격리 검증 조건 논의](#work-decide)
-- 다음 행동: 사용자 결정 기록을 검수하고 부모 Issue 대상 Task PR 제출
-- 막힌 조건: Task 종료는 결정 기록과 실제 Issue 반영 확인 뒤 가능
+- 상태: 완료
+- 현재 진행 위치: [결과](#result)
+- 다음 행동: 없음 — [결과](#result)
+- 막힌 조건: 없음
 
 <a id="assignment"></a>
 
@@ -116,7 +116,7 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #98](https://github.co
 #### Phase 파일별 처리와 격리 검증 조건 논의
 
 - 태그: 조사, 논의, 결정, 검수, 커밋
-- [ ] 수행·확인 완료
+- [x] 수행·확인 완료
 - 할 일: 사용자에게 제시한 파일별 처리안과 격리 검증 기준을 보존하고, Phase 코드 정정 대상이 없다는 결론과 기록만 병합하는 범위를 95-005에 넘긴다. 결정 기록을 자체·별도 검수한 후 PR로 부모 반영을 확인한다.
 - 확인: 사용자 결정 원문과 빈 Phase 정정 범위, 미확인 근거, 95-004 취소와 95-005 인계 조건을 대조한다.
 - 수행 기록: [사용자 결정 원문과 적용 범위](artifacts/task-003-execution.md#work-decide)
@@ -134,4 +134,5 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #98](https://github.co
 
 - 내용: 사용자는 Phase 백엔드에서 정정할 파일·변경이 없다고 판단하고, #43의 `catalog`를 후속 정정 대상으로 지목했다.
 - 확인: [Task 95-002의 파일·승인 근거](artifacts/task-002-execution.md#work-trace)와 [현재 사용자 결정](codex://threads/01a2087d-5143-7523-86d6-a03744fed8e5)을 연결했다. 제품 변경·격리 검증은 미수행이다.
-- 잔여: 결정 기록의 검수·PR·Issue 반영을 확인한다. #43 인계는 Task 95-005에서 처리한다.
+- 반영: [PR #103](https://github.com/Mi-no-Kim/LumiaWiki/pull/103)의 [Quality](https://github.com/Mi-no-Kim/LumiaWiki/actions/runs/45192292919)와 [Ubuntu·Windows Inventory](https://github.com/Mi-no-Kim/LumiaWiki/actions/runs/45192292188)를 통과했다. 부모 `9e8284ebe4da330afd824aa67ae66605d68261f6`의 실제 기록 내용이 제출본과 일치한다.
+- 잔여: Task 자체 종료 범위에는 없음. #43 인계는 [Task 95-005](task-005.md#summary)에서 처리한다.

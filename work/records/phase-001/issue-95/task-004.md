@@ -50,10 +50,10 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #99](https://github.co
 상태의 상세 의미·전환과 종료 판단은 공통 절차를 따른다.
 -->
 
-- 상태: 예정
-- 현재 진행 위치: [전달사항 참조](#assignment)
-- 다음 행동: Task 95-003 승인 목록과 검증 조건 확인
-- 막힌 조건: 실행 전 등록과 선행 입력 확인 · [부모 배정](issue.md#task-creation)의 Task 95-003 결과
+- 상태: 취소
+- 현재 진행 위치: [결과](#result)
+- 다음 행동: 없음 — [결과](#result)
+- 막힌 조건: 없음
 
 <a id="assignment"></a>
 
@@ -90,8 +90,8 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #99](https://github.co
 사용자 확인 조건에 도달하면 관련 실행 전에 확인하고 통상적인 조정마다 재승인을 요구하지 않는다.
 -->
 
-- 대상·준비: [전달사항](#assignment) 참조. GitHub 번호·부모 연결 확인. 전체 계획 구체화 예정.
-- 현재 합의: 배정과 실행 경계는 확정 전달본을 따른다. 상세 계획은 미정.
+- 대상·준비: [Task 95-003](task-003.md#result)에서 승인된 Phase 코드 정정 범위가 없음을 확인했다.
+- 현재 합의: 사용자가 Phase에 기록만 반영하도록 결정했다. 제품 정정 후보가 없어 이 Task를 취소한다. [종료 범위 결정](issue.md#closure-scope)
 - 남은 결정: 없음
 - Task 전체 확인: [완료 조건](artifacts/task-004-assignment.md#acceptance)에 따라 확인한다.
 - 수행 기록: 미생성 — `artifacts/task-004-execution.md`
@@ -111,7 +111,7 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #99](https://github.co
 할 일 삭제·분할·병합에도 수행 사실·유효한 근거·원래 식별자와 연결을 보존한다.
 -->
 
-미정. 선행 조건 확인 뒤 결과·검수·제출을 포함한 전체 계획을 확정한다.
+미착수 상태에서 취소했다.
 
 <a id="result"></a>
 
@@ -124,6 +124,6 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #99](https://github.co
 중단·취소·인계 시에는 실제 상태·이유·영향·보존 결과·잔여·해소/재개 조건과 다음 행동을 남긴다.
 -->
 
-- 내용: 미수행
-- 확인: 미수행
-- 잔여: 전체 계획과 선행 조건 확인 후 착수
+- 내용: 승인된 Phase 코드 정정 대상이 없어 취소했다.
+- 확인: 백엔드·설정·마이그레이션 변경, 격리 기동 및 DB 테스트, Task PR은 미수행이다.
+- 잔여: [Task 95-005](task-005.md#summary)가 기록 통합을 검수한다. #43 전용 정정은 #43에서 범위를 확인한다.
