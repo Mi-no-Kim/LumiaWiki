@@ -5,7 +5,7 @@ description: Issue의 확정 배정으로 최초 Task 본문을 작성·검증�
 
 # Task 생성과 등록
 
-<!-- inventory-dependencies: ["harness/templates/task-input.md", "harness/Task 생성 지시서.md", "harness/templates/task.md", "harness/Task 공통 절차.md", "docs/작업 기록 체계.md", "harness/문서 관리.md", "harness/templates/github-task.md"] -->
+<!-- inventory-dependencies: ["harness/templates/task-input.md", "harness/Task 생성 지시서.md", "harness/templates/task-with-plan.md", "harness/Task 공통 절차.md", "docs/작업 기록 체계.md", "harness/문서 관리.md", "harness/templates/github-task.md"] -->
 
 ## 입력과 원천
 
@@ -13,7 +13,7 @@ Phase 하위·독립 Issue 아래 Task에 같은 절차를 사용한다. [배정
 
 - [입력 양식](../../../harness/templates/task-input.md): 목적·기대 결과·확정 조건·Task에서 결정할 사항·완료 조건과 확인 방법 및 태그.
 - [생성 지시서](../../../harness/Task%20생성%20지시서.md): 실제 입력을 본문에 옮기는 방법과 작성 후 대조.
-- [본문 양식](../../../harness/templates/task.md): 최초 복사할 네 구역·규칙 주석·전체 계획 작성 틀.
+- [본문 양식](../../../harness/templates/task-with-plan.md): 신규 Task의 네 구역과 보호 주석.
 - [생성 기본 범위](../../../docs/작업%20기록%20체계.md#creation-scope)·[GitHub Task 게시 양식](../../../harness/templates/github-task.md): 로컬 작성과 GitHub 등록·연결 확인의 범위. 게시 명세는 [공통 작성 규칙](../../../harness/문서%20관리.md#github-projection)을 따른다.
 
 ## 생성 판단과 작성
@@ -22,7 +22,7 @@ Phase 하위·독립 Issue 아래 Task에 같은 절차를 사용한다. [배정
 
 기본 생성 요청은 본문 작성과 GitHub 등록까지 허용한 것으로 처리하고, 초안·본문만 작성하거나 외부 등록을 금지한 명시적 제한을 우선한다. 허용한 초안 또는 신규 경로에만 작성하며 대화·메모리 검토 요청은 파일을 쓰지 않는다. 확인하지 않은 번호·부모를 추론하거나 기존 기록을 새 양식으로 덮어쓰지 않는다. Task 태그로 위임·실행 허용을 추가하지 않는다.
 
-본문 코드 블록을 사용하고 주석·표식·원문 의미·불확실성을 유지한다. 배정 전문은 확정 전달본에서 관리하고 Task에는 적용 전달본·식별·부모의 기준 기록을 참조한다. 신규·미착수만 예정이며 실제 활동이 있으면 실제 상태를 우선한다. 전체 계획이 없으면 제안/미정과 계획 합의 시점을 남기며 합의·결정·수행·완료를 만들어 채우지 않는다.
+본문 코드 블록을 사용하고 주석·표식·원문 의미·불확실성을 유지한다. 배정 전문은 확정 전달본에서 관리하고 Task에는 적용 전달본·식별·부모의 기준 기록을 참조한다. 신규·미착수만 예정이며 실제 활동이 있으면 실제 상태를 우선한다. 계획이 없으면 상세 계획을 미작성으로 표시하고 별도 계획의 합의 시점을 남긴다.
 
 ## 확인과 반환
 

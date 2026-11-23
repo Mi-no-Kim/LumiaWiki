@@ -53,7 +53,7 @@ def staged_state(repo, task):
     if not legacy:
         try:
             data = json.loads(policy.stdout.decode("utf-8-sig"))
-            if data.get("schema") != 1 or not isinstance(data.get("legacyRecords"), list):
+            if data.get("schema") not in (1, 2) or not isinstance(data.get("legacyRecords"), list):
                 raise ValueError("미지원 상태 적용 기준")
             legacy = task in data["legacyRecords"]
         except (UnicodeError, json.JSONDecodeError, AttributeError, ValueError) as error:

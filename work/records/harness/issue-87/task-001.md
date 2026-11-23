@@ -50,10 +50,10 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #88](https://github.co
 상태의 상세 의미·전환과 종료 판단은 공통 절차를 따른다.
 -->
 
-- 상태: 예정
-- 현재 진행 위치: [전달사항 참조](#assignment)
-- 다음 행동: 별도 착수 요청 시 입력을 대조하고 전체 계획을 합의한다.
-- 막힌 조건: 본작업에는 별도 착수 요청과 전체 계획 합의가 필요하다.
+- 상태: 진행 중
+- 현재 진행 위치: [로컬 결과와 수용 확인](#result)
+- 다음 행동: 검수한 Task 후보를 부모 Issue 브랜치로 제출하고 실제 반영 결과를 확인한다.
+- 막힌 조건: Task 결과의 상위 반영과 연결 확인이 남았다. 부모 등록 기록은 `c6364f0`에 보존했다.
 
 <a id="assignment"></a>
 
@@ -90,11 +90,11 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #88](https://github.co
 사용자 확인 조건에 도달하면 관련 실행 전에 확인하고 통상적인 조정마다 재승인을 요구하지 않는다.
 -->
 
-- 대상·준비: 현행 Issue·Task 기준과 #87의 확정 배정을 입력으로 사용한다. 별도 착수 요청에서 전체 계획·실행 준비를 확인한다.
-- 현재 합의: 결정 1·2의 계획 세분화와 기록 분리 기준을 적용한다. 근거는 [결정 1](issue.md#decision-1), [결정 2](issue.md#decision-2)에 있다.
-- 남은 결정: 별도 계획의 경로·필드·단계 식별과 신규 형식의 적용 방법을 착수 전 전체 계획에서 정한다. 세부 질문은 [확정 전달사항의 결정할 사항](artifacts/task-001-assignment.md#decisions)을 따른다.
+- 대상·준비: 사용자 착수 요청을 확인하고 Issue 브랜치 94babc10b477에서 `task/87-001-plan-records`를 만들었다. 현행 기준과 r001을 계획 입력으로 대조했다.
+- 현재 합의: 결정 1·2의 계획 세분화와 기록 분리 기준을 적용한다. 근거는 [결정 1](issue.md#decision-1), [결정 2](issue.md#decision-2)와 사용자가 확정한 [전체 계획](artifacts/task-001-plan.md)에 있다.
+- 남은 결정: 배정 범위의 설계 결정은 정리했다. 명시 전환 경계와 [후속 전달 기준](artifacts/task-001-execution.md#handoff-contract)을 적용한다.
 - Task 전체 확인: [전달본의 완료 조건과 확인 방법](artifacts/task-001-assignment.md#acceptance)을 따른다. 상세 확인 순서는 전체 계획에서 정한다.
-- 수행 기록: 미생성 — `artifacts/task-001-execution.md` (예정).
+- 수행 기록: [87-001 수행 기록](artifacts/task-001-execution.md).
 
 <a id="execution-plan"></a>
 
@@ -111,15 +111,45 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #88](https://github.co
 할 일 삭제·분할·병합에도 수행 사실·유효한 근거·원래 식별자와 연결을 보존한다.
 -->
 
-<a id="work-pending-plan"></a>
+<a id="work-baseline"></a>
 
-#### 미정 — 착수 전 전체 계획 합의
+#### 현행 경로와 신규 도입 기준 확인
 
-- 태그: 미확인.
-- [ ] 수행·확인 완료
-- 할 일: 착수 전 계획에서 작업 순서·선행 조건·사용자 확인 시점을 정한다.
-- 확인: 착수 전 계획에서 단계별 확인 방법을 정한다.
-- 수행 기록: 미생성.
+- 태그: 조사, 논의, 결정
+- [x] 수행·확인 완료
+- 할 일: [세부 순서](artifacts/task-001-plan.md#stage-baseline).
+- 확인: [단계 완료 기준](artifacts/task-001-plan.md#stage-baseline).
+- 수행 기록: [수행 근거](artifacts/task-001-execution.md#work-baseline).
+
+<a id="work-templates"></a>
+
+#### 새 양식과 절차 연결
+
+- 태그: 실행, 검수
+- [x] 수행·확인 완료
+- 할 일: [세부 순서](artifacts/task-001-plan.md#stage-templates).
+- 확인: [단계 완료 기준](artifacts/task-001-plan.md#stage-templates).
+- 수행 기록: [수행 근거](artifacts/task-001-execution.md#work-templates).
+
+<a id="work-checker"></a>
+
+#### 신규·기존 형식 검사 연결
+
+- 태그: 실행, 검수
+- [x] 수행·확인 완료
+- 할 일: [세부 순서](artifacts/task-001-plan.md#stage-checker).
+- 확인: [단계 완료 기준](artifacts/task-001-plan.md#stage-checker).
+- 수행 기록: [수행 근거](artifacts/task-001-execution.md#work-checker).
+
+<a id="work-handoff"></a>
+
+#### 검수와 후속 전달
+
+- 태그: 검수
+- [x] 수행·확인 완료
+- 할 일: [세부 순서](artifacts/task-001-plan.md#stage-handoff).
+- 확인: [단계 완료 기준](artifacts/task-001-plan.md#stage-handoff).
+- 수행 기록: [수행 근거](artifacts/task-001-execution.md#work-handoff).
 
 <a id="result"></a>
 
@@ -132,6 +162,6 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #88](https://github.co
 중단·취소·인계 시에는 실제 상태·이유·영향·보존 결과·잔여·해소/재개 조건과 다음 행동을 남긴다.
 -->
 
-- 내용: 미발생.
-- 확인: 미수행.
-- 잔여: 본작업 착수 요청과 계획 합의가 남았다.
+- 내용: 신규 Task의 짧은 본문·별도 계획과 호환 검사, 명시 승인 전환 절차를 구현했다. [후속 전달 기준](artifacts/task-001-execution.md#handoff-contract)을 남겼다.
+- 확인: r001의 세 수용 조건을 로컬 결과와 대조했다. 실제 양식 사례·완료 재검수 지적을 보완한 후보의 전체 회귀 134개와 필수 근거를 확인했다. [검증 범위](artifacts/task-001-execution.md#work-handoff)
+- 잔여: 검수한 이 Task의 제출·상위 반영. 실제 기존 기록 전환은 별도 명시 요청 사항이다.
