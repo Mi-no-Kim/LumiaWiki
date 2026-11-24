@@ -26,6 +26,7 @@ lumia_island_wiki/
 │   ├── GitHub 저장소 설정 기준.md   GitHub 옵션의 기준값과 기능 지원 범위
 │   ├── GitHub 라벨 기준.md          라벨 이름·설명·색상과 적용 규칙
 │   ├── details/                    주제별 상세 기준·요구
+│   │   ├── development/            Java 작성·관리 규칙과 공통 검사 입력
 │   │   ├── operations/             권한·검증과 전체 평가·검수·실패·개선
 │   │   ├── product/                제품 주제별 상세 요구
 │   │   └── git/                    브랜치 관리·작업 커밋·PR·병합 기준
@@ -66,6 +67,7 @@ lumia_island_wiki/
 | [`.agents/skills/triage-additional-request/`](.agents/skills/triage-additional-request/SKILL.md) · [`.agents/skills/review-work/`](.agents/skills/review-work/SKILL.md) | 추가 요청의 작업 단위 판단과 결과 검수 |
 | `harness/스킬 현황.md` · `harness/hook 현황.md` | 등록 항목·적용 조건·원천·확인 범위의 조회 |
 | `work/records/phase-001/`부터 `phase-007/`까지 | Phase별 계획과 실제 하위 작업 기록의 위치 |
+| [Java 작성·관리 규칙](<docs/details/development/Java 작성과 관리.md>) | 운영·테스트 Java 배치, 모듈 계약, 승인과 공통 검사 입력 |
 | 담당 Issue 직하 `task-<순번>.md` | Task 본문 |
 | 담당 Issue의 `artifacts/task-<순번>-assignment.md` | 확정 배정 전달사항 원본 |
 | 담당 Issue의 `artifacts/task-<순번>-execution.md` | 착수 후 수행 기록 |

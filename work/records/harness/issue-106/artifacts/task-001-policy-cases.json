@@ -1,0 +1,296 @@
+{
+  "policyVersion": 1,
+  "exampleModules": {
+    "items": {
+      "owner": "아이템",
+      "responsibility": "아이템 조회 모델과 공개 조회 계약",
+      "publicTypes": ["io.github.minokim.lumiawiki.items.api.ItemReadApi"],
+      "extraPackages": {"production": [], "test": []}
+    },
+    "damage": {
+      "owner": "피해량 계산",
+      "responsibility": "피해량 계산과 공개 계산 계약",
+      "publicTypes": ["io.github.minokim.lumiawiki.damage.api.DamageApi"],
+      "extraPackages": {"production": [], "test": []}
+    }
+  },
+  "exampleTaskScope": {
+    "source": {"ref": "example-event-0", "path": "example/task.md", "anchor": "java-files"},
+    "status": "verified",
+    "changes": [
+      {
+        "path": "backend/src/main/java/io/github/minokim/lumiawiki/items/application/ItemQuery.java",
+        "operation": "create",
+        "scope": "아이템 조회 유스케이스 추가"
+      },
+      {
+        "path": "backend/src/test/java/io/github/minokim/lumiawiki/items/application/ItemQueryTests.java",
+        "operation": "create",
+        "scope": "아이템 조회 유스케이스 검증"
+      },
+      {
+        "fromPath": "backend/src/main/java/io/github/minokim/lumiawiki/items/application/ItemQuery.java",
+        "path": "backend/src/main/java/io/github/minokim/lumiawiki/items/domain/ItemQuery.java",
+        "operation": "move",
+        "scope": "아이템 조회 규칙의 소유 패키지 이동"
+      }
+    ]
+  },
+  "exampleApprovals": {
+    "delegate-item-dto": {
+      "id": "delegate-item-dto",
+      "kind": "delegation",
+      "source": {"ref": "example-event-1", "path": "example/task.md", "anchor": "item-dto"},
+      "approver": {"id": "example-owner", "authority": "example-project-delegation"},
+      "scope": {
+        "packages": [{
+          "source": "production",
+          "package": "io.github.minokim.lumiawiki.items.application.dto",
+          "owner": "아이템",
+          "role": "조회 유스케이스 내부 값",
+          "visibility": "internal",
+          "operations": ["create"]
+        }],
+        "policy": [{
+          "op": "replace",
+          "path": "/java/modules/items/extraPackages/production",
+          "before": [],
+          "after": ["application.dto"]
+        }],
+        "http": []
+      },
+      "reason": "조회 유스케이스의 내부 값 타입을 역할 아래에 묶는다.",
+      "limits": "운영 생성에 한한다. 모듈 소유권과 공개 타입은 유지한다."
+    },
+    "temporary-importing": {
+      "id": "temporary-importing",
+      "kind": "exception",
+      "source": {"ref": "example-event-2", "path": "example/issue.md", "anchor": "importing"},
+      "approver": {"id": "example-owner", "authority": "example-project-delegation"},
+      "scope": {
+        "packages": [{
+          "source": "production",
+          "package": "io.github.minokim.lumiawiki.items.infrastructure.importing",
+          "owner": "아이템",
+          "role": "임시 데이터 변환",
+          "visibility": "internal",
+          "operations": ["create"]
+        }],
+        "policy": [],
+        "http": []
+      },
+      "reason": "기존 자료를 변환할 동안 임시 경로를 사용한다.",
+      "limits": "자료 변환에 한한다.",
+      "endsWhen": "변환 완료가 승인 Issue에 기록된다.",
+      "cleanupOwner": "아이템"
+    },
+    "approve-item-get": {
+      "id": "approve-item-get",
+      "kind": "http",
+      "source": {"ref": "example-event-3", "path": "example/issue.md", "anchor": "item-get"},
+      "approver": {"id": "example-owner", "authority": "example-project-delegation"},
+      "scope": {
+        "packages": [],
+        "policy": [],
+        "http": [],
+        "initialHttp": [{"method": "GET", "path": "/api/v1/items/{id}"}]
+      },
+      "reason": "아이템 상세를 조회하는 최초 계약을 승인한다.",
+      "limits": "이 메서드와 경로 한 쌍에 한한다."
+    },
+    "approve-initial-empty-http": {
+      "id": "approve-initial-empty-http",
+      "kind": "http",
+      "source": {"ref": "example-event-4", "path": "example/issue.md", "anchor": "initial-empty"},
+      "approver": {"id": "example-owner", "authority": "example-project-delegation"},
+      "scope": {"packages": [], "policy": [], "http": [], "initialHttp": []},
+      "reason": "공개된 초기 매핑이 없음을 확인한다.",
+      "limits": "초기 목록에 한한다."
+    },
+    "remove-item-get": {
+      "id": "remove-item-get",
+      "kind": "http",
+      "source": {"ref": "example-event-5", "path": "example/issue.md", "anchor": "remove-item-get"},
+      "approver": {"id": "example-owner", "authority": "example-project-delegation"},
+      "scope": {
+        "packages": [],
+        "policy": [],
+        "http": [{"op": "remove", "method": "GET", "path": "/api/v1/items/{id}"}]
+      },
+      "reason": "종료된 상세 조회 계약의 제거를 승인한다.",
+      "limits": "해당 메서드와 경로의 삭제에 한한다."
+    }
+  },
+  "approvedHttpExample": {
+    "initialApproval": "approve-item-get",
+    "entries": [{"method": "GET", "path": "/api/v1/items/{id}", "approval": "approve-item-get"}]
+  },
+  "approvedInitialEmptyHttpExample": {"initialApproval": "approve-initial-empty-http", "entries": []},
+  "approvedHttpAfterRemoval": {"initialApproval": "approve-item-get", "entries": []},
+  "cases": [
+    {
+      "id": "allowed-pair",
+      "check": "java-placement",
+      "input": {
+        "operation": "create",
+        "files": [
+          {"source": "production", "path": "backend/src/main/java/io/github/minokim/lumiawiki/items/application/ItemQuery.java", "package": "io.github.minokim.lumiawiki.items.application", "type": "ItemQuery"},
+          {"source": "test", "path": "backend/src/test/java/io/github/minokim/lumiawiki/items/application/ItemQueryTests.java", "package": "io.github.minokim.lumiawiki.items.application", "type": "ItemQueryTests"}
+        ],
+        "taskScope": "exampleTaskScope"
+      },
+      "expected": "pass"
+    },
+    {
+      "id": "moved-package-mismatch",
+      "check": "java-placement",
+      "input": {
+        "operation": "move",
+        "files": [
+          {"source": "production", "path": "backend/src/main/java/io/github/minokim/lumiawiki/items/domain/ItemQuery.java", "package": "io.github.minokim.lumiawiki.items.application", "type": "ItemQuery"}
+        ],
+        "taskScope": "exampleTaskScope"
+      },
+      "expected": "violation"
+    },
+    {
+      "id": "public-module-type",
+      "check": "java-dependencies",
+      "input": {"edges": [["damage.application.DamageService", "items.api.ItemReadApi"]]},
+      "expected": "pass"
+    },
+    {
+      "id": "internal-module-type",
+      "check": "java-dependencies",
+      "input": {"edges": [["damage.application.DamageService", "items.infrastructure.ItemStore"]]},
+      "expected": "violation"
+    },
+    {
+      "id": "module-cycle",
+      "check": "java-dependencies",
+      "input": {
+        "edges": [
+          ["damage.application.DamageService", "items.api.ItemReadApi"],
+          ["items.application.ItemQuery", "damage.api.DamageApi"]
+        ]
+      },
+      "expected": "violation"
+    },
+    {
+      "id": "module-uses-common-contract",
+      "check": "java-dependencies",
+      "input": {"edges": [["items.web.ItemController", "common.api.ApiFailure"]]},
+      "expected": "pass"
+    },
+    {
+      "id": "common-uses-module-contract",
+      "check": "java-dependencies",
+      "input": {"edges": [["common.api.ApiExceptionAdvice", "items.api.ItemReadApi"]]},
+      "expected": "violation"
+    },
+    {
+      "id": "delegated-internal-package",
+      "check": "authorization",
+      "input": {
+        "change": {"source": "production", "package": "io.github.minokim.lumiawiki.items.application.dto", "operation": "create"},
+        "policyChanges": [{"op": "replace", "path": "/java/modules/items/extraPackages/production", "before": [], "after": ["application.dto"]}],
+        "approval": "delegate-item-dto",
+        "referenceState": "verified"
+      },
+      "expected": "pass"
+    },
+    {
+      "id": "approval-only-in-candidate",
+      "check": "authorization",
+      "input": {
+        "change": {"source": "production", "package": "io.github.minokim.lumiawiki.common.shared", "operation": "create"},
+        "policyChanges": [{"op": "replace", "path": "/java/reservedPackages/production", "before": ["common.api", "dev"], "after": ["common.api", "dev", "common.shared"]}],
+        "approval": "candidate-only-common-approval",
+        "referenceState": "confirmed-absent"
+      },
+      "expected": "violation"
+    },
+    {
+      "id": "expired-exception",
+      "check": "authorization",
+      "input": {
+        "change": {"source": "production", "package": "io.github.minokim.lumiawiki.items.infrastructure.importing", "operation": "create"},
+        "policyChanges": [],
+        "approval": "temporary-importing",
+        "referenceState": "expired"
+      },
+      "expected": "violation"
+    },
+    {
+      "id": "approval-source-unreadable",
+      "check": "authorization",
+      "input": {
+        "change": {"source": "production", "package": "io.github.minokim.lumiawiki.items.application.dto", "operation": "create"},
+        "policyChanges": [{"op": "replace", "path": "/java/modules/items/extraPackages/production", "before": [], "after": ["application.dto"]}],
+        "approval": "delegate-item-dto",
+        "referenceState": "unconfirmed"
+      },
+      "expected": "unconfirmed"
+    },
+    {
+      "id": "approved-and-dev-only-http",
+      "check": "http-contract",
+      "input": {
+        "approvalList": "approvedHttpExample",
+        "productionMappings": [{"method": "GET", "path": "/api/v1/items/{id}"}],
+        "developmentOnlyMappings": [{"method": "GET", "path": "/api/v1/_dev/foundation", "profiles": ["local", "test"]}]
+      },
+      "expected": "pass"
+    },
+    {
+      "id": "dev-path-in-production",
+      "check": "http-contract",
+      "input": {
+        "approvalList": "approvedHttpExample",
+        "productionMappings": [
+          {"method": "GET", "path": "/api/v1/items/{id}"},
+          {"method": "GET", "path": "/api/v1/_dev/foundation"}
+        ]
+      },
+      "expected": "violation"
+    },
+    {
+      "id": "http-method-replacement",
+      "check": "http-contract",
+      "input": {
+        "approvalList": "approvedHttpExample",
+        "productionMappings": [{"method": "POST", "path": "/api/v1/items/{id}"}]
+      },
+      "expected": "violation"
+    },
+    {
+      "id": "http-empty-list-approved",
+      "check": "http-contract",
+      "input": {"approvalList": "approvedInitialEmptyHttpExample", "productionMappings": []},
+      "expected": "pass"
+    },
+    {
+      "id": "http-removal-approved",
+      "check": "http-contract",
+      "input": {
+        "baseApprovalList": "approvedHttpExample",
+        "approvalList": "approvedHttpAfterRemoval",
+        "changeApprovals": ["remove-item-get"],
+        "productionMappings": []
+      },
+      "expected": "pass"
+    },
+    {
+      "id": "http-empty-list-unconfirmed",
+      "check": "http-contract",
+      "input": {"approvalList": null, "productionMappings": []},
+      "expected": "unconfirmed"
+    },
+    {
+      "id": "backend-absent-in-git-candidate",
+      "check": "applicability",
+      "input": {"candidatePaths": ["README.md"], "workingTreeHasUntrackedBackend": true},
+      "expected": "not-applicable"
+    }
+  ]
+}
