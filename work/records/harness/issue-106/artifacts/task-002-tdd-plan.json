@@ -1,0 +1,89 @@
+{
+  "schema": 1,
+  "cycles": [
+    {
+      "id": "java-hook-contract",
+      "kind": "behavior",
+      "expectation": "The Java hook registration, no-backend candidate and existing hook delegation pass actual tests",
+      "targets": [
+        ".codex/hooks.json",
+        "scripts/check-java.py",
+        "scripts/hooks/pre-commit",
+        "scripts/java_guard.py",
+        "scripts/tdd-check.py",
+        "scripts/tdd-run.py",
+        "scripts/tdd_core.py"
+      ],
+      "tests": [
+        "scripts/tests/test_harness_inventory.py",
+        "scripts/tests/test_java_hooks.py"
+      ],
+      "adapter": "unittest",
+      "expectedFailures": [
+        "__main__.HookContract.test_registered_edit_modes",
+        "__main__.HookContract.test_git_candidate_without_backend",
+        "__main__.HookContract.test_java_and_existing_hook_regressions"
+      ],
+      "command": [
+        "python",
+        "-B",
+        "-X",
+        "utf8",
+        "-c",
+        "import json\nfrom pathlib import Path\nimport subprocess\nimport sys\nimport unittest\n\nclass HookContract(unittest.TestCase):\n    def test_registered_edit_modes(self):\n        config = json.loads(Path(\".codex/hooks.json\").read_text(encoding=\"utf-8\"))\n        for event, mode in ((\"PreToolUse\", \"before-edit\"), (\"PostToolUse\", \"after-edit\")):\n            commands = [handler[\"command\"] for group in config[\"hooks\"].get(event, [])\n                        for handler in group[\"hooks\"]]\n            self.assertTrue(any(\"check-java.py\" in command and mode in command for command in commands), event)\n\n    def test_git_candidate_without_backend(self):\n        checker = Path(\"scripts/check-java.py\")\n        self.assertTrue(checker.is_file(), \"Java candidate needs an entry point\")\n        result = subprocess.run([sys.executable, \"-B\", \"-X\", \"utf8\", str(checker), \"--candidate\", \"index\"],\n                                capture_output=True, text=True, encoding=\"utf-8\")\n        self.assertEqual(0, result.returncode, result.stderr)\n        self.assertEqual(\"not-applicable\", json.loads(result.stdout)[\"status\"])\n\n    def test_java_and_existing_hook_regressions(self):\n        self.assertTrue(Path(\"scripts/check-java.py\").is_file(), \"Java hook must support the regression fixtures\")\n        for filename, filter_args in (\n            (\"test_java_hooks.py\", []),\n            (\"test_harness_inventory.py\", [\"-k\", \"real_commit_runs_old_hook_then_rejects_or_accepts_candidate\"]),\n        ):\n            result = subprocess.run([sys.executable, \"-B\", \"-X\", \"utf8\", \"-m\", \"unittest\", \"discover\", \"-s\", \"scripts/tests\",\n                                     \"-p\", filename, *filter_args], capture_output=True, text=True, encoding=\"utf-8\")\n            self.assertEqual(0, result.returncode, result.stdout + result.stderr)\n\nsuite = unittest.defaultTestLoader.loadTestsFromTestCase(HookContract)\nnames = [test.id() for test in suite]\nresult = unittest.TextTestRunner().run(suite)\nPath(sys.argv[1]).write_text(json.dumps({\n    \"runId\": sys.argv[2], \"tests\": result.testsRun, \"failures\": len(result.failures),\n    \"errors\": len(result.errors), \"skipped\": len(result.skipped), \"names\": names,\n    \"failedNames\": [test.id() for test, _ in result.failures],\n}), encoding=\"utf-8\")\nsys.exit(not result.wasSuccessful())",
+        "{report}",
+        "{run_id}"
+      ]
+    },
+    {
+      "id": "prepare-parent-document-blobs",
+      "kind": "behavior",
+      "expectation": "Restore only required parent documents after validating the raw API response",
+      "targets": [
+        ".github/workflows/harness-inventory.yml"
+      ],
+      "tests": [
+        "scripts/tests/test_work_records.py"
+      ],
+      "adapter": "unittest",
+      "expectedFailures": [
+        "test_work_records.CandidateTests.test_sparse_ci_prepares_missing_parent_documents_only"
+      ],
+      "command": [
+        "python",
+        "-B",
+        "-X",
+        "utf8",
+        "-c",
+        "import json\nfrom pathlib import Path\nimport sys\nimport unittest\nsys.path.insert(0, \"scripts/tests\")\nsuite = unittest.defaultTestLoader.loadTestsFromName('test_work_records.CandidateTests.test_sparse_ci_prepares_missing_parent_documents_only')\nnames = [test.id() for test in suite]\nresult = unittest.TextTestRunner().run(suite)\nPath(sys.argv[1]).write_text(json.dumps({\n    \"runId\": sys.argv[2], \"tests\": result.testsRun, \"failures\": len(result.failures),\n    \"errors\": len(result.errors), \"skipped\": len(result.skipped), \"names\": names,\n    \"failedNames\": [test.id() for test, _ in result.failures],\n}), encoding=\"utf-8\")\nsys.exit(not result.wasSuccessful())",
+        "{report}",
+        "{run_id}"
+      ]
+    },
+    {
+      "id": "use-canonical-hook-working-directory",
+      "kind": "behavior",
+      "expectation": "Require the edit hook to apply the same rules when its working directory has an equivalent spelling",
+      "targets": [
+        "scripts/check-java.py"
+      ],
+      "tests": [
+        "scripts/tests/test_java_hooks.py"
+      ],
+      "adapter": "unittest",
+      "expectedFailures": [
+        "test_java_hooks.JavaHooksTests.test_edit_hook_resolves_equivalent_working_directory"
+      ],
+      "command": [
+        "python",
+        "-B",
+        "-X",
+        "utf8",
+        "-c",
+        "import json\nfrom pathlib import Path\nimport sys\nimport unittest\nsys.path.insert(0, \"scripts/tests\")\nsuite = unittest.defaultTestLoader.loadTestsFromName('test_java_hooks.JavaHooksTests.test_edit_hook_resolves_equivalent_working_directory')\nnames = [test.id() for test in suite]\nresult = unittest.TextTestRunner().run(suite)\nPath(sys.argv[1]).write_text(json.dumps({\n    \"runId\": sys.argv[2], \"tests\": result.testsRun, \"failures\": len(result.failures),\n    \"errors\": len(result.errors), \"skipped\": len(result.skipped), \"names\": names,\n    \"failedNames\": [test.id() for test, _ in result.failures],\n}), encoding=\"utf-8\")\nsys.exit(not result.wasSuccessful())",
+        "{report}",
+        "{run_id}"
+      ]
+    }
+  ]
+}

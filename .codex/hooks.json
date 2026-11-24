@@ -1,6 +1,21 @@
 {
-  "description": "Check current Issue/Task/execution rules and frozen legacy exclusions; no automatic rollback.",
+  "description": "Require Java TDD evidence before supported edits and check Java placement and record rules after edits.",
   "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "^apply_patch$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -B -X utf8 -c \"import subprocess,runpy,sys; r=subprocess.check_output(['git','rev-parse','--show-toplevel'],text=True).strip(); sys.path.insert(0,r+'/scripts'); sys.argv=[r+'/scripts/check-java.py','--mode','before-edit','--hook']; runpy.run_path(sys.argv[0],run_name='__main__')\"",
+            "commandWindows": "python -B -X utf8 -c \"import subprocess,runpy,sys; r=subprocess.check_output(['git','rev-parse','--show-toplevel'],text=True).strip(); sys.path.insert(0,r+'/scripts'); sys.argv=[r+'/scripts/check-java.py','--mode','before-edit','--hook']; runpy.run_path(sys.argv[0],run_name='__main__')\"",
+            "async": false,
+            "timeout": 8,
+            "statusMessage": "Checking Java edit evidence"
+          }
+        ]
+      }
+    ],
     "PostToolUse": [
       {
         "matcher": "*",
@@ -12,6 +27,19 @@
             "async": false,
             "timeout": 15,
             "statusMessage": "Checking record rules and states"
+          }
+        ]
+      },
+      {
+        "matcher": "^apply_patch$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -B -X utf8 -c \"import subprocess,runpy,sys; r=subprocess.check_output(['git','rev-parse','--show-toplevel'],text=True).strip(); sys.path.insert(0,r+'/scripts'); sys.argv=[r+'/scripts/check-java.py','--mode','after-edit','--hook']; runpy.run_path(sys.argv[0],run_name='__main__')\"",
+            "commandWindows": "python -B -X utf8 -c \"import subprocess,runpy,sys; r=subprocess.check_output(['git','rev-parse','--show-toplevel'],text=True).strip(); sys.path.insert(0,r+'/scripts'); sys.argv=[r+'/scripts/check-java.py','--mode','after-edit','--hook']; runpy.run_path(sys.argv[0],run_name='__main__')\"",
+            "async": false,
+            "timeout": 8,
+            "statusMessage": "Checking Java placement"
           }
         ]
       }
