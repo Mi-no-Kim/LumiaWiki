@@ -51,9 +51,9 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #110](https://github.c
 -->
 
 - 상태: 진행 중
-- 현재 진행 위치: [최초 공개 HTTP 목록과 승인 원천 확정](#work-http-inventory)
-- 다음 행동: 승인 기록을 별도 증적으로 먼저 반영하고 [모듈 구조 검사](#work-module)를 구현한다.
-- 막힌 조건: 승인 CI 검증 — 후보보다 먼저 수용된 기준 이력의 [최초 HTTP 승인 근거](issue.md#initial-http-approval)를 사용한다.
+- 현재 진행 위치: [제출 후보 승인 검사 및 CI 연결](#work-ci-candidates)
+- 다음 행동: [CI 승인 판독기와 초기 입력 지문](issue.md#java-ci-bootstrap)을 먼저 수용한 부모에 구현 후보를 대조한다.
+- 막힌 조건: 원격 검사 — 승인 판독기와 초기 입력 지문이 구현 PR의 실제 기준에 있어야 한다.
 
 <a id="assignment"></a>
 
@@ -90,11 +90,12 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #110](https://github.c
 사용자 확인 조건에 도달하면 관련 실행 전에 확인하고 통상적인 조정마다 재승인을 요구하지 않는다.
 -->
 
-- 대상·준비: Task 106-001의 [공통 정책](<../../../../docs/details/development/java-policy.json>)과 [작성 기준](<../../../../docs/details/development/Java 작성과 관리.md>)을 사용한다. Task 106-002는 [PR #114](https://github.com/Mi-no-Kim/LumiaWiki/pull/114)로 부모 `c7f70c3`에 반영됐다. 로컬 `task/106-003-module-api-ci`에서 그 기준의 제출 후보용 `check-java.py --approval-only`를 사용한다. [GitHub #110](https://github.com/Mi-no-Kim/LumiaWiki/issues/110)의 부모가 #106임을 확인했다.
+- 대상·준비: Task 106-001의 [공통 정책](<../../../../docs/details/development/java-policy.json>)과 [작성 기준](<../../../../docs/details/development/Java 작성과 관리.md>) 및 [PR #114](https://github.com/Mi-no-Kim/LumiaWiki/pull/114)의 `check-java.py --approval-only`를 사용한다. [PR #115](https://github.com/Mi-no-Kim/LumiaWiki/pull/115)에서 승인 결정만 먼저 수용했다. [GitHub #110](https://github.com/Mi-no-Kim/LumiaWiki/issues/110)의 부모는 #106이다.
 - 현재 합의: [확정 배정 r001](artifacts/task-003-assignment.md#scope)을 적용한다. 사용자가 전체 계획과 [최초 운영 공개 HTTP 승인](issue.md#initial-http-approval)에 동의했다. 각 단계의 자체·별도 검수 요청을 적용한다.
 - 남은 결정: 검사 기술과 실행 방법은 배정된 위임 범위에서 사례를 비교하고 검수한다.
 - Task 전체 확인: [전달본 완료 조건](artifacts/task-003-assignment.md#acceptance)을 모듈 판정, 최초 승인·실제 HTTP 대조, 입력 변경별 CI 증분 실행에 연결한다. 같은 기준·후보와 실제 개별 검사 결과를 확인한다. Phase 1 결합 후보의 실제 원격 CI는 [Task 106-004](task-004.md)가 맡는다.
 - 수행 기록: [Task 106-003 수행 기록](artifacts/task-003-execution.md)
+- 제출 검증: [검증 계획](artifacts/task-003-tdd-plan.json) · [실행 증적](artifacts/task-003-tdd-evidence.json)
 
 <a id="execution-plan"></a>
 
@@ -116,7 +117,7 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #110](https://github.c
 #### 최초 공개 HTTP 목록과 승인 원천 확정
 
 - 태그: 조사, 논의, 결정, 검수
-- [ ] 수행·확인 완료
+- [x] 수행·확인 완료
 - 할 일: 결정권자가 승인한 운영 공개 HTTP 최초 목록 `[]`의 근거를 구현 제출 후보와 독립된 기준 이력에 둔다.
 - 확인: 실제 Spring MVC 매핑·개발 프로필을 확인했고 별도 검수에서 r001의 개발 경로·승인 조건에 대조했다. 기준 이력의 `scope.initialHttp: []`와 후보 목록의 `initialApproval`을 연결한다.
 - 수행 기록: [최초 운영 공개 HTTP 목록과 승인](artifacts/task-003-execution.md#work-http-inventory)
@@ -139,7 +140,7 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #110](https://github.c
 - [ ] 수행·확인 완료
 - 할 일: Spring MVC 컨텍스트에서 프로젝트가 등록한 전체 경로 패턴·명시 메서드 쌍을 읽어 승인 목록과 대조한다. 정책의 개발 프로필과 운영 등록을 함께 확인하고, 조건이나 소유를 확인하지 못한 등록은 미확인으로 판정한다. 최초 목록 승인을 확인한 뒤 실제 목록을 작성한다.
 - 확인: 실제 Spring 등록으로 일치, 미승인 추가·삭제·메서드 교체, 다중 경로·메서드, 개발 전용 매핑의 운영 노출, 판독 실패를 재현한다. 운영 앱에 제품 동작을 추가하지 않고 검증용 컨트롤러·라우터를 사용한다. 결과는 자체·별도 검수한다.
-- 수행 기록: 착수 후 해당 수행 구역에 연결한다.
+- 수행 기록: [업무 모듈 구조 검증](artifacts/task-003-execution.md#work-module)
 
 <a id="work-ci-candidates"></a>
 
@@ -149,7 +150,7 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #110](https://github.c
 - [ ] 수행·확인 완료
 - 할 일: 실제 제출 이벤트의 기준과 헤드 및 검사한 후보 SHA를 대조한다. 106-002의 승인 검사로 Java와 공통 정책을 확인하고, HTTP 목록·예외·검사와 빌드 설정의 변경은 해당 승인 범위를 추가 대조한다. 승인 확인은 신뢰된 기준 이력 또는 독립 확인한 이벤트에서 읽고 후보 코드 실행과 분리한다. CI 설치 시점의 최초 검사 정의도 같은 후보의 기록으로 자체 승인하지 않는다.
 - 확인: 규칙·목록·예외·설정 각각 한 종류만 바꾼 Git 후보에서 관련 개별 검사의 실행과 정상·위반·미확인 판정을 재현한다. 추적된 백엔드가 없는 후보는 런타임 비대상과 입력 승인 여부를 구분한다. 자체·별도 검수에서 체크아웃 SHA, 후보 밖 승인 자료, 실패 시 병합 보류, 기존 CI 회귀를 대조한다.
-- 수행 기록: 착수 후 해당 수행 구역에 연결한다.
+- 수행 기록: [Spring 매핑 검증](artifacts/task-003-execution.md#work-http-mappings)
 
 <a id="work-submission"></a>
 
@@ -159,7 +160,7 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #110](https://github.c
 - [ ] 수행·확인 완료
 - 할 일: 각 기능군의 실패·통과 근거와 사용 안내를 남긴다. 변경 목적에 따라 모듈·HTTP와 CI의 제출 단위를 나누고, 확정된 기록과 검증 근거를 관련 코드와 함께 검토한다.
 - 확인: 실제 인덱스와 정확한 기준·후보를 대상으로 전체 회귀·기록 검사와 자체·별도 최종 검수를 마친다. 허용 범위에서 커밋·PR과 개별 검사를 확인하고, 실제 반영 후 종료 조건을 점검한다. 결합 Phase 1 검증에는 재현 명령과 기준 식별자를 넘긴다.
-- 수행 기록: 착수 후 해당 수행 구역에 연결한다.
+- 수행 기록: [제출 승인 판독기와 CI](artifacts/task-003-execution.md#work-ci-candidates)
 
 <a id="result"></a>
 

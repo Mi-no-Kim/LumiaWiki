@@ -1,0 +1,227 @@
+{
+  "schema": 1,
+  "receipts": [
+    {
+      "id": "independent-java-approval",
+      "kind": "behavior",
+      "spec": "c398056a4d2e8135abf8da10f9f1115b1a4a9f1fcd52ddc6412dc2b74f58bb4f",
+      "worktree": "d3423d7c21b68ee27aeb",
+      "baseline": "686a1bcff01ea217811ca3bd10ff54987fbeb26e",
+      "task": "work/records/harness/issue-106/task-003.md",
+      "finished": true,
+      "red": {
+        "runId": "004d2dbdef2f428ba515fa6243b6bac6",
+        "started": 1795546234.8836048,
+        "finishedAt": 1795546235.155436,
+        "command": [
+          "python",
+          "-B",
+          "-X",
+          "utf8",
+          "-c",
+          "import json\nfrom pathlib import Path\nimport subprocess\nimport sys\nimport unittest\n\nclass GateFixture(unittest.TestCase):\n    def test_independent_approval_at_exact_base(self):\n        self.assertTrue(Path(\"scripts/check-java-submission.py\").is_file(), \"The base does not run an independent Java approval check\")\n        result = subprocess.run([sys.executable, \"-B\", \"-X\", \"utf8\", \"-m\", \"unittest\", \"discover\",\n                                 \"-s\", \"scripts/tests\", \"-p\", \"test_java_submission.py\"],\n                                capture_output=True, text=True, encoding=\"utf-8\", timeout=130)\n        self.assertEqual(0, result.returncode, result.stdout + result.stderr)\n\nsuite = unittest.defaultTestLoader.loadTestsFromTestCase(GateFixture)\nnames = [test.id() for test in suite]\nresult = unittest.TextTestRunner().run(suite)\nPath(sys.argv[1]).write_text(json.dumps({\n    \"runId\": sys.argv[2], \"tests\": result.testsRun, \"failures\": len(result.failures), \"errors\": len(result.errors),\n    \"skipped\": len(result.skipped), \"names\": names, \"failedNames\": [test.id() for test, _ in result.failures],\n}), encoding=\"utf-8\")\nsys.exit(not result.wasSuccessful())",
+          "{report}",
+          "{run_id}"
+        ],
+        "exitCode": 1,
+        "result": {
+          "tests": 1,
+          "failures": 1,
+          "errors": 0,
+          "skipped": 0,
+          "names": [
+            "__main__.GateFixture.test_independent_approval_at_exact_base"
+          ],
+          "failedNames": [
+            "__main__.GateFixture.test_independent_approval_at_exact_base"
+          ]
+        },
+        "manifest": {
+          ".codex/hooks.json": "9eee6609be1b74000b88e7debede7ad780c903b49ede61f30a70cc09797c1124",
+          ".gitattributes": null,
+          "backend/build.gradle": null,
+          "backend/gradle/wrapper/gradle-wrapper.properties": null,
+          "backend/settings.gradle": null,
+          "backend/src/main/resources/application.yaml": null,
+          "backend/src/test/resources/application-test.yaml": null,
+          "frontend/package-lock.json": null,
+          "frontend/package.json": null,
+          "frontend/src/test/setup.ts": null,
+          "frontend/tsconfig.json": null,
+          "frontend/vite.config.mjs": null,
+          "frontend/vitest.config.mjs": null,
+          "package-lock.json": null,
+          "package.json": null,
+          "scripts/check-java-submission.py": null,
+          "scripts/tdd-check.py": "857781c52c190f94ec186edfa07ba996ed5b80afbc37ab8c68246252e7cfe014",
+          "scripts/tdd-run.py": "a65da4989ccf12b5e02b062bb23897c7237a1f3705356786f619392cedc37316",
+          "scripts/tdd_core.py": "d1427d46bf0e80087e6943656dfa5391227255a2f21ce488ca52e532807fe068",
+          "scripts/test-python.py": null,
+          "scripts/tests/test_java_submission.py": "6f73ed7ae274c6f586e7309826a3df8e5399458c038a3d53394265cbd4b8008e"
+        },
+        "ok": false
+      },
+      "final": {
+        "runId": "9a98920e4728488cac0ab5a863044dff",
+        "started": 1795546235.5730662,
+        "finishedAt": 1795546263.4332407,
+        "command": [
+          "python",
+          "-B",
+          "-X",
+          "utf8",
+          "-c",
+          "import json\nfrom pathlib import Path\nimport subprocess\nimport sys\nimport unittest\n\nclass GateFixture(unittest.TestCase):\n    def test_independent_approval_at_exact_base(self):\n        self.assertTrue(Path(\"scripts/check-java-submission.py\").is_file(), \"The base does not run an independent Java approval check\")\n        result = subprocess.run([sys.executable, \"-B\", \"-X\", \"utf8\", \"-m\", \"unittest\", \"discover\",\n                                 \"-s\", \"scripts/tests\", \"-p\", \"test_java_submission.py\"],\n                                capture_output=True, text=True, encoding=\"utf-8\", timeout=130)\n        self.assertEqual(0, result.returncode, result.stdout + result.stderr)\n\nsuite = unittest.defaultTestLoader.loadTestsFromTestCase(GateFixture)\nnames = [test.id() for test in suite]\nresult = unittest.TextTestRunner().run(suite)\nPath(sys.argv[1]).write_text(json.dumps({\n    \"runId\": sys.argv[2], \"tests\": result.testsRun, \"failures\": len(result.failures), \"errors\": len(result.errors),\n    \"skipped\": len(result.skipped), \"names\": names, \"failedNames\": [test.id() for test, _ in result.failures],\n}), encoding=\"utf-8\")\nsys.exit(not result.wasSuccessful())",
+          "{report}",
+          "{run_id}"
+        ],
+        "exitCode": 0,
+        "result": {
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "names": [
+            "__main__.GateFixture.test_independent_approval_at_exact_base"
+          ],
+          "failedNames": []
+        },
+        "manifest": {
+          ".codex/hooks.json": "9eee6609be1b74000b88e7debede7ad780c903b49ede61f30a70cc09797c1124",
+          ".gitattributes": null,
+          "backend/build.gradle": null,
+          "backend/gradle/wrapper/gradle-wrapper.properties": null,
+          "backend/settings.gradle": null,
+          "backend/src/main/resources/application.yaml": null,
+          "backend/src/test/resources/application-test.yaml": null,
+          "frontend/package-lock.json": null,
+          "frontend/package.json": null,
+          "frontend/src/test/setup.ts": null,
+          "frontend/tsconfig.json": null,
+          "frontend/vite.config.mjs": null,
+          "frontend/vitest.config.mjs": null,
+          "package-lock.json": null,
+          "package.json": null,
+          "scripts/check-java-submission.py": "5fa1d560cdbbb8c31b373c1ce82b52a0b930365855408d9482b2ed1f5a21a9be",
+          "scripts/tdd-check.py": "857781c52c190f94ec186edfa07ba996ed5b80afbc37ab8c68246252e7cfe014",
+          "scripts/tdd-run.py": "a65da4989ccf12b5e02b062bb23897c7237a1f3705356786f619392cedc37316",
+          "scripts/tdd_core.py": "d1427d46bf0e80087e6943656dfa5391227255a2f21ce488ca52e532807fe068",
+          "scripts/test-python.py": null,
+          "scripts/tests/test_java_submission.py": "6f73ed7ae274c6f586e7309826a3df8e5399458c038a3d53394265cbd4b8008e"
+        },
+        "ok": true
+      }
+    },
+    {
+      "id": "limit-bootstrap-to-first-installation",
+      "kind": "behavior",
+      "spec": "8a0b06abb6928a6e1806b82fb574cf03aebdfeaf8dc3aa38073646ab32071f46",
+      "worktree": "83df5251ee35c02859b4",
+      "baseline": "70eec924139cbb1847d4eebea6448ee1e6d83d83",
+      "task": "work/records/harness/issue-106/task-003.md",
+      "finished": true,
+      "red": {
+        "runId": "1eb86b3c5190407d8aece8a3315254aa",
+        "started": 1795546549.9186327,
+        "finishedAt": 1795546552.531588,
+        "command": [
+          "python",
+          "-B",
+          "-X",
+          "utf8",
+          "-c",
+          "import json\nfrom pathlib import Path\nimport sys\nimport unittest\nsys.path.insert(0, \"scripts/tests\")\nsuite = unittest.defaultTestLoader.loadTestsFromName('test_java_submission.JavaSubmissionTests.test_bootstrap_requires_complete_first_installation_and_is_not_reusable')\nnames = [test.id() for test in suite]\nresult = unittest.TextTestRunner().run(suite)\nPath(sys.argv[1]).write_text(json.dumps({\n    \"runId\": sys.argv[2], \"tests\": result.testsRun, \"failures\": len(result.failures),\n    \"errors\": len(result.errors), \"skipped\": len(result.skipped), \"names\": names,\n    \"failedNames\": [test.id() for test, _ in result.failures],\n}), encoding=\"utf-8\")\nsys.exit(not result.wasSuccessful())",
+          "{report}",
+          "{run_id}"
+        ],
+        "exitCode": 1,
+        "result": {
+          "tests": 1,
+          "failures": 1,
+          "errors": 0,
+          "skipped": 0,
+          "names": [
+            "test_java_submission.JavaSubmissionTests.test_bootstrap_requires_complete_first_installation_and_is_not_reusable"
+          ],
+          "failedNames": [
+            "test_java_submission.JavaSubmissionTests.test_bootstrap_requires_complete_first_installation_and_is_not_reusable"
+          ]
+        },
+        "manifest": {
+          ".codex/hooks.json": "9eee6609be1b74000b88e7debede7ad780c903b49ede61f30a70cc09797c1124",
+          ".gitattributes": null,
+          "backend/build.gradle": null,
+          "backend/gradle/wrapper/gradle-wrapper.properties": null,
+          "backend/settings.gradle": null,
+          "backend/src/main/resources/application.yaml": null,
+          "backend/src/test/resources/application-test.yaml": null,
+          "frontend/package-lock.json": null,
+          "frontend/package.json": null,
+          "frontend/src/test/setup.ts": null,
+          "frontend/tsconfig.json": null,
+          "frontend/vite.config.mjs": null,
+          "frontend/vitest.config.mjs": null,
+          "package-lock.json": null,
+          "package.json": null,
+          "scripts/check-java-submission.py": "3ca2b54d244753fee0572d20f917924ffc24358545b6a00e6d945ee467ec66b3",
+          "scripts/tdd-check.py": "857781c52c190f94ec186edfa07ba996ed5b80afbc37ab8c68246252e7cfe014",
+          "scripts/tdd-run.py": "a65da4989ccf12b5e02b062bb23897c7237a1f3705356786f619392cedc37316",
+          "scripts/tdd_core.py": "d1427d46bf0e80087e6943656dfa5391227255a2f21ce488ca52e532807fe068",
+          "scripts/test-python.py": null,
+          "scripts/tests/test_java_submission.py": "6fdcc6ba518b35a4f06edd98d705ff199bbc9480cf711c7b0d885a491055ae42"
+        },
+        "ok": false
+      },
+      "final": {
+        "runId": "27caf1305df64a78aece731432115afc",
+        "started": 1795546552.9567156,
+        "finishedAt": 1795546559.601611,
+        "command": [
+          "python",
+          "-B",
+          "-X",
+          "utf8",
+          "-c",
+          "import json\nfrom pathlib import Path\nimport sys\nimport unittest\nsys.path.insert(0, \"scripts/tests\")\nsuite = unittest.defaultTestLoader.loadTestsFromName('test_java_submission.JavaSubmissionTests.test_bootstrap_requires_complete_first_installation_and_is_not_reusable')\nnames = [test.id() for test in suite]\nresult = unittest.TextTestRunner().run(suite)\nPath(sys.argv[1]).write_text(json.dumps({\n    \"runId\": sys.argv[2], \"tests\": result.testsRun, \"failures\": len(result.failures),\n    \"errors\": len(result.errors), \"skipped\": len(result.skipped), \"names\": names,\n    \"failedNames\": [test.id() for test, _ in result.failures],\n}), encoding=\"utf-8\")\nsys.exit(not result.wasSuccessful())",
+          "{report}",
+          "{run_id}"
+        ],
+        "exitCode": 0,
+        "result": {
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "names": [
+            "test_java_submission.JavaSubmissionTests.test_bootstrap_requires_complete_first_installation_and_is_not_reusable"
+          ],
+          "failedNames": []
+        },
+        "manifest": {
+          ".codex/hooks.json": "9eee6609be1b74000b88e7debede7ad780c903b49ede61f30a70cc09797c1124",
+          ".gitattributes": null,
+          "backend/build.gradle": null,
+          "backend/gradle/wrapper/gradle-wrapper.properties": null,
+          "backend/settings.gradle": null,
+          "backend/src/main/resources/application.yaml": null,
+          "backend/src/test/resources/application-test.yaml": null,
+          "frontend/package-lock.json": null,
+          "frontend/package.json": null,
+          "frontend/src/test/setup.ts": null,
+          "frontend/tsconfig.json": null,
+          "frontend/vite.config.mjs": null,
+          "frontend/vitest.config.mjs": null,
+          "package-lock.json": null,
+          "package.json": null,
+          "scripts/check-java-submission.py": "4936443bdee9f10e755e4e7d0ff2cf7ad9b5f90eccd6a6612f07686487325848",
+          "scripts/tdd-check.py": "857781c52c190f94ec186edfa07ba996ed5b80afbc37ab8c68246252e7cfe014",
+          "scripts/tdd-run.py": "a65da4989ccf12b5e02b062bb23897c7237a1f3705356786f619392cedc37316",
+          "scripts/tdd_core.py": "d1427d46bf0e80087e6943656dfa5391227255a2f21ce488ca52e532807fe068",
+          "scripts/test-python.py": null,
+          "scripts/tests/test_java_submission.py": "6fdcc6ba518b35a4f06edd98d705ff199bbc9480cf711c7b0d885a491055ae42"
+        },
+        "ok": true
+      }
+    }
+  ]
+}
