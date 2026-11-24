@@ -32,6 +32,21 @@ python -B -X utf8 scripts/check-java.py --base <기준-커밋> --candidate <제�
 
 원천의 `ref`는 기준의 이력에 있는 전체 Git 커밋 ID와 기록 경로·앵커, 또는 호출 환경에서 독립 확인한 `event:` 승인 식별자를 사용한다. 호출자가 제공한 승인 확인 파일을 CI 제출 패치에서 가져오지 않는다. 로컬 Git 이력에 없는 이벤트의 진위와 결정권 확인은 이 파일을 제공하는 환경이 맡는다. 인덱스 내용이 바뀌면 새 식별자에 맞춰 근거를 대조한다. 편집 예외는 `--mode before-edit --identify`에 해당 `apply_patch` 이벤트 JSON을 표준 입력으로 전달해 편집 대상 식별자에 연결하고, 편집 훅의 `LUMIA_JAVA_EDIT_APPROVAL_CONTEXT`에 절대 경로를 제공한다.
 
+<a id="submission-contract"></a>
+
+## 제출 후보의 모듈·HTTP 계약 검사
+
+`Java contract` 워크플로에서 제출 승인, 회귀 검증과 백엔드 계약의 개별 결과를 확인한다. PR 검사는 이벤트의 기준·헤드가 체크아웃한 합성 후보의 두 부모와 일치해야 한다. 일반 push는 이벤트의 이전 SHA, 수동 실행은 검증할 정확한 기준 SHA를 사용한다. 트리에 추적된 백엔드가 없는 경우에도 승인 검사와 변경 입력에 영향을 받는 실제 Java·Spring 회귀는 실행한다.
+
+```text
+python -B -X utf8 scripts/check-java-submission.py --base <기준-SHA> --candidate <후보-SHA>
+gradle --no-daemon -p scripts/java-contract test
+```
+
+승인 판독기는 PR의 실제 기준에서 가져온다. [최초 HTTP 승인](<../../../work/records/harness/issue-106/issue.md#initial-http-approval>)과 [초기 CI 입력 지문](java-ci-approvals.json)을 코드 도입 전에 신뢰된 기준 이력에 수용한다. 추가 후보의 독립 승인 확인은 해당 기준 이력 또는 결정권자가 확인한 [후보에 묶인 승인 파일](#candidate)을 사용한다. 원격 실행에서 외부 확인이 필요하면 승인 자료를 관리하는 실행 환경이 저장소 변수 `LUMIA_JAVA_APPROVAL_CONTEXT`로 같은 JSON을 제공한다. 후보의 파일에는 승인 권한이 없고 승인 변수에는 비밀을 넣지 않는다. 검사 자체나 워크플로가 바뀌면 병합 실행자가 최종 지문과 개별 검사 기록을 승인 근거와 직접 대조한다.
+
+모듈 검사는 컴파일된 타입 참조와 컴파일러가 해석한 소스 참조를 함께 확인한다. HTTP 검사는 실제 Spring 기본·운영·허용 개발 프로필을 기동하고 등록한 명시 메서드·경로를 [승인 목록](java-http-api.json)과 대조한다. 검증 DB는 격리된 CI PostgreSQL을 쓴다. 조건이나 라우터 소유를 판독할 수 없으면 미확인으로 실패한다. 새 저장소나 다른 통합 기준에서 최초 도입을 검증할 때에도 승인 판독기와 승인 원천이 실제 비교 기준에 먼저 있어야 한다.
+
 <a id="tdd"></a>
 
 ## TDD 근거 기록
