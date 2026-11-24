@@ -82,7 +82,7 @@ Task당 한 파일을 쓰고 이 주석은 머리말에 한 번만 둔다. 착�
 - 조치·판단: `issue/106-phase1-ci-validation` 브랜치 하나에 `08874607`, `7845bafe`, `bd75af8c`를 순서대로 push했다. `08874607`의 최초 [Quality](https://github.com/Mi-no-Kim/LumiaWiki/actions/runs/45475338354)는 기존 Phase TDD 테스트가 첫 편집 훅을 고정 선택해 tools가 실패했다. 테스트가 실제 TDD 명령을 골라 하위 디렉터리에서 실행하도록 정정했다. `7845bafe`의 [Quality](https://github.com/Mi-no-Kim/LumiaWiki/actions/runs/45476078984) 6개 job 통과를 자체·별도 검수했다.
 - 확인: 정상 결합 `bd75af8c`의 [Java contract](https://github.com/Mi-no-Kim/LumiaWiki/actions/runs/45476568872)에서 실제 기준 `7845bafe`와 후보를 대조했다. 승인(138738245741), 회귀(138738454087), 모듈·Spring(138738454416)이 모두 통과했다. PostgreSQL 환경에서 `default`·`production`은 공개 매핑 0개, `local`·`test`는 개발 전용 `GET /api/v1/_dev/foundation`만 확인했다. 같은 후보의 [Phase Quality](https://github.com/Mi-no-Kim/LumiaWiki/actions/runs/45476568853)도 6개 job 모두 통과했다. 자체·별도 검수의 SHA와 개별 판정이 일치했다. 정상 커밋과 트리를 사례 분기 전 복원 기준으로 고정한다.
 - 논의: 예외의 유효·만료·미확인은 실제 기준 및 후보에 연결된 독립 외부 자료가 있어야 구분된다. 저장소 변수 방식과 로컬 확인의 한계를 제시했다. 공개 저장소의 전용 Actions Environment에 검증 브랜치를 정확히 지정하는 선택지도 조사했다. 이 방식은 임시 워크플로 환경 연결 자체의 지문도 독립 승인해야 하며, 원래 YAML을 복원한 push에서는 해당 환경 입력을 읽을 수 없다.
-- 사용자 결정: 저장소 설정을 변경하지 않고 기존 원격 CI와 로컬 검증을 결합하는 세 번째 안을 선택했다. [Issue #106의 보완 결정](../issue.md#decision-5-submission-evidence)에서 문구를 확정했고 [개정 전달사항 r002](task-004-assignment-r002.md#acceptance)를 적용한다. 단일 원격 브랜치는 정상 커밋을 가리키며 원격 합성 사례나 사례 복원 push는 수행하지 않았다.
+- 사용자 결정: 저장소 설정을 변경하지 않고 기존 원격 CI와 로컬 검증을 결합하는 세 번째 안을 선택했다. [Issue #106의 보완 결정](../issue.md#decision-5-submission-evidence)에서 문구를 확정했고 [개정 전달사항 r002](task-004-assignment-r002.md#acceptance)를 적용한다. 검증 당시 단일 원격 브랜치는 정상 커밋을 가리켰다. 원격 합성 사례와 사례 복원 push는 미실행으로 남겼다. 당시 토큰으로 Actions 재실행과 저장소 승인 변수 조회가 거부돼, 인프라 실패 시 같은 SHA의 실패 작업을 사용자가 GitHub에서 재실행하는 안을 기록했다.
 
 <a id="work-phase-handoff"></a>
 
@@ -92,7 +92,7 @@ Task당 한 파일을 쓰고 이 주석은 머리말에 한 번만 둔다. 착�
 - 확인: 추적 백엔드 없는 `94babc10`의 변경 없는 후보는 비대상이다. `bd75af8c`의 직접 자손으로 만든 설정만 변경한 `c191e9dc`은 승인 없음·다른 SHA에서 미확인, 완전한 목록에서 누락 시 위반, 정확한 전후 지문에서 통과했다. DB만 변경한 `029f1ee`는 승인·모듈 비대상에 HTTP가 선택됐다. 기존 Java 수정·삭제 합성 `7062756`은 두 작업을 모두 승인하면 통과했으며 삭제 범위가 빠지면 위반이었다. 독립 에이전트가 기준 판독기로 같은 결론을 재현했다. 합성 결과의 범위는 승인 판정과 검사 선택이다. 인덱스·작업 트리 대조는 전체 도구 회귀의 Java 훅 테스트에서 양방향으로 확인했다. 실제 앱 유지 동작은 정상 결합의 Phase Quality와 Spring 실행에 연결한다.
 - 사용: [Java 검사 실행](<../../../../../docs/details/development/Java 검사 실행.md>)의 후보 SHA 확인과 커밋·CI 입력을 따른다. 정상 기준은 `7845bafe`, 후보는 `bd75af8c`다. 사용자는 Git 후보와 개별 로그의 실제 base·candidate를 먼저 대조할 수 있다. 포맷을 복구할 때는 JDK와 고정 Wrapper를 확인하고 `npm run format:prepare` 후 변경 파일을 포맷해 정확히 필요한 경로를 다시 스테이징한다.
 - 복구: 기존 Git 훅을 보존하고 `scripts/install-hooks.py` 다음에 `scripts/install-harness-hooks.py`를 실행한다. 두 설치기의 `--status`로 확인하고, 해제 시 공통 훅 다음에 TDD 훅의 `--remove`를 사용한다. 기존 훅의 파일 또는 지문이 달라진 경우 현재 파일을 보존하고 원인을 먼저 확인한다. 승인 미확인은 후보·기준 SHA와 신뢰된 원천, 위반은 범위·패키지·만료를 각각 확인한다. 원격 인프라가 실패하면 현재 권한에서 가능한 재실행 주체를 확인하고 같은 SHA의 실패 job과 확인 기록을 연결한다.
-- 잔여: [최종 제출 기준 대조](#final-submission-base)에서 합의한 선행 조건이 반영된 실제 main과 최종 후보의 판정을 대조한다. 증거 보존과 검증 브랜치 정리 뒤 Task 수용을 판단한다.
+- 종료: [최종 제출 기준 대조](#final-submission-base)에서 실제 main과 최종 후보를 대조하고 근거 보존과 검증 브랜치 정리를 확인했다.
 
 <a id="acceptance-proposal"></a>
 
@@ -112,9 +112,9 @@ Task당 한 파일을 쓰고 이 주석은 머리말에 한 번만 둔다. 착�
 - **대체 근거의 한계로 보존** — 원본 Java contract의 공식 승인 job에 외부 승인 자료를 공급한 예외·설정 단독 변경의 실제 원격 판정과 후속 job 실행. 원격 승인 job은 배치 승인을 검사하는 `--approval-only`를 사용한다. TDD 예외의 실트리거는 로컬 훅 조건에서 다룬다. 설정 단독 변경의 선택은 회귀·격리 판정에 근거하며, 사례 및 복원 push는 미실행이다. 새 운영 승인 경로는 별도 결정 사항이다.
 - **실제 훅 확인 범위** — [WSL의 실제 Codex](#codex-live-verification)에서 편집 허용·차단과 자동 후처리를 확인했다. Windows 네이티브는 사전 차단을 확인했으며, 중첩 샌드박드의 쓰기 실패로 허용 편집 뒤 자동 후처리까지 확인하지 못했다.
 - **Phase 1 실제 사례** — 모듈·HTTP 계약은 [실소스 사례](#phase-runtime-verification), 기존 Java 수정·삭제 뒤 유지 동작은 [관련 회귀](#existing-java-regression)에서 확인했다. 이전 승인 범위 사례 `7062756`의 빌드·런타임은 그 실행의 한계로 유지한다.
-- **최종 후보·종료** — [실제 제출 기준 대조](#final-submission-base)에서 독립 판독기와 최초 승인 카탈로그의 선행 반영 필요성을 확인했다. 최종 base·head 재검증과 단일 검증 브랜치 정리 뒤 Task를 수용한다. 실제 병합 및 #106 수용은 부모 Issue에서 판단한다. 같은 SHA의 실패 job을 재실행할 권한은 필요한 경우 실제 실행 주체를 확인한다.
+- **최종 후보·종료** — [실제 제출 기준 대조](#final-submission-base)에서 독립 판독기와 최초 승인 카탈로그의 선행 반영, 정확한 base·head·CI, 증거 보존과 검증 브랜치 삭제를 확인했다. Task 수용과 Issue 전체 수용은 각 본문에 연결했다.
 
-**수용 및 종료 판단** — [전달사항 변경 절차](<../../../../../harness/Task 공통 절차.md#revision>)에 따라 Issue의 결정과 r002, Task 참조를 맞추고 [GitHub #106](https://github.com/Mi-no-Kim/LumiaWiki/issues/106) 게시 본문에서 확정 기준을 재조회했다. 나머지 필수 확인과 정리 결과를 갖춘 뒤 Task의 수용 여부를 판단한다.
+**수용 및 종료 판단** — [전달사항 변경 절차](<../../../../../harness/Task 공통 절차.md#revision>)에 따라 Issue의 결정과 r002, Task 참조를 맞추고 [GitHub #106](https://github.com/Mi-no-Kim/LumiaWiki/issues/106) 게시 본문에서 확정 기준을 재조회했다. 최종 제출 결과와 정리까지 확인하고 [Task 결과](../task-004.md#result)에 수용을 기록했다.
 
 <a id="local-submission-exceptions"></a>
 
@@ -135,4 +135,10 @@ Task당 한 파일을 쓰고 이 주석은 머리말에 한 번만 둔다. 착�
 - 선행 반영: 사용자가 독립 승인 원천과 기준 검사기를 먼저 별도 제출하는 두 단계 방식을 승인했다. [초안 PR #119](https://github.com/Mi-no-Kim/LumiaWiki/pull/119)의 후보 `2585ea98d4c7572a7871716c454eb2168db907be`를 `main` `94babc10b4771e9f685d68b42301c58ea78df318`에 제출했다. 판독기·승인·정책·참조 자료 11개를 포함한다.
 - 확인: 자체·별도 에이전트가 선행 트리와 후속 최초 도입의 승인 지문 12개를 확인했다. 실제 Git 결합의 Issue 기록·실행 안내 두 문서 충돌을 후속 원본으로 해소한 합성 후보는 통과했고, 워크플로 지문만 변경하면 미확인이다. 하네스 도구 회귀 129건 및 원본 제출 판독기 회귀 7건, 검수 도구 회귀 8건이 로컬에서 통과했다. GitHub의 실제 합성 커밋 트리는 검수한 트리와 일치했고 [원격 Harness inventory](https://github.com/Mi-no-Kim/LumiaWiki/actions/runs/45491224957)의 Ubuntu·Windows가 모두 통과했다.
 - 실제 선행 기준: [PR #119](https://github.com/Mi-no-Kim/LumiaWiki/pull/119)의 최종 검사와 별도 검수를 확인하고 GitHub에서 병합했다. 실제 main `63626b1322ed571fd646d71cb2bde6280ff0c81d`의 두 부모와 트리가 검수한 후보 관계와 일치하고, 승인 판독기와 카탈로그가 이 기준에서 확인된다.
-- 잔여: 실제 main과 #106 최종 후보의 규칙·등록·기록과 관련 검사 결과를 대조한다. 검증 근거를 보존한 뒤 단일 검증 브랜치 정리와 Task 수용을 판단한다. #106 최종 병합은 사용자가 검증 결과를 확인한 뒤 정한다.
+- 실제 제출: [초안 PR #120](https://github.com/Mi-no-Kim/LumiaWiki/pull/120)의 head는 `03541dd93d47dc50d305640523d30bfdbc50f268`, GitHub 합성 후보는 `80655bd1026fa59f11aad77487f09a464d0666bb`이다. 합성 커밋의 두 부모와 검수 트리 `43c70d1d91d4707703f8308a6159c83cffec4ab3` 및 44개 변경 경로를 대조했다.
+- 실제 원격 검증: pull_request 이벤트의 [Harness inventory](https://github.com/Mi-no-Kim/LumiaWiki/actions/runs/45494416081) Ubuntu·Windows와 [Java contract](https://github.com/Mi-no-Kim/LumiaWiki/actions/runs/45494415951)의 승인·회귀가 성공했다. main 기준 판독기는 최초 도입 승인 입력 12개를 수용했다. 추적 백엔드가 없어 모듈·Spring 애플리케이션 런타임 작업은 비대상이며, 실행 결과는 별도 [Phase 1 정상 결합](#work-phase-ci)에 있다.
+- 자체·별도 검수: 실제 base와 합성 SHA, 후보 파일 트리, 승인 선택, 두 원격 실행의 개별 결과를 대조했다. 이전 Issue 후보의 코드가 유지됐으며 로컬 Python 148건, Gradle 회귀 17건이 통과했다.
+- 최종 병합: 사용자 승인 뒤 초안을 해제했다. 같은 합성 커밋의 [초안 해제 후 Harness inventory 실행](https://github.com/Mi-no-Kim/LumiaWiki/actions/runs/45496294491) Ubuntu·Windows와 기존 Java PR 실행을 자체·별도 검수했다. 실제 merge commit `4940ad043eb7f69a53f889953f53e4d9ffe640f1`의 부모가 `63626b13`·`03541dd9`이고 트리가 `43c70d1d`와 일치함을 확인했다.
+- 병합 후 실제 main 검증: `4940ad04`의 push 이벤트에서 [Harness inventory](https://github.com/Mi-no-Kim/LumiaWiki/actions/runs/45497053413) Ubuntu·Windows와 [Java contract](https://github.com/Mi-no-Kim/LumiaWiki/actions/runs/45497053497)의 승인 입력 12개·회귀를 확인했다. 추적 백엔드가 없어 런타임 작업은 비대상이었다.
+- 증거 보존·정리: Phase 1 정상 결합 `bd75af8c`와 트리 `e0587039`를 로컬 전용 태그 `verification/issue-106-phase1`에 보존했다. 의존하는 열린 PR이 없는 원격 `issue/106-phase1-ci-validation`을 삭제하고 ref 부재를 재조회했다.
+- 확인 범위: 공식 CI의 외부 승인 공급 사례와 Windows 네이티브 Codex의 허용 편집 뒤 자동 후처리는 합의한 검증 한계로 유지한다.

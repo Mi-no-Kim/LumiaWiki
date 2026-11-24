@@ -50,10 +50,10 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #111](https://github.c
 상태의 상세 의미·전환과 종료 판단은 공통 절차를 따른다.
 -->
 
-- 상태: 진행 중
-- 현재 진행 위치: [최종 후보 대조와 인계](#work-phase-handoff)
-- 다음 행동: 선행 반영된 실제 main을 기준으로 #106 최종 제출 후보의 검증 결과를 확인한다.
-- 막힌 조건: 실제 최종 후보의 검사·검수 및 증거 보존 전까지 Task 수용과 정리가 보류됐다. [기준 대조](artifacts/task-004-execution.md#final-submission-base)
+- 상태: 완료
+- 현재 진행 위치: [결과](#result)
+- 다음 행동: 없음 — [결과](#result)
+- 막힌 조건: 없음.
 
 <a id="assignment"></a>
 
@@ -92,7 +92,7 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #111](https://github.c
 
 - 대상·준비: 완료된 106-001~003의 부모 `16ae10da5b7e516523f486aa50a9cf5716e0f881`와 원격 Phase 1 `06f9d6500fe9f4bb5026fc71ccc0a8efe27b731d`를 사용한다. 공통 조상은 `94babc10b4771e9f685d68b42301c58ea78df318`다. #111의 부모가 #106임을 확인했다. 실행 시 원격 ref를 재조회한다.
 - 현재 합의: [확정 배정 r002](artifacts/task-004-assignment-r002.md#scope)와 [Issue 결정](issue.md#decision-5-submission-evidence)을 적용한다. 사용자가 승인 사례는 기존 원격 회귀와 격리 제출 판독으로 확인하고 공식 CI의 외부 승인 공급은 미확인으로 기록하는 문구를 확정했다. 단일 검증 브랜치와 단계별 자체·서브에이전트 검수를 적용한다.
-- 남은 확인: [선행 반영된 실제 main과 최종 제출 후보](artifacts/task-004-execution.md#final-submission-base)의 검사 결과를 대조하고 종료 요건을 확인한다.
+- 남은 확인: 없음. [실제 main과 최종 제출 후보](artifacts/task-004-execution.md#final-submission-base)의 검사, 병합 및 검증 브랜치 정리를 확인했다.
 - Task 전체 확인: 백엔드 없는 후보의 비대상, 실제 Phase 1 훅과 필수 CI, 최종 후보 사용·복구를 [전달본 완료 조건](artifacts/task-004-assignment-r002.md#acceptance)에 대조한다.
 - 수행 기록: [Task 106-004 수행 기록](artifacts/task-004-execution.md)
 
@@ -136,10 +136,10 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #111](https://github.c
 #### 승인된 검증용 ref에서 원격 CI 실행
 
 - 태그: 조사, 논의, 결정, 실행, 검수
-- [ ] 수행·확인 완료
+- [x] 수행·확인 완료
 - 할 일: `Mi-no-Kim/LumiaWiki`의 임시 브랜치 `issue/106-phase1-ci-validation` 하나에 선행 기준과 정상 결합을 순서대로 push한다. 정상 결합의 SHA와 결과를 보존한다. 예외·설정 사례는 기존 원격 회귀와 격리 제출 판독을 사용하고, 공식 CI의 외부 승인 공급과 사례별 push·복원은 미확인·미실행으로 기록한다.
-- 확인: 계정 `Mi-no-Kim`의 저장소 push와 결과·로그 조회를 확인했다. 검증 브랜치는 첫 push 전에 미생성이었고 현재 정상 결합 `bd75af8c`를 가리킨다. non-fast-forward는 금지된다. push 전에 조상 관계와 대상 사례의 변경분, 승인 원천을 확인하고, push 뒤 CI 이벤트의 실제 `before`·`after`를 예정 SHA와 대조한다. 첫 push는 Phase Quality 전체를 선택한다. 정상 결합의 Java contract·Phase Quality 개별 결과와 사례별 기대 판정을 각각 자체·별도 검수한다. Harness는 결합 트리에서 별도로 재현한다.
-- 정리: 사례별 push와 복원은 수행하지 않았다. 현재 검증 브랜치는 정상 결합을 가리키며, 확정한 증거와 SHA를 보존한 뒤 정리한다. 현 토큰의 Actions 재실행과 저장소 승인 변수 조회는 거부됐다. 인프라 실패 시 같은 SHA의 실패 작업만 사용자가 GitHub에서 재실행하는 안을 제안한다. SHA와 실행 근거를 보존한 뒤 임시 브랜치를 정리한다.
+- 확인: 계정 `Mi-no-Kim`의 저장소 push와 결과·로그 조회를 확인했다. 검증 브랜치는 첫 push 전에 미생성이었고 최종 CI 당시 정상 결합 `bd75af8c`를 가리켰다. non-fast-forward는 금지된다. push 전에 조상 관계와 대상 사례의 변경분, 승인 원천을 확인하고, push 뒤 CI 이벤트의 실제 `before`·`after`를 예정 SHA와 대조한다. 첫 push는 Phase Quality 전체를 선택한다. 정상 결합의 Java contract·Phase Quality 개별 결과와 사례별 기대 판정을 각각 자체·별도 검수한다. Harness는 결합 트리에서 별도로 재현한다.
+- 정리: 정상 결합을 로컬 전용 태그 `verification/issue-106-phase1`에 보존하고 원격 검증 브랜치를 삭제했다. 사례별 push와 복원은 미실행으로 기록했다. 원격 증거와 복구 한계는 수행 기록에 연결했다.
 - 수행 기록: [승인된 검증용 ref에서 원격 CI 실행](artifacts/task-004-execution.md#work-phase-ci)
 
 <a id="work-phase-handoff"></a>
@@ -147,7 +147,7 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #111](https://github.c
 #### 최종 후보 대조와 사용·복구 인계
 
 - 태그: 실행, 검수
-- [ ] 수행·확인 완료
+- [x] 수행·확인 완료
 - 할 일: 입력 단독 변경에서 관련 검사 선택을 대조하고 설정만 바뀐 승인·위반 사례, 판독 실패, 기존 Phase Quality 보존을 기록한다. 사용·복구 안내에 정확한 입력·재실행 방법·적용 대상 없음과 미확인 기준을 연결한다.
 - 확인: 최종 후보의 트리와 로컬·원격 결과를 자체·별도 검수하고, 후보 SHA 또는 트리가 바뀌면 영향받은 검사를 다시 확인한다. 독립 승인 원천과 판독기가 반영된 `main` `63626b13`을 기준으로 최종 후보의 판정을 대조한다.
 - 수행 기록: [최종 대조와 사용·복구 안내](artifacts/task-004-execution.md#work-phase-handoff)
@@ -165,4 +165,6 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #111](https://github.c
 
 - 내용: Phase 1과 #106의 격리 결합 `bd75af8c`을 고정하고 단일 검증 브랜치에서 정상 CI를 실행했다.
 - 확인: 정상 원격 Java contract·Phase Quality, [WSL 실제 Codex](artifacts/task-004-execution.md#codex-live-verification), [Phase 실소스 사례](artifacts/task-004-execution.md#phase-runtime-verification), [Java 수정·삭제 회귀](artifacts/task-004-execution.md#existing-java-regression)를 자체·별도 검수했다.
-- 잔여: 최종 제출 후보와 실제 결과 대조, 증거 보존과 검증 브랜치 정리. [최종 기준 대조](artifacts/task-004-execution.md#final-submission-base)
+- 최종 제출 검증: [#120](https://github.com/Mi-no-Kim/LumiaWiki/pull/120)의 실제 main `63626b13`, head `03541dd9`, 합성 `80655bd1`과 원격 검사를 자체·별도 검수했다. [최종 기준 대조](artifacts/task-004-execution.md#final-submission-base)
+- 수용: r002의 두 기준 환경 실행, 실제 제출과 승인 판정, 재현 및 사용·복구 안내를 [확정 기준과 근거](artifacts/task-004-execution.md#acceptance-proposal)에 대조했다. 검증 근거 보존과 원격 검증 브랜치 삭제를 확인했다.
+- 잔여: 필수 종료 작업 없음. 공식 CI 외부 승인 공급과 Windows 네이티브 Codex 후처리의 확인 범위는 수행 기록에 남겼다.
