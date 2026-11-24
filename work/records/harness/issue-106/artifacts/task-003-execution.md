@@ -21,4 +21,31 @@ Task당 한 파일을 쓰고 이 주석은 머리말에 한 번만 둔다. 착�
 - 할 일: [Task 계획](../task-003.md#work-http-inventory)
 - 조치·판단: 사용자가 최초 운영 공개 HTTP 목록 `[]`와 독립 기준 이력 보존 계획에 동의했다. [Issue 승인 결정](../issue.md#initial-http-approval)을 [기계 판독용 승인](task-003-initial-http-approval.json)과 연결했다.
 - 확인: Phase 1 로컬 `72c27a11dcb878c945914992ae2054125d8bba73`와 원격 `06f9d6500fe9f4bb5026fc71ccc0a8efe27b731d`의 추적 백엔드·DB 마이그레이션 파일에 차이가 없었다. 격리 Spring MVC에서 프로젝트 컨트롤러의 실제 `RequestMappingHandlerMapping`을 확인했다. 운영 프로필은 0개, `local`과 `test`는 각각 `GET /api/v1/_dev/foundation` 1개였다. 등록 실측과 기존 `FoundationApiTests.profileGatesDevEndpoint` 2건이 통과했다. 별도 검수로 적용 전달본과 확인 범위를 대조했다.
-- 잔여: 이 승인만 별도로 부모에 수용한다. 구현 PR의 실제 base에서 JSON과 Issue 앵커를 읽어 base 전체 SHA를 실행 근거의 `source.ref`로 채운다.
+- 잔여: 승인 전용 [PR #115](https://github.com/Mi-no-Kim/LumiaWiki/pull/115)는 자체·별도 검수와 Ubuntu·Windows CI 후 부모 `52198b1`에 반영했다. 최초 목록 대조는 [Spring 매핑 검증](#work-http-mappings)과 [제출 승인 판독기](#work-ci-candidates)에 남긴다.
+
+<a id="work-module"></a>
+
+## 업무 모듈 타입 참조와 순환
+
+- 할 일: [Task 계획](../task-003.md#work-module)
+- 조치·판단: ArchUnit으로 컴파일된 타입·공개 시그니처와 의존을 읽는다. 별도 검수에서 컴파일러가 지우는 내부 상수·지역 타입 참조를 재현해 javac가 해석한 소스 참조도 합쳤다.
+- 확인: JDK 21 회귀 11건에 공개 비순환·타 모듈 내부·직접/간접 순환·테스트 접근·가시성·소스 전용 참조를 포함했다. 검수 지적의 패키지 주석과 별도 공개 중첩 타입 표기를 보완하고 재검수했다. Phase 1 추적본을 격리 컴파일하여 실제 플러그인 보고서와 모듈 통과를 확인했다.
+- 잔여: 최종 제출 후보와 CI에서 함께 대조한다.
+
+<a id="work-http-mappings"></a>
+
+## 등록된 Spring HTTP 계약
+
+- 할 일: [Task 계획](../task-003.md#work-http-mappings)
+- 조치·판단: 승인된 초기 목록에 `http-106-003-initial`을 연결하고, Spring 실제 컨트롤러·라우터 등록의 명시 메서드·패턴을 읽는다.
+- 확인: 격리 Spring MVC 회귀 6건에서 빈 목록·복수 패턴·메서드·실제 개발 등록·추가/삭제/교체·불명 경계를 확인했다. 별도 검수에 따라 정적 라우터 선언 클래스와 등록 대상의 실제 핸들러·조건 동일성을 대조했다. Phase 1 Boot 애플리케이션을 DB 자동 구성 제외로 기동해 기본·운영·개발 등록의 대조를 통과했다.
+- 잔여: 전체 Phase 1 DB 구성과 원격 실행은 106-004에서 확인한다.
+
+<a id="work-ci-candidates"></a>
+
+## 제출 승인 판독기와 CI 입력
+
+- 할 일: [Task 계획](../task-003.md#work-ci-candidates)
+- 조치·판단: 실제 Git 기준의 기존 승인 판독기와 독립 자료를 사용한다. 입력 추가·변경·삭제는 Git 파일의 전후 지문을 대조한다. 검사기가 포함된 최초 기준을 별도로 수용하도록 분리했다.
+- 확인: 실제 Git 후보 회귀 6건에서 최초 빈 목록, 후보 자체 승인 거부, 메서드 교체 양쪽 승인, 규칙·목록·예외·설정 및 검사기 의존 단독 변경을 확인했다. 동일 게이트 검증의 Red `004d2dbdef2f428ba515fa6243b6bac6`와 Green `9a98920e4728488cac0ab5a863044dff`를 실제 인덱스와 대조했다.
+- 잔여: 개별 검사·부모 입력 가용성·최종 후보를 자체·별도 검수한 후 PR CI로 확인한다.

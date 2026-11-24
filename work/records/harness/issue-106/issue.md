@@ -33,8 +33,8 @@ Issue별 체크와 실제 기록은 이 본문에서 관리한다. 공통 문서
 
 - 상태: 진행 중
 - 현재 진행 위치: [3. Task 생성](#step-3)
-- 다음 행동: 3번 — [Task 106-003](task-003.md#execution-plan)의 최초 승인 근거를 기준 이력에 반영하고 모듈·HTTP·CI 검사 구현
-- 막힌 조건: 3번·승인 CI 검증 — [최초 공개 HTTP 승인](#initial-http-approval)이 구현 제출의 기준 이력에서 조회돼야 한다. 3번·Phase 1 원격 CI 실행 — [실행 조건](#task-execution-conditions)의 대상·이벤트·실제 권한 미확인 — 수행 전에 확인한다. 4번·최종 검사 — [Task 결과](#task-creation) 준비 전 — 모든 필수 결과를 받은 뒤 전체 수용 조건에 대조한다.
+- 다음 행동: 3번 — [Task 106-003](task-003.md#execution-plan)의 독립 CI 승인 검사기와 최초 검사 입력을 기준으로 수용하고 구현 후보 검증
+- 막힌 조건: 3번·승인 CI 검증 — 실제 제출 기준에 [승인 검사기와 입력 범위](#java-ci-bootstrap) 필요. 3번·Phase 1 원격 CI 실행 — [실행 조건](#task-execution-conditions)의 대상·이벤트·실제 권한 미확인 — 수행 전에 확인한다. 4번·최종 검사 — [Task 결과](#task-creation) 준비 전 — 모든 필수 결과를 받은 뒤 전체 수용 조건에 대조한다.
 
 <a id="sequence"></a>
 
@@ -143,6 +143,13 @@ Issue별 최소 활동 기준과 전체 수용 조건을 기록한다. 판단 �
 - 결정: 프로젝트 결정권자인 사용자가 최초 공개 HTTP API의 전체 목록 `[]`와 기본 이력을 구현 제출 후보와 독립적으로 보존하는 계획에 동의했다.
 - 근거: [격리한 Phase 1 Spring MVC 등록 대조](artifacts/task-003-execution.md#work-http-inventory)에서 운영 프로젝트 명시 매핑이 없었고, `GET /api/v1/_dev/foundation`은 개발 프로필 `local`·`test`에만 등록됐다. 사용자는 이 결과와 최초 빈 목록 제안을 확인한 뒤 “그렇게 하자”라고 답했다.
 - 적용: [기계 판독용 승인 원천](artifacts/task-003-initial-http-approval.json)은 `http-106-003-initial`의 정확한 `scope.initialHttp: []`만 기록한다. 실행 시 구현 PR의 실제 base에서 이 파일과 Issue 앵커를 읽고, 검증한 전체 base 커밋 ID를 `source.ref`로 넣어 최초 목록에 연결한다.
+
+<a id="java-ci-bootstrap"></a>
+
+#### 최초 CI 검사 입력의 기준
+
+- 근거: [Task 106-003에 위임한 CI 연결](#task-execution-conditions)과 사용자 계획 합의를 적용한다. 최초 빈 목록 결정은 [PR #115](https://github.com/Mi-no-Kim/LumiaWiki/pull/115)로 `52198b1`에 먼저 수용했다.
+- 적용: 승인 판독기와 [최초 검사 설정의 정확한 파일 지문](<../../../../docs/details/development/java-ci-approvals.json>)을 구현 제출과 별도로 검수한다. 실제 부모 이력의 승인 판독기가 제출의 SHA와 Git 파일을 대조한다. 최초 설정 지문은 대상 워크플로가 기준 이력에 없을 때의 추가에만 적용한다.
 
 <a id="task-creation"></a>
 
