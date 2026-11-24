@@ -234,6 +234,117 @@
         },
         "ok": true
       }
+    },
+    {
+      "id": "use-canonical-hook-working-directory",
+      "kind": "behavior",
+      "spec": "e2c454ab2f5911c9eb6e9ad856a3ff1cedbc3142b274914012e74c3593769f2a",
+      "worktree": "dbb9be04932dd988d2cc",
+      "baseline": "0c0beef192dcfd28db6f4a10e64d2c6627a84a6a",
+      "task": "work/records/harness/issue-106/task-002.md",
+      "finished": true,
+      "red": {
+        "runId": "fa9d00ac0aec4f7f81036f17dcfcaa16",
+        "started": 1795531010.5479567,
+        "finishedAt": 1795531011.4346828,
+        "command": [
+          "python",
+          "-B",
+          "-X",
+          "utf8",
+          "-c",
+          "import json\nfrom pathlib import Path\nimport sys\nimport unittest\nsys.path.insert(0, \"scripts/tests\")\nsuite = unittest.defaultTestLoader.loadTestsFromName('test_java_hooks.JavaHooksTests.test_edit_hook_resolves_equivalent_working_directory')\nnames = [test.id() for test in suite]\nresult = unittest.TextTestRunner().run(suite)\nPath(sys.argv[1]).write_text(json.dumps({\n    \"runId\": sys.argv[2], \"tests\": result.testsRun, \"failures\": len(result.failures),\n    \"errors\": len(result.errors), \"skipped\": len(result.skipped), \"names\": names,\n    \"failedNames\": [test.id() for test, _ in result.failures],\n}), encoding=\"utf-8\")\nsys.exit(not result.wasSuccessful())",
+          "{report}",
+          "{run_id}"
+        ],
+        "exitCode": 1,
+        "result": {
+          "tests": 1,
+          "failures": 1,
+          "errors": 0,
+          "skipped": 0,
+          "names": [
+            "test_java_hooks.JavaHooksTests.test_edit_hook_resolves_equivalent_working_directory"
+          ],
+          "failedNames": [
+            "test_java_hooks.JavaHooksTests.test_edit_hook_resolves_equivalent_working_directory"
+          ]
+        },
+        "manifest": {
+          ".codex/hooks.json": "9eee6609be1b74000b88e7debede7ad780c903b49ede61f30a70cc09797c1124",
+          ".gitattributes": null,
+          "backend/build.gradle": null,
+          "backend/gradle/wrapper/gradle-wrapper.properties": null,
+          "backend/settings.gradle": null,
+          "backend/src/main/resources/application.yaml": null,
+          "backend/src/test/resources/application-test.yaml": null,
+          "frontend/package-lock.json": null,
+          "frontend/package.json": null,
+          "frontend/src/test/setup.ts": null,
+          "frontend/tsconfig.json": null,
+          "frontend/vite.config.mjs": null,
+          "frontend/vitest.config.mjs": null,
+          "package-lock.json": null,
+          "package.json": null,
+          "scripts/check-java.py": "cd64b7df59928d1b3811f374a946fbfea54b33bd50fbfe9d6c1964c79ed0decf",
+          "scripts/tdd-check.py": "857781c52c190f94ec186edfa07ba996ed5b80afbc37ab8c68246252e7cfe014",
+          "scripts/tdd-run.py": "a65da4989ccf12b5e02b062bb23897c7237a1f3705356786f619392cedc37316",
+          "scripts/tdd_core.py": "d1427d46bf0e80087e6943656dfa5391227255a2f21ce488ca52e532807fe068",
+          "scripts/test-python.py": null,
+          "scripts/tests/test_java_hooks.py": "988fdd66547735b8e2e9414d31a3931c87fb142b7d2e8884c82870558bf5280c"
+        },
+        "ok": false
+      },
+      "final": {
+        "runId": "3b0e3a62a5df40fbabccbf1b54daf003",
+        "started": 1795531011.8415203,
+        "finishedAt": 1795531012.7690406,
+        "command": [
+          "python",
+          "-B",
+          "-X",
+          "utf8",
+          "-c",
+          "import json\nfrom pathlib import Path\nimport sys\nimport unittest\nsys.path.insert(0, \"scripts/tests\")\nsuite = unittest.defaultTestLoader.loadTestsFromName('test_java_hooks.JavaHooksTests.test_edit_hook_resolves_equivalent_working_directory')\nnames = [test.id() for test in suite]\nresult = unittest.TextTestRunner().run(suite)\nPath(sys.argv[1]).write_text(json.dumps({\n    \"runId\": sys.argv[2], \"tests\": result.testsRun, \"failures\": len(result.failures),\n    \"errors\": len(result.errors), \"skipped\": len(result.skipped), \"names\": names,\n    \"failedNames\": [test.id() for test, _ in result.failures],\n}), encoding=\"utf-8\")\nsys.exit(not result.wasSuccessful())",
+          "{report}",
+          "{run_id}"
+        ],
+        "exitCode": 0,
+        "result": {
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "names": [
+            "test_java_hooks.JavaHooksTests.test_edit_hook_resolves_equivalent_working_directory"
+          ],
+          "failedNames": []
+        },
+        "manifest": {
+          ".codex/hooks.json": "9eee6609be1b74000b88e7debede7ad780c903b49ede61f30a70cc09797c1124",
+          ".gitattributes": null,
+          "backend/build.gradle": null,
+          "backend/gradle/wrapper/gradle-wrapper.properties": null,
+          "backend/settings.gradle": null,
+          "backend/src/main/resources/application.yaml": null,
+          "backend/src/test/resources/application-test.yaml": null,
+          "frontend/package-lock.json": null,
+          "frontend/package.json": null,
+          "frontend/src/test/setup.ts": null,
+          "frontend/tsconfig.json": null,
+          "frontend/vite.config.mjs": null,
+          "frontend/vitest.config.mjs": null,
+          "package-lock.json": null,
+          "package.json": null,
+          "scripts/check-java.py": "893d7c5171ebc42c1422c49fccf490d5606d1379075c7829d2642cb78c1cbfed",
+          "scripts/tdd-check.py": "857781c52c190f94ec186edfa07ba996ed5b80afbc37ab8c68246252e7cfe014",
+          "scripts/tdd-run.py": "a65da4989ccf12b5e02b062bb23897c7237a1f3705356786f619392cedc37316",
+          "scripts/tdd_core.py": "d1427d46bf0e80087e6943656dfa5391227255a2f21ce488ca52e532807fe068",
+          "scripts/test-python.py": null,
+          "scripts/tests/test_java_hooks.py": "988fdd66547735b8e2e9414d31a3931c87fb142b7d2e8884c82870558bf5280c"
+        },
+        "ok": true
+      }
     }
   ]
 }

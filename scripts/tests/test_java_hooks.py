@@ -206,6 +206,15 @@ class JavaHooksTests(unittest.TestCase):
         correct = self.run_python(CHECKER, "--mode", "after-edit", "--hook", event=self.event(TEST, "Add"))
         self.assertEqual("", correct.stdout, correct.stderr)
 
+    def test_edit_hook_resolves_equivalent_working_directory(self):
+        alias_parent = self.root.parent / "other-directory"
+        alias_parent.mkdir()
+        event = self.event(PRODUCTION, "Update")
+        event["cwd"] = str(alias_parent / ".." / self.root.name)
+        result = self.run_python(CHECKER, "--mode", "before-edit", "--hook", event=event)
+        self.assertEqual(0, result.returncode, result.stderr)
+        self.assertIn('"permissionDecision": "deny"', result.stdout, result.stderr)
+
     def test_real_tdd_runner_linked_artifacts_and_closed_cycle(self):
         self.java(PRODUCTION, body="int result() { return 0; }")
         self.write(TASK, "# Fixture\n<a id=\"scope\"></a>\n"

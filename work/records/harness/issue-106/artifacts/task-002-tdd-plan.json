@@ -59,6 +59,31 @@
         "{report}",
         "{run_id}"
       ]
+    },
+    {
+      "id": "use-canonical-hook-working-directory",
+      "kind": "behavior",
+      "expectation": "Require the edit hook to apply the same rules when its working directory has an equivalent spelling",
+      "targets": [
+        "scripts/check-java.py"
+      ],
+      "tests": [
+        "scripts/tests/test_java_hooks.py"
+      ],
+      "adapter": "unittest",
+      "expectedFailures": [
+        "test_java_hooks.JavaHooksTests.test_edit_hook_resolves_equivalent_working_directory"
+      ],
+      "command": [
+        "python",
+        "-B",
+        "-X",
+        "utf8",
+        "-c",
+        "import json\nfrom pathlib import Path\nimport sys\nimport unittest\nsys.path.insert(0, \"scripts/tests\")\nsuite = unittest.defaultTestLoader.loadTestsFromName('test_java_hooks.JavaHooksTests.test_edit_hook_resolves_equivalent_working_directory')\nnames = [test.id() for test in suite]\nresult = unittest.TextTestRunner().run(suite)\nPath(sys.argv[1]).write_text(json.dumps({\n    \"runId\": sys.argv[2], \"tests\": result.testsRun, \"failures\": len(result.failures),\n    \"errors\": len(result.errors), \"skipped\": len(result.skipped), \"names\": names,\n    \"failedNames\": [test.id() for test, _ in result.failures],\n}), encoding=\"utf-8\")\nsys.exit(not result.wasSuccessful())",
+        "{report}",
+        "{run_id}"
+      ]
     }
   ]
 }

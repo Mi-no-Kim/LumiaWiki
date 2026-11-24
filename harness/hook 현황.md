@@ -6,8 +6,8 @@
 | 항목·원천 | 적용 조건 | 동작 | 확인 상태 |
 |---|---|---|---|
 | [공통 기록 주석·상태 · Codex PostToolUse](<../.codex/hooks.json>) | 로컬 대화·실행에서 신뢰한 hook의 지원 도구 종료 후(동기) | 기존 명시 보호와 신규 Issue·Task·수행 기록 자동 검사·피드백; 자동 원복 없음 | 재확인 필요 |
-| [Java 배치 · Codex PostToolUse](<../.codex/hooks.json>) | 신뢰한 프로젝트에서 apply_patch의 지원 이벤트를 동기로 처리할 때 | Java 생성·이동 목적지의 경로·패키지·이름 위반을 알림 | 확인 |
-| [Java TDD 근거 · Codex PreToolUse](<../.codex/hooks.json>) | 신뢰한 프로젝트에서 apply_patch의 지원 이벤트를 동기로 처리할 때 | 운영 Java 편집의 유효한 Red 또는 확인한 예외를 대조하고 필수 미확인을 차단 | 확인 |
+| [Java 배치 · Codex PostToolUse](<../.codex/hooks.json>) | 신뢰한 프로젝트에서 apply_patch의 지원 이벤트를 동기로 처리할 때 | Java 생성·이동 목적지의 경로·패키지·이름 위반을 알림 | 재확인 필요 |
+| [Java TDD 근거 · Codex PreToolUse](<../.codex/hooks.json>) | 신뢰한 프로젝트에서 apply_patch의 지원 이벤트를 동기로 처리할 때 | 운영 Java 편집의 유효한 Red 또는 확인한 예외를 대조하고 필수 미확인을 차단 | 재확인 필요 |
 | [자동 닫기 표현 검사 · Git commit-msg](<../scripts/hooks/commit-msg>) | Git 커밋 메시지 확정 시; 기존 사용자 hook 성공 후 | 최종 메시지의 닫기 키워드·Issue 참조 결합 거부 | 재확인 필요 |
 | [현황·기록·공통 주석·Java 검사 · Git pre-commit](<../scripts/hooks/pre-commit>) | Git 커밋 전; 기존 사용자 hook 성공 후 | 기존 검사에 이어 실제 인덱스의 Java 생성·이동, 승인과 TDD 근거를 확인 | 확인 |
 | [브랜치 이름과 백업 이력 검사 · Git pre-push](<../scripts/hooks/pre-push>) | Git 푸시 전; 설치한 복제본에서 기존 사용자 hook 성공 후 | 원격 브랜치 대상 이름과 로컬 전용 백업 이력을 검사 | 확인 |
@@ -71,13 +71,13 @@
       "purpose": "Java 생성·이동 목적지의 경로·패키지·이름 위반을 알림",
       "when": "신뢰한 프로젝트에서 apply_patch의 지원 이벤트를 동기로 처리할 때",
       "verification": {
-        "status": "verified",
+        "status": "stale",
         "sourceDigest": "b2bc07acf61906261c0c4eeadf40589a218f18c9f75924b8ad2b1a9d49d0e515",
         "environment": "Windows / Python 3.14 / Git 2.52 / Codex CLI 0.172.0 / 격리 저장소",
         "scope": "임시 CLI 설정의 실제 apply_patch에서 테스트 Java 배치 위반을 편집 뒤 모델 입력에 전달했다.",
         "evidence": "work/records/harness/issue-106/artifacts/task-002-execution.md#work-hooks"
       },
-      "sourceDigest": "b2bc07acf61906261c0c4eeadf40589a218f18c9f75924b8ad2b1a9d49d0e515"
+      "sourceDigest": "3ec1f1cdcadaae4cf8eb1b5a02a38f95b014d55f55f6f052be1a7d410ce4f500"
     },
     {
       "id": "codex:.codex/hooks.json:PreToolUse:0:0",
@@ -95,13 +95,13 @@
       "purpose": "운영 Java 편집의 유효한 Red 또는 확인한 예외를 대조하고 필수 미확인을 차단",
       "when": "신뢰한 프로젝트에서 apply_patch의 지원 이벤트를 동기로 처리할 때",
       "verification": {
-        "status": "verified",
+        "status": "stale",
         "sourceDigest": "b2bc07acf61906261c0c4eeadf40589a218f18c9f75924b8ad2b1a9d49d0e515",
         "environment": "Windows / Python 3.14 / Git 2.52 / Codex CLI 0.172.0 / 격리 저장소",
         "scope": "임시 CLI 설정의 실제 apply_patch에서 운영 Java 무근거 편집을 거부했다.",
         "evidence": "work/records/harness/issue-106/artifacts/task-002-execution.md#work-hooks"
       },
-      "sourceDigest": "b2bc07acf61906261c0c4eeadf40589a218f18c9f75924b8ad2b1a9d49d0e515"
+      "sourceDigest": "3ec1f1cdcadaae4cf8eb1b5a02a38f95b014d55f55f6f052be1a7d410ce4f500"
     },
     {
       "id": "git:commit-msg",
@@ -153,15 +153,15 @@
         "scripts/rule_comments.py",
         "scripts/tdd_core.py"
       ],
-      "sourceDigest": "fb8bdaffbe49b91edec9f39d71c75590c98b3ab0e16970f8638d2546c286d28c",
+      "sourceDigest": "4ab1875a39a894e672489df5c7dff8c55687754fdcb5e0eb144390ad530918dc",
       "title": "현황·기록·공통 주석·Java 검사 · Git pre-commit",
       "purpose": "기존 검사에 이어 실제 인덱스의 Java 생성·이동, 승인과 TDD 근거를 확인",
       "when": "Git 커밋 전; 기존 사용자 hook 성공 후",
       "verification": {
         "status": "verified",
-        "sourceDigest": "fb8bdaffbe49b91edec9f39d71c75590c98b3ab0e16970f8638d2546c286d28c",
-        "environment": "Windows / Python 3.14 / Git 2.52 / Codex CLI 0.172.0 / 격리 저장소",
-        "scope": "격리 Git 실제 커밋으로 기존 훅 선행, 정상·위반과 실제 인덱스를 확인했다. Phase 1 조합에서도 정상·누락 근거를 대조했다.",
+        "sourceDigest": "4ab1875a39a894e672489df5c7dff8c55687754fdcb5e0eb144390ad530918dc",
+        "environment": "Windows / Python 3.14 / Git 2.52 / 격리 저장소",
+        "scope": "경로 표기 보완 후 격리 Git 실제 커밋으로 기존 훅 선행과 실제 인덱스의 Java 위반 차단·정상 통과를 재확인했다.",
         "evidence": "work/records/harness/issue-106/artifacts/task-002-execution.md#work-verification"
       }
     },

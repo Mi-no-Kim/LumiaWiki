@@ -31,8 +31,8 @@ def patch_operations(view, event):
     first, *lines = text.splitlines()
     if first != "*** Begin Patch" or not lines or lines[-1] != "*** End Patch":
         raise ValueError("Cannot identify apply_patch operations")
-    cwd = Path(event.get("cwd") or view.root)
-    if not cwd.resolve().is_relative_to(view.root):
+    cwd = Path(event.get("cwd") or view.root).resolve()
+    if not cwd.is_relative_to(view.root):
         raise ValueError("Edit working directory is outside the repository")
 
     def path(value):
