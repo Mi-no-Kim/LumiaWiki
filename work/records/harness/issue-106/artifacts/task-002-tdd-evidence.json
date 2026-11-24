@@ -123,6 +123,117 @@
         },
         "ok": true
       }
+    },
+    {
+      "id": "prepare-parent-document-blobs",
+      "kind": "behavior",
+      "spec": "27b04e457fc11947214e4b0794d40841aefa4a3ad9c9b82b73f7b66d262006e4",
+      "worktree": "cfd7a98659ca3263d848",
+      "baseline": "7f9a95574612d6dc4b78648be4259d7f3130ee29",
+      "task": "work/records/harness/issue-106/task-002.md",
+      "finished": true,
+      "red": {
+        "runId": "0d93d7d2e7dc4adab474b7b318b813f7",
+        "started": 1795530629.6117685,
+        "finishedAt": 1795530632.1051686,
+        "command": [
+          "python",
+          "-B",
+          "-X",
+          "utf8",
+          "-c",
+          "import json\nfrom pathlib import Path\nimport sys\nimport unittest\nsys.path.insert(0, \"scripts/tests\")\nsuite = unittest.defaultTestLoader.loadTestsFromName('test_work_records.CandidateTests.test_sparse_ci_prepares_missing_parent_documents_only')\nnames = [test.id() for test in suite]\nresult = unittest.TextTestRunner().run(suite)\nPath(sys.argv[1]).write_text(json.dumps({\n    \"runId\": sys.argv[2], \"tests\": result.testsRun, \"failures\": len(result.failures),\n    \"errors\": len(result.errors), \"skipped\": len(result.skipped), \"names\": names,\n    \"failedNames\": [test.id() for test, _ in result.failures],\n}), encoding=\"utf-8\")\nsys.exit(not result.wasSuccessful())",
+          "{report}",
+          "{run_id}"
+        ],
+        "exitCode": 1,
+        "result": {
+          "tests": 1,
+          "failures": 1,
+          "errors": 0,
+          "skipped": 0,
+          "names": [
+            "test_work_records.CandidateTests.test_sparse_ci_prepares_missing_parent_documents_only"
+          ],
+          "failedNames": [
+            "test_work_records.CandidateTests.test_sparse_ci_prepares_missing_parent_documents_only"
+          ]
+        },
+        "manifest": {
+          ".codex/hooks.json": "9eee6609be1b74000b88e7debede7ad780c903b49ede61f30a70cc09797c1124",
+          ".gitattributes": null,
+          ".github/workflows/harness-inventory.yml": "2690583b9f9903000604b8c93a5dad2660d8f155602a19dec40a2b439f45edb3",
+          "backend/build.gradle": null,
+          "backend/gradle/wrapper/gradle-wrapper.properties": null,
+          "backend/settings.gradle": null,
+          "backend/src/main/resources/application.yaml": null,
+          "backend/src/test/resources/application-test.yaml": null,
+          "frontend/package-lock.json": null,
+          "frontend/package.json": null,
+          "frontend/src/test/setup.ts": null,
+          "frontend/tsconfig.json": null,
+          "frontend/vite.config.mjs": null,
+          "frontend/vitest.config.mjs": null,
+          "package-lock.json": null,
+          "package.json": null,
+          "scripts/tdd-check.py": "857781c52c190f94ec186edfa07ba996ed5b80afbc37ab8c68246252e7cfe014",
+          "scripts/tdd-run.py": "a65da4989ccf12b5e02b062bb23897c7237a1f3705356786f619392cedc37316",
+          "scripts/tdd_core.py": "d1427d46bf0e80087e6943656dfa5391227255a2f21ce488ca52e532807fe068",
+          "scripts/test-python.py": null,
+          "scripts/tests/test_work_records.py": "5418ea799a42cf233ae9ef7c10c4d7f531163c3f31791578e5e3278b4b82f762"
+        },
+        "ok": false
+      },
+      "final": {
+        "runId": "7cd5922defde4afc87fbe0d7aa2da1b5",
+        "started": 1795530632.4950378,
+        "finishedAt": 1795530636.423239,
+        "command": [
+          "python",
+          "-B",
+          "-X",
+          "utf8",
+          "-c",
+          "import json\nfrom pathlib import Path\nimport sys\nimport unittest\nsys.path.insert(0, \"scripts/tests\")\nsuite = unittest.defaultTestLoader.loadTestsFromName('test_work_records.CandidateTests.test_sparse_ci_prepares_missing_parent_documents_only')\nnames = [test.id() for test in suite]\nresult = unittest.TextTestRunner().run(suite)\nPath(sys.argv[1]).write_text(json.dumps({\n    \"runId\": sys.argv[2], \"tests\": result.testsRun, \"failures\": len(result.failures),\n    \"errors\": len(result.errors), \"skipped\": len(result.skipped), \"names\": names,\n    \"failedNames\": [test.id() for test, _ in result.failures],\n}), encoding=\"utf-8\")\nsys.exit(not result.wasSuccessful())",
+          "{report}",
+          "{run_id}"
+        ],
+        "exitCode": 0,
+        "result": {
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "names": [
+            "test_work_records.CandidateTests.test_sparse_ci_prepares_missing_parent_documents_only"
+          ],
+          "failedNames": []
+        },
+        "manifest": {
+          ".codex/hooks.json": "9eee6609be1b74000b88e7debede7ad780c903b49ede61f30a70cc09797c1124",
+          ".gitattributes": null,
+          ".github/workflows/harness-inventory.yml": "7246c472b638c6cfb8b8ca279e0324aba32f99cb9d3700f5bf6acde28952e3ec",
+          "backend/build.gradle": null,
+          "backend/gradle/wrapper/gradle-wrapper.properties": null,
+          "backend/settings.gradle": null,
+          "backend/src/main/resources/application.yaml": null,
+          "backend/src/test/resources/application-test.yaml": null,
+          "frontend/package-lock.json": null,
+          "frontend/package.json": null,
+          "frontend/src/test/setup.ts": null,
+          "frontend/tsconfig.json": null,
+          "frontend/vite.config.mjs": null,
+          "frontend/vitest.config.mjs": null,
+          "package-lock.json": null,
+          "package.json": null,
+          "scripts/tdd-check.py": "857781c52c190f94ec186edfa07ba996ed5b80afbc37ab8c68246252e7cfe014",
+          "scripts/tdd-run.py": "a65da4989ccf12b5e02b062bb23897c7237a1f3705356786f619392cedc37316",
+          "scripts/tdd_core.py": "d1427d46bf0e80087e6943656dfa5391227255a2f21ce488ca52e532807fe068",
+          "scripts/test-python.py": null,
+          "scripts/tests/test_work_records.py": "5418ea799a42cf233ae9ef7c10c4d7f531163c3f31791578e5e3278b4b82f762"
+        },
+        "ok": true
+      }
     }
   ]
 }

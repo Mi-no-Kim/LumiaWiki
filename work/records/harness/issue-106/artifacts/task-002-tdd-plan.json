@@ -34,6 +34,31 @@
         "{report}",
         "{run_id}"
       ]
+    },
+    {
+      "id": "prepare-parent-document-blobs",
+      "kind": "behavior",
+      "expectation": "Restore only required parent documents after validating the raw API response",
+      "targets": [
+        ".github/workflows/harness-inventory.yml"
+      ],
+      "tests": [
+        "scripts/tests/test_work_records.py"
+      ],
+      "adapter": "unittest",
+      "expectedFailures": [
+        "test_work_records.CandidateTests.test_sparse_ci_prepares_missing_parent_documents_only"
+      ],
+      "command": [
+        "python",
+        "-B",
+        "-X",
+        "utf8",
+        "-c",
+        "import json\nfrom pathlib import Path\nimport sys\nimport unittest\nsys.path.insert(0, \"scripts/tests\")\nsuite = unittest.defaultTestLoader.loadTestsFromName('test_work_records.CandidateTests.test_sparse_ci_prepares_missing_parent_documents_only')\nnames = [test.id() for test in suite]\nresult = unittest.TextTestRunner().run(suite)\nPath(sys.argv[1]).write_text(json.dumps({\n    \"runId\": sys.argv[2], \"tests\": result.testsRun, \"failures\": len(result.failures),\n    \"errors\": len(result.errors), \"skipped\": len(result.skipped), \"names\": names,\n    \"failedNames\": [test.id() for test, _ in result.failures],\n}), encoding=\"utf-8\")\nsys.exit(not result.wasSuccessful())",
+        "{report}",
+        "{run_id}"
+      ]
     }
   ]
 }
