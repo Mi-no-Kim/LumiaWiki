@@ -138,6 +138,25 @@ def verify_settings(previous, candidate, settings, authorization):
             raise ValueError(f"Java checker input approval unconfirmed: {path}")
 
 
+def accepted_input_changes(catalog, previous, candidate):
+    entries = catalog.get("inputChanges", [])
+    if not catalog.get("bootstrap"):
+        return entries
+    if candidate.read(WORKFLOW) is None or previous.read(WORKFLOW) is not None:
+        return []
+    if previous.git("rev-parse", "--is-shallow-repository").strip() != b"false":
+        raise ValueError("Full base history is required to verify the first Java workflow installation")
+    if previous.git("log", "--full-history", "-1", "--format=%H", previous.commit, "--", WORKFLOW):
+        return []
+    if WORKFLOW not in {entry["path"] for entry in entries}:
+        raise ValueError("Bootstrap approval does not identify the workflow installation")
+    for entry in entries:
+        path = entry["path"]
+        if entry["before"] != fingerprint(previous.read(path)) or entry["after"] != fingerprint(candidate.read(path)):
+            return []
+    return entries
+
+
 def context_data(previous, candidate, trusted_path):
     """Only a caller outside the checkout or a record from the actual base can supply approvals."""
     trusted = Authorization(candidate, previous.commit, candidate.commit, trusted_path)
@@ -155,8 +174,7 @@ def context_data(previous, candidate, trusted_path):
             raise ValueError("Unsupported base Java approval catalog")
         reference = {**accepted["source"], "ref": previous.commit}
         trusted.source(reference)
-        if not accepted.get("bootstrap") or previous.read(WORKFLOW) is None:
-            data["inputChanges"] = [*data.get("inputChanges", []), *accepted.get("inputChanges", [])]
+        data["inputChanges"] = [*data.get("inputChanges", []), *accepted_input_changes(accepted, previous, candidate)]
         for record in accepted.get("approvals", []):
             record = {**record, "source": {**record["source"], "ref": previous.commit}}
             trusted.source(record["source"])

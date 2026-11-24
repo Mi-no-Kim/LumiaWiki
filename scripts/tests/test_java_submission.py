@@ -162,6 +162,33 @@ class JavaSubmissionTests(unittest.TestCase):
                     self.assertTrue(checks["approval"] and checks["module"])
                     self.check(base, head, status="unconfirmed")
 
+    def test_bootstrap_requires_complete_first_installation_and_is_not_reusable(self):
+        self.write(INITIAL, self.approved(initialHttp=[]))
+        self.write(HTTP, {"version": 1, "initialApproval": ID, "entries": []})
+        build = "scripts/java-contract/build.gradle"
+        sources = {SETTINGS: "name: First installation\n", build: "plugins {}\n"}
+        self.write(APPROVALS, {
+            "version": 1, "bootstrap": True, "source": {"path": ISSUE, "anchor": ANCHOR},
+            "inputChanges": [{"path": path, "before": None, "after": hashlib.sha256(value.encode()).hexdigest()}
+                             for path, value in sources.items()],
+        })
+        base = self.commit()
+        self.write(build, sources[build])
+        self.check(base, self.commit(), status="unconfirmed")
+        self.write(SETTINGS, sources[SETTINGS])
+        first_installation = self.commit()
+        self.check(base, first_installation, status="pass")
+        for path in sources:
+            (self.root / path).unlink()
+        removed = self.commit()
+        for path, value in sources.items():
+            self.write(path, value)
+        reintroduced = self.commit()
+        self.check(removed, reintroduced, status="unconfirmed")
+        (self.root / ".git/shallow").write_text(removed + "\n", encoding="utf-8", newline="\n")
+        result = self.check(removed, reintroduced, status="unconfirmed")
+        self.assertIn("Full base history", result["reason"])
+
     def test_exact_http_method_replacement_requires_both_changes(self):
         base = self.base_with_inventory([{"method": "GET", "path": "/example", "approval": ID}])
         new_id = "change-approved"

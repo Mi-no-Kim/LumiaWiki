@@ -149,7 +149,7 @@ Issue별 최소 활동 기준과 전체 수용 조건을 기록한다. 판단 �
 #### 최초 CI 검사 입력의 기준
 
 - 근거: [Task 106-003에 위임한 CI 연결](#task-execution-conditions)과 사용자 계획 합의를 적용한다. 최초 빈 목록 결정은 [PR #115](https://github.com/Mi-no-Kim/LumiaWiki/pull/115)로 `52198b1`에 먼저 수용했다.
-- 적용: 승인 판독기와 [최초 검사 설정의 정확한 파일 지문](<../../../../docs/details/development/java-ci-approvals.json>)을 구현 제출과 별도로 검수한다. 실제 부모 이력의 승인 판독기가 제출의 SHA와 Git 파일을 대조한다. 최초 설정 지문은 대상 워크플로가 기준 이력에 없을 때의 추가에만 적용한다.
+- 적용: 승인 판독기와 [최초 검사 설정의 정확한 파일 지문](<../../../../docs/details/development/java-ci-approvals.json>)을 구현 제출과 별도로 검수한다. 실제 부모 이력의 승인 판독기가 제출의 SHA와 Git 파일을 대조한다. 최초 설정 지문은 기준 전체 이력에서 워크플로 도입이 없고 후보에 승인한 전체 묶음이 추가될 때만 적용한다.
 
 <a id="task-creation"></a>
 
