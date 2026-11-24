@@ -1,11 +1,21 @@
 #!/bin/sh
 # lumia-harness-inventory-v1
-# inventory-dependencies: ["scripts/check-harness-inventory.py", "scripts/harness_inventory.py", "scripts/install-harness-hooks.py", "scripts/check-work-records.py", "scripts/check-issue-rule-comments.py", "scripts/issue_rule_comments.py", "scripts/check-rule-comments.py", "scripts/rule_comments.py", "harness/rule-comments.json", "harness/templates/issue.md", "harness/templates/task.md", "harness/templates/task-execution.md", "harness/examples/issue-body-example-42.md", "harness/examples/task-body-example-43-002.md", "harness/examples/task-body-example-db-method.md", "harness/examples/task-body-example-recording.md", "harness/examples/task-execution-example.md"]
+# inventory-dependencies: ["scripts/check-harness-inventory.py", "scripts/harness_inventory.py", "scripts/install-harness-hooks.py", "scripts/check-work-records.py", "scripts/check-issue-rule-comments.py", "scripts/issue_rule_comments.py", "scripts/check-rule-comments.py", "scripts/rule_comments.py", "harness/rule-comments.json", "harness/templates/issue.md", "harness/templates/task.md", "harness/templates/task-execution.md", "harness/examples/issue-body-example-42.md", "harness/examples/task-body-example-43-002.md", "harness/examples/task-body-example-db-method.md", "harness/examples/task-body-example-recording.md", "harness/examples/task-execution-example.md", "docs/details/development/java-policy.json", "scripts/check-java.py", "scripts/java_guard.py", "scripts/tdd_core.py"]
 hook_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd) || exit 2
-if [ -f "$hook_dir/pre-commit.harness-original" ]; then
-  "$hook_dir/pre-commit.harness-original" "$@" || exit $?
-fi
 root=$(git rev-parse --show-toplevel) || exit 2
+java_checker="$root/scripts/check-java.py"
+java_candidate=$(git ls-files --stage -- 'scripts/check-java.py') || exit 2
+java_enabled=false
+if [ -n "$java_candidate" ] || git cat-file -e HEAD:scripts/check-java.py 2>/dev/null; then
+  java_enabled=true
+fi
+if [ -f "$hook_dir/pre-commit.harness-original" ]; then
+  if "$java_enabled"; then
+    LUMIA_JAVA_TDD_SPLIT=1 "$hook_dir/pre-commit.harness-original" "$@" || exit $?
+  else
+    "$hook_dir/pre-commit.harness-original" "$@" || exit $?
+  fi
+fi
 checker="$root/scripts/check-harness-inventory.py"
 if [ ! -f "$checker" ]; then
   candidate_markers=$(git ls-files --stage -- 'scripts/check-harness-inventory.py' 'harness/스킬 현황.md' 'harness/hook 현황.md' 'harness/스킬과 hook 현황.md' 'scripts/check-rule-comments.py' 'scripts/rule_comments.py' 'harness/rule-comments.json' 'scripts/check-issue-rule-comments.py' 'harness/issue-rule-comments.json') || exit 2
@@ -48,4 +58,12 @@ if [ ! -f "$rule_checker" ]; then
   fi
   exit 0
 fi
-exec "$python_cmd" -B -X utf8 "$rule_checker" --candidate index
+"$python_cmd" -B -X utf8 "$rule_checker" --candidate index || exit $?
+if ! "$java_enabled"; then
+  exit 0
+fi
+if [ ! -f "$java_checker" ]; then
+  echo 'Java checker is missing. Restore the installed checker and retry.' >&2
+  exit 2
+fi
+exec "$python_cmd" -B -X utf8 "$java_checker" --candidate index

@@ -50,10 +50,9 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #109](https://github.c
 상태의 상세 의미·전환과 종료 판단은 공통 절차를 따른다.
 -->
 
-- 상태: 예정
-- 현재 진행 위치: [계획과 합의](#sequence)
-- 다음 행동: 착수 범위와 Task 106-001의 공통 기준 확보 여부를 확인한 뒤 전체 수행 계획을 수립·합의한다.
-- 막힌 조건: 구현 착수 — [Task 106-001](task-001.md)의 공통 규칙·입력과 전체 계획·권한 확인이 필요하다. [배정 원본](artifacts/task-002-assignment.md#scope)
+- 상태: 완료
+- 현재 진행 위치: [결과](#result)
+- 다음 행동: [부모 Issue](issue.md#summary)에서 상위 반영을 확인한다.
 
 <a id="assignment"></a>
 
@@ -90,11 +89,12 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #109](https://github.c
 사용자 확인 조건에 도달하면 관련 실행 전에 확인하고 통상적인 조정마다 재승인을 요구하지 않는다.
 -->
 
-- 대상·준비: Task 106-001의 공통 기준과 검사 입력이 마련되면 구현한다. Phase 1의 기존 검사와 훅을 참조해 공존·재사용을 확인한다. Task 실행 브랜치 준비는 착수 때 확인한다.
-- 현재 합의: [확정 배정](artifacts/task-002-assignment.md#scope) 적용. 전체 수행 계획은 미정이며 착수 전에 합의한다.
-- 남은 결정: [배정의 질문과 결정 주체](artifacts/task-002-assignment.md#decisions)를 따라 전체 계획에서 결정 시점을 정한다.
-- Task 전체 확인: [전달본 완료 조건](artifacts/task-002-assignment.md#acceptance)별 확인 계획은 전체 계획 합의 때 정한다.
-- 수행 기록: 미생성 — 예정 경로 `artifacts/task-002-execution.md`
+- 대상·준비: 부모 `issue/106-spring-java-rules`의 `a5a9257`에서 [106-001 규칙과 공통 입력](task-001.md#result)을 확보하고 `task/106-002-java-hooks`로 분기했다. GitHub #109의 부모는 #106이다.
+- 현재 합의: 사용자가 확인한 아래 계획과 [확정 배정 r001](artifacts/task-002-assignment.md#scope)에 따라 로컬 구현·검증을 진행했고, 후속 요청 범위에서 검수와 로컬 제출을 처리한다.
+- 적용 결정: Phase 1 TDD 구형 기록과 신규 첨부를 함께 지원한다. 승인 판독은 실제 인덱스·명시 커밋을 독립 확인한 입력에 대조한다. [세부 결정과 확인](artifacts/task-002-execution.md#work-baseline)
+- Task 전체 확인: [r001의 세 완료 조건](artifacts/task-002-assignment.md#acceptance)을 실제 편집·커밋, 승인 판정·커밋 입력, 훅 등록·안내의 근거에 각각 대조한다.
+- 수행 기록: [Task 106-002 수행 기록](artifacts/task-002-execution.md)
+- 변경의 TDD 근거: [실행 계획](artifacts/task-002-tdd-plan.json) · [실행 증적](artifacts/task-002-tdd-evidence.json)
 
 <a id="execution-plan"></a>
 
@@ -111,15 +111,41 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #109](https://github.c
 할 일 삭제·분할·병합에도 수행 사실·유효한 근거·원래 식별자와 연결을 보존한다.
 -->
 
-<a id="work-example"></a>
+<a id="work-baseline"></a>
 
-#### 수행 항목 미정
+#### Phase 1 재사용과 근거 형식 결정
+- 태그: 조사, 결정
+- [x] 수행·확인 완료
+- 할 일: 부모의 공통 기록 훅과 Phase 1 `72c27a11`의 `tdd-check.py`·`tdd_core.py`·`post-edit.mjs` 및 설치 경로를 대조한다. Phase 1의 기존 JSON 블록은 그대로 읽고 신규 근거는 Task가 연결한 artifacts에서 읽는 방안을 우선 검토한다. 현재 기록 검사와 함께 사용할 입력·호출 방식을 구현 전에 결정한다.
+- 확인: 적용 트리거, 호환에 필요한 입력, 중복 호출 방지, backend 부재 시 처리, 실제 검증에 사용할 Phase 1 커밋과 환경을 식별한다. 로컬 Phase 1 참조 커밋과 원격 추적 참조 `06f9d650`을 구별한다.
+- 수행 기록: [기존 TDD와의 호환](artifacts/task-002-execution.md#work-baseline)
 
-- 태그: 미확인
-- [ ] 수행·확인 완료
-- 할 일: 미정 — 전체 계획 합의 때 정한다.
-- 확인: 미정 — 전체 계획 합의 때 정한다.
-- 수행 기록: 미생성 — 수행 항목 확정 후 구역을 정한다.
+<a id="work-approval"></a>
+
+#### 배치·승인 공통 검사와 후보 입력 설계
+- 태그: 결정, 실행, 검수
+- [x] 수행·확인 완료
+- 할 일: Python과 기존 Git 후보 판독 기능의 재사용을 우선 검토한다. `index`와 명시적 Git 기준·후보 리비전을 받는 읽기 전용 진입점을 만들고, 후보의 정책·변경분을 실제 후보에 고정된 Task 범위와 독립 확인한 승인 원천에 대조한다. 106-003에 입력·판정·종료 코드와 재실행 방법을 넘긴다.
+- 확인: 허용 경로, 정상 위임, 무승인 확대와 같은 후보의 자기 승인, 만료 예외, 판독 실패·다른 후보 근거를 재현한다. 정책만 바뀐 후보도 대조한다. 기준·후보 모두에서 적용할 Java 변경이 없는 흐름과, 기준에 있던 마지막 운영 Java를 삭제하는 흐름을 구별한다.
+- 수행 기록: [공통 검사 입력과 판정](artifacts/task-002-execution.md#work-approval)
+
+<a id="work-hooks"></a>
+
+#### 편집·커밋 훅과 기존 검사 연결
+- 태그: 실행, 검수
+- [x] 수행·확인 완료
+- 할 일: `apply_patch`를 첫 지원 후보로 삼는다. 편집 전 대상 운영 Java 동작 변경의 Red·승인 예외를, 편집 직후 생성·이동 목적지의 배치를 확인한다. 커밋 전에는 인덱스의 생성·이동, 기존 동작 수정·삭제 및 범위에 맞는 Red·Green·승인 예외·리팩터링 근거를 검사한다.
+- 확인: 편집 전 필수 근거 미확인은 차단, 편집 직후 배치 위반은 알림, 커밋 전 위반·필수 미확인은 차단한다. 기존 사용자 훅·포맷·기록·TDD의 실행 순서와 결과를 격리 환경에서 확인한다.
+- 수행 기록: [훅 연동](artifacts/task-002-execution.md#work-hooks)
+
+<a id="work-verification"></a>
+
+#### 실제 트리거 검증, 등록과 인계
+- 태그: 실행, 검수
+- [x] 수행·확인 완료
+- 할 일: 백엔드 없는 Git 후보, 격리 Java 사례, 확인한 Phase 1 결합 후보에서 실제 지원 편집과 Git 커밋 트리거를 검증한다. 등록 정의와 [hook 현황](<../../../../harness/hook 현황.md#current>), 메시지·재실행 안내를 같은 변경에 맞춘다.
+- 확인: 유효·누락·효력 종료 Red, 승인 예외, 이동 알림, 수정·삭제 근거와 부분 스테이징 양방향을 확인한다. 실제 트리거와 수동 호출을 구별하고 차단 뒤 대상·이유·다음 행동을 검증한다. r001과 실제 후보를 대조해 자체·필요한 별도 검수를 마치고 허용 범위에서 제출·종료를 처리한다.
+- 수행 기록: [검증과 인계](artifacts/task-002-execution.md#work-verification)
 
 <a id="result"></a>
 
@@ -132,6 +158,6 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #109](https://github.c
 중단·취소·인계 시에는 실제 상태·이유·영향·보존 결과·잔여·해소/재개 조건과 다음 행동을 남긴다.
 -->
 
-- 내용: 미수행
-- 확인: 미수행
-- 잔여: 미정 — 수행 결과의 확인 뒤 기록한다.
+- 내용: [Java 공통 검사 진입점](../../../../scripts/check-java.py), Codex·Git 훅과 [실행·재개 안내](<../../../../docs/details/development/Java 검사 실행.md>).
+- 확인: r001의 실제 트리거, 승인 검사 재사용, 등록과 안내를 충족했다. 자체·별도 검수에서 발견한 위치·증적 판정 결함을 보완하고 영향받는 검증을 다시 통과했다. [검증과 재검수](artifacts/task-002-execution.md#work-verification)
+- 관련 후속: 부모 Issue 반영과 [Task 106-003](task-003.md)의 제출 CI 연결·최초 공개 HTTP 목록 승인이 남았다.

@@ -102,7 +102,8 @@ class RepositoryCase(unittest.TestCase):
 
     def add_hook(self):
         name = 'scripts/hooks/pre-commit'
-        self.write(name, (PROJECT / name).read_text(encoding='utf-8'))
+        definition = (PROJECT / name).read_text(encoding='utf-8')
+        self.write(name, definition)
         rule_files = ['scripts/check-issue-rule-comments.py', 'scripts/issue_rule_comments.py',
                       'harness/issue-rule-comments.json']
         for source in rule_files[:2]:
@@ -124,7 +125,11 @@ class RepositoryCase(unittest.TestCase):
         sources = [target['path'] for target in current_policy['targets']]
         for source in sources:
             self.write(source, (PROJECT / source).read_text(encoding='utf-8'))
-        self.entries.append(self.entry('git:pre-commit', 'git', name, [name, *TOOLS, *rule_files[:2], *current, *sources]))
+        dependencies = json.loads(re.search(r'^# inventory-dependencies: (.+)$', definition, re.M)[1])
+        for dependency in dependencies:
+            if not (self.root / dependency).exists():
+                self.write(dependency, (PROJECT / dependency).read_text(encoding='utf-8'))
+        self.entries.append(self.entry('git:pre-commit', 'git', name, [name, *dependencies]))
         self.refresh()
 
     def stage(self):
