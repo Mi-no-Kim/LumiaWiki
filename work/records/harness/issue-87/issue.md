@@ -33,8 +33,8 @@ Issue별 체크와 실제 기록은 이 본문에서 관리한다. 공통 문서
 
 - 상태: 진행 중
 - 현재 진행 위치: [3. Task 생성](#step-3)
-- 다음 행동: 3번 — [87-002 결과 검수와 제출](task-002.md#summary)의 결과를 확인한다.
-- 막힌 조건: 4번·최종 검사 — [87-002·003](#task-creation)의 결과·검증 근거 대기 — 필요한 근거가 준비되면 전체 수용 조건과 대조한다.
+- 다음 행동: 3번 — [87-002 로컬 종료 기록](task-002.md#summary)을 부모 반영과 GitHub 종료 상태에 대조한다.
+- 막힌 조건: 4번·최종 검사 — 87-002 로컬 종료 기록 대조와 [전체 수용 검사](#step-4)가 남았다.
 
 <a id="sequence"></a>
 
@@ -135,7 +135,8 @@ Issue별 최소 활동 기준과 전체 수용 조건을 기록한다. 판단 �
 
 - [x] 단계 완료
 - 공통 절차: [3. Task 생성](<../../../../harness/Issue 공통 절차.md#step-3>)
-- 진행 기록: [세 Task](#task-creation)의 정식 로컬 본문과 확정 전달본을 작성했다. GitHub 등록 때 각 본문·초기 라벨과 #87 하위 관계를 확인했다. 등록 기록을 부모 커밋 `c6364f0`에 보존했다. 87-001 결과가 [PR #92](https://github.com/Mi-no-Kim/LumiaWiki/pull/92)에서 [`68a4862`](https://github.com/Mi-no-Kim/LumiaWiki/commit/68a4862468f2f499ab3de7e5ae9ca255d1dfd0b9)로 반영됐고 완료를 확인했다. [87-004](#assignment-004)의 로컬 본문·확정 전달본과 GitHub #93의 하위 등록·라벨·부모 관계를 확인했다. 87-004는 부모 커밋 `55432ebc5909`로 반영돼 87-002에 전달됐다. 87-002·003의 결과를 기다린다.
+- 진행 기록: [세 Task](#task-creation)의 정식 로컬 본문과 확정 전달본을 작성했다. GitHub 등록 때 각 본문·초기 라벨과 #87 하위 관계를 확인했다. 등록 기록을 부모 커밋 `c6364f0`에 보존했다. 87-001 결과가 [PR #92](https://github.com/Mi-no-Kim/LumiaWiki/pull/92)에서 [`68a4862`](https://github.com/Mi-no-Kim/LumiaWiki/commit/68a4862468f2f499ab3de7e5ae9ca255d1dfd0b9)로 반영됐고 완료를 확인했다. [87-004](#assignment-004)의 로컬 본문·확정 전달본과 GitHub #93의 하위 등록·라벨·부모 관계를 확인했다. 87-004는 부모 커밋 `55432ebc5909`로 반영돼 87-002에 전달됐다. 87-002 결과는 [PR #107](https://github.com/Mi-no-Kim/LumiaWiki/pull/107)으로 반영됐고 GitHub #89의 완료 종료를 확인했다. 로컬 종료 기록 대조는 남아 있다.
+- 87-003 인계: [PR #113](https://github.com/Mi-no-Kim/LumiaWiki/pull/113)이 `5dd4a38`로 반영됐다. [통합 시범과 수용 근거](task-003.md#result), [후속 압축 신호 시험과 한계](artifacts/task-003-execution.md#compaction-hook-follow-up)를 최종 검사의 입력으로 사용한다.
 
 <a id="task-creation"></a>
 

@@ -50,10 +50,10 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #90](https://github.co
 상태의 상세 의미·전환과 종료 판단은 공통 절차를 따른다.
 -->
 
-- 상태: 진행 중
-- 현재 진행 위치: [결과와 부모 인계 근거](#result)
-- 다음 행동: 최종 검수한 Task 본문과 수행 기록을 커밋하고 `issue/87-task-workflow` 대상 PR로 제출한다. 부모 반영을 확인한 뒤 인계와 종료를 처리한다.
-- 막힌 조건: 로컬 시범 5/5단계 완료. 부모 반영과 #90 종료는 별도 권한 및 실제 반영 확인이 필요하다.
+- 상태: 완료
+- 현재 진행 위치: [수용 및 부모 반영 확인](#result)
+- 다음 행동: 없음. 전체 수용 검수는 [부모 Issue #87](issue.md#step-4)에서 진행한다.
+- 막힌 조건: 없음.
 
 <a id="assignment"></a>
 
@@ -93,7 +93,7 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #90](https://github.co
 - 대상·준비: `task/87-003-resume-pilot`의 `336461e`에서 [87-001의 계획·기록 결과](task-001.md#result)와 [87-002의 여섯 스킬 및 인계 입력](artifacts/task-002-execution.md#handoff-contract)을 대조했다. 87-002의 게시 결과는 PR #107의 최종 제출 트리와 일치한다. 4/4단계 종료 기록은 부모 대화의 별도 워크트리에 있으며 [GitHub #89](https://github.com/Mi-no-Kim/LumiaWiki/issues/89)는 `Closed / Completed`로 재조회했다.
 - 현재 합의: 기록과 재개 스킬을 먼저 검증하고 실제 필요가 확인되면 자동 훅을 별도로 검증한다. 근거는 [결정 4](issue.md#decision-4)와 [Issue 수용 조건](issue.md#acceptance-criteria)에 있다.
 - 계획 합의: 사용자가 “수정한 계획에 동의해”라고 답하고, 데스크톱 대화에서 먼저 압축 요청·완료를 확인하라고 지시했다. 데스크톱에서 가능하지 않으면 별도 App Server 시험 세션을 사용하며, 같은 대화의 완료 이벤트를 확인한 뒤에만 시범을 진행하도록 승인했다. 자동 훅이 필요하면 시험 범위를 해당 실행 전에 합의한다. [r001의 결정할 사항](artifacts/task-003-assignment.md#decisions)
-- 제출 승인: 사용자가 87-003의 Task 본문과 수행 기록을 최종 검수한 뒤 커밋하고 PR로 제출하도록 승인했다.
+- 제출·종료 승인: 사용자가 87-003의 Task 본문과 수행 기록을 최종 검수한 뒤 커밋하고 PR로 제출하도록 승인했다. PR 제출과 검사 결과를 보고한 뒤 병합·인계·종료를 진행하도록 지시했다.
 - 시범 환경과 자동화 판단: 초기 통합 시범은 별도 읽기 전용 App Server에서 수행했다. 사용자가 추가 검증에 동의해 데스크톱 수동 압축과 격리 App Server의 자동 압축에서 훅 신호와 체크포인트 읽기를 검증했다. 프로젝트 적용 여부는 검증 범위 밖이다. [초기 환경](artifacts/task-003-execution.md#work-pilot-prepare) · [후속 검증](artifacts/task-003-execution.md#compaction-hook-follow-up)
 - Task 전체 확인: [r001의 세 완료 조건](artifacts/task-003-assignment.md#acceptance)을 대조한다. 세부 작업은 자가검수하고 단계 완료와 Task 종료 전에는 자가·별도 검수를 거친다.
 - 수행 기록: [시범 수행 기록](artifacts/task-003-execution.md).
@@ -177,4 +177,5 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #90](https://github.co
 - 내용: 읽기 전용 App Server에서 Issue #87의 결과 대기, 87-003 본문 계획, 87-004 별도 계획을 각각 압축 후 복원했다. [부모 인계 근거](artifacts/task-003-execution.md#work-pilot-acceptance)
 - 확인: 세 사례의 같은 대화 완료 항목과 후속 응답을 대조했다. 정상 시도에서 재발급·재제출·완료 작업 반복을 관측하지 않았다. 읽기 전용 App Server 시범 범위에서 r001의 세 수용 조건이 자가·별도 검수를 통과했다.
 - 후속 결과: 데스크톱 수동 압축의 완료 이벤트를 확인했다. 기본 모델의 자체 감지는 비교 시험에서 미관찰이며, `SessionStart` 훅 신호를 받은 뒤의 읽기 동작은 데스크톱 수동 압축과 격리 App Server 자동 압축에서 각각 확인했다. [시험 조건과 실행 근거](artifacts/task-003-execution.md#compaction-hook-follow-up)
-- 잔여: 인계 자료를 준비했다. 승인된 제출 뒤 부모 반영·GitHub #90 종료와 Task 정상 종료를 확인한다.
+- 부모 반영: [PR #113](https://github.com/Mi-no-Kim/LumiaWiki/pull/113)의 squash 결과 [`5dd4a38`](https://github.com/Mi-no-Kim/LumiaWiki/commit/5dd4a389b3aa4bfaed3ca78644662c5a1528ded3)의 트리가 검수한 제출 후보와 일치했다. [부모 인계와 종료 검증](artifacts/task-003-execution.md#work-pilot-acceptance)에 근거를 남겼다.
+- 잔여: 없음. [부모 #87의 전체 수용 검수](issue.md#step-4)는 부모 작업에서 판단한다.
