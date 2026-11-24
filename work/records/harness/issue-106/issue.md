@@ -33,8 +33,8 @@ Issue별 체크와 실제 기록은 이 본문에서 관리한다. 공통 문서
 
 - 상태: 진행 중
 - 현재 진행 위치: [3. Task 생성](#step-3)
-- 다음 행동: 3번 — [Task 106-003](task-003.md#execution-plan)의 독립 CI 승인 검사기와 최초 검사 입력을 기준으로 수용하고 구현 후보 검증
-- 막힌 조건: 3번·승인 CI 검증 — 실제 제출 기준에 [승인 검사기와 입력 범위](#java-ci-bootstrap) 필요. 3번·Phase 1 원격 CI 실행 — [실행 조건](#task-execution-conditions)의 대상·이벤트·실제 권한 미확인 — 수행 전에 확인한다. 4번·최종 검사 — [Task 결과](#task-creation) 준비 전 — 모든 필수 결과를 받은 뒤 전체 수용 조건에 대조한다.
+- 다음 행동: 3번 — [Task 106-004](task-004.md)의 Phase 1 실제 결합 검증 기준과 실행 권한을 확인
+- 막힌 조건: 3번·Phase 1 원격 CI 실행 — 실제 기준의 [독립 승인 원천](#java-ci-bootstrap)과 [실행 조건](#task-execution-conditions)의 대상·이벤트·권한을 수행 전에 확인한다. 4번·최종 검사 — 결합 검증 결과를 받은 뒤 전체 수용 조건에 대조한다.
 
 <a id="sequence"></a>
 
@@ -134,7 +134,7 @@ Issue별 최소 활동 기준과 전체 수용 조건을 기록한다. 판단 �
 - [x] 단계 완료
 - 공통 절차: [3. Task 생성](<../../../../harness/Issue 공통 절차.md#step-3>)
 - 진행 기록: 전달본 r001과 예정 상태의 로컬 Task 4개를 작성하고 GitHub #108~111로 등록했다. 부모 #106의 하위 목록과 각 Task의 부모, 게시 본문·상태·라벨·milestone 및 로컬 대응을 재조회해 확인했다. 개별 실행은 각 Task의 착수·선행 조건을 따른다.
-- Task 실행 인계: [106-001](task-001.md#result)은 [PR #112](https://github.com/Mi-no-Kim/LumiaWiki/pull/112), [106-002](task-002.md#result)는 [PR #114](https://github.com/Mi-no-Kim/LumiaWiki/pull/114)로 부모에 반영했다. [#108](https://github.com/Mi-no-Kim/LumiaWiki/issues/108)과 [#109](https://github.com/Mi-no-Kim/LumiaWiki/issues/109)의 완료와 로컬·원격 Task 브랜치 정리를 확인했다. [106-003](task-003.md#execution-plan)은 병합된 부모 `c7f70c3`에서 계획과 최초 운영 공개 HTTP 목록 제안을 준비했다.
+- Task 실행 인계: [106-001](task-001.md#result)은 [PR #112](https://github.com/Mi-no-Kim/LumiaWiki/pull/112), [106-002](task-002.md#result)는 [PR #114](https://github.com/Mi-no-Kim/LumiaWiki/pull/114)로 부모에 반영했다. [106-003](task-003.md#result)은 [PR #117](https://github.com/Mi-no-Kim/LumiaWiki/pull/117)로 `c5cb6cf`에 반영했다. 제출 승인과 모듈·HTTP 검증용 Gradle 회귀가 통과했고, 추적된 백엔드가 없어 제품 런타임은 비대상이었다. Phase 1 실제 통합 검증은 [106-004](task-004.md)가 맡는다.
 
 <a id="initial-http-approval"></a>
 
