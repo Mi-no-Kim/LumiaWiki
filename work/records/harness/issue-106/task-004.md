@@ -50,10 +50,10 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #111](https://github.c
 상태의 상세 의미·전환과 종료 판단은 공통 절차를 따른다.
 -->
 
-- 상태: 예정
-- 현재 진행 위치: [계획과 합의](#sequence)
-- 다음 행동: 착수 범위와 통합 후보·Phase 1 검증 준비 상태를 확인한 뒤 전체 수행 계획을 수립·합의한다.
-- 막힌 조건: 통합 실행 — [Task 106-001](task-001.md)·[Task 106-002](task-002.md)·[Task 106-003](task-003.md)의 결합 후보가 필요하다. 원격 CI 전에 목표 ref·이벤트·실행 주체와 실제 권한을 확인한다. [배정 원본](artifacts/task-004-assignment.md#scope)
+- 상태: 진행 중
+- 현재 진행 위치: [최종 후보 대조와 인계](#work-phase-handoff)
+- 다음 행동: 선행 반영된 실제 main을 기준으로 #106 최종 제출 후보의 검증 결과를 확인한다.
+- 막힌 조건: 실제 최종 후보의 검사·검수 및 증거 보존 전까지 Task 수용과 정리가 보류됐다. [기준 대조](artifacts/task-004-execution.md#final-submission-base)
 
 <a id="assignment"></a>
 
@@ -67,8 +67,8 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #111](https://github.c
 -->
 
 - 부모 Issue: [Issue #106](issue.md)
-- 적용 전달본: [Task 106-004 전달사항](artifacts/task-004-assignment.md)
-- 전달본 식별: r001
+- 적용 전달본: [Task 106-004 개정 전달사항](artifacts/task-004-assignment-r002.md)
+- 전달본 식별: r002
 - 기준 기록: [Issue #106 배정 기준](issue.md#assignment-004)
 
 <a id="sequence"></a>
@@ -90,11 +90,11 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #111](https://github.c
 사용자 확인 조건에 도달하면 관련 실행 전에 확인하고 통상적인 조정마다 재승인을 요구하지 않는다.
 -->
 
-- 대상·준비: Task 106-001~003의 통합 후보, 확인한 Phase 1 기준 커밋과 승인된 원격 CI의 실행 경로·권한이 필요하다. Task 실행 브랜치 준비는 착수 때 확인한다.
-- 현재 합의: [확정 배정](artifacts/task-004-assignment.md#scope) 적용. 전체 수행 계획은 미정이며 착수 전에 합의한다.
-- 남은 결정: [배정의 질문과 결정 주체](artifacts/task-004-assignment.md#decisions)를 따라 전체 계획에서 결정 시점을 정한다.
-- Task 전체 확인: [전달본 완료 조건](artifacts/task-004-assignment.md#acceptance)별 확인 계획은 전체 계획 합의 때 정한다.
-- 수행 기록: 미생성 — 예정 경로 `artifacts/task-004-execution.md`
+- 대상·준비: 완료된 106-001~003의 부모 `16ae10da5b7e516523f486aa50a9cf5716e0f881`와 원격 Phase 1 `06f9d6500fe9f4bb5026fc71ccc0a8efe27b731d`를 사용한다. 공통 조상은 `94babc10b4771e9f685d68b42301c58ea78df318`다. #111의 부모가 #106임을 확인했다. 실행 시 원격 ref를 재조회한다.
+- 현재 합의: [확정 배정 r002](artifacts/task-004-assignment-r002.md#scope)와 [Issue 결정](issue.md#decision-5-submission-evidence)을 적용한다. 사용자가 승인 사례는 기존 원격 회귀와 격리 제출 판독으로 확인하고 공식 CI의 외부 승인 공급은 미확인으로 기록하는 문구를 확정했다. 단일 검증 브랜치와 단계별 자체·서브에이전트 검수를 적용한다.
+- 남은 확인: [선행 반영된 실제 main과 최종 제출 후보](artifacts/task-004-execution.md#final-submission-base)의 검사 결과를 대조하고 종료 요건을 확인한다.
+- Task 전체 확인: 백엔드 없는 후보의 비대상, 실제 Phase 1 훅과 필수 CI, 최종 후보 사용·복구를 [전달본 완료 조건](artifacts/task-004-assignment-r002.md#acceptance)에 대조한다.
+- 수행 기록: [Task 106-004 수행 기록](artifacts/task-004-execution.md)
 
 <a id="execution-plan"></a>
 
@@ -111,15 +111,46 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #111](https://github.c
 할 일 삭제·분할·병합에도 수행 사실·유효한 근거·원래 식별자와 연결을 보존한다.
 -->
 
-<a id="work-example"></a>
+<a id="work-phase-input"></a>
 
-#### 수행 항목 미정
+#### 기준 고정과 격리 결합
 
-- 태그: 미확인
+- 태그: 조사, 실행, 검수
+- [x] 수행·확인 완료
+- 할 일: 별도 복제본의 검증 worktree에서 승인 판독기와 최초 목록 근거가 들어 있고 Java CI 도입 전인 `cc2be365879ab4bcf550f6e7f8d8c6e9c0cea8f5`에 Phase 1을 결합해 선행 기준을 만든다. 그 기준에 최종 #106 후보를 병합하고, 직접 결합한 목표 트리와 비교한다.
+- 확인: 원격 Phase 1에는 로컬 `72c27a11` 이후의 이력이 있으며 추적 백엔드·DB·Quality 워크플로는 같다. 겹친 경로 10개에서 파일 단위 충돌을 재현했다. 실제 결합에서 Git 부모·트리와 충돌 해소를 기록하고 기존 포맷과 비운영 Java TDD, #106 Java 검사를 함께 보존하는지 자체·별도 검수한다.
+- 수행 기록: [기준 고정과 격리 결합](artifacts/task-004-execution.md#work-phase-input)
+
+<a id="work-phase-hooks"></a>
+
+#### 실제 훅과 판정 사례 검증
+
+- 태그: 실행, 검수
+- [x] 수행·확인 완료
+- 할 일: Phase 포맷과 기존 훅을 유지한 상태에서 지원 Codex 편집 트리거와 실제 Git 커밋 훅을 실행한다. Codex 기존 TDD의 `--non-java`와 Git 훅의 기존 훅 선행·Java 위임을 격리 설치에서 대조한다.
+- 확인: 정상·위반·미확인·독립 승인된 국소 예외, 실제 인덱스와 작업 트리 차이, 기존 Java의 승인된 수정·삭제와 유지 동작을 확인한다. 실제 Spring 등록과 모듈 정상·경계·순환도 재현한다. 사전 조회에서 백엔드 없는 #106 후보의 두 Java 진입점은 비대상이었고, 로컬 Docker는 연결되지 않았다.
+- 수행 기록: [실제 훅과 판정 사례 검증](artifacts/task-004-execution.md#work-phase-hooks)
+
+<a id="work-phase-ci"></a>
+
+#### 승인된 검증용 ref에서 원격 CI 실행
+
+- 태그: 조사, 논의, 결정, 실행, 검수
 - [ ] 수행·확인 완료
-- 할 일: 미정 — 전체 계획 합의 때 정한다.
-- 확인: 미정 — 전체 계획 합의 때 정한다.
-- 수행 기록: 미생성 — 수행 항목 확정 후 구역을 정한다.
+- 할 일: `Mi-no-Kim/LumiaWiki`의 임시 브랜치 `issue/106-phase1-ci-validation` 하나에 선행 기준과 정상 결합을 순서대로 push한다. 정상 결합의 SHA와 결과를 보존한다. 예외·설정 사례는 기존 원격 회귀와 격리 제출 판독을 사용하고, 공식 CI의 외부 승인 공급과 사례별 push·복원은 미확인·미실행으로 기록한다.
+- 확인: 계정 `Mi-no-Kim`의 저장소 push와 결과·로그 조회를 확인했다. 검증 브랜치는 첫 push 전에 미생성이었고 현재 정상 결합 `bd75af8c`를 가리킨다. non-fast-forward는 금지된다. push 전에 조상 관계와 대상 사례의 변경분, 승인 원천을 확인하고, push 뒤 CI 이벤트의 실제 `before`·`after`를 예정 SHA와 대조한다. 첫 push는 Phase Quality 전체를 선택한다. 정상 결합의 Java contract·Phase Quality 개별 결과와 사례별 기대 판정을 각각 자체·별도 검수한다. Harness는 결합 트리에서 별도로 재현한다.
+- 정리: 사례별 push와 복원은 수행하지 않았다. 현재 검증 브랜치는 정상 결합을 가리키며, 확정한 증거와 SHA를 보존한 뒤 정리한다. 현 토큰의 Actions 재실행과 저장소 승인 변수 조회는 거부됐다. 인프라 실패 시 같은 SHA의 실패 작업만 사용자가 GitHub에서 재실행하는 안을 제안한다. SHA와 실행 근거를 보존한 뒤 임시 브랜치를 정리한다.
+- 수행 기록: [승인된 검증용 ref에서 원격 CI 실행](artifacts/task-004-execution.md#work-phase-ci)
+
+<a id="work-phase-handoff"></a>
+
+#### 최종 후보 대조와 사용·복구 인계
+
+- 태그: 실행, 검수
+- [ ] 수행·확인 완료
+- 할 일: 입력 단독 변경에서 관련 검사 선택을 대조하고 설정만 바뀐 승인·위반 사례, 판독 실패, 기존 Phase Quality 보존을 기록한다. 사용·복구 안내에 정확한 입력·재실행 방법·적용 대상 없음과 미확인 기준을 연결한다.
+- 확인: 최종 후보의 트리와 로컬·원격 결과를 자체·별도 검수하고, 후보 SHA 또는 트리가 바뀌면 영향받은 검사를 다시 확인한다. 독립 승인 원천과 판독기가 반영된 `main` `63626b13`을 기준으로 최종 후보의 판정을 대조한다.
+- 수행 기록: [최종 대조와 사용·복구 안내](artifacts/task-004-execution.md#work-phase-handoff)
 
 <a id="result"></a>
 
@@ -132,6 +163,6 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #111](https://github.c
 중단·취소·인계 시에는 실제 상태·이유·영향·보존 결과·잔여·해소/재개 조건과 다음 행동을 남긴다.
 -->
 
-- 내용: 미수행
-- 확인: 미수행
-- 잔여: 미정 — 수행 결과의 확인 뒤 기록한다.
+- 내용: Phase 1과 #106의 격리 결합 `bd75af8c`을 고정하고 단일 검증 브랜치에서 정상 CI를 실행했다.
+- 확인: 정상 원격 Java contract·Phase Quality, [WSL 실제 Codex](artifacts/task-004-execution.md#codex-live-verification), [Phase 실소스 사례](artifacts/task-004-execution.md#phase-runtime-verification), [Java 수정·삭제 회귀](artifacts/task-004-execution.md#existing-java-regression)를 자체·별도 검수했다.
+- 잔여: 최종 제출 후보와 실제 결과 대조, 증거 보존과 검증 브랜치 정리. [최종 기준 대조](artifacts/task-004-execution.md#final-submission-base)
