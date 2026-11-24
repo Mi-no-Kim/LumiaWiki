@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "id": "http-106-003-initial",
+  "kind": "http",
+  "source": {
+    "path": "work/records/harness/issue-106/issue.md",
+    "anchor": "initial-http-approval"
+  },
+  "approver": {
+    "id": "project-decision-maker",
+    "authority": "work/records/harness/issue-106/issue.md#task-execution-conditions"
+  },
+  "scope": {
+    "packages": [],
+    "policy": [],
+    "http": [],
+    "initialHttp": []
+  },
+  "reason": "운영 프로필에서 프로젝트 소유 명시 HTTP 매핑 0개를 확인했다.",
+  "limits": "최초 목록 전체에 한정한다. 이후 등록 변경을 승인하지 않는다."
+}

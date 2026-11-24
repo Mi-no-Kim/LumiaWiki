@@ -33,8 +33,8 @@ Issue별 체크와 실제 기록은 이 본문에서 관리한다. 공통 문서
 
 - 상태: 진행 중
 - 현재 진행 위치: [3. Task 생성](#step-3)
-- 다음 행동: 3번 — [Task 106-002의 결과](task-002.md#result)와 부모 브랜치로의 반영 조건 확인
-- 막힌 조건: 3번·Task 106-002 상위 반영 — 원격 제출 범위와 권한 확인 필요. 3번·Phase 1 원격 CI 실행 — [실행 조건](#task-execution-conditions)의 대상·이벤트·실제 권한 미확인 — 수행 전에 확인한다. 4번·최종 검사 — [Task 결과](#task-creation) 준비 전 — 모든 필수 결과를 받은 뒤 전체 수용 조건에 대조한다.
+- 다음 행동: 3번 — [Task 106-003](task-003.md#execution-plan)의 최초 승인 근거를 기준 이력에 반영하고 모듈·HTTP·CI 검사 구현
+- 막힌 조건: 3번·승인 CI 검증 — [최초 공개 HTTP 승인](#initial-http-approval)이 구현 제출의 기준 이력에서 조회돼야 한다. 3번·Phase 1 원격 CI 실행 — [실행 조건](#task-execution-conditions)의 대상·이벤트·실제 권한 미확인 — 수행 전에 확인한다. 4번·최종 검사 — [Task 결과](#task-creation) 준비 전 — 모든 필수 결과를 받은 뒤 전체 수용 조건에 대조한다.
 
 <a id="sequence"></a>
 
@@ -134,7 +134,15 @@ Issue별 최소 활동 기준과 전체 수용 조건을 기록한다. 판단 �
 - [x] 단계 완료
 - 공통 절차: [3. Task 생성](<../../../../harness/Issue 공통 절차.md#step-3>)
 - 진행 기록: 전달본 r001과 예정 상태의 로컬 Task 4개를 작성하고 GitHub #108~111로 등록했다. 부모 #106의 하위 목록과 각 Task의 부모, 게시 본문·상태·라벨·milestone 및 로컬 대응을 재조회해 확인했다. 개별 실행은 각 Task의 착수·선행 조건을 따른다.
-- Task 실행 인계: [Task 106-001의 결과](task-001.md#result)를 [PR #112](https://github.com/Mi-no-Kim/LumiaWiki/pull/112)로 `issue/106-spring-java-rules`의 `a5a9257`에 반영했다. [#108](https://github.com/Mi-no-Kim/LumiaWiki/issues/108)의 완료·`status:completed`와 로컬·원격 Task 브랜치 정리를 확인했다. [Task 106-002](task-002.md#result)는 이 부모 기준에서 로컬 구현과 검증을 진행했다.
+- Task 실행 인계: [106-001](task-001.md#result)은 [PR #112](https://github.com/Mi-no-Kim/LumiaWiki/pull/112), [106-002](task-002.md#result)는 [PR #114](https://github.com/Mi-no-Kim/LumiaWiki/pull/114)로 부모에 반영했다. [#108](https://github.com/Mi-no-Kim/LumiaWiki/issues/108)과 [#109](https://github.com/Mi-no-Kim/LumiaWiki/issues/109)의 완료와 로컬·원격 Task 브랜치 정리를 확인했다. [106-003](task-003.md#execution-plan)은 병합된 부모 `c7f70c3`에서 계획과 최초 운영 공개 HTTP 목록 제안을 준비했다.
+
+<a id="initial-http-approval"></a>
+
+#### 최초 운영 공개 HTTP 계약 승인
+
+- 결정: 프로젝트 결정권자인 사용자가 최초 공개 HTTP API의 전체 목록 `[]`와 기본 이력을 구현 제출 후보와 독립적으로 보존하는 계획에 동의했다.
+- 근거: [격리한 Phase 1 Spring MVC 등록 대조](artifacts/task-003-execution.md#work-http-inventory)에서 운영 프로젝트 명시 매핑이 없었고, `GET /api/v1/_dev/foundation`은 개발 프로필 `local`·`test`에만 등록됐다. 사용자는 이 결과와 최초 빈 목록 제안을 확인한 뒤 “그렇게 하자”라고 답했다.
+- 적용: [기계 판독용 승인 원천](artifacts/task-003-initial-http-approval.json)은 `http-106-003-initial`의 정확한 `scope.initialHttp: []`만 기록한다. 실행 시 구현 PR의 실제 base에서 이 파일과 Issue 앵커를 읽고, 검증한 전체 base 커밋 ID를 `source.ref`로 넣어 최초 목록에 연결한다.
 
 <a id="task-creation"></a>
 
