@@ -52,8 +52,8 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #89](https://github.co
 
 - 상태: 진행 중
 - 현재 진행 위치: [4. 결과 검수와 87-003에 전달](#work-final-review)
-- 다음 행동: [사용자가 승인한 제출 범위](artifacts/task-002-execution.md#work-final-review)에서 실제 인덱스를 검수한 뒤 커밋하고 `issue/87-task-workflow` 대상 PR을 제출한다.
-- 막힌 조건: 3/4단계. 제출 검수·PR 확인, 부모 반영·87-003 인계와 종료 확인이 남았다.
+- 다음 행동: [PR #107](https://github.com/Mi-no-Kim/LumiaWiki/pull/107)의 제출 기록 커밋과 최신 head의 CI·비교 범위를 확인한 뒤 승인된 부모 병합을 진행한다.
+- 막힌 조건: 3/4단계. PR 제출은 확인했다. 부모 반영·87-003 인계와 종료 확인이 남았다.
 
 <a id="assignment"></a>
 
@@ -165,4 +165,4 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #89](https://github.co
 
 - 내용: 여섯 프로젝트 스킬, 공용 진행·재개 기준과 기존 생성·검수 연결을 구현했다.
 - 확인: [명시 호출·회귀·모의 사례](artifacts/task-002-execution.md#work-command-validation)와 [최종 로컬 자가·별도 검수](artifacts/task-002-execution.md#work-final-review)를 통과했다.
-- 잔여: 승인된 커밋·PR 제출, 부모 반영과 인계·종료 처리.
+- 잔여: [PR #107](https://github.com/Mi-no-Kim/LumiaWiki/pull/107)의 부모 반영과 인계·종료 처리.
