@@ -32,9 +32,9 @@ Issue별 체크와 실제 기록은 이 본문에서 관리한다. 공통 문서
 공통 절차의 완료·취소·미완료 인계 처리를 마쳐 남은 행동이 없을 때만 현재 위치를 실제 종료 근거 링크로, 다음 행동을 `없음 — 같은 근거 링크`로 쓴다. 미완료 인계의 재개 행동은 유지한다. -->
 
 - 상태: 진행 중
-- 현재 진행 위치: [3. Task 생성](#step-3)
-- 다음 행동: 3번 — [87-002 로컬 종료 기록](task-002.md#summary)을 부모 반영과 GitHub 종료 상태에 대조한다.
-- 막힌 조건: 4번·최종 검사 — 87-002 로컬 종료 기록 대조와 [전체 수용 검사](#step-4)가 남았다.
+- 현재 진행 위치: [4. 최종 검사](#step-4)
+- 다음 행동: 4번 — [전체 수용 검사 결과](#review-acceptance-closure)에 대한 수용 결정을 확인한다.
+- 막힌 조건: 4번·최종 종료 — 여섯 수용 조건을 충족했다. [전체 수용 결정](#review-acceptance-closure)과 종료 처리가 남았다.
 
 <a id="sequence"></a>
 
@@ -135,7 +135,7 @@ Issue별 최소 활동 기준과 전체 수용 조건을 기록한다. 판단 �
 
 - [x] 단계 완료
 - 공통 절차: [3. Task 생성](<../../../../harness/Issue 공통 절차.md#step-3>)
-- 진행 기록: [세 Task](#task-creation)의 정식 로컬 본문과 확정 전달본을 작성했다. GitHub 등록 때 각 본문·초기 라벨과 #87 하위 관계를 확인했다. 등록 기록을 부모 커밋 `c6364f0`에 보존했다. 87-001 결과가 [PR #92](https://github.com/Mi-no-Kim/LumiaWiki/pull/92)에서 [`68a4862`](https://github.com/Mi-no-Kim/LumiaWiki/commit/68a4862468f2f499ab3de7e5ae9ca255d1dfd0b9)로 반영됐고 완료를 확인했다. [87-004](#assignment-004)의 로컬 본문·확정 전달본과 GitHub #93의 하위 등록·라벨·부모 관계를 확인했다. 87-004는 부모 커밋 `55432ebc5909`로 반영돼 87-002에 전달됐다. 87-002 결과는 [PR #107](https://github.com/Mi-no-Kim/LumiaWiki/pull/107)으로 반영됐고 GitHub #89의 완료 종료를 확인했다. 로컬 종료 기록 대조는 남아 있다.
+- 진행 기록: [세 Task](#task-creation)의 정식 로컬 본문과 확정 전달본을 작성했다. GitHub 등록 때 각 본문·초기 라벨과 #87 하위 관계를 확인했다. 등록 기록을 부모 커밋 `c6364f0`에 보존했다. 87-001 결과가 [PR #92](https://github.com/Mi-no-Kim/LumiaWiki/pull/92)에서 [`68a4862`](https://github.com/Mi-no-Kim/LumiaWiki/commit/68a4862468f2f499ab3de7e5ae9ca255d1dfd0b9)로 반영됐고 완료를 확인했다. [87-004](#assignment-004)의 로컬 본문·확정 전달본과 GitHub #93의 하위 등록·라벨·부모 관계를 확인했다. 87-004는 부모 커밋 `55432ebc5909`로 반영돼 87-002에 전달됐다. 87-002 결과는 [PR #107](https://github.com/Mi-no-Kim/LumiaWiki/pull/107)으로 반영됐고 GitHub #89의 완료 종료를 확인했다. [별도 워크트리의 종료본과 부모 기록의 차이](#review-acceptance-closure)를 최종 검사에 전달했다.
 - 87-003 인계: [PR #113](https://github.com/Mi-no-Kim/LumiaWiki/pull/113)이 `5dd4a38`로 반영됐다. [통합 시범과 수용 근거](task-003.md#result), [후속 압축 신호 시험과 한계](artifacts/task-003-execution.md#compaction-hook-follow-up)를 최종 검사의 입력으로 사용한다.
 
 <a id="task-creation"></a>
@@ -192,8 +192,8 @@ Issue별 최소 활동 기준과 전체 수용 조건을 기록한다. 판단 �
 
 - [ ] 단계 완료
 - 공통 절차: [4. 최종 검사](<../../../../harness/Issue 공통 절차.md#step-4>)
-- 진행 기록: 미수행.
-- 상세 기록: [전체 수용 조건](#acceptance-criteria) · [검토·수용·종료 기록 위치](#decisions)
+- 진행 기록: 부모 브랜치와 GitHub 및 하위 작업의 검증 근거를 대조해 여섯 조건을 검사했다. 87-002·87-004의 종료 기록을 부모 후보에 반영한 뒤 조건 ②를 재검수해 충족을 확인했다. 전체 수용 결정과 종료 처리가 남았다.
+- 상세 기록: [전체 수용 조건](#acceptance-criteria) · [검토·수용·종료 기록](#review-acceptance-closure)
 
 <!-- issue-rule:review-records
 검토·수용·종료가 실제로 발생할 때만 초기 질문 목록 뒤에 `검토·수용·종료 기록`을 만든다. 미수행 상태에는 빈 결과 구역·미래 표식을 만들지 않는다.
@@ -279,3 +279,24 @@ Issue별 최소 활동 기준과 전체 수용 조건을 기록한다. 판단 �
 | 통합 시범과 압축 재개 검증 | [압축 후 재개](#decision-4)를 대표 Issue의 결과 대기와 Task의 실행 중간 지점에서 확인한다. | 실제 압축 후 올바른 작업·적용 계획·사용자 결정·다음 행동을 되찾고 중복 발급·실행이 없는지 대조한다. 자동 훅이 필요한 경우 근거와 적용 확인을 남긴다. | 계획·기록과 스킬 Task의 검증 가능한 결과. |
 
 각 Task의 개별 설계·실행 순서·시험 사례 선택은 각 Task의 계획에서 정한다. 범위나 전체 수용 조건이 달라지면 Issue에서 합의한다. 생성 조건과 선행 결과가 필요한 실행 조건을 구분한다.
+
+<a id="review-acceptance-closure"></a>
+
+## 검토·수용·종료 기록
+
+- 검사 기준: 사용자 요청에 따라 87-002 종료 상태를 먼저 대조한 뒤 부모 `issue/87-task-workflow`의 `2d44667`에서 [여섯 수용 조건](#acceptance-criteria)을 검사했다. [#87](https://github.com/Mi-no-Kim/LumiaWiki/issues/87) 하위 #88·#89·#90·#93의 부모 관계, `Closed / Completed` 및 완료 라벨과 네 PR의 부모 반영을 확인했다.
+- 87-002 종료 대조: `task-improvement` 워크트리의 Task 본문·수행 기록과 [#89](https://github.com/Mi-no-Kim/LumiaWiki/issues/89)는 완료로 일치한다. [PR #107](https://github.com/Mi-no-Kim/LumiaWiki/pull/107)의 head `9b4bb10`과 부모 squash `336461e`는 트리 `b7eaa07`로 일치한다. 최초 검사에서 부모 기록은 병합 당시 `진행 중`에 머물렀다. 사용자 요청에 따라 [본문](task-002.md#summary)과 [수행 기록](artifacts/task-002-execution.md#work-final-review)의 종료 보완을 대조해 반영했다.
+- 87-004 종료 대조: [PR #94](https://github.com/Mi-no-Kim/LumiaWiki/pull/94)의 head `1ac77ba`와 부모 squash `55432eb`의 트리가 일치하고, [#93](https://github.com/Mi-no-Kim/LumiaWiki/issues/93)은 완료 종료다. 최초 검사에서 부모 본문과 상세 계획이 `진행 중` 및 3/4에 머물렀다. 사용자 요청에 따라 전용 워크트리의 [본문](task-004.md#summary)·[상세 계획](artifacts/task-004-plan.md#stage-handoff)·[수행 기록](artifacts/task-004-execution.md#work-handoff)의 종료 보완을 대조해 반영했다.
+
+| 수용 조건 | 판정 | 실제 근거와 한계 |
+| --- | --- | --- |
+| ① 착수 전 상세 계획과 진행 추적 | 충족 | [87-002의 사전 합의·4단계 계획](artifacts/task-002-plan.md), [87-004의 적용 계획·합의·지문](task-004.md#decisions), [87-003의 합의와 단계별 수행](task-003.md#decisions)을 대조했다. |
+| ② Task 본문의 현재 결론과 계획·근거 연결 | 충족 | 최초 검사에서는 부모의 87-002·87-004 본문이 실제 종료본과 달라 부분 충족이었다. 반영 후 네 Task 본문에서 완료 결론을 확인했다. [87-002](task-002.md#summary)의 본문 4/4와 계획·종료 근거, [87-004](task-004.md#summary)의 상세 계획 4/4와 최종 검수·인계를 본문에서 따라갈 수 있다. 하위 종료 표시는 GitHub와 일치한다. |
+| ③ Issue·Task 스킬 명령으로 진행 | 충족 | [87-002의 여섯 명령 시험](artifacts/task-002-execution.md#work-command-validation)과 [87-003의 명시적 재개](artifacts/task-003-execution.md#work-pilot-issue), 이번 Issue 재개·최종 검사에서 명령의 역할과 권한 경계를 대조했다. 기존 시험은 읽기 전용·모의 사례를 포함하며 외부 쓰기는 검증 범위에 포함되지 않는다. |
+| ④ 같은 대화에서 압축 후 재개 | 충족 | [87-003 통합 시범](artifacts/task-003-execution.md#work-pilot-acceptance)에서 실제 압축 완료 후 Issue 대기와 두 Task 양식의 계획·마지막 검수·다음 행동을 복원했다. 합의한 읽기 전용 범위에서 재발급·재제출은 관찰되지 않았다. [격리 훅 시험](artifacts/task-003-execution.md#compaction-hook-follow-up)은 신호 전달과 체크포인트 읽기를 별도로 검증했다. |
+| ⑤ 공통 검수와 필수 검수 누락 시 완료 보류 | 충족 | [87-004의 공통 검수·정상과 누락 사례](artifacts/task-004-execution.md#work-validation), [87-002의 누락 시 보류 시험](artifacts/task-002-execution.md#work-command-validation), [87-003의 실제 자체·별도 검수](artifacts/task-003-execution.md#work-pilot-acceptance)를 대조했다. |
+| ⑥ 생성·착수·재개·완료의 기록과 근거 대조 | 충족 | [87-001의 양식·연결 검사](artifacts/task-001-execution.md#work-checker)와 [87-004의 전달본·계획 합의·지문·검수 기록 검사](artifacts/task-004-execution.md#work-validation)를 두 양식에 대조했다. 실제 응답과 권한 및 검수 판단은 기록과 별도로 확인하는 조건을 유지한다. |
+
+- 최초 자체·별도 검수: 부모 기준의 현황·보호 주석·작업 기록 검사와 기록 회귀 29건을 통과했다. 별도 검토자는 실제 결과·하위 종료 근거와 여섯 조건을 독립 대조해 조건 ②의 부분 충족과 나머지 다섯 조건의 충족을 확인했다.
+- 조건 ② 재검수: 부모 후보의 다섯 파일과 각 종료본, 네 Task의 현재 요약, 종전·별도 계획의 4/4 및 실제 종료 근거, #89·#93의 완료 상태를 대조했다. 보호 주석 검사를 통과했고 87-004 계획 지문은 기존 합의 지문 `c82db52711d3cb16e510fc81d34f01499c0e60913059ca6cc52b4ceaa291bfbb`와 일치했다.
+- 전체 수용 검사 결과: 여섯 조건 충족. 수용 권한자의 결정과 Issue 종료 처리가 남았다.

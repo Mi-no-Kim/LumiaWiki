@@ -15,10 +15,10 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #93](https://github.co
 
 ## 현재 요약
 
-- 상태: 진행 중
-- 현재 진행 위치: [4단계 — 최종 검수와 87-002 선행 결과 전달](artifacts/task-004-plan.md#stage-handoff)
-- 다음 행동: 실제 제출 후보를 별도 검수하고, 통과하면 부모 Issue 브랜치 대상 PR을 생성한다.
-- 막힌 조건: 완료 3/4단계. 제출 후보의 별도 검수, 부모 반영·87-002 인계를 기다린다.
+- 상태: 완료
+- 현재 진행 위치: [결과](#result)
+- 다음 행동: 없음 — [완료 근거](artifacts/task-004-execution.md#work-handoff).
+- 막힌 조건: 없음. 4/4단계 완료.
 
 <a id="assignment"></a>
 
@@ -50,5 +50,5 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #93](https://github.co
 
 ## 결과
 
-- 판정: 로컬 후보의 자가·별도 검수 통과. 전체 완료는 부모 반영과 87-002 인계를 확인한 뒤 판정한다.
-- 근거·한계·잔여: [4단계 검수와 인계 기준](artifacts/task-004-execution.md#work-handoff). 전체 회귀에서 실패한 브랜치 훅 2건의 단독 재확인과 실제 설치 훅 확인 범위, 제출·부모 반영 잔여를 기록했다.
+- 판정: r002 충족. 공통 검수·기록 통제를 구현·검수하고 [PR #94](https://github.com/Mi-no-Kim/LumiaWiki/pull/94)를 부모에 반영했다. 87-002의 선행 입력 인계를 확인했다.
+- 근거·한계·잔여: [4단계 검수와 인계 기준](artifacts/task-004-execution.md#work-handoff). 전체 회귀에서 실패한 브랜치 훅 2건의 단독 재확인과 실제 설치 훅 확인 범위, 부모 반영·87-002 인계의 확인 범위를 기록했다.

@@ -50,10 +50,10 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #89](https://github.co
 상태의 상세 의미·전환과 종료 판단은 공통 절차를 따른다.
 -->
 
-- 상태: 진행 중
-- 현재 진행 위치: [4. 결과 검수와 87-003에 전달](#work-final-review)
-- 다음 행동: [PR #107](https://github.com/Mi-no-Kim/LumiaWiki/pull/107)의 제출 기록 커밋과 최신 head의 CI·비교 범위를 확인한 뒤 승인된 부모 병합을 진행한다.
-- 막힌 조건: 3/4단계. PR 제출은 확인했다. 부모 반영·87-003 인계와 종료 확인이 남았다.
+- 상태: 완료
+- 현재 진행 위치: [결과](#result)
+- 다음 행동: 없음 — [종료 근거](artifacts/task-002-execution.md#work-final-review).
+- 막힌 조건: 없음 — 4/4단계 완료.
 
 <a id="assignment"></a>
 
@@ -147,7 +147,7 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #89](https://github.co
 #### 4. 결과 검수와 87-003에 전달
 
 - 태그: 검수
-- [ ] 수행·확인 완료
+- [x] 수행·확인 완료
 - 할 일: [세부 순서](artifacts/task-002-plan.md#stage-review).
 - 확인: [단계 완료 기준](artifacts/task-002-plan.md#stage-review).
 - 수행 기록: [결과 검수와 인계](artifacts/task-002-execution.md#work-final-review).
@@ -164,5 +164,5 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #89](https://github.co
 -->
 
 - 내용: 여섯 프로젝트 스킬, 공용 진행·재개 기준과 기존 생성·검수 연결을 구현했다.
-- 확인: [명시 호출·회귀·모의 사례](artifacts/task-002-execution.md#work-command-validation)와 [최종 로컬 자가·별도 검수](artifacts/task-002-execution.md#work-final-review)를 통과했다.
-- 잔여: [PR #107](https://github.com/Mi-no-Kim/LumiaWiki/pull/107)의 부모 반영과 인계·종료 처리.
+- 확인: [종료 자가·별도 검수](artifacts/task-002-execution.md#work-final-review)에서 r002 전체 조건, 부모 반영, 87-003 인계 및 [GitHub #89](https://github.com/Mi-no-Kim/LumiaWiki/issues/89) 완료 종료를 확인했다.
+- 잔여: 없음.
