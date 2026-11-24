@@ -1,0 +1,128 @@
+{
+  "schema": 1,
+  "receipts": [
+    {
+      "id": "java-hook-contract",
+      "kind": "behavior",
+      "spec": "e386092aa9f0aca006add1f540c99514708bc0ab478f6ba3fd75e61bf346d46e",
+      "worktree": "d087b22f93a98388e9bd",
+      "baseline": "22e5ca448692c1a6474946eb74c53a992b1e8988",
+      "task": "work/records/harness/issue-106/task-002.md",
+      "finished": true,
+      "red": {
+        "runId": "2098e702c6b44a1297579480eaa4bb7a",
+        "started": 1795526031.8693619,
+        "finishedAt": 1795526032.166258,
+        "command": [
+          "python",
+          "-B",
+          "-X",
+          "utf8",
+          "-c",
+          "import json\nfrom pathlib import Path\nimport subprocess\nimport sys\nimport unittest\n\nclass HookContract(unittest.TestCase):\n    def test_registered_edit_modes(self):\n        config = json.loads(Path(\".codex/hooks.json\").read_text(encoding=\"utf-8\"))\n        for event, mode in ((\"PreToolUse\", \"before-edit\"), (\"PostToolUse\", \"after-edit\")):\n            commands = [handler[\"command\"] for group in config[\"hooks\"].get(event, [])\n                        for handler in group[\"hooks\"]]\n            self.assertTrue(any(\"check-java.py\" in command and mode in command for command in commands), event)\n\n    def test_git_candidate_without_backend(self):\n        checker = Path(\"scripts/check-java.py\")\n        self.assertTrue(checker.is_file(), \"Java candidate needs an entry point\")\n        result = subprocess.run([sys.executable, \"-B\", \"-X\", \"utf8\", str(checker), \"--candidate\", \"index\"],\n                                capture_output=True, text=True, encoding=\"utf-8\")\n        self.assertEqual(0, result.returncode, result.stderr)\n        self.assertEqual(\"not-applicable\", json.loads(result.stdout)[\"status\"])\n\n    def test_java_and_existing_hook_regressions(self):\n        self.assertTrue(Path(\"scripts/check-java.py\").is_file(), \"Java hook must support the regression fixtures\")\n        for filename, filter_args in (\n            (\"test_java_hooks.py\", []),\n            (\"test_harness_inventory.py\", [\"-k\", \"real_commit_runs_old_hook_then_rejects_or_accepts_candidate\"]),\n        ):\n            result = subprocess.run([sys.executable, \"-B\", \"-X\", \"utf8\", \"-m\", \"unittest\", \"discover\", \"-s\", \"scripts/tests\",\n                                     \"-p\", filename, *filter_args], capture_output=True, text=True, encoding=\"utf-8\")\n            self.assertEqual(0, result.returncode, result.stdout + result.stderr)\n\nsuite = unittest.defaultTestLoader.loadTestsFromTestCase(HookContract)\nnames = [test.id() for test in suite]\nresult = unittest.TextTestRunner().run(suite)\nPath(sys.argv[1]).write_text(json.dumps({\n    \"runId\": sys.argv[2], \"tests\": result.testsRun, \"failures\": len(result.failures),\n    \"errors\": len(result.errors), \"skipped\": len(result.skipped), \"names\": names,\n    \"failedNames\": [test.id() for test, _ in result.failures],\n}), encoding=\"utf-8\")\nsys.exit(not result.wasSuccessful())",
+          "{report}",
+          "{run_id}"
+        ],
+        "exitCode": 1,
+        "result": {
+          "tests": 3,
+          "failures": 3,
+          "errors": 0,
+          "skipped": 0,
+          "names": [
+            "__main__.HookContract.test_git_candidate_without_backend",
+            "__main__.HookContract.test_java_and_existing_hook_regressions",
+            "__main__.HookContract.test_registered_edit_modes"
+          ],
+          "failedNames": [
+            "__main__.HookContract.test_git_candidate_without_backend",
+            "__main__.HookContract.test_java_and_existing_hook_regressions",
+            "__main__.HookContract.test_registered_edit_modes"
+          ]
+        },
+        "manifest": {
+          ".codex/hooks.json": "57afc5adbc75ff8918e496d396696c8df8f911e27cf83ee415abc8687fc1080d",
+          ".gitattributes": null,
+          "backend/build.gradle": null,
+          "backend/gradle/wrapper/gradle-wrapper.properties": null,
+          "backend/settings.gradle": null,
+          "backend/src/main/resources/application.yaml": null,
+          "backend/src/test/resources/application-test.yaml": null,
+          "frontend/package-lock.json": null,
+          "frontend/package.json": null,
+          "frontend/src/test/setup.ts": null,
+          "frontend/tsconfig.json": null,
+          "frontend/vite.config.mjs": null,
+          "frontend/vitest.config.mjs": null,
+          "package-lock.json": null,
+          "package.json": null,
+          "scripts/check-java.py": null,
+          "scripts/hooks/pre-commit": "956f61808b1e37a83cd5505d11d990ce7fbd0e07194008584dab52aef94ecc58",
+          "scripts/java_guard.py": null,
+          "scripts/tdd-check.py": null,
+          "scripts/tdd-run.py": null,
+          "scripts/tdd_core.py": null,
+          "scripts/test-python.py": null,
+          "scripts/tests/test_harness_inventory.py": "d20462173d3ca71b01064f2d8e46fd0ac6d6dd7a93d43edb921233924e4956c9",
+          "scripts/tests/test_java_hooks.py": "eeae27a9b5f1ac5cdc8a558d6dc254a8b2884745955cf3c0c647495ba57368cc"
+        },
+        "ok": false
+      },
+      "final": {
+        "runId": "6f676d9663324a6f8fa902ebfe7fadcc",
+        "started": 1795526032.8228917,
+        "finishedAt": 1795526078.2935905,
+        "command": [
+          "python",
+          "-B",
+          "-X",
+          "utf8",
+          "-c",
+          "import json\nfrom pathlib import Path\nimport subprocess\nimport sys\nimport unittest\n\nclass HookContract(unittest.TestCase):\n    def test_registered_edit_modes(self):\n        config = json.loads(Path(\".codex/hooks.json\").read_text(encoding=\"utf-8\"))\n        for event, mode in ((\"PreToolUse\", \"before-edit\"), (\"PostToolUse\", \"after-edit\")):\n            commands = [handler[\"command\"] for group in config[\"hooks\"].get(event, [])\n                        for handler in group[\"hooks\"]]\n            self.assertTrue(any(\"check-java.py\" in command and mode in command for command in commands), event)\n\n    def test_git_candidate_without_backend(self):\n        checker = Path(\"scripts/check-java.py\")\n        self.assertTrue(checker.is_file(), \"Java candidate needs an entry point\")\n        result = subprocess.run([sys.executable, \"-B\", \"-X\", \"utf8\", str(checker), \"--candidate\", \"index\"],\n                                capture_output=True, text=True, encoding=\"utf-8\")\n        self.assertEqual(0, result.returncode, result.stderr)\n        self.assertEqual(\"not-applicable\", json.loads(result.stdout)[\"status\"])\n\n    def test_java_and_existing_hook_regressions(self):\n        self.assertTrue(Path(\"scripts/check-java.py\").is_file(), \"Java hook must support the regression fixtures\")\n        for filename, filter_args in (\n            (\"test_java_hooks.py\", []),\n            (\"test_harness_inventory.py\", [\"-k\", \"real_commit_runs_old_hook_then_rejects_or_accepts_candidate\"]),\n        ):\n            result = subprocess.run([sys.executable, \"-B\", \"-X\", \"utf8\", \"-m\", \"unittest\", \"discover\", \"-s\", \"scripts/tests\",\n                                     \"-p\", filename, *filter_args], capture_output=True, text=True, encoding=\"utf-8\")\n            self.assertEqual(0, result.returncode, result.stdout + result.stderr)\n\nsuite = unittest.defaultTestLoader.loadTestsFromTestCase(HookContract)\nnames = [test.id() for test in suite]\nresult = unittest.TextTestRunner().run(suite)\nPath(sys.argv[1]).write_text(json.dumps({\n    \"runId\": sys.argv[2], \"tests\": result.testsRun, \"failures\": len(result.failures),\n    \"errors\": len(result.errors), \"skipped\": len(result.skipped), \"names\": names,\n    \"failedNames\": [test.id() for test, _ in result.failures],\n}), encoding=\"utf-8\")\nsys.exit(not result.wasSuccessful())",
+          "{report}",
+          "{run_id}"
+        ],
+        "exitCode": 0,
+        "result": {
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "names": [
+            "__main__.HookContract.test_git_candidate_without_backend",
+            "__main__.HookContract.test_java_and_existing_hook_regressions",
+            "__main__.HookContract.test_registered_edit_modes"
+          ],
+          "failedNames": []
+        },
+        "manifest": {
+          ".codex/hooks.json": "9eee6609be1b74000b88e7debede7ad780c903b49ede61f30a70cc09797c1124",
+          ".gitattributes": null,
+          "backend/build.gradle": null,
+          "backend/gradle/wrapper/gradle-wrapper.properties": null,
+          "backend/settings.gradle": null,
+          "backend/src/main/resources/application.yaml": null,
+          "backend/src/test/resources/application-test.yaml": null,
+          "frontend/package-lock.json": null,
+          "frontend/package.json": null,
+          "frontend/src/test/setup.ts": null,
+          "frontend/tsconfig.json": null,
+          "frontend/vite.config.mjs": null,
+          "frontend/vitest.config.mjs": null,
+          "package-lock.json": null,
+          "package.json": null,
+          "scripts/check-java.py": "3bff702e4a42923395ecfcd77ef4a9e4854f6723e7dd2b4db08675960c83686a",
+          "scripts/hooks/pre-commit": "a1231e2925b26dee2d5696f84c4e2bb599ef47f94418487510ca207a16ff846d",
+          "scripts/java_guard.py": "adafed912e932f4e892ca0fce30c67eee9e55ec213b31b9043a9ef9f36a70fd7",
+          "scripts/tdd-check.py": "857781c52c190f94ec186edfa07ba996ed5b80afbc37ab8c68246252e7cfe014",
+          "scripts/tdd-run.py": "a65da4989ccf12b5e02b062bb23897c7237a1f3705356786f619392cedc37316",
+          "scripts/tdd_core.py": "d1427d46bf0e80087e6943656dfa5391227255a2f21ce488ca52e532807fe068",
+          "scripts/test-python.py": null,
+          "scripts/tests/test_harness_inventory.py": "d20462173d3ca71b01064f2d8e46fd0ac6d6dd7a93d43edb921233924e4956c9",
+          "scripts/tests/test_java_hooks.py": "eeae27a9b5f1ac5cdc8a558d6dc254a8b2884745955cf3c0c647495ba57368cc"
+        },
+        "ok": true
+      }
+    }
+  ]
+}

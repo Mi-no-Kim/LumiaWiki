@@ -6,8 +6,10 @@
 | 항목·원천 | 적용 조건 | 동작 | 확인 상태 |
 |---|---|---|---|
 | [공통 기록 주석·상태 · Codex PostToolUse](<../.codex/hooks.json>) | 로컬 대화·실행에서 신뢰한 hook의 지원 도구 종료 후(동기) | 기존 명시 보호와 신규 Issue·Task·수행 기록 자동 검사·피드백; 자동 원복 없음 | 재확인 필요 |
+| [Java 배치 · Codex PostToolUse](<../.codex/hooks.json>) | 신뢰한 프로젝트에서 apply_patch의 지원 이벤트를 동기로 처리할 때 | Java 생성·이동 목적지의 경로·패키지·이름 위반을 알림 | 확인 |
+| [Java TDD 근거 · Codex PreToolUse](<../.codex/hooks.json>) | 신뢰한 프로젝트에서 apply_patch의 지원 이벤트를 동기로 처리할 때 | 운영 Java 편집의 유효한 Red 또는 확인한 예외를 대조하고 필수 미확인을 차단 | 확인 |
 | [자동 닫기 표현 검사 · Git commit-msg](<../scripts/hooks/commit-msg>) | Git 커밋 메시지 확정 시; 기존 사용자 hook 성공 후 | 최종 메시지의 닫기 키워드·Issue 참조 결합 거부 | 재확인 필요 |
-| [현황·기록·공통 주석 검사 · Git pre-commit](<../scripts/hooks/pre-commit>) | Git 커밋 전; 기존 사용자 hook 성공 후 | 현황·기록 검사와 기존 보호·신규 주석/상태 검사; 고정 기존 기록은 새 형식 제외 | 재확인 필요 |
+| [현황·기록·공통 주석·Java 검사 · Git pre-commit](<../scripts/hooks/pre-commit>) | Git 커밋 전; 기존 사용자 hook 성공 후 | 기존 검사에 이어 실제 인덱스의 Java 생성·이동, 승인과 TDD 근거를 확인 | 확인 |
 | [브랜치 이름과 백업 이력 검사 · Git pre-push](<../scripts/hooks/pre-push>) | Git 푸시 전; 설치한 복제본에서 기존 사용자 hook 성공 후 | 원격 브랜치 대상 이름과 로컬 전용 백업 이력을 검사 | 확인 |
 | [로컬 브랜치 이름 검사 · Git reference-transaction](<../scripts/hooks/reference-transaction>) | 로컬 참조 트랜잭션 준비 시; 설치한 복제본에서 기존 사용자 hook 성공 후 | Git이 전달한 로컬 브랜치 생성과 보존 참조를 검사 | 확인 |
 <!-- /inventory-table -->
@@ -41,7 +43,7 @@
         "scripts/issue_rule_comments.py",
         "scripts/rule_comments.py"
       ],
-      "sourceDigest": "dea974ec5bf79e2c732f4dcc80aeb8d59589a3622b5fbeaab1888208cb4a541e",
+      "sourceDigest": "9ca03c5fa5ea0515644b766908d32b5b268165783dde5098a89c174e09eb1da4",
       "title": "공통 기록 주석·상태 · Codex PostToolUse",
       "purpose": "기존 명시 보호와 신규 Issue·Task·수행 기록 자동 검사·피드백; 자동 원복 없음",
       "when": "로컬 대화·실행에서 신뢰한 hook의 지원 도구 종료 후(동기)",
@@ -52,6 +54,54 @@
         "scope": "정식 Task 양식의 중복 start 주석이 현재 로컬 도구 종료 후 수동 호출 전에 자동 거부됐고 피드백을 확인했다. 임시 중복 제거·원복 바이트/지문과 정상 통과를 확인했다. 등록 명령의 격리 호출과 실제 자동 관찰을 구분하며 다른 대화·환경·실패 경로의 완전 차단을 주장하지 않는다.",
         "evidence": "work/records/harness/issue-72/artifacts/formalization-verification.md#hooks"
       }
+    },
+    {
+      "id": "codex:.codex/hooks.json:PostToolUse:1:0",
+      "kind": "codex",
+      "definition": ".codex/hooks.json",
+      "files": [
+        ".codex/hooks.json",
+        "docs/details/development/java-policy.json",
+        "scripts/check-java.py",
+        "scripts/harness_inventory.py",
+        "scripts/java_guard.py",
+        "scripts/tdd_core.py"
+      ],
+      "title": "Java 배치 · Codex PostToolUse",
+      "purpose": "Java 생성·이동 목적지의 경로·패키지·이름 위반을 알림",
+      "when": "신뢰한 프로젝트에서 apply_patch의 지원 이벤트를 동기로 처리할 때",
+      "verification": {
+        "status": "verified",
+        "sourceDigest": "b2bc07acf61906261c0c4eeadf40589a218f18c9f75924b8ad2b1a9d49d0e515",
+        "environment": "Windows / Python 3.14 / Git 2.52 / Codex CLI 0.172.0 / 격리 저장소",
+        "scope": "임시 CLI 설정의 실제 apply_patch에서 테스트 Java 배치 위반을 편집 뒤 모델 입력에 전달했다.",
+        "evidence": "work/records/harness/issue-106/artifacts/task-002-execution.md#work-hooks"
+      },
+      "sourceDigest": "b2bc07acf61906261c0c4eeadf40589a218f18c9f75924b8ad2b1a9d49d0e515"
+    },
+    {
+      "id": "codex:.codex/hooks.json:PreToolUse:0:0",
+      "kind": "codex",
+      "definition": ".codex/hooks.json",
+      "files": [
+        ".codex/hooks.json",
+        "docs/details/development/java-policy.json",
+        "scripts/check-java.py",
+        "scripts/harness_inventory.py",
+        "scripts/java_guard.py",
+        "scripts/tdd_core.py"
+      ],
+      "title": "Java TDD 근거 · Codex PreToolUse",
+      "purpose": "운영 Java 편집의 유효한 Red 또는 확인한 예외를 대조하고 필수 미확인을 차단",
+      "when": "신뢰한 프로젝트에서 apply_patch의 지원 이벤트를 동기로 처리할 때",
+      "verification": {
+        "status": "verified",
+        "sourceDigest": "b2bc07acf61906261c0c4eeadf40589a218f18c9f75924b8ad2b1a9d49d0e515",
+        "environment": "Windows / Python 3.14 / Git 2.52 / Codex CLI 0.172.0 / 격리 저장소",
+        "scope": "임시 CLI 설정의 실제 apply_patch에서 운영 Java 무근거 편집을 거부했다.",
+        "evidence": "work/records/harness/issue-106/artifacts/task-002-execution.md#work-hooks"
+      },
+      "sourceDigest": "b2bc07acf61906261c0c4eeadf40589a218f18c9f75924b8ad2b1a9d49d0e515"
     },
     {
       "id": "git:commit-msg",
@@ -80,6 +130,7 @@
       "kind": "git",
       "definition": "scripts/hooks/pre-commit",
       "files": [
+        "docs/details/development/java-policy.json",
         "harness/examples/issue-body-example-42.md",
         "harness/examples/task-body-example-43-002.md",
         "harness/examples/task-body-example-db-method.md",
@@ -91,24 +142,27 @@
         "harness/templates/task.md",
         "scripts/check-harness-inventory.py",
         "scripts/check-issue-rule-comments.py",
+        "scripts/check-java.py",
         "scripts/check-rule-comments.py",
         "scripts/check-work-records.py",
         "scripts/harness_inventory.py",
         "scripts/hooks/pre-commit",
         "scripts/install-harness-hooks.py",
         "scripts/issue_rule_comments.py",
-        "scripts/rule_comments.py"
+        "scripts/java_guard.py",
+        "scripts/rule_comments.py",
+        "scripts/tdd_core.py"
       ],
-      "sourceDigest": "99b1a606e16e8df64bf593c71e43442b27994ef8d3c8b5295fd059f0e9a3692e",
-      "title": "현황·기록·공통 주석 검사 · Git pre-commit",
-      "purpose": "현황·기록 검사와 기존 보호·신규 주석/상태 검사; 고정 기존 기록은 새 형식 제외",
+      "sourceDigest": "fb8bdaffbe49b91edec9f39d71c75590c98b3ab0e16970f8638d2546c286d28c",
+      "title": "현황·기록·공통 주석·Java 검사 · Git pre-commit",
+      "purpose": "기존 검사에 이어 실제 인덱스의 Java 생성·이동, 승인과 TDD 근거를 확인",
       "when": "Git 커밋 전; 기존 사용자 hook 성공 후",
       "verification": {
-        "status": "stale",
-        "sourceDigest": "6fcbef22e6583390405ce277e2f52e45afe7ec53f657cf480311f5ce35aba78e",
-        "environment": "Windows / Python 3.14.2 / git version 2.52.0.windows.1",
-        "scope": "실제 제출 index로 구성한 격리 전체 회귀 99개로 신규 Task 실제 pre-commit과 CRLF 의존 수집까지 확인했다. 정상 후보·스테이징 주석 삭제 거부·작업 파일만 복구한 위반·정상 index/미스테이징 위반을 구분했다. 기존 hook 연결·복구·부분 구성도 확인했고 실제 설치 wrapper/원래 hook 보존을 대조했다. 실제 index 검사와 별도 검수를 통과했다. 최종 커밋의 hook 실행은 Git 제출에서 확인하며 CI·원격은 수행하지 않았다.",
-        "evidence": "work/records/harness/issue-72/artifacts/formalization-verification.md#hooks"
+        "status": "verified",
+        "sourceDigest": "fb8bdaffbe49b91edec9f39d71c75590c98b3ab0e16970f8638d2546c286d28c",
+        "environment": "Windows / Python 3.14 / Git 2.52 / Codex CLI 0.172.0 / 격리 저장소",
+        "scope": "격리 Git 실제 커밋으로 기존 훅 선행, 정상·위반과 실제 인덱스를 확인했다. Phase 1 조합에서도 정상·누락 근거를 대조했다.",
+        "evidence": "work/records/harness/issue-106/artifacts/task-002-execution.md#work-verification"
       }
     },
     {

@@ -33,8 +33,8 @@ Issue별 체크와 실제 기록은 이 본문에서 관리한다. 공통 문서
 
 - 상태: 진행 중
 - 현재 진행 위치: [3. Task 생성](#step-3)
-- 다음 행동: 3번 — [Task 106-001의 결과](task-001.md#result)와 부모 브랜치로의 반영 조건 확인
-- 막힌 조건: 3번·Task 106-001 상위 반영 — 원격 제출 범위와 권한 확인 필요. 3번·Phase 1 원격 CI 실행 — [실행 조건](#task-execution-conditions)의 대상·이벤트·실제 권한 미확인 — 수행 전에 확인한다. 4번·최종 검사 — [Task 결과](#task-creation) 준비 전 — 모든 필수 결과를 받은 뒤 전체 수용 조건에 대조한다.
+- 다음 행동: 3번 — [Task 106-002의 결과](task-002.md#result)와 부모 브랜치로의 반영 조건 확인
+- 막힌 조건: 3번·Task 106-002 상위 반영 — 원격 제출 범위와 권한 확인 필요. 3번·Phase 1 원격 CI 실행 — [실행 조건](#task-execution-conditions)의 대상·이벤트·실제 권한 미확인 — 수행 전에 확인한다. 4번·최종 검사 — [Task 결과](#task-creation) 준비 전 — 모든 필수 결과를 받은 뒤 전체 수용 조건에 대조한다.
 
 <a id="sequence"></a>
 
@@ -134,7 +134,7 @@ Issue별 최소 활동 기준과 전체 수용 조건을 기록한다. 판단 �
 - [x] 단계 완료
 - 공통 절차: [3. Task 생성](<../../../../harness/Issue 공통 절차.md#step-3>)
 - 진행 기록: 전달본 r001과 예정 상태의 로컬 Task 4개를 작성하고 GitHub #108~111로 등록했다. 부모 #106의 하위 목록과 각 Task의 부모, 게시 본문·상태·라벨·milestone 및 로컬 대응을 재조회해 확인했다. 개별 실행은 각 Task의 착수·선행 조건을 따른다.
-- Task 실행 인계: 기본 로컬 작업 폴더의 `issue/106-spring-java-rules`(`94babc10`)에서 Issue·Task·전달본·재설계 전 백업이 미추적 상태임을 확인한 뒤 Task 106-001을 같은 폴더의 별도 Task 브랜치에서 진행했다. 적용 r001과 현재 결과·재개 조건은 [Task 106-001](task-001.md#summary)에 연결한다.
+- Task 실행 인계: [Task 106-001의 결과](task-001.md#result)를 [PR #112](https://github.com/Mi-no-Kim/LumiaWiki/pull/112)로 `issue/106-spring-java-rules`의 `a5a9257`에 반영했다. [#108](https://github.com/Mi-no-Kim/LumiaWiki/issues/108)의 완료·`status:completed`와 로컬·원격 Task 브랜치 정리를 확인했다. [Task 106-002](task-002.md#result)는 이 부모 기준에서 로컬 구현과 검증을 진행했다.
 
 <a id="task-creation"></a>
 
