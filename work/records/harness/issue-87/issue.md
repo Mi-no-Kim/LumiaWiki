@@ -33,8 +33,8 @@ Issue별 체크와 실제 기록은 이 본문에서 관리한다. 공통 문서
 
 - 상태: 진행 중
 - 현재 진행 위치: [3. Task 생성](#step-3)
-- 다음 행동: 3번 — [Task 87-004](task-004.md#summary)의 실제 제출 후보를 검수하고 이후 부모 반영과 87-002 선행 입력을 대조한다.
-- 막힌 조건: 4번·최종 검사 — [87-004·002·003](#task-creation)의 결과·검증 근거 대기 — 필요한 근거가 준비되면 전체 수용 조건과 대조한다.
+- 다음 행동: 3번 — [87-002 결과 검수와 제출](task-002.md#summary)의 결과를 확인한다.
+- 막힌 조건: 4번·최종 검사 — [87-002·003](#task-creation)의 결과·검증 근거 대기 — 필요한 근거가 준비되면 전체 수용 조건과 대조한다.
 
 <a id="sequence"></a>
 
@@ -135,7 +135,7 @@ Issue별 최소 활동 기준과 전체 수용 조건을 기록한다. 판단 �
 
 - [x] 단계 완료
 - 공통 절차: [3. Task 생성](<../../../../harness/Issue 공통 절차.md#step-3>)
-- 진행 기록: [세 Task](#task-creation)의 정식 로컬 본문과 확정 전달본을 작성했다. GitHub 등록 때 각 본문·초기 라벨과 #87 하위 관계를 확인했다. 등록 기록을 부모 커밋 `c6364f0`에 보존했다. 87-001 결과가 [PR #92](https://github.com/Mi-no-Kim/LumiaWiki/pull/92)에서 [`68a4862`](https://github.com/Mi-no-Kim/LumiaWiki/commit/68a4862468f2f499ab3de7e5ae9ca255d1dfd0b9)로 반영됐고 완료를 확인했다. [87-004](#assignment-004)의 로컬 본문·확정 전달본과 GitHub #93의 하위 등록·라벨·부모 관계를 확인했다. 87-004·002·003의 결과를 기다린다.
+- 진행 기록: [세 Task](#task-creation)의 정식 로컬 본문과 확정 전달본을 작성했다. GitHub 등록 때 각 본문·초기 라벨과 #87 하위 관계를 확인했다. 등록 기록을 부모 커밋 `c6364f0`에 보존했다. 87-001 결과가 [PR #92](https://github.com/Mi-no-Kim/LumiaWiki/pull/92)에서 [`68a4862`](https://github.com/Mi-no-Kim/LumiaWiki/commit/68a4862468f2f499ab3de7e5ae9ca255d1dfd0b9)로 반영됐고 완료를 확인했다. [87-004](#assignment-004)의 로컬 본문·확정 전달본과 GitHub #93의 하위 등록·라벨·부모 관계를 확인했다. 87-004는 부모 커밋 `55432ebc5909`로 반영돼 87-002에 전달됐다. 87-002·003의 결과를 기다린다.
 
 <a id="task-creation"></a>
 
@@ -159,8 +159,10 @@ Issue별 최소 활동 기준과 전체 수용 조건을 기록한다. 판단 �
 <a id="assignment-002"></a>
 
 - **87-002 Issue·Task 운영 스킬과 진행 보고 연결**
-  - 근거 결정: [Task 분해·배정](#assignment-plan).
-  - 전달사항: [확정 전달사항](artifacts/task-002-assignment.md) (`r001`).
+  - 근거 결정: [Task 분해·배정](#assignment-plan) · [공통 검수](#decision-5) · [계획과 생성 통제](#decision-6).
+  - 전달사항: [확정 전달사항](artifacts/task-002-assignment-r002.md) (`r002`).
+  - 이전 전달본: [r001](artifacts/task-002-assignment.md).
+  - 개정 이유·합의: 87-004의 계획·검수·생성 통제를 같은 여섯 운영 스킬의 실행 경로와 확인 범위에 추가한다. 사용자가 “r002와 4단계 계획을 확정하고 착수해”라고 승인했다. [합의한 계획](artifacts/task-002-plan.md).
   - Task: [로컬 87-002](task-002.md#summary) · [GitHub #89](https://github.com/Mi-no-Kim/LumiaWiki/issues/89).
   - 실행 선행 입력: [87-001](task-001.md#summary)의 확정 결과와 [87-004](task-004.md#summary)의 공통 검수 규칙 확정 결과.
 
@@ -170,7 +172,7 @@ Issue별 최소 활동 기준과 전체 수용 조건을 기록한다. 판단 �
   - 근거 결정: [Task 분해·배정](#assignment-plan).
   - 전달사항: [확정 전달사항](artifacts/task-003-assignment.md) (`r001`).
   - Task: [로컬 87-003](task-003.md#summary) · [GitHub #90](https://github.com/Mi-no-Kim/LumiaWiki/issues/90).
-  - 실행 선행 입력: [87-001](task-001.md#summary) · [87-002](task-002.md#summary)의 확정 결과.
+  - 실행 선행 입력: [87-001](task-001.md#summary) · [87-002](task-002.md#summary)의 확정 결과. [87-002 인계 입력](artifacts/task-002-execution.md#handoff-contract)은 부모 반영 후 사용한다.
 
 <a id="assignment-004"></a>
 
@@ -181,7 +183,7 @@ Issue별 최소 활동 기준과 전체 수용 조건을 기록한다. 판단 �
   - Task: [로컬 87-004](task-004.md#summary) · [GitHub #93](https://github.com/Mi-no-Kim/LumiaWiki/issues/93).
   - 순번 확인: 부모 보유 목록, 로컬 본문·전달본 경로, GitHub #87 하위 목록의 기존 001~003과 충돌하지 않는다.
   - 실행 선행 입력: 현행 검수·기록 기준과 결정 5·6. 확정 결과는 87-002 착수 전에 전달한다.
-  - 인계 준비: [87-002가 사용할 결과와 확인 범위](artifacts/task-004-execution.md#handoff-contract) · 부모 반영 대기.
+  - 인계 반영: [87-002가 사용할 결과와 확인 범위](artifacts/task-004-execution.md#handoff-contract) · 부모 반영 `55432ebc5909`.
 
 <a id="step-4"></a>
 
