@@ -5,11 +5,11 @@
 ## 현재 요약
 
 - 실제 GitHub Issue: [Mi-no-Kim/LumiaWiki #72](https://github.com/Mi-no-Kim/LumiaWiki/issues/72)
-- 분류·브랜치: 독립 하네스 Issue. PR #77의 수용 실패 보완은 `issue/72-task-issue-guidance-r2`, 분기 기준 `77bb1185dee414a6cc8ab5f5a1372dafa79e23da`에서 진행한다. 병합한 최초 브랜치는 재사용하지 않는다.
-- 상태: 진행 중
-- 현재 진행 위치: [자동 닫기 재발 방지](#closing-reference-guard)
-- 다음 행동: 자동 닫기 보완을 커밋·push하고 main 대상 재개 PR에서 결과를 검토한다. Phase 소속·오류 주입 복구와 본작업 운영 효과 확인의 잔여는 유지한다.
-- 허용 범위·제약: 사용자가 자동 닫기 재발 방지 변경의 커밋·push·main 대상 PR 생성을 요청했다. 기존 #72의 수용 실패 보완으로 처리하며 새 Issue는 만들지 않는다. 과거 커밋·검증 원본·GitHub 객체와 실제 관계는 재작성하지 않는다.
+- 분류·브랜치: 독립 하네스 Issue. PR #77의 수용 실패 보완은 분기 기준 `77bb1185dee414a6cc8ab5f5a1372dafa79e23da`의 `issue/72-task-issue-guidance-r2`로 진행했고 PR #78로 병합됐다.
+- 상태: 완료
+- 현재 진행 위치: [결과와 잔여](#result)
+- 다음 행동: 없음 — [결과와 잔여](#result).
+- 허용 범위·제약: 사용자가 실제 운영 근거와 격리 시범을 결합한 수용 판단을 바탕으로 종료 처리를 승인했다. 응답 유실과 사전 승인은 모의 환경에서 검증했다.
 
 <a id="goal"></a>
 
@@ -182,4 +182,7 @@
 
 ## 결과와 잔여
 
-신규 양식·skill·공통 검사 원천의 정식 반영은 완료됐다. 1차 원천 17개를 실제 적용했다. 동일 입력 네 사례에서 오경고·진단 개선과 기존 보호 유지를 확인했고 실제 저장소 회귀 106개를 통과했다. 최종 제출 후보의 필수 검수와 원격 본문 대조를 마쳤다. 이번 적용의 실제 커밋은 Git 이력으로 식별한다. #72 전체는 진행 중이다. 실제 Task의 생성·계획 합의·수행 기록·완료·부모 수용을 포함한 운영 효과 확인은 남아 있다.
+- 정식 반영: 신규 Issue·Task 양식과 생성 skill, 공통 검사 원천을 반영했다. [1차 원천 반영](#phase-1-plan)의 17개 변경과 실제 저장소 회귀 106개, [새 게시 기준의 실제 등록](#live-registration-a79e1f8)을 대조했다. [자동 닫기 보완 PR #78](https://github.com/Mi-no-Kim/LumiaWiki/pull/78)은 main의 77bc422에 반영됐다.
+- 실제 운영 수용: [#87](../issue-87/issue.md#review-acceptance-closure)의 생성·승인·계획·수행·재개·Task 완료·부모 수용, [#95](https://github.com/Mi-no-Kim/LumiaWiki/pull/105)의 Phase 소속과 하위 Task 연결을 확인했다. #95의 생성 전 확인 누락은 당시 사례의 검증 한계로 남긴다.
+- 보완 수용: [Issue·Task 격리 등록과 복구](artifacts/verification-evidence.md#registration-recovery-trials)에서 모의 승인 전 쓰기 0건, 응답 유실 뒤 기존 번호 복구, 중복 발급 방지, 부모와 milestone 연결 및 로컬 기록 일치를 확인했다. Task 부모 요약의 모순은 원시험을 보존한 별도 복사본에서 한 줄을 보완한 뒤 재검증했다.
+- 종료 판정: 기존 실제 근거와 합의한 격리 시범의 범위를 자체·별도 검수해 수용했고 사용자가 종료 처리를 승인했다. 응답 유실 복구의 실제 GitHub 장애 상황은 미검증으로 남긴다. 보류된 초안 CLI와 초안 상태 일반화는 별도 제안 범위다.
