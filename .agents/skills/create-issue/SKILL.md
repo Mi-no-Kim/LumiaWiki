@@ -5,7 +5,7 @@ description: Phase 하위 또는 독립 Issue를 처음 생성할 때 본문 작
 
 # Issue 생성과 등록
 
-<!-- inventory-dependencies: ["harness/templates/issue-input.md", "harness/Issue 생성 지시서.md", "harness/templates/issue.md", "harness/Issue 공통 절차.md", "docs/작업 기록 체계.md", "harness/문서 관리.md", "harness/templates/github-issue.md"] -->
+<!-- inventory-dependencies: ["harness/templates/issue-input.md", "harness/Issue 생성 지시서.md", "harness/templates/issue.md", "harness/Issue 공통 절차.md", "docs/작업 기록 체계.md", "harness/문서 관리.md", "harness/templates/github-issue.md", ".agents/skills/issue-plan/SKILL.md"] -->
 
 ## 적용과 원천
 
@@ -53,6 +53,8 @@ GitHub 등록이 요청 범위에 포함되면 검증한 본문에서 공통 작
 실제 작성 범위·파일 또는 초안 위치·GitHub 번호·URL과 등록/연결 확인 결과·미반영·남은 보완을 반환한다. 본문 작성과 기본 생성 범위 전체의 완료를 구별한다. 요약에서도 방법 자체의 결정과 담당·배정 범위의 결정, 확인된 제한과 남은 확인을 구별한다. 요약에서도 초기 질문 목록 확인(1단계 완료 전)과 답 확정(Task 분해·배정 전)을 구별하고 상세 위치를 연결한다. 요청이 본문 재작성을 금지하면 내용 대신 위치와 결과만 요약한다.
 
 실제 신규 기록을 저장했으면 공통 주석 검사기의 작업 파일 검사로 자동 적용을 확인한다. 기존 기록의 예외 목록을 갱신하거나 생성 기록을 예외에 추가하지 않는다. 생성 후 진행은 실제 본문 주석과 공통 절차가 담당한다.
+
+등록된 Issue에서 계획·합의를 요청하면 [issue-plan](../issue-plan/SKILL.md)으로 연결한다.
 
 ## 질문 없음과 목록 미확인
 

@@ -9,7 +9,7 @@
 | [Java 배치 · Codex PostToolUse](<../.codex/hooks.json>) | 신뢰한 프로젝트에서 apply_patch의 지원 이벤트를 동기로 처리할 때 | Java 생성·이동 목적지의 경로·패키지·이름 위반을 알림 | 재확인 필요 |
 | [Java TDD 근거 · Codex PreToolUse](<../.codex/hooks.json>) | 신뢰한 프로젝트에서 apply_patch의 지원 이벤트를 동기로 처리할 때 | 운영 Java 편집의 유효한 Red 또는 확인한 예외를 대조하고 필수 미확인을 차단 | 재확인 필요 |
 | [자동 닫기 표현 검사 · Git commit-msg](<../scripts/hooks/commit-msg>) | Git 커밋 메시지 확정 시; 기존 사용자 hook 성공 후 | 최종 메시지의 닫기 키워드·Issue 참조 결합 거부 | 재확인 필요 |
-| [현황·기록·공통 주석·Java 검사 · Git pre-commit](<../scripts/hooks/pre-commit>) | Git 커밋 전; 기존 사용자 hook 성공 후 | 기존 검사에 이어 실제 인덱스의 Java 생성·이동, 승인과 TDD 근거를 확인 | 확인 |
+| [현황·기록·공통 주석·Java 검사 · Git pre-commit](<../scripts/hooks/pre-commit>) | Git 커밋 전; 기존 사용자 hook 성공 후 | 실제 인덱스의 현황·기록·보호 주석과 Java 배치·승인 및 TDD 근거를 확인 | 확인 |
 | [브랜치 이름과 백업 이력 검사 · Git pre-push](<../scripts/hooks/pre-push>) | Git 푸시 전; 설치한 복제본에서 기존 사용자 hook 성공 후 | 원격 브랜치 대상 이름과 로컬 전용 백업 이력을 검사 | 확인 |
 | [로컬 브랜치 이름 검사 · Git reference-transaction](<../scripts/hooks/reference-transaction>) | 로컬 참조 트랜잭션 준비 시; 설치한 복제본에서 기존 사용자 hook 성공 후 | Git이 전달한 로컬 브랜치 생성과 보존 참조를 검사 | 확인 |
 <!-- /inventory-table -->
@@ -43,7 +43,7 @@
         "scripts/issue_rule_comments.py",
         "scripts/rule_comments.py"
       ],
-      "sourceDigest": "9ca03c5fa5ea0515644b766908d32b5b268165783dde5098a89c174e09eb1da4",
+      "sourceDigest": "50675b7690f1145a1e5a12490508a8af731114ba2d6089d510219dce12984b6c",
       "title": "공통 기록 주석·상태 · Codex PostToolUse",
       "purpose": "기존 명시 보호와 신규 Issue·Task·수행 기록 자동 검사·피드백; 자동 원복 없음",
       "when": "로컬 대화·실행에서 신뢰한 hook의 지원 도구 종료 후(동기)",
@@ -139,6 +139,8 @@
         "harness/rule-comments.json",
         "harness/templates/issue.md",
         "harness/templates/task-execution.md",
+        "harness/templates/task-plan.md",
+        "harness/templates/task-with-plan.md",
         "harness/templates/task.md",
         "scripts/check-harness-inventory.py",
         "scripts/check-issue-rule-comments.py",
@@ -153,16 +155,16 @@
         "scripts/rule_comments.py",
         "scripts/tdd_core.py"
       ],
-      "sourceDigest": "4ab1875a39a894e672489df5c7dff8c55687754fdcb5e0eb144390ad530918dc",
+      "sourceDigest": "54fc7cb718d34265d09dc6777b918d147d3d86755161d7cc481224ec8d724050",
       "title": "현황·기록·공통 주석·Java 검사 · Git pre-commit",
-      "purpose": "기존 검사에 이어 실제 인덱스의 Java 생성·이동, 승인과 TDD 근거를 확인",
+      "purpose": "실제 인덱스의 현황·기록·보호 주석과 Java 배치·승인 및 TDD 근거를 확인",
       "when": "Git 커밋 전; 기존 사용자 hook 성공 후",
       "verification": {
         "status": "verified",
-        "sourceDigest": "4ab1875a39a894e672489df5c7dff8c55687754fdcb5e0eb144390ad530918dc",
-        "environment": "Windows / Python 3.14 / Git 2.52 / 격리 저장소",
-        "scope": "경로 표기 보완 후 격리 Git 실제 커밋으로 기존 훅 선행과 실제 인덱스의 Java 위반 차단·정상 통과를 재확인했다.",
-        "evidence": "work/records/harness/issue-106/artifacts/task-002-execution.md#work-verification"
+        "sourceDigest": "54fc7cb718d34265d09dc6777b918d147d3d86755161d7cc481224ec8d724050",
+        "environment": "Windows / Python 3.14 / Git for Windows 2.52 / 결합 인덱스·격리 저장소",
+        "scope": "결합 인덱스에서 실제 훅 정의의 현황·기록·보호 주석 통과와 Java 적용 대상 없음, 격리 Git 커밋에서 보호 주석 삭제 거부와 Java 배치 거부·정상 통과를 확인했다.",
+        "evidence": "work/records/harness/issue-87/issue.md#parallel-merge-compatibility"
       }
     },
     {

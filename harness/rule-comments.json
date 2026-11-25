@@ -1,5 +1,5 @@
 {
-  "schema": 1,
+  "schema": 2,
   "legacyRecords": [
     "work/records/harness/issue-1/issue.md",
     "work/records/harness/issue-11/issue.md",
@@ -45,6 +45,18 @@
       "comments": {
         "recording": "<!-- execution-rule:recording\nTask당 한 파일을 쓰고 이 주석은 머리말에 한 번만 둔다. 착수한 할 일은 구역 구조만 주석 없이 추가해 본문과 왕복 연결하고 실제 내용으로 채운다.\n할 일의 태그·배정 조건에 따라 실제 조치·선택과 이유·근거를 남긴다. 파일 수정 없는 논의도 기록하고 제안·미결·합의·철회를 구별한다.\n논의·사용자 결정은 실제 응답으로, AI 결정은 명시 위임·실제 선택으로 확인한다. 필수 논의를 생략하지 않는다.\n확인은 계획·전달본을 참조하고 실제 대상·방법·관찰·판정·근거·한계를 남긴다. 변경본은 검증한 버전·범위를 식별하고 달라진 영향만 다시 확인한다.\n진행·검수·수용에 필요한 결정은 Task에 결론·이유·조건·상세 링크를 남긴다. 공통 상세는 한 구역만 참조하며 잔여는 해당 할 일의 미해결·재개 조건이다.\n보완·재시도는 같은 구역을 갱신한다. 식별자는 순서와 구별하고 삭제·분할·병합에도 수행·판단/실패 근거·당시 기준·본문 연결을 보존한다.\n코드·diff·테스트 원문·명령별 로그를 복사·누적하지 않는다. 미발생 승인·결과나 단순 확인용 증명 파일을 만들지 않는다.\n세부 작성 조건은 위 기록 기준을 따르고 생성 양식으로 돌아가지 않는다.\n-->"
       }
+    },
+    "task-with-plan": {
+      "source": "harness/templates/task-with-plan.md",
+      "comments": {
+        "recording": "<!-- separate-task-rule:recording\n이 본문은 현재 결론·상태·다음 행동을 관리한다.\n배정 원문은 적용 전달본에서, 세부 순서와 단계 완료 체크는 별도 계획에서, 실제 검증·복구 근거는 수행 기록에서 관리한다.\n착수·재개·단계 전환·수용 전에 Task 공통 절차를 따라 계획·실제 상태·권한을 대조한다.\n-->"
+      }
+    },
+    "task-plan": {
+      "source": "harness/templates/task-plan.md",
+      "comments": {
+        "recording": "<!-- task-plan-rule:recording\n단계 순서·세부 작업·완료 체크는 이 파일에서 관리한다.\n실제 결과·필수 확인·기록을 갖춘 단계만 완료 표시하고 실행 근거로 연결한다.\n단계 ID는 실행 순서와 별개로 유지하며 주요 변경 이유는 현재 합의와 관련 근거에 남긴다.\n-->"
+      }
     }
   },
   "targets": [
@@ -87,7 +99,31 @@
       "path": "harness/examples/task-execution-example.md",
       "profile": "execution",
       "mode": "body"
+    },
+    {
+      "path": "harness/templates/task-with-plan.md",
+      "profile": "task-with-plan",
+      "mode": "template"
+    },
+    {
+      "path": "harness/templates/task-plan.md",
+      "profile": "task-plan",
+      "mode": "template"
     }
   ],
-  "revisions": []
+  "revisions": [],
+  "compatibleTasks": [
+    "work/records/harness/issue-72/task-001.md",
+    "work/records/harness/issue-72/task-002.md",
+    "work/records/harness/issue-81/task-001.md",
+    "work/records/harness/issue-81/task-002.md",
+    "work/records/harness/issue-87/task-001.md",
+    "work/records/harness/issue-87/task-002.md",
+    "work/records/harness/issue-87/task-003.md",
+    "work/records/harness/issue-106/task-001.md",
+    "work/records/harness/issue-106/task-002.md",
+    "work/records/harness/issue-106/task-003.md",
+    "work/records/harness/issue-106/task-004.md"
+  ],
+  "taskPlanMigrations": {}
 }
