@@ -31,10 +31,10 @@ Issue별 체크와 실제 기록은 이 본문에서 관리한다. 공통 문서
 현재 하려는 행동의 진행 단계나 허용 범위를 판단할 수 없으면 현재 위치는 실제 확인 구역 링크로, 다음 행동은 `미정 — 진행 단계·허용 범위 확인 필요`로 쓴다.
 공통 절차의 완료·취소·미완료 인계 처리를 마쳐 남은 행동이 없을 때만 현재 위치를 실제 종료 근거 링크로, 다음 행동을 `없음 — 같은 근거 링크`로 쓴다. 미완료 인계의 재개 행동은 유지한다. -->
 
-- 상태: 진행 중
-- 현재 진행 위치: [4. 최종 검사](#step-4)
-- 다음 행동: 4번 — [결합 후보](#parallel-merge-compatibility)를 최종 검수해 `main` 대상 PR로 제출한다.
-- 막힌 조건: 4번·상위 반영과 종료 — [결합 후보](#parallel-merge-compatibility)의 PR 반영 확인과 Issue 종료 처리가 남았다.
+- 상태: 완료
+- 현재 진행 위치: [검토·수용·종료 기록](#review-acceptance-closure)
+- 다음 행동: 없음 — [검토·수용·종료 기록](#review-acceptance-closure)
+- 막힌 조건: 없음.
 
 <a id="sequence"></a>
 
@@ -190,9 +190,9 @@ Issue별 최소 활동 기준과 전체 수용 조건을 기록한다. 판단 �
 
 ### 4. 최종 검사
 
-- [ ] 단계 완료
+- [x] 단계 완료
 - 공통 절차: [4. 최종 검사](<../../../../harness/Issue 공통 절차.md#step-4>)
-- 진행 기록: 부모 브랜치와 GitHub 및 하위 작업의 검증 근거를 대조해 여섯 조건을 확인했다. #106 반영 뒤 사용자가 승인한 결합 후보를 자체·별도 검수했다. PR 제출과 상위 반영 확인 및 종료 처리가 남았다.
+- 진행 기록: 네 하위 Task의 완료와 여섯 수용 조건을 확인했다. [PR #122](https://github.com/Mi-no-Kim/LumiaWiki/pull/122)의 `main` 반영과 병합 후 검사를 확인해 종료 판정을 기록했다.
 - 상세 기록: [전체 수용 조건](#acceptance-criteria) · [검토·수용·종료 기록](#review-acceptance-closure)
 
 <!-- issue-rule:review-records
@@ -299,7 +299,9 @@ Issue별 최소 활동 기준과 전체 수용 조건을 기록한다. 판단 �
 
 - 최초 자체·별도 검수: 부모 기준의 현황·보호 주석·작업 기록 검사와 기록 회귀 29건을 통과했다. 별도 검토자는 실제 결과·하위 종료 근거와 여섯 조건을 독립 대조해 조건 ②의 부분 충족과 나머지 다섯 조건의 충족을 확인했다.
 - 조건 ② 재검수: 부모 후보의 다섯 파일과 각 종료본, 네 Task의 현재 요약, 종전·별도 계획의 4/4 및 실제 종료 근거, #89·#93의 완료 상태를 대조했다. 보호 주석 검사를 통과했고 87-004 계획 지문은 기존 합의 지문 `c82db52711d3cb16e510fc81d34f01499c0e60913059ca6cc52b4ceaa291bfbb`와 일치했다.
-- 전체 수용 검사 결과: 여섯 조건 충족. 사용자가 종료 절차의 진행과 병합 영향 확인을 요청했다. [병합 호환성 검사](#parallel-merge-compatibility)의 결과에 따라 상위 반영과 종료를 보류했다.
+- 전체 수용 검사 결과: 여섯 조건 충족. [병합 호환성](#parallel-merge-compatibility)을 해결한 결합 후보를 사용자가 조건부 병합 승인했다. 푸시 검사 실패가 필수 조건에 해당하지 않고 최종 PR 검사가 통과한 것을 확인해 병합했다.
+- 종료와 반영 확인: [PR #122](https://github.com/Mi-no-Kim/LumiaWiki/pull/122)를 `main`의 [`93be22c`](https://github.com/Mi-no-Kim/LumiaWiki/commit/93be22cb09d5a4ffb1e58fc2763e41b9f002ecbf)로 병합했다. 두 부모는 `939e69c`와 `7d34b31`이고, 병합 트리는 자체·별도 검수한 `acbbda9`와 일치한다. 하위 #88·#89·#90·#93의 `Closed / Completed`와 완료 라벨을 재확인했다. 남은 수용 조건은 없다.
+- 병합 후 검사: 해당 `main` 커밋의 [Windows·Linux 현황 및 기록·훅 회귀](https://github.com/Mi-no-Kim/LumiaWiki/actions/runs/45563325900)와 [Java 계약 검사](https://github.com/Mi-no-Kim/LumiaWiki/actions/runs/45563325895)가 통과했다. Java 본 실행은 Java 원천·승인 입력 변경이 없어 비대상이었다. [이전 브랜치 푸시 검사](https://github.com/Mi-no-Kim/LumiaWiki/actions/runs/45502905615)는 #106 이전 기준에 Java 검사기가 없어 실패했다.
 
 <a id="parallel-merge-compatibility"></a>
 
