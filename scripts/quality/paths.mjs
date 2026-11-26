@@ -83,8 +83,10 @@ export function formatKind(input) {
       'scripts/hooks/pre-commit',
       'scripts/hooks/commit-msg',
       'harness/issue-rule-comments.json',
+      'scripts/java-contract/src/main/resources/META-INF/services/com.sun.source.util.Plugin',
     ].includes(name) ||
-    name.endsWith('.gradle')
+    name.endsWith('.gradle') ||
+    /^scripts\/java-contract\/src\/(?:main|test)\/java\/.+\.java$/.test(name)
   )
     return 'skip';
   if (

@@ -16,8 +16,17 @@ import tdd_core as core
 def export(root, task, state):
     path = core.safe_path(root, task)
     receipts = [r for r in state["cycles"].values() if r.get("finished")]
-    payload = "<!-- tdd-evidence -->\n```json\n" + json.dumps({"schema": 1, "receipts": receipts}, ensure_ascii=False, indent=2) + "\n```"
     text = path.read_text(encoding="utf-8")
+    data = {"schema": 1, "receipts": receipts}
+    artifact = core.linked_artifact(task, text, "tdd-evidence")
+    if artifact:
+        if core.block(text, "tdd-evidence") is not None:
+            raise ValueError("Task declares both inline and linked TDD evidence")
+        core.write_json(core.safe_path(root, artifact), data)
+        return
+    if core.linked_artifact(task, text, "tdd-plan"):
+        raise ValueError("Link the Task's TDD evidence artifact before exporting")
+    payload = "<!-- tdd-evidence -->\n```json\n" + json.dumps(data, ensure_ascii=False, indent=2) + "\n```"
     pattern = r"<!-- tdd-evidence -->\s*```json\s*\n.*?\n```"
     text = re.sub(pattern, lambda _: payload, text, flags=re.S) if re.search(pattern, text, re.S) else text.rstrip() + "\n\n" + payload + "\n"
     path.write_text(text, encoding="utf-8")
@@ -46,7 +55,8 @@ def run(root, task, data, state, args):
     if args.phase == "green" or (args.phase == "verify" and kind == "refactor"):
         if not anchor or previous.get("spec") != spec or previous.get("worktree") != core.worktree_id(root):
             raise ValueError("Missing current worktree Red/before baseline")
-        if any(before[name] != sha for name, sha in anchor["manifest"].items() if name not in cycle["targets"]):
+        core.validate_anchor(cycle, anchor)
+        if not core.same_non_target_inputs(cycle, anchor["manifest"], before):
             raise ValueError("Tests/settings changed since Red/before; execute a new cycle")
     if kind == "bootstrap" and not cycle.get("bootstrapEvidence"):
         raise ValueError("Bootstrap verification needs the recorded real initial test evidence")
@@ -75,8 +85,7 @@ def run(root, task, data, state, args):
         result = {"tests": 0, "failures": 0, "errors": 0, "skipped": 0, "names": [], "failedNames": []}
     else:
         result = core.parse_report(cycle["adapter"], report, run_id)
-        if result["tests"] <= result["skipped"]:
-            raise ValueError("No executed tests; result is indeterminate")
+        core.validate_executed_report(result)
     expected = cycle.get("expectedFailures", [])
     if args.phase == "red":
         if (process.returncode == 0 or result["errors"] or not result["failures"] or not expected
@@ -84,6 +93,8 @@ def run(root, task, data, state, args):
             raise ValueError("Red requires only the declared executed assertion failures, no environment errors")
     elif process.returncode != 0 or result["failures"] or result["errors"]:
         raise ValueError("Verification failed; no successful evidence recorded")
+    if args.phase == "green" or (args.phase == "verify" and kind == "refactor"):
+        core.require_same_tests(anchor, result)
     entry = {"runId": run_id, "started": started, "finishedAt": time.time(),
              "command": cycle["command"], "exitCode": process.returncode,
              "result": result, "manifest": after, "ok": args.phase != "red"}

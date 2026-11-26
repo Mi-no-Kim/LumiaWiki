@@ -93,6 +93,10 @@ def classify(name):
     return "unknown"
 
 
+def production_java(name):
+    return name.startswith("backend/src/main/java/") and name.endswith(".java")
+
+
 def patch_paths(patch):
     if not isinstance(patch, str) or not patch.startswith("*** Begin Patch\n") or "*** End Patch" not in patch:
         raise ValueError("Cannot determine edited paths")
@@ -106,6 +110,7 @@ def parse_report(adapter, path, run_id=None):
     path = Path(path)
     result = {"tests": 0, "failures": 0, "errors": 0, "skipped": 0, "names": [], "failedNames": []}
     if adapter == "junit":
+        result["passedNames"] = []
         files = sorted(path.rglob("*.xml")) if path.is_dir() else [path]
         if not files or len(files) > 1000:
             raise ValueError("Missing or excessive JUnit reports")
@@ -123,6 +128,8 @@ def parse_report(adapter, path, run_id=None):
                     result["skipped"] += 1
                 if case.find("error") is not None:
                     result["errors"] += 1
+                if not any(case.find(kind) is not None for kind in ("skipped", "error", "failure")):
+                    result["passedNames"].append(name)
                 for failure in case.findall("failure"):
                     text = " ".join((failure.get("type", ""), failure.get("message", ""), failure.text or ""))
                     if re.search(r"Assertion|ComparisonFailure|assert\.", text, re.I):
@@ -137,13 +144,18 @@ def parse_report(adapter, path, run_id=None):
             raise ValueError("Unittest report belongs to a different run")
         for key in result:
             result[key] = data.get(key, [] if key.endswith("Names") or key == "names" else 0)
+        if "passedNames" in data:
+            result["passedNames"] = data["passedNames"]
     elif adapter == "vitest":
+        result["passedNames"] = []
         result.update(tests=data.get("numTotalTests", 0), skipped=data.get("numPendingTests", 0), errors=data.get("numRuntimeErrorTestSuites", 0))
         for suite in data.get("testResults", []):
             for case in suite.get("assertionResults", []):
                 name = case.get("fullName", "")
                 result["names"].append(name)
-                if case.get("status") == "failed":
+                if case.get("status") == "passed":
+                    result["passedNames"].append(name)
+                elif case.get("status") == "failed":
                     if re.search(r"AssertionError|expected|expect\(", " ".join(case.get("failureMessages", [])), re.I):
                         result["failures"] += 1
                         result["failedNames"].append(name)
@@ -158,6 +170,76 @@ def parse_report(adapter, path, run_id=None):
     if result["tests"] != len(result["names"]):
         raise ValueError("Report test count does not match executed identifiers")
     return result
+
+
+def report_names(result, field):
+    value = result[field]
+    if not isinstance(value, list) or any(not isinstance(name, str) or not name for name in value):
+        raise ValueError("Malformed test identifiers")
+    return set(value)
+
+
+def test_passes(result):
+    names = report_names(result, "names")
+    failed = report_names(result, "failedNames")
+    if "passedNames" in result:
+        passed = report_names(result, "passedNames")
+        if not passed <= names or passed & failed:
+            raise ValueError("Passed test identifiers conflict with the report")
+        return passed
+    if result["skipped"] or result["errors"]:
+        raise ValueError("The report does not identify tests that passed")
+    return names - failed
+
+
+def validate_executed_report(result):
+    for key in ("tests", "failures", "errors", "skipped"):
+        if type(result[key]) is not int or result[key] < 0:
+            raise ValueError("Malformed TDD report counts")
+    observed = report_names(result, "names")
+    failed = report_names(result, "failedNames")
+    if (result["tests"] != len(result["names"]) or result["tests"] <= result["skipped"]
+            or not failed <= observed or bool(failed) != bool(result["failures"])):
+        raise ValueError("TDD report does not identify the recorded executed tests")
+    if "passedNames" in result:
+        test_passes(result)
+        if len(result["passedNames"]) + result["skipped"] > result["tests"]:
+            raise ValueError("Passed tests and skipped tests exceed the report count")
+
+
+def require_same_tests(anchor, result):
+    validate_executed_report(result)
+    if result["failures"] or result["errors"]:
+        raise ValueError("The verification report contains test failures or errors")
+    earlier = anchor["result"]
+    required = test_passes(earlier) | report_names(earlier, "failedNames")
+    missing = required - test_passes(result)
+    if not required or missing:
+        sample = ", ".join(sorted(missing)[:3])
+        raise ValueError("The verification must pass the same executed tests" + (f": {sample}" if sample else ""))
+
+
+def validate_anchor(cycle, anchor):
+    result = anchor["result"]
+    validate_executed_report(result)
+    if (anchor["command"] != cycle["command"] or type(anchor["exitCode"]) is not int
+            or result["errors"]):
+        raise ValueError("TDD baseline report or command is invalid")
+    if cycle.get("kind", "behavior") == "behavior":
+        expected = set(cycle.get("expectedFailures", []))
+        failed = report_names(result, "failedNames")
+        if (anchor["exitCode"] == 0 or anchor.get("ok") is not False or not result["failures"]
+                or not expected or failed != expected or not failed <= report_names(result, "names")):
+            raise ValueError("Stored Red must contain the declared actual assertion failures")
+    elif anchor["exitCode"] or anchor.get("ok") is not True or result["failures"] or not test_passes(result):
+        raise ValueError("Refactoring baseline must contain actual passing tests")
+
+
+def same_non_target_inputs(cycle, earlier, later):
+    targets = set(cycle["targets"])
+    before = {name: sha for name, sha in earlier.items() if name not in targets}
+    after = {name: sha for name, sha in later.items() if name not in targets}
+    return before == after
 
 
 def content(root, name, candidate="work"):
@@ -193,13 +275,38 @@ def block(text, marker):
     return json.loads(match.group(1)) if match else None
 
 
+def linked_artifact(task, text, marker):
+    match = re.fullmatch(r"(work/records/.+/issue-[0-9]+)/((?:task-[0-9]+)\.md)", task)
+    if not match:
+        return None
+    parent, name = match.groups()
+    relative = f"artifacts/{name.removesuffix('.md')}-{marker}.json"
+    if not re.search(r"\]\(" + re.escape(relative) + r"\)", text):
+        return None
+    return normalize(f"{parent}/{relative}")
+
+
+def task_data(root, task, candidate, raw, marker):
+    text = raw.decode("utf-8-sig")
+    inline = block(text, marker)
+    artifact = linked_artifact(task, text, marker)
+    if not artifact:
+        return inline
+    if inline is not None:
+        raise ValueError(f"Task declares both inline and linked {marker}")
+    payload = content(root, artifact, candidate)
+    if payload is None:
+        raise ValueError(f"Linked {marker} is absent from the candidate")
+    return json.loads(payload.decode("utf-8-sig"))
+
+
 def plan(root, task, candidate="work"):
     raw = content(root, task, candidate)
     if raw is None:
         raise ValueError("Task plan is absent from this candidate")
-    data = block(raw.decode("utf-8-sig"), "tdd-plan")
+    data = task_data(root, task, candidate, raw, "tdd-plan")
     if not isinstance(data, dict) or data.get("schema") != 1 or not isinstance(data.get("cycles"), list):
-        raise ValueError("Task needs one schema-1 tdd-plan JSON block")
+        raise ValueError("Task needs one schema-1 TDD plan, inline or linked from artifacts")
     seen = set()
     for cycle in data["cycles"]:
         if not re.fullmatch(r"[a-zA-Z0-9_.-]+", cycle.get("id", "")) or cycle["id"] in seen:
@@ -315,7 +422,7 @@ def receipts(root, task, candidate):
     state = read_state(root, task)
     values = list(state["cycles"].values())
     raw = content(root, task, candidate)
-    formal = block(raw.decode("utf-8-sig"), "tdd-evidence") if raw else None
+    formal = task_data(root, task, candidate, raw, "tdd-evidence") if raw else None
     if formal:
         if formal.get("schema") != 1:
             raise ValueError("Unsupported durable evidence schema")
@@ -323,15 +430,19 @@ def receipts(root, task, candidate):
     return values
 
 
-def check_edit(root, names, task=None):
+def edit_path(root, name):
+    if Path(name).is_absolute() or PureWindowsPath(name).drive:
+        try:
+            name = Path(name).resolve().relative_to(root).as_posix()
+        except ValueError:
+            raise ValueError("Patch target is outside the repository") from None
+    return normalize(name)
+
+
+def check_edit(root, names, task=None, *, allow_cycle=None):
     targets = []
     for name in names:
-        if Path(name).is_absolute() or PureWindowsPath(name).drive:
-            try:
-                name = Path(name).resolve().relative_to(root).as_posix()
-            except ValueError:
-                raise ValueError("Patch target is outside the repository") from None
-        name = normalize(name)
+        name = edit_path(root, name)
         safe_path(root, name)
         if classify(name) not in ("document", "test", "ignore"):
             targets.append(name)
@@ -343,7 +454,7 @@ def check_edit(root, names, task=None):
     for name in targets:
         permitted = False
         for cycle in data["cycles"]:
-            if name not in cycle["targets"]:
+            if name not in cycle["targets"] or (allow_cycle and not allow_cycle(name, cycle)):
                 continue
             record = state["cycles"].get(cycle["id"], {})
             if record.get("spec") != digest(canonical(cycle)):
@@ -354,8 +465,12 @@ def check_edit(root, names, task=None):
                 # Explicit registered exceptions permit edits, never a fabricated Green.
                 permitted = bool(cycle.get("reason")) and not record.get("finished")
             elif anchor and not record.get("finished") and record.get("worktree") == worktree_id(root):
+                try:
+                    validate_anchor(cycle, anchor)
+                except (ValueError, KeyError, TypeError):
+                    continue
                 now = snapshot(root, cycle)
-                permitted = all(now[p] == sha for p, sha in anchor["manifest"].items() if p not in cycle["targets"])
+                permitted = same_non_target_inputs(cycle, anchor["manifest"], now)
             if permitted:
                 break
         if not permitted:
@@ -372,8 +487,9 @@ def changed_paths(root, candidate, base):
     return [normalize(x) for x in output.decode("utf-8").split("\x00") if x]
 
 
-def check_candidate(root, candidate="index", task=None, base="HEAD"):
-    names = changed_paths(root, candidate, base)
+def check_candidate(root, candidate="index", task=None, base="HEAD", *, names=None, allow_cycle=None,
+                    require_target_change=False):
+    names = changed_paths(root, candidate, base) if names is None else names
     needed = [name for name in names if classify(name) not in ("document", "ignore")]
     if not needed:
         return
@@ -386,6 +502,8 @@ def check_candidate(root, candidate="index", task=None, base="HEAD"):
         for cycle in data["cycles"]:
             if name not in cycle["targets"] + cycle.get("tests", []) + cycle.get("settings", []):
                 continue
+            if allow_cycle and not allow_cycle(name, cycle):
+                continue
             if cycle["id"] not in manifests:
                 manifests[cycle["id"]] = snapshot(root, cycle, candidate)
             manifest = manifests[cycle["id"]]
@@ -393,11 +511,21 @@ def check_candidate(root, candidate="index", task=None, base="HEAD"):
                 final = receipt.get("final")
                 if (receipt.get("id") == cycle["id"] and receipt.get("spec") == digest(canonical(cycle))
                         and receipt.get("finished") and final and final["manifest"] == manifest
-                        and final.get("ok") and receipt.get("kind") == cycle.get("kind", "behavior")):
-                    if receipt["kind"] == "behavior" and not receipt.get("red"):
-                        continue
-                    if receipt["kind"] == "refactor" and not receipt.get("before"):
-                        continue
+                        and final.get("ok") is True and type(final.get("exitCode")) is int and final["exitCode"] == 0
+                        and receipt.get("kind") == cycle.get("kind", "behavior")):
+                    if receipt["kind"] in ("behavior", "refactor"):
+                        anchor = receipt.get("red" if receipt["kind"] == "behavior" else "before")
+                        if not anchor:
+                            continue
+                        try:
+                            validate_anchor(cycle, anchor)
+                            if final["command"] != cycle["command"] or not same_non_target_inputs(cycle, anchor["manifest"], manifest):
+                                continue
+                            if require_target_change and anchor["manifest"][name] == manifest[name]:
+                                continue
+                            require_same_tests(anchor, final["result"])
+                        except (ValueError, KeyError, TypeError):
+                            continue
                     valid = True
                     break
         if not valid:

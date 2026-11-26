@@ -71,6 +71,17 @@ class StagedTaskStateTests(unittest.TestCase):
         subprocess.run(['git', '-C', str(self.repo), 'add', '--', 'harness/rule-comments.json'], check=True)
         self.assertEqual('검증 중', staged_state(self.repo, TASK))
 
+    def test_separate_plan_policy_preserves_current_and_frozen_legacy_states(self):
+        policy = self.repo / 'harness/rule-comments.json'
+        policy.parent.mkdir(parents=True)
+        for legacy, state in (([], '진행 중'), ([TASK], '검증 중')):
+            with self.subTest(legacy=bool(legacy)):
+                policy.write_text(json.dumps({'schema': 2, 'legacyRecords': legacy}), encoding='utf-8')
+                subprocess.run(['git', '-C', str(self.repo), 'add', '--', 'harness/rule-comments.json'],
+                               check=True, capture_output=True)
+                self.stage(f'- 상태: {state}\n')
+                self.assertEqual(state, staged_state(self.repo, TASK))
+
     def test_crlf_and_lf_staged_states_are_read_without_changing_index(self):
         subprocess.run(['git', '-C', str(self.repo), 'config', 'core.autocrlf', 'false'],
                        check=True, capture_output=True)

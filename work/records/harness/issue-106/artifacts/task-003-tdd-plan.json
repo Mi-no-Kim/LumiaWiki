@@ -1,0 +1,91 @@
+{
+  "schema": 1,
+  "cycles": [
+    {
+      "id": "independent-java-approval",
+      "kind": "behavior",
+      "expectation": "Java approvals depend on exact Git inputs and accepted external records",
+      "targets": [
+        "scripts/check-java-submission.py"
+      ],
+      "tests": [
+        "scripts/tests/test_java_submission.py"
+      ],
+      "adapter": "unittest",
+      "expectedFailures": [
+        "__main__.GateFixture.test_independent_approval_at_exact_base"
+      ],
+      "command": [
+        "python",
+        "-B",
+        "-X",
+        "utf8",
+        "-c",
+        "import json\nfrom pathlib import Path\nimport subprocess\nimport sys\nimport unittest\n\nclass GateFixture(unittest.TestCase):\n    def test_independent_approval_at_exact_base(self):\n        self.assertTrue(Path(\"scripts/check-java-submission.py\").is_file(), \"The base does not run an independent Java approval check\")\n        result = subprocess.run([sys.executable, \"-B\", \"-X\", \"utf8\", \"-m\", \"unittest\", \"discover\",\n                                 \"-s\", \"scripts/tests\", \"-p\", \"test_java_submission.py\"],\n                                capture_output=True, text=True, encoding=\"utf-8\", timeout=130)\n        self.assertEqual(0, result.returncode, result.stdout + result.stderr)\n\nsuite = unittest.defaultTestLoader.loadTestsFromTestCase(GateFixture)\nnames = [test.id() for test in suite]\nresult = unittest.TextTestRunner().run(suite)\nPath(sys.argv[1]).write_text(json.dumps({\n    \"runId\": sys.argv[2], \"tests\": result.testsRun, \"failures\": len(result.failures), \"errors\": len(result.errors),\n    \"skipped\": len(result.skipped), \"names\": names, \"failedNames\": [test.id() for test, _ in result.failures],\n}), encoding=\"utf-8\")\nsys.exit(not result.wasSuccessful())",
+        "{report}",
+        "{run_id}"
+      ]
+    },
+    {
+      "id": "limit-bootstrap-to-first-installation",
+      "kind": "behavior",
+      "expectation": "Apply approval only to the complete first workflow installation",
+      "targets": [
+        "scripts/check-java-submission.py"
+      ],
+      "tests": [
+        "scripts/tests/test_java_submission.py"
+      ],
+      "adapter": "unittest",
+      "expectedFailures": [
+        "test_java_submission.JavaSubmissionTests.test_bootstrap_requires_complete_first_installation_and_is_not_reusable"
+      ],
+      "command": [
+        "python",
+        "-B",
+        "-X",
+        "utf8",
+        "-c",
+        "import json\nfrom pathlib import Path\nimport sys\nimport unittest\nsys.path.insert(0, \"scripts/tests\")\nsuite = unittest.defaultTestLoader.loadTestsFromName('test_java_submission.JavaSubmissionTests.test_bootstrap_requires_complete_first_installation_and_is_not_reusable')\nnames = [test.id() for test in suite]\nresult = unittest.TextTestRunner().run(suite)\nPath(sys.argv[1]).write_text(json.dumps({\n    \"runId\": sys.argv[2], \"tests\": result.testsRun, \"failures\": len(result.failures),\n    \"errors\": len(result.errors), \"skipped\": len(result.skipped), \"names\": names,\n    \"failedNames\": [test.id() for test, _ in result.failures],\n}), encoding=\"utf-8\")\nsys.exit(not result.wasSuccessful())",
+        "{report}",
+        "{run_id}"
+      ]
+    },
+    {
+      "id": "java-module-http-runtime",
+      "kind": "behavior",
+      "expectation": "The submitted Java verifier builds and exercises real compiled modules and Spring registrations",
+      "targets": [
+        ".github/workflows/java-contract.yml",
+        "scripts/java-contract/backend-input.gradle",
+        "scripts/java-contract/build.gradle",
+        "scripts/java-contract/settings.gradle",
+        "scripts/java-contract/src/main/java/lumia/contract/ContractRunner.java",
+        "scripts/java-contract/src/main/java/lumia/contract/HttpMappings.java",
+        "scripts/java-contract/src/main/java/lumia/contract/ModuleCheck.java",
+        "scripts/java-contract/src/main/java/lumia/contract/SourceReferences.java",
+        "scripts/java-contract/src/main/resources/META-INF/services/com.sun.source.util.Plugin"
+      ],
+      "tests": [
+        "scripts/java-contract/src/test/java/lumia/contract/HttpMappingsTest.java",
+        "scripts/java-contract/src/test/java/lumia/contract/ModuleCheckTest.java",
+        "scripts/java-contract/src/test/java/lumia/contract/dev/LeakedController.java"
+      ],
+      "adapter": "unittest",
+      "expectedFailures": [
+        "__main__.RuntimeContract.test_actual_module_and_spring_contracts",
+        "__main__.RuntimeContract.test_workflow_runs_independent_and_runtime_checks"
+      ],
+      "command": [
+        "python",
+        "-B",
+        "-X",
+        "utf8",
+        "-c",
+        "import json\nimport os\nfrom pathlib import Path\nimport shutil\nimport subprocess\nimport sys\nimport unittest\n\nclass RuntimeContract(unittest.TestCase):\n    def test_actual_module_and_spring_contracts(self):\n        self.assertTrue(Path(\"scripts/java-contract/build.gradle\").is_file(), \"The base has no contract verifier to run\")\n        gradle = shutil.which(\"gradle\")\n        self.assertIsNotNone(gradle, \"Gradle must be installed to replay contract verification\")\n        command = [gradle, \"--no-daemon\", \"-p\", \"scripts/java-contract\", \"test\"]\n        if os.name == \"nt\" and gradle.lower().endswith((\".bat\", \".cmd\")):\n            command = [\"cmd.exe\", \"/d\", \"/c\", *command]\n        result = subprocess.run(command, capture_output=True, text=True, encoding=\"utf-8\", errors=\"replace\", timeout=140)\n        self.assertEqual(0, result.returncode, result.stdout + result.stderr)\n\n    def test_workflow_runs_independent_and_runtime_checks(self):\n        workflow = Path(\".github/workflows/java-contract.yml\")\n        self.assertTrue(workflow.is_file(), \"The base has no submitted Java contract workflow\")\n        source = workflow.read_text(encoding=\"utf-8\")\n        for text in (\"check-java-submission.py\", \"exportLumiaContractInputs\", \"moduleContract\", \"httpContract\", \"CONTRACT_PR_HEAD\"):\n            self.assertIn(text, source)\n        self.assertIn('git archive \"$CONTRACT_BASE\"', source)\n\nsuite = unittest.defaultTestLoader.loadTestsFromTestCase(RuntimeContract)\nnames = [test.id() for test in suite]\nresult = unittest.TextTestRunner().run(suite)\nPath(sys.argv[1]).write_text(json.dumps({\n    \"runId\": sys.argv[2], \"tests\": result.testsRun, \"failures\": len(result.failures), \"errors\": len(result.errors),\n    \"skipped\": len(result.skipped), \"names\": names, \"failedNames\": [test.id() for test, _ in result.failures],\n}), encoding=\"utf-8\")\nsys.exit(not result.wasSuccessful())",
+        "{report}",
+        "{run_id}"
+      ]
+    }
+  ]
+}

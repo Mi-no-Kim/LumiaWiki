@@ -8,8 +8,8 @@
 - 구상상 구분: P1
 - GitHub milestone: [Mi-no-Kim/LumiaWiki #1](https://github.com/Mi-no-Kim/LumiaWiki/milestone/1)
 - 상태: 진행 중
-- 현재 진행 위치: [최신 main 공통 기준 반영](#upstream-main-integration)을 진행한다. Issue #15·#42의 완료와 Phase의 기능/자료 수용 잔여를 유지하며, Issue #43의 실제 진행·Task 결과는 해당 자식 브랜치의 기록을 따른다.
-- 다음 판단/행동: main 반영 후보의 검수·검사를 마쳤다. 반영 커밋을 확인한 뒤 갱신된 Phase를 Issue #43에 순서대로 반영하고 Task 43-002(#68)의 상세 설계 논의를 재개한다. 실제 게임 자료 작업과 DB 변경·연결 실험은 하지 않는다.
+- 현재 진행 위치: [Java CI 단계별 반영](#java-ci-staged-rollout)의 선행 기준을 준비한다. Issue #15·#42의 완료와 Phase의 기능·자료 수용 잔여를 유지한다.
+- 다음 판단/행동: 검수한 선행 기준을 Phase와 #43에 순서대로 반영한다. 43-005 정정의 부모 반영을 확인한 뒤 Java CI를 활성화한다. 실제 자료 작업과 공유 개발 DB 변경은 보류한다.
 
 <a id="upstream-main-integration"></a>
 
@@ -20,6 +20,16 @@
 - 도입 경계 보정: [정식 정책](../../../harness/rule-comments.json)의 기존 15개에 도입 전 제품 기록 21개의 정확 경로만 일회성으로 보정했다. Phase 고정 ref의 17개와 Issue 고정 ref `76e26221ce8b334b462273660c9b4b7e79a81e01`에 이미 존재하는 Task 4개가 근거이며, 네 Task의 최초 생성 커밋은 `d6adc6f0eaf3a3111a09ea14e37ba6491f378dc1`이다. 미래 생성 경로나 새 기록은 면제하지 않으며 목록 36개를 이후에도 고정한다.
 - 실행 근거: 기존 TDD hook이 요구하는 [통합 후보·명령·내용 지문](artifacts/main-integration-tdd.md)만 보존한다. 별도 Task 상태 검사 회귀 8개를 통과했으며 이 검사는 스크립트 전체 회귀와 구분한다.
 - 검증 결과·한계: 최종 스크립트 회귀 179개(환경 조건으로 1개 제외), 최종 index의 현황·주석·기록·형식 검사와 자체·별도 검수를 통과했다. 품질 경계의 제외 순서와 현황의 다음 행동 지적을 수정·재확인했다. 기존 Phase 제품 기록 17개는 원본과 같으며 조합 변경 항목은 과거 동작 근거를 보존한 재확인 상태로 표시한다. 게임 원자료 조회·변환, DB 접속·변경·DB 통합 시험과 원격 CI는 수행하지 않았다.
+
+<a id="java-ci-staged-rollout"></a>
+
+### Java CI 단계별 반영
+
+- 합의와 순서: 사용자는 Phase 선행 준비 → #43 선행 반영 → 43-005 정정 PR 병합 → Phase와 #43의 Java CI 활성화 순서로 진행하도록 승인했다. 43-005 PR의 변경 범위는 catalog 철회와 해당 기록·검증 근거다.
+- 선행 후보: [PR #119](https://github.com/Mi-no-Kim/LumiaWiki/pull/119)의 신뢰된 검사기·승인 원천과 별도 계획·첨부 TDD 지원을 준비한다. 최초 설치 승인 목록의 12개 파일은 활성화 시점에 적용해, 원격 이전 기준을 읽는 최초 Java CI가 승인된 변경을 검증할 수 있게 한다.
+- 검증 근거와 조건: [독립 Phase 시험의 Java CI](https://github.com/Mi-no-Kim/LumiaWiki/actions/runs/45476568872)는 같은 원격 Phase 기준의 두 단계 도입 근거다. 이번 후보의 현황·기록·TDD와 유보 범위를 별도로 대조하며, 실제 원격 검사는 해당 결과를 받은 뒤 판단한다.
+- 선행 후보 확인: [TDD 근거](artifacts/main-integration-tdd.md)의 검사 214건 중 213건이 통과했다. 1건은 Windows에서 심볼릭 링크를 만들 수 없어 제외됐다. 작업 트리의 줄바꿈을 인덱스와 맞춘 뒤 검증 입력 48개의 지문을 대조했다.
+- 범위: Phase와 #43의 기존 제품 코드·SQL 보존, 43-005의 별도 제출, Java CI의 순차 활성화까지다. #43의 Phase 통합, 공유 개발 DB 변경과 실제 자료 작업은 보류한다.
 
 <a id="ci-manual-followup"></a>
 

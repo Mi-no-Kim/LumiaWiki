@@ -5,17 +5,20 @@ sys.dont_write_bytecode = True
 
 import argparse
 import json
+import re
 import subprocess
 
-from harness_inventory import Candidate
+from harness_inventory import Candidate, path_name
 from issue_rule_comments import POLICY, baseline, fingerprint, inspect
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--candidate', default='index')
-    parser.add_argument('--hook', action='store_true', help='Read PostToolUse input; check worktree; return hook feedback')
-    parser.add_argument('--describe-baseline', help='Print an extracted baseline; never writes or approves a revision')
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument('--hook', action='store_true', help='Read PostToolUse input; check worktree; return hook feedback')
+    mode.add_argument('--describe-baseline', help='Print an extracted baseline; never writes or approves a revision')
+    mode.add_argument('--plan-fingerprint', metavar='TASK_PATH', help='Print the linked Task plan fingerprint without recording approval')
     args = parser.parse_args()
     hook = args.hook
     try:
@@ -27,6 +30,20 @@ def main():
             if not isinstance(event, dict) or event.get('hook_event_name') != 'PostToolUse':
                 raise ValueError('Expected a PostToolUse event')
         view = Candidate('work' if hook else args.candidate, seconds=10)
+        if args.plan_fingerprint:
+            from rule_comments import effective_profile, field_values, plan_fingerprint, read_policy, task_paths
+            name = path_name(args.plan_fingerprint)
+            if effective_profile(name, read_policy(view)) != 'task-with-plan':
+                raise ValueError('Expected a Task record that uses a separate plan')
+            folder, _, plan_link, _ = task_paths(name)
+            task = view.read(name)
+            plan = view.read(f'{folder}/{plan_link}')
+            links = field_values(task, '상세 계획') if task is not None else []
+            if (len(links) != 1 or plan is None
+                    or not re.fullmatch(r'\[[^\]]+\]\(' + re.escape(plan_link) + r'\)', links[0])):
+                raise ValueError('Expected a linked Task plan in the selected candidate')
+            print(plan_fingerprint(plan))
+            return 0
         if args.describe_baseline:
             raw = view.read(args.describe_baseline)
             if raw is None:

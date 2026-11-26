@@ -70,6 +70,12 @@ console.log(JSON.stringify({good,bad:await Promise.all(bad.map(x=>attempt(()=>pa
         extra = ['.agents/skills/example/SKILL.md', '.agents/skills/example/agents/openai.yaml', 'harness/.gitattributes', 'work/records/harness/issue-72/.gitattributes']
         result = self.node(f'console.log(JSON.stringify({json.dumps(extra)}.map(paths.formatKind)));')
         self.assertEqual(['prettier', 'prettier', 'skip', 'skip'], result)
+        java_contract = ['scripts/java-contract/src/main/java/lumia/contract/ContractRunner.java',
+                         'scripts/java-contract/src/test/java/lumia/contract/ModuleCheckTest.java',
+                         'scripts/java-contract/src/main/resources/META-INF/services/com.sun.source.util.Plugin',
+                         'scripts/unrelated.java']
+        result = self.node(f'console.log(JSON.stringify({json.dumps(java_contract)}.map(paths.formatKind)));')
+        self.assertEqual(['skip', 'skip', 'skip', 'unknown'], result)
         excluded_skills = ['.agents/skills/fixture/artifacts/proof.md', '.agents/skills/fixture/raw/source.json',
                            '.agents/skills/fixture/node_modules/package.json', '.agents/skills/fixture/.env.json']
         result = self.node(f'console.log(JSON.stringify({json.dumps(excluded_skills)}.map(paths.formatKind)));')
