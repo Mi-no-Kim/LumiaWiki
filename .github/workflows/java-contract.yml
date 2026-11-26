@@ -1,0 +1,230 @@
+name: Java contract
+
+on:
+  pull_request:
+    branches: [main, 'phase/**', 'issue/**']
+  push:
+    branches: [main, 'phase/**', 'issue/**']
+  workflow_dispatch:
+    inputs:
+      base:
+        description: Exact approved base Git SHA
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  approval:
+    name: Java candidate and input approvals
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    outputs:
+      candidate: ${{ steps.verify.outputs.candidate }}
+      module: ${{ steps.verify.outputs.module }}
+      http: ${{ steps.verify.outputs.http }}
+      backend: ${{ steps.verify.outputs.backend }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/harness-design/
+            !/.harness-state/
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: '3.14.2'
+      - name: Prepare only accepted Git objects needed for approval checks
+        shell: python
+        env:
+          CONTRACT_BASE: ${{ github.event.pull_request.base.sha || github.event.before || inputs.base }}
+          CONTRACT_BLOB_TOKEN: ${{ github.token }}
+          CONTRACT_APPROVAL_CONTEXT: ${{ vars.LUMIA_JAVA_APPROVAL_CONTEXT }}
+        run: |
+          import json
+          import os
+          from pathlib import PurePosixPath
+          import re
+          import subprocess
+          from urllib.request import Request, urlopen
+
+          def git(*args, **kwargs):
+              return subprocess.check_output(["git", *args], **kwargs)
+
+          base = os.environ["CONTRACT_BASE"]
+          if not re.fullmatch("[0-9a-f]{40}", base) or set(base) == {"0"}:
+              raise ValueError("An exact accepted Git base is required")
+          catalog_path = "docs/details/development/java-ci-approvals.json"
+          initial_path = "work/records/harness/issue-106/artifacts/task-003-initial-http-approval.json"
+          issue_path = "work/records/harness/issue-106/issue.md"
+          scopes = [catalog_path, initial_path, issue_path,
+                    "docs/details/development/java-policy.json", "docs/details/development/java-http-api.json",
+                    "docs/details/development/Java 작성과 관리.md", "scripts/java-contract",
+                    "scripts/check-java-submission.py", "scripts/check-java.py", "scripts/java_guard.py",
+                    "scripts/harness_inventory.py", "scripts/tdd_core.py", ".github/workflows/java-contract.yml",
+                    "backend/build.gradle", "backend/settings.gradle", "backend/gradle.properties",
+                    "backend/gradle/wrapper/gradle-wrapper.properties", "backend/src/main/resources",
+                    "backend/src/test/resources"]
+          previous_java = git("diff", "--name-only", "-z", "--diff-filter=DM", "--no-renames", base, "HEAD",
+                              "--", "backend/src/main/java", "backend/src/test/java").decode("utf-8").split("\0")
+          scopes.extend(":(literal)" + path for path in previous_java if path.endswith(".java"))
+          local = {**os.environ, "GIT_NO_LAZY_FETCH": "1"}
+
+          def supply(ref, paths):
+              rows = git("ls-tree", "-r", "-z", ref, "--", *paths).split(b"\0")
+              entries = [row.split(b"\t", 1)[0].split() for row in rows if row]
+              objects = sorted({entry[2] for entry in entries if entry[1] == b"blob"})
+              if not objects:
+                  return
+              checked = git("cat-file", "--batch-check", input=b"\n".join(objects) + b"\n", env=local)
+              for line in checked.splitlines():
+                  if not line.endswith(b" missing"):
+                      continue
+                  oid = line.split()[0].decode("ascii")
+                  url = f"{os.environ['GITHUB_API_URL']}/repos/{os.environ['GITHUB_REPOSITORY']}/git/blobs/{oid}"
+                  request = Request(url, headers={"Accept": "application/vnd.github.raw+json"})
+                  request.add_unredirected_header("Authorization", f"Bearer {os.environ['CONTRACT_BLOB_TOKEN']}")
+                  with urlopen(request, timeout=30) as response:
+                      raw = response.read(20_000_001)
+                  if len(raw) > 20_000_000 or git("hash-object", "--stdin", input=raw).decode().strip() != oid:
+                      raise ValueError(f"Invalid accepted Git blob: {oid}")
+                  git("hash-object", "-w", "--stdin", input=raw)
+
+          supply(base, scopes)
+          catalog_result = subprocess.run(["git", "show", f"{base}:{catalog_path}"], env=local, capture_output=True)
+          catalog = json.loads(catalog_result.stdout) if not catalog_result.returncode else {}
+          external = json.loads(os.environ.get("CONTRACT_APPROVAL_CONTEXT") or "{}")
+          records = [catalog, catalog.get("taskScope") or {}, *catalog.get("approvals", []),
+                     external.get("taskScope") or {},
+                     *(entry.get("record") or {} for entry in external.get("approvals", {}).values())]
+          for record in records:
+              source = record.get("source") or {}
+              ref, path = source.get("ref", base), source.get("path", "")
+              if path.startswith("work/records/") and ".." not in PurePosixPath(path).parts:
+                  if re.fullmatch("[0-9a-f]{40}", ref) and git("merge-base", ref, base).decode().strip() == ref:
+                      supply(ref, [":(literal)" + path])
+      - name: Verify event candidate and trusted approvals
+        id: verify
+        shell: bash
+        env:
+          CONTRACT_BASE: ${{ github.event.pull_request.base.sha || github.event.before || inputs.base }}
+          CONTRACT_PR_HEAD: ${{ github.event.pull_request.head.sha }}
+          CONTRACT_APPROVAL_CONTEXT: ${{ vars.LUMIA_JAVA_APPROVAL_CONTEXT }}
+        run: |
+          set -euo pipefail
+          head=$(git rev-parse HEAD)
+          [[ "$head" == "$GITHUB_SHA" && "$CONTRACT_BASE" =~ ^[0-9a-f]{40}$ ]]
+          [[ "$CONTRACT_BASE" =~ [1-9a-f] ]]
+          if [[ "$GITHUB_EVENT_NAME" == pull_request ]]; then
+            [[ "$(git show -s --format=%P HEAD)" == "$CONTRACT_BASE $CONTRACT_PR_HEAD" ]]
+          fi
+          trusted=$(mktemp -d "${RUNNER_TEMP}/lumia-java-checker.XXXXXX")
+          files=(scripts/check-java-submission.py scripts/check-java.py scripts/java_guard.py
+            scripts/harness_inventory.py scripts/tdd_core.py)
+          git archive "$CONTRACT_BASE" -- "${files[@]}" | tar -x -C "$trusted"
+          checker="$trusted/scripts/check-java-submission.py"
+          report="$RUNNER_TEMP/java-contract-selection.json"
+          args=(--base "$CONTRACT_BASE" --candidate "$head")
+          if [[ -n "$CONTRACT_APPROVAL_CONTEXT" ]]; then
+            umask 077
+            printf '%s' "$CONTRACT_APPROVAL_CONTEXT" > "$trusted/approval-context.json"
+            args+=(--approval-context "$trusted/approval-context.json")
+            unset CONTRACT_APPROVAL_CONTEXT
+          fi
+          if ! python -B -X utf8 "$checker" "${args[@]}" > "$report"; then
+            cat "$report"
+            exit 1
+          fi
+          cat "$report"
+          {
+            printf 'candidate=%s\n' "$head"
+            jq -r '.checks | "module=\(.module)\nhttp=\(.http)\nbackend=\(.backend)"' "$report"
+          } >> "$GITHUB_OUTPUT"
+
+  fixtures:
+    name: Java contract regression fixtures
+    needs: approval
+    if: needs.approval.outputs.module == 'true' || needs.approval.outputs.http == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ needs.approval.outputs.candidate }}
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /scripts/java-contract/
+      - uses: actions/setup-java@77dd5b2ce225ea11469928ac317850245a74ae78
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@8da46b539cd8fe6ab27ca75128919a18d757604c
+        with:
+          gradle-version: '9.9.1'
+          cache-read-only: true
+      - run: gradle --no-daemon -p scripts/java-contract test
+
+  backend:
+    name: Java module and Spring application contracts
+    needs: approval
+    if: needs.approval.outputs.backend == 'true' && (needs.approval.outputs.module == 'true' || needs.approval.outputs.http == 'true')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_DB: lumia_contract
+          POSTGRES_USER: lumia_contract
+          POSTGRES_PASSWORD: lumia_contract
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 5s --health-timeout 5s --health-retries 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ needs.approval.outputs.candidate }}
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /backend/
+            /db/migration/
+            /docs/details/development/
+            /scripts/java-contract/
+      - uses: actions/setup-java@77dd5b2ce225ea11469928ac317850245a74ae78
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@8da46b539cd8fe6ab27ca75128919a18d757604c
+        with:
+          gradle-version: '9.9.1'
+          cache-read-only: true
+      - name: Compile exact submitted Java sources and export compiler references
+        run: |
+          set -euo pipefail
+          [[ "$(git rev-parse HEAD)" == "$GITHUB_SHA" ]]
+          mkdir -p "$RUNNER_TEMP/java-contract"
+          gradle --no-daemon -p scripts/java-contract jar
+          tool="$GITHUB_WORKSPACE/scripts/java-contract"
+          probe=(-I "$tool/backend-input.gradle" "-Dlumia.contract.output=$RUNNER_TEMP/java-contract"
+            "-Dlumia.contract.plugin=$tool/build/libs/lumia-java-contract.jar")
+          gradle --no-daemon -p backend "${probe[@]}" exportLumiaContractInputs
+      - name: Check Java module dependencies
+        if: needs.approval.outputs.module == 'true'
+        run: >-
+          gradle --no-daemon -p scripts/java-contract moduleContract
+          "-PcontractSnapshot=$RUNNER_TEMP/java-contract/snapshot.json" "-PcontractCandidate=$GITHUB_WORKSPACE"
+      - name: Compare actual Spring registrations to approved contracts
+        if: needs.approval.outputs.http == 'true'
+        env:
+          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/lumia_contract
+          SPRING_DATASOURCE_USERNAME: lumia_contract
+          SPRING_DATASOURCE_PASSWORD: lumia_contract
+        run: >-
+          gradle --no-daemon -p scripts/java-contract httpContract
+          "-PcontractSnapshot=$RUNNER_TEMP/java-contract/snapshot.json" "-PcontractCandidate=$GITHUB_WORKSPACE"

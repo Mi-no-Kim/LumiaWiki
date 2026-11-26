@@ -8,8 +8,8 @@
 - 구상상 구분: P1
 - GitHub milestone: [Mi-no-Kim/LumiaWiki #1](https://github.com/Mi-no-Kim/LumiaWiki/milestone/1)
 - 상태: 진행 중
-- 현재 진행 위치: [Java CI 단계별 반영](#java-ci-staged-rollout)의 선행 기준을 준비한다. Issue #15·#42의 완료와 Phase의 기능·자료 수용 잔여를 유지한다.
-- 다음 판단/행동: 검수한 선행 기준을 Phase와 #43에 순서대로 반영한다. 43-005 정정의 부모 반영을 확인한 뒤 Java CI를 활성화한다. 실제 자료 작업과 공유 개발 DB 변경은 보류한다.
+- 현재 진행 위치: [Java CI 단계별 반영](#java-ci-staged-rollout)에서 최초 활성화 후보를 확인한다. Issue #15·#42의 완료와 Phase의 기능·자료 수용 잔여를 유지한다.
+- 다음 판단/행동: Phase와 #43의 선행 반영 및 [43-005 부모 반영](https://github.com/Mi-no-Kim/LumiaWiki/pull/126)을 확인했다. Phase Java CI를 반영해 검사 결과를 확인한다. 실제 자료 작업과 공유 개발 DB 변경은 보류한다.
 
 <a id="upstream-main-integration"></a>
 
@@ -29,6 +29,7 @@
 - 선행 후보: [PR #119](https://github.com/Mi-no-Kim/LumiaWiki/pull/119)의 신뢰된 검사기·승인 원천과 별도 계획·첨부 TDD 지원을 준비한다. 최초 설치 승인 목록의 12개 파일은 활성화 시점에 적용해, 원격 이전 기준을 읽는 최초 Java CI가 승인된 변경을 검증할 수 있게 한다.
 - 검증 근거와 조건: [독립 Phase 시험의 Java CI](https://github.com/Mi-no-Kim/LumiaWiki/actions/runs/45476568872)는 같은 원격 Phase 기준의 두 단계 도입 근거다. 이번 후보의 현황·기록·TDD와 유보 범위를 별도로 대조하며, 실제 원격 검사는 해당 결과를 받은 뒤 판단한다.
 - 선행 후보 확인: [TDD 근거](artifacts/main-integration-tdd.md)의 검사 214건 중 213건이 통과했다. 1건은 Windows에서 심볼릭 링크를 만들 수 없어 제외됐다. 작업 트리의 줄바꿈을 인덱스와 맞춘 뒤 검증 입력 48개의 지문을 대조했다.
+- 후속 확인: [Phase 선행 Quality](https://github.com/Mi-no-Kim/LumiaWiki/actions/runs/45778467394)와 [#43 선행 Quality](https://github.com/Mi-no-Kim/LumiaWiki/actions/runs/45779064342)가 각각 6개 작업을 통과했고, [PR #126](https://github.com/Mi-no-Kim/LumiaWiki/pull/126)의 승인된 정정이 #43에 반영됐다. #43의 첫 Java CI에 앞서 격리 CI 서비스의 DB 역할·Flyway 연결 조건을 별도로 확인한다.
 - 범위: Phase와 #43의 기존 제품 코드·SQL 보존, 43-005의 별도 제출, Java CI의 순차 활성화까지다. #43의 Phase 통합, 공유 개발 DB 변경과 실제 자료 작업은 보류한다.
 
 <a id="ci-manual-followup"></a>

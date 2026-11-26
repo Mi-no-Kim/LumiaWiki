@@ -1,0 +1,40 @@
+import groovy.json.JsonOutput
+
+// Applied by the verification runner to the submitted backend, with no repository edits.
+gradle.projectsEvaluated {
+    rootProject {
+        def output = file(System.getProperty('lumia.contract.output'))
+        def pluginJar = file(System.getProperty('lumia.contract.plugin'))
+        def sourceSets = extensions.getByName('sourceSets')
+        def sources = ['main': 'compileJava', 'test': 'compileTestJava']
+        def references = sources.collectEntries { name, taskName ->
+            def report = new File(output, name + '.refs')
+            tasks.named(taskName, JavaCompile) {
+                options.annotationProcessorPath = files(options.annotationProcessorPath, pluginJar)
+                options.compilerArgs.add('-Xplugin:LumiaModuleReferences ' + report.toURI().toASCIIString())
+                options.incremental = false
+                outputs.file(report)
+                outputs.upToDateWhen { false }
+                outputs.cacheIf { false }
+            }
+            [name, report]
+        }
+        tasks.register('exportLumiaContractInputs') {
+            dependsOn 'classes', 'testClasses'
+            doLast {
+                sources.keySet().each { name ->
+                    if (!sourceSets[name].allJava.isEmpty() && !references[name].isFile()) {
+                        throw new GradleException("No compiler reference report for submitted ${name} Java")
+                    }
+                }
+                new File(output, 'snapshot.json').text = JsonOutput.toJson([
+                        production: sourceSets.main.output.classesDirs.files.findAll { it.isDirectory() }*.absolutePath,
+                        tests: sourceSets.test.output.classesDirs.files.findAll { it.isDirectory() }*.absolutePath,
+                        runtimeClasspath: sourceSets.main.runtimeClasspath.files*.absolutePath,
+                        productionReferences: references.main.isFile() ? references.main.path : null,
+                        testReferences: references.test.isFile() ? references.test.path : null,
+                ])
+            }
+        }
+    }
+}

@@ -1,0 +1,41 @@
+plugins {
+    id 'java'
+}
+
+repositories {
+    mavenCentral()
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+dependencies {
+    implementation 'com.tngtech.archunit:archunit:1.5.1'
+    implementation 'org.springframework.boot:spring-boot-starter-webmvc:4.1.2'
+    testImplementation 'org.springframework:spring-test:7.0.10'
+    testImplementation 'org.junit.jupiter:junit-jupiter:6.0.3'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:6.0.3'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+['module', 'http'].each { check ->
+    tasks.register(check + 'Contract', JavaExec) {
+        dependsOn classes
+        classpath = sourceSets.main.runtimeClasspath
+        mainClass = 'lumia.contract.ContractRunner'
+        doFirst {
+            def snapshot = file(providers.gradleProperty('contractSnapshot').get())
+            def candidate = file(providers.gradleProperty('contractCandidate').get())
+            def data = new groovy.json.JsonSlurper().parse(snapshot)
+            classpath = files(data.runtimeClasspath) + sourceSets.main.runtimeClasspath
+            args check, snapshot, new File(candidate, 'docs/details/development/java-policy.json'),
+                    new File(candidate, 'docs/details/development/java-http-api.json')
+        }
+    }
+}
