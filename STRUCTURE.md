@@ -43,6 +43,7 @@ lumia_island_wiki/
 │   ├── GitHub 저장소 설정 기준.md   GitHub 옵션의 기준값과 기능 지원 범위
 │   ├── GitHub 라벨 기준.md          라벨 이름·설명·색상과 적용 규칙
 │   ├── details/                    주제별 상세 기준·요구
+│   │   ├── development/            Java 작성·관리 규칙과 공통 검사 입력
 │   │   ├── operations/             권한·검증과 전체 평가·검수·실패·개선
 │   │   ├── product/                제품 주제별 상세 요구
 │   │   ├── development/            기술·DB 환경·테스트/TDD·코드 품질 기준
@@ -67,7 +68,8 @@ lumia_island_wiki/
 │   ├── examples/                  정식 양식의 공용 예시
 │   └── templates/                 본문·입력·수행 기록, GitHub 게시, PR 양식
 │       ├── issue-input.md / issue.md  Issue 생성 입력 / 최초 본문
-│       ├── task-input.md / task.md    확정 배정 전달사항 / 최초 Task 본문
+│       ├── task-input.md / task-with-plan.md    확정 배정 전달사항 / 신규 Task 본문
+│       ├── task-plan.md                         별도 상세 계획
 │       └── task-execution.md          첫 할 일 착수 때 수행 기록 최초 생성
 └── work/                           실제 계획·진행·작업 근거
     ├── README.md                   기록 탐색과 사용 안내
@@ -78,15 +80,16 @@ lumia_island_wiki/
         └── harness/                독립 하네스 정비 Issue
 ```
 
-| 세부 위치                                                                                                                                                               | 역할                                      |
-| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------- |
-| [`.agents/skills/create-issue/`](.agents/skills/create-issue/SKILL.md) · [`.agents/skills/create-task/`](.agents/skills/create-task/SKILL.md)                           | Issue·Task 최초 작성·입력 확인의 진입점   |
-| [`.agents/skills/triage-additional-request/`](.agents/skills/triage-additional-request/SKILL.md) · [`.agents/skills/review-work/`](.agents/skills/review-work/SKILL.md) | 추가 요청의 작업 단위 판단과 결과 검수    |
-| `harness/스킬 현황.md` · `harness/hook 현황.md`                                                                                                                         | 등록 항목·적용 조건·원천·확인 범위의 조회 |
-| `work/records/phase-001/`부터 `phase-007/`까지                                                                                                                          | Phase별 계획과 실제 하위 작업 기록의 위치 |
-| 담당 Issue 직하 `task-<순번>.md`                                                                                                                                        | Task 본문                                 |
-| 담당 Issue의 `artifacts/task-<순번>-assignment.md`                                                                                                                      | 확정 배정 전달사항 원본                   |
-| 담당 Issue의 `artifacts/task-<순번>-execution.md`                                                                                                                       | 착수 후 수행 기록                         |
+| 세부 위치                                                                                                                                                               | 역할                                                    |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
+| [`.agents/skills/create-issue/`](.agents/skills/create-issue/SKILL.md) · [`.agents/skills/create-task/`](.agents/skills/create-task/SKILL.md)                           | Issue·Task 최초 작성·입력 확인의 진입점                 |
+| [`.agents/skills/triage-additional-request/`](.agents/skills/triage-additional-request/SKILL.md) · [`.agents/skills/review-work/`](.agents/skills/review-work/SKILL.md) | 추가 요청의 작업 단위 판단과 결과 검수                  |
+| `harness/스킬 현황.md` · `harness/hook 현황.md`                                                                                                                         | 등록 항목·적용 조건·원천·확인 범위의 조회               |
+| `work/records/phase-001/`부터 `phase-007/`까지                                                                                                                          | Phase별 계획과 실제 하위 작업 기록의 위치               |
+| [Java 작성·관리 규칙](<docs/details/development/Java 작성과 관리.md>)                                                                                                   | 운영·테스트 Java 배치, 모듈 계약, 승인과 공통 검사 입력 |
+| 담당 Issue 직하 `task-<순번>.md`                                                                                                                                        | Task 본문                                               |
+| 담당 Issue의 `artifacts/task-<순번>-assignment.md`                                                                                                                      | 확정 배정 전달사항 원본                                 |
+| 담당 Issue의 `artifacts/task-<순번>-execution.md`                                                                                                                       | 착수 후 수행 기록                                       |
 
 식별·소유·경로는 [기록 체계](<docs/작업 기록 체계.md#paths>), 작성·검사·실패 대응은 [문서 관리](<harness/문서 관리.md#entry>)에서 확인한다.
 

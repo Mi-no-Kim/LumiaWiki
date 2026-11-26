@@ -179,8 +179,16 @@ class FlowTests(unittest.TestCase):
 
     def test_codex_hook_command_resolves_from_a_subdirectory(self):
         configuration = json.loads((SCRIPTS.parent / ".codex/hooks.json").read_text())
-        hook = configuration["hooks"]["PreToolUse"][0]["hooks"][0]
-        command = hook["commandWindows"] if os.name == "nt" else hook["command"]
+        command_key = "commandWindows" if os.name == "nt" else "command"
+        commands = [
+            hook[command_key]
+            for group in configuration["hooks"]["PreToolUse"]
+            if group.get("matcher") == "^apply_patch$"
+            for hook in group["hooks"]
+            if "tdd-check.py" in hook.get(command_key, "")
+        ]
+        self.assertEqual(1, len(commands))
+        command = commands[0]
         event = {"tool_name": "apply_patch", "tool_input": {"command": "*** Begin Patch\n*** Update File: frontend/src/probe.py\n@@\n-x\n+y\n*** End Patch"}}
         result = subprocess.run(command, cwd=self.root / "frontend/src", input=json.dumps(event), shell=True, capture_output=True, text=True)
         self.assertIn('"deny"', result.stdout, result.stderr)

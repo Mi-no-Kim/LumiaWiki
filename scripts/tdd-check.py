@@ -6,6 +6,7 @@ sys.dont_write_bytecode = True
 
 import argparse
 import json
+import os
 import queue
 import threading
 import time
@@ -19,6 +20,7 @@ def main():
     parser.add_argument("--base")
     parser.add_argument("--task")
     parser.add_argument("--hook", action="store_true")
+    parser.add_argument("--non-java", action="store_true", help="Leave production Java to the Java hook")
     args = parser.parse_args()
     result = queue.Queue()
     core.DEADLINE = time.monotonic() + 2.7
@@ -30,10 +32,18 @@ def main():
                 event = json.loads(sys.stdin.read(2_000_001))
                 if event.get("tool_name") != "apply_patch":
                     raise ValueError("Unexpected hook tool; verify the matcher")
-                core.check_edit(root, core.patch_paths(event["tool_input"]["command"]), args.task)
+                paths = core.patch_paths(event["tool_input"]["command"])
+                if args.non_java:
+                    paths = [path for path in paths if not core.production_java(core.edit_path(root, path))]
+                core.check_edit(root, paths, args.task)
             else:
                 base = args.base or ("HEAD" if args.candidate == "index" else args.candidate + "^")
-                core.check_candidate(root, args.candidate, args.task, base)
+                paths = None
+                split = args.candidate == "index" and os.environ.get("LUMIA_JAVA_TDD_SPLIT") == "1"
+                if args.non_java or split:
+                    paths = [path for path in core.changed_paths(root, args.candidate, base)
+                             if not core.production_java(path)]
+                core.check_candidate(root, args.candidate, args.task, base, names=paths)
             result.put(None)
         except Exception as error:
             result.put(str(error).splitlines()[0])

@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "java": {
+    "basePackage": "io.github.minokim.lumiawiki",
+    "sourceRoots": {
+      "production": "backend/src/main/java",
+      "test": "backend/src/test/java"
+    },
+    "packageSegmentPattern": "^[a-z][a-z0-9]*$",
+    "typeNamePattern": "^[A-Z][A-Za-z0-9]*$",
+    "rootTypes": {
+      "production": ["LumiawikiApiApplication"],
+      "test": ["LumiawikiApiApplicationTests"]
+    },
+    "reservedPackages": {
+      "production": ["common.api", "dev"],
+      "test": ["common.api", "dev", "fixture"]
+    },
+    "modulePackages": [
+      "",
+      "api",
+      "application",
+      "domain",
+      "infrastructure",
+      "web"
+    ],
+    "commonContractTypes": [
+      "io.github.minokim.lumiawiki.common.api.ApiFailure"
+    ],
+    "modules": {}
+  },
+  "http": {
+    "developmentProfiles": ["local", "test"]
+  }
+}

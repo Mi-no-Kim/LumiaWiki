@@ -1,0 +1,70 @@
+{
+  "version": 1,
+  "bootstrap": true,
+  "source": {
+    "path": "work/records/harness/issue-106/issue.md",
+    "anchor": "java-ci-bootstrap"
+  },
+  "inputChanges": [
+    {
+      "path": ".github/workflows/java-contract.yml",
+      "before": null,
+      "after": "a6fbb670efd5e809fbe670f7741a8a1df477a71e5dec54453d88ca9dd8caeda8"
+    },
+    {
+      "path": "scripts/java-contract/backend-input.gradle",
+      "before": null,
+      "after": "d8837910a89980d2a9bec20799158476905ef92bb4d078674872d5096808a3fc"
+    },
+    {
+      "path": "scripts/java-contract/build.gradle",
+      "before": null,
+      "after": "372792ddf4f7cf0a82858245b035f34a2180f06e2862606006acd21926ab46c1"
+    },
+    {
+      "path": "scripts/java-contract/settings.gradle",
+      "before": null,
+      "after": "bd89da776ce2574546066fdb903df135a8e995bd6e2be4db8b387c337ebd7a39"
+    },
+    {
+      "path": "scripts/java-contract/src/main/java/lumia/contract/ContractRunner.java",
+      "before": null,
+      "after": "e0ce3d2db5f958ef911fa3d1140887bc5f72e06b9aeb02f3a1583cc59b89edc4"
+    },
+    {
+      "path": "scripts/java-contract/src/main/java/lumia/contract/HttpMappings.java",
+      "before": null,
+      "after": "c8da285f4a8ed2f810fc6130eaaccc841c1013397dd76c5817b5bb13fd67b793"
+    },
+    {
+      "path": "scripts/java-contract/src/main/java/lumia/contract/ModuleCheck.java",
+      "before": null,
+      "after": "d8038e4bc8040648b3610c1f99a9f80ad0228bab191e98df9a2b7a3c8a6dc4da"
+    },
+    {
+      "path": "scripts/java-contract/src/main/java/lumia/contract/SourceReferences.java",
+      "before": null,
+      "after": "cbc1f7dd20c2a52f60aea61c193db9cad7e19864e41460df67d1074b2ae712ee"
+    },
+    {
+      "path": "scripts/java-contract/src/main/resources/META-INF/services/com.sun.source.util.Plugin",
+      "before": null,
+      "after": "cd84bed6bef36d9e28990b3b0c8a57e1fe560aa2eee284e652ffb9335095b94b"
+    },
+    {
+      "path": "scripts/java-contract/src/test/java/lumia/contract/HttpMappingsTest.java",
+      "before": null,
+      "after": "6407b48217dd4d57f018ee7384ce6d95c520f35719ba7b68e18b1dff29957a0d"
+    },
+    {
+      "path": "scripts/java-contract/src/test/java/lumia/contract/ModuleCheckTest.java",
+      "before": null,
+      "after": "575df9b5c1e00010540bcd595856f1939154cd92f46fac466dd1576d2617c375"
+    },
+    {
+      "path": "scripts/java-contract/src/test/java/lumia/contract/dev/LeakedController.java",
+      "before": null,
+      "after": "e027641c8b207c3cd7d6e00a356b3a97f035c78d08313524e2b8c510b7ea5d2e"
+    }
+  ]
+}

@@ -69,6 +69,8 @@ jobs:
                           '--event-file', os.environ['GITHUB_EVENT_PATH'],
                           '--event-name', os.environ['GITHUB_EVENT_NAME']], check=True)
       - name: Prepare parent document blobs
+        env:
+          PARENT_BLOB_TOKEN: ${{ github.token }}
         run: python -B -X utf8 scripts/quality/record-base.py
       - name: Check changed work records
         run: python -B -X utf8 scripts/check-work-records.py --candidate HEAD

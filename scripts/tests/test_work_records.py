@@ -136,8 +136,36 @@ class CandidateTests(unittest.TestCase):
         self.assertEqual(2, failed.returncode)
         self.assertIn('Invalid or oversized source object: AGENTS.md', failed.stderr)
         code = (SCRIPTS / 'quality/record-base.py').read_text(encoding='utf-8')
-        prepared = subprocess.run([sys.executable, '-B', '-X', 'utf8', '-c', code], cwd=clone,
-                                  capture_output=True, text=True, encoding='utf-8')
+        parent_oid = self.git('rev-parse', 'HEAD^:AGENTS.md').stdout.strip()
+        parent_blob = subprocess.check_output(['git', 'cat-file', 'blob', parent_oid], cwd=self.root)
+        api = 'https://api.fixture.invalid'
+        repo = 'owner/repository'
+        url = f'{api}/repos/{repo}/git/blobs/{parent_oid}'
+        env = {**os.environ, 'GITHUB_API_URL': api, 'GITHUB_REPOSITORY': repo, 'PARENT_BLOB_TOKEN': 'fixture'}
+
+        def prepare(payload):
+            program = textwrap.dedent(f"""\
+                from io import BytesIO
+                from unittest.mock import patch
+
+                def get_blob(request, timeout):
+                    assert request.full_url == {url!r}
+                    assert request.get_header('Accept') == 'application/vnd.github.raw+json'
+                    assert request.get_header('Authorization') == 'Bearer fixture'
+                    return BytesIO({payload!r})
+
+                with patch('urllib.request.urlopen', side_effect=get_blob) as requests:
+                    exec({code!r})
+                    assert requests.call_count == 1
+                """)
+            return subprocess.run([sys.executable, '-B', '-X', 'utf8', '-c', program], cwd=clone,
+                                  env=env, capture_output=True, text=True, encoding='utf-8')
+
+        invalid = prepare(b'not the expected Git blob')
+        self.assertNotEqual(0, invalid.returncode)
+        self.assertIn('Invalid parent document blob', invalid.stderr)
+        self.assertEqual(2, check().returncode)
+        prepared = prepare(parent_blob)
         self.assertEqual(0, prepared.returncode, prepared.stderr)
         self.assertEqual(0, check().returncode)
         unrelated = self.git('-C', str(clone), 'rev-parse', 'HEAD^:unrelated.txt').stdout.strip()

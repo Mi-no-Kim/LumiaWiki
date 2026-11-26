@@ -103,6 +103,8 @@ class RepositoryCase(unittest.TestCase):
 
     def add_hook(self):
         name = 'scripts/hooks/pre-commit'
+        definition = (PROJECT / name).read_text(encoding='utf-8')
+        self.write(name, definition)
         rule_files = ['scripts/check-issue-rule-comments.py', 'scripts/issue_rule_comments.py',
                       'harness/issue-rule-comments.json']
         for source in rule_files[:2]:
@@ -120,14 +122,20 @@ class RepositoryCase(unittest.TestCase):
             self.write(source, (PROJECT / source).read_text(encoding='utf-8'))
         current_policy = json.loads((PROJECT / current[-1]).read_text(encoding='utf-8'))
         current_policy['legacyRecords'] = []
+        current_policy['compatibleTasks'] = []
         self.write(current[-1], json.dumps(current_policy))
         sources = [target['path'] for target in current_policy['targets']]
         for source in sources:
             self.write(source, (PROJECT / source).read_text(encoding='utf-8'))
-        dependencies = [*TOOLS, *rule_files[:2], *current, *sources]
-        definition = (PROJECT / name).read_text(encoding='utf-8')
-        declaration = next(line for line in definition.splitlines() if line.startswith('# inventory-dependencies: '))
-        self.write(name, definition.replace(declaration, '# inventory-dependencies: ' + json.dumps(dependencies)))
+        dependencies = json.loads(re.search(r'^# inventory-dependencies: (.+)$', definition, re.M)[1])
+        for dependency in dependencies:
+            if not (self.root / dependency).exists():
+                target = self.root / dependency
+                target.parent.mkdir(parents=True, exist_ok=True)
+                if dependency == 'scripts/quality/format.mjs':
+                    target.write_bytes(b'// Replaced in the quality behavior fixture.\n')
+                else:
+                    target.write_bytes((PROJECT / dependency).read_bytes())
         self.entries.append(self.entry('git:pre-commit', 'git', name, [name, *dependencies]))
         self.refresh()
 
@@ -379,12 +387,6 @@ class CandidateTests(RepositoryCase):
         for name in names:
             self.write(name, 'fixture text\n')
         self.add_hook()
-        hook = self.root / 'scripts/hooks/pre-commit'
-        definition = hook.read_text(encoding='utf-8')
-        declaration = next(line for line in definition.splitlines() if line.startswith('# inventory-dependencies: '))
-        hook.write_text(definition.replace(declaration, '# inventory-dependencies: ' + json.dumps(sorted(set(self.entries[-1]['files'] + names) - {'scripts/hooks/pre-commit'}))), encoding='utf-8')
-        self.entries[-1]['files'] = sorted(self.entries[-1]['files'] + names)
-        self.refresh()
         self.assert_allowed()
         for name in names:
             (self.root / name).write_bytes(b'fixture text\r\n')
@@ -484,14 +486,29 @@ class HookTests(RepositoryCase):
         self.add_hook()
         self.assertEqual(0, self.install().returncode)
         record = 'work/records/harness/issue-2/task-001.md'
-        template = (PROJECT / 'harness/templates/task.md').read_text(encoding='utf-8')
+        template = (PROJECT / 'harness/templates/task-with-plan.md').read_text(encoding='utf-8')
         body = re.search(r'^```markdown\s*\n(.*?)^```\s*$', template, re.M | re.S)[1]
+        body = (body.replace('<확정 전달사항 링크>', '[r001](artifacts/task-001-assignment.md)')
+                .replace('<실제 개정 식별>', '`r001`')
+                .replace('<배정 확정 근거 링크>', '[배정](issue.md#assignment-001)')
+                .replace('<유효한 결정·제약과 근거>', '기록을 확인하고 대조 결과를 남긴다.')
+                .replace('<허용된 다음 행동>', '상세 계획을 작성한다.'))
+        policy = json.loads((self.root / 'harness/rule-comments.json').read_text(encoding='utf-8'))
+        issue_comments = '\n\n'.join(policy['profiles']['issue']['comments'].values())
+        self.write('work/records/harness/issue-2/issue.md',
+                   f'# Fixture Issue\n\n{issue_comments}\n\n## 현재 요약\n\n- 상태: 예정\n\n'
+                   '<a id="assignment-001"></a>\n\n'
+                   '- 전달사항: [확정 전달사항](artifacts/task-001-assignment.md) (`r001`).\n')
+        self.write('work/records/harness/issue-2/artifacts/task-001-assignment.md',
+                   '## 목적\n\n기록을 확인한다.\n\n## 기대 결과\n\n검사 근거를 남긴다.\n\n'
+                   '## 이미 정해진 조건\n\n없음\n\n## Task에서 결정할 사항\n\n미정\n\n'
+                   '## 완료 조건과 확인 방법\n\n- 완료 조건: 검사 근거를 남긴다.\n'
+                   '  - 확인 방법: 실제 기록을 대조한다.\n')
         self.write(record, body)
         self.stage()
         accepted = self.git('commit', '-qm', 'valid current task fixture', check=False)
         self.assertEqual(0, accepted.returncode, accepted.stderr)
-        policy = json.loads((self.root / 'harness/rule-comments.json').read_text(encoding='utf-8'))
-        broken = body.replace(policy['profiles']['task']['comments']['start'], '')
+        broken = body.replace(policy['profiles']['task-with-plan']['comments']['recording'], '')
         self.write(record, broken)
         self.git('add', '--', record)
         before = self.git('rev-parse', 'HEAD').stdout
@@ -500,7 +517,7 @@ class HookTests(RepositoryCase):
                 self.write(record, body)
             denied = self.git('commit', '-qm', 'staged task comment violation', check=False)
             self.assertNotEqual(0, denied.returncode)
-            self.assertIn('task-rule:start', denied.stderr)
+            self.assertIn('separate-task-rule:recording', denied.stderr)
             self.assertEqual(before, self.git('rev-parse', 'HEAD').stdout)
         self.git('add', '--', record)
         self.write(record, broken)
@@ -586,12 +603,6 @@ class HookTests(RepositoryCase):
         self.add_hook()
         quality = 'scripts/quality/format.mjs'
         self.write(quality, 'console.error("quality-denied"); process.exit(9);\n')
-        self.entries[-1]['files'].append(quality)
-        hook = self.root / 'scripts/hooks/pre-commit'
-        definition = hook.read_text(encoding='utf-8')
-        declaration = next(line for line in definition.splitlines() if line.startswith('# inventory-dependencies: '))
-        dependencies = [name for name in self.entries[-1]['files'] if name != 'scripts/hooks/pre-commit']
-        self.write('scripts/hooks/pre-commit', definition.replace(declaration, '# inventory-dependencies: ' + json.dumps(dependencies)))
         self.refresh()
         self.assertEqual(0, self.install().returncode)
         self.stage()

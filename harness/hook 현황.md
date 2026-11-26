@@ -4,15 +4,17 @@
 
 <!-- inventory-table -->
 
-| 항목·원천                                                                                   | 적용 조건                                                              | 동작                                                                                | 확인 상태   |
-| ------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- | ----------------------------------------------------------------------------------- | ----------- |
-| [변경 파일 포맷 · Codex PostToolUse](../.codex/hooks.json)                                  | PostToolUse / ^apply_patch$; 도구 사전 설치·정의 신뢰 필요             | 허용 변경 파일만 포맷; 실패는 제출 미확인으로 보존                                  | 재확인 필요 |
-| [공통 기록 주석·상태 · Codex PostToolUse](../.codex/hooks.json)                             | 로컬 대화·실행에서 신뢰한 hook의 지원 도구 종료 후(동기)               | 기존 명시 보호와 신규 Issue·Task·수행 기록 자동 검사·피드백; 자동 원복 없음         | 재확인 필요 |
-| [편집 TDD 검사 · Codex PreToolUse](../.codex/hooks.json)                                    | PreToolUse / ^apply_patch$; 프로젝트·hook 신뢰 필요                    | 유효한 Red/예외 없는 apply_patch 편집 거부                                          | 재확인 필요 |
-| [자동 닫기 표현 검사 · Git commit-msg](../scripts/hooks/commit-msg)                         | Git 커밋 메시지 확정 시; 기존 사용자 hook 성공 후                      | 최종 메시지의 닫기 키워드·Issue 참조 결합 거부                                      | 재확인 필요 |
-| [제출 TDD·품질·현황·기록·주석 검사 · Git pre-commit](../scripts/hooks/pre-commit)           | Git 커밋 전; 연결된 기존 사용자/TDD hook 성공 후                       | 기존 hook을 먼저 실행하고 현황·기록·품질·공통 주석/상태를 확인; 고정 기존 기록 보존 | 재확인 필요 |
-| [브랜치 이름과 백업 이력 검사 · Git pre-push](../scripts/hooks/pre-push)                    | Git 푸시 전; 설치한 복제본에서 기존 사용자 hook 성공 후                | 원격 브랜치 대상 이름과 로컬 전용 백업 이력을 검사                                  | 확인        |
-| [로컬 브랜치 이름 검사 · Git reference-transaction](../scripts/hooks/reference-transaction) | 로컬 참조 트랜잭션 준비 시; 설치한 복제본에서 기존 사용자 hook 성공 후 | Git이 전달한 로컬 브랜치 생성과 보존 참조를 검사                                    | 확인        |
+| 항목·원천                                                                                   | 적용 조건                                                              | 동작                                                                         | 확인 상태   |
+| ------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ----------- |
+| [변경 파일 포맷 · Codex PostToolUse](../.codex/hooks.json)                                  | PostToolUse / ^apply_patch$; 도구 사전 설치·정의 신뢰 필요             | 허용 변경 파일만 포맷; 실패는 제출 미확인으로 보존                           | 재확인 필요 |
+| [공통 기록 주석·상태 · Codex PostToolUse](../.codex/hooks.json)                             | 로컬 대화·실행에서 신뢰한 hook의 지원 도구 종료 후(동기)               | 기존 명시 보호와 신규 Issue·Task·수행 기록 자동 검사·피드백; 자동 원복 없음  | 재확인 필요 |
+| [Java 배치 · Codex PostToolUse](../.codex/hooks.json)                                       | 신뢰한 프로젝트에서 apply_patch의 지원 이벤트를 동기로 처리할 때       | Java 생성·이동 목적지의 경로·패키지·이름 위반을 알림                         | 재확인 필요 |
+| [Java TDD 근거 · Codex PreToolUse](../.codex/hooks.json)                                    | 신뢰한 프로젝트에서 apply_patch의 지원 이벤트를 동기로 처리할 때       | 운영 Java 편집의 유효한 Red 또는 확인한 예외를 대조하고 필수 미확인을 차단   | 재확인 필요 |
+| [편집 TDD 검사 · Codex PreToolUse](../.codex/hooks.json)                                    | PreToolUse / ^apply_patch$; 프로젝트·hook 신뢰 필요                    | 운영 Java를 전용 검사에 위임하고 나머지 변경에서 유효한 Red 또는 예외를 확인 | 재확인 필요 |
+| [자동 닫기 표현 검사 · Git commit-msg](../scripts/hooks/commit-msg)                         | Git 커밋 메시지 확정 시; 기존 사용자 hook 성공 후                      | 최종 메시지의 닫기 키워드·Issue 참조 결합 거부                               | 재확인 필요 |
+| [현황·기록·공통 주석·Java 검사 · Git pre-commit](../scripts/hooks/pre-commit)               | Git 커밋 전; 기존 사용자 hook 성공 후                                  | 기존 훅에 이어 현황·기록·스테이징 포맷·공통 주석·Java 배치와 근거를 검증     | 재확인 필요 |
+| [브랜치 이름과 백업 이력 검사 · Git pre-push](../scripts/hooks/pre-push)                    | Git 푸시 전; 설치한 복제본에서 기존 사용자 hook 성공 후                | 원격 브랜치 대상 이름과 로컬 전용 백업 이력을 검사                           | 확인        |
+| [로컬 브랜치 이름 검사 · Git reference-transaction](../scripts/hooks/reference-transaction) | 로컬 참조 트랜잭션 준비 시; 설치한 복제본에서 기존 사용자 hook 성공 후 | Git이 전달한 로컬 브랜치 생성과 보존 참조를 검사                             | 확인        |
 
 <!-- /inventory-table -->
 
@@ -25,38 +27,6 @@
 {
   "schema": 1,
   "entries": [
-    {
-      "id": "codex:.codex/hooks.json:PostToolUse:0:0",
-      "kind": "codex",
-      "definition": ".codex/hooks.json",
-      "files": [
-        ".codex/hooks.json",
-        ".prettierrc.json",
-        "backend/build.gradle",
-        "backend/gradle/wrapper/gradle-wrapper.jar",
-        "backend/gradle/wrapper/gradle-wrapper.properties",
-        "backend/gradlew",
-        "backend/gradlew.bat",
-        "backend/settings.gradle",
-        "package-lock.json",
-        "package.json",
-        "scripts/quality/format.mjs",
-        "scripts/quality/paths.mjs",
-        "scripts/quality/post-edit.mjs",
-        "scripts/quality/process.mjs"
-      ],
-      "sourceDigest": "959ca7d5c835be9082fe8d6d7940db57661fb212aa9ca977706a9a860311111a",
-      "title": "변경 파일 포맷 · Codex PostToolUse",
-      "purpose": "허용 변경 파일만 포맷; 실패는 제출 미확인으로 보존",
-      "when": "PostToolUse / ^apply_patch$; 도구 사전 설치·정의 신뢰 필요",
-      "verification": {
-        "status": "stale",
-        "sourceDigest": "70e864c41ab8a00dd84c2f8b9f9d619a3e1ddb0f0a553209e622766e7eda0ebc",
-        "environment": "Windows / Node 24.22.3 / Python 3.14.2 / current apply_patch and isolated hook/index fixtures",
-        "scope": "DB Markdown 포맷/수집·CI 분류 3건과 기존 품질 fixture 20건 통과·파일 symlink 1건 skip. 실제 apply_patch DB 문서 포맷을 확인했다. 변경한 경로 분류/수집 외 hook 정의·인덱스 실행·Java 경로는 동일하며 Task 42-004의 기존 실제 hook 근거를 재사용한다. 저장소 실제 인덱스 변경·커밋 실행은 미수행이다.",
-        "evidence": "work/records/phase-001/issue-43/artifacts/task-001-bootstrap-verification.md#database-documents"
-      }
-    },
     {
       "id": "codex:.codex/hooks.json:PostToolUse:1:0",
       "kind": "codex",
@@ -78,7 +48,7 @@
         "scripts/issue_rule_comments.py",
         "scripts/rule_comments.py"
       ],
-      "sourceDigest": "2329143a8ea6fe5b64d3ac3fb92f687dc707aa186648d2befd0113d8b20e09b7",
+      "sourceDigest": "90be3e5befce8f516633e3fc4438ca87a1cd03306942644a58bbf1f41b65d503",
       "title": "공통 기록 주석·상태 · Codex PostToolUse",
       "purpose": "기존 명시 보호와 신규 Issue·Task·수행 기록 자동 검사·피드백; 자동 원복 없음",
       "when": "로컬 대화·실행에서 신뢰한 hook의 지원 도구 종료 후(동기)",
@@ -91,25 +61,52 @@
       }
     },
     {
+      "id": "codex:.codex/hooks.json:PostToolUse:2:0",
+      "kind": "codex",
+      "definition": ".codex/hooks.json",
+      "files": [
+        ".codex/hooks.json",
+        "docs/details/development/java-policy.json",
+        "scripts/check-java.py",
+        "scripts/harness_inventory.py",
+        "scripts/java_guard.py",
+        "scripts/tdd_core.py"
+      ],
+      "title": "Java 배치 · Codex PostToolUse",
+      "purpose": "Java 생성·이동 목적지의 경로·패키지·이름 위반을 알림",
+      "when": "신뢰한 프로젝트에서 apply_patch의 지원 이벤트를 동기로 처리할 때",
+      "verification": {
+        "status": "stale",
+        "sourceDigest": "b2bc07acf61906261c0c4eeadf40589a218f18c9f75924b8ad2b1a9d49d0e515",
+        "environment": "Windows / Python 3.14 / Git 2.52 / Codex CLI 0.172.0 / 격리 저장소",
+        "scope": "임시 CLI 설정의 실제 apply_patch에서 테스트 Java 배치 위반을 편집 뒤 모델 입력에 전달했다.",
+        "evidence": "work/records/harness/issue-106/artifacts/task-002-execution.md#work-hooks"
+      },
+      "sourceDigest": "08d66539e947a76178304a68df1dd9a49ddecaf02eef23210e8f1a3035be87a2"
+    },
+    {
       "id": "codex:.codex/hooks.json:PreToolUse:0:0",
       "kind": "codex",
       "definition": ".codex/hooks.json",
       "files": [
         ".codex/hooks.json",
-        "scripts/tdd-check.py",
+        "docs/details/development/java-policy.json",
+        "scripts/check-java.py",
+        "scripts/harness_inventory.py",
+        "scripts/java_guard.py",
         "scripts/tdd_core.py"
       ],
-      "sourceDigest": "7df18af01bbdc0c8c0868c8d716d89dbe6cfe3f16c956f694ddae4d89980c7ce",
-      "title": "편집 TDD 검사 · Codex PreToolUse",
-      "purpose": "유효한 Red/예외 없는 apply_patch 편집 거부",
-      "when": "PreToolUse / ^apply_patch$; 프로젝트·hook 신뢰 필요",
+      "title": "Java TDD 근거 · Codex PreToolUse",
+      "purpose": "운영 Java 편집의 유효한 Red 또는 확인한 예외를 대조하고 필수 미확인을 차단",
+      "when": "신뢰한 프로젝트에서 apply_patch의 지원 이벤트를 동기로 처리할 때",
       "verification": {
         "status": "stale",
-        "sourceDigest": "83e810f55efc694b6cd24ee19ec99d4d00c5500785387c385a4293e3a52b466c",
-        "environment": "Windows / Python 3.14.2 / actual apply_patch",
-        "scope": "같은 PreToolUse handler와 TDD 의존을 보존했다. 현재 Task의 실제 apply_patch를 무효한 예외 spec으로 거부하고, 새 유효한 예외를 등록·활성화한 뒤 허용했다. 기존 Red/Green 거부 의미는 동일 handler의 Task 002 근거와 현재 전체 fixture로 확인한다.",
-        "evidence": "work/records/phase-001/issue-42/artifacts/task-004-implementation.md#verification"
-      }
+        "sourceDigest": "b2bc07acf61906261c0c4eeadf40589a218f18c9f75924b8ad2b1a9d49d0e515",
+        "environment": "Windows / Python 3.14 / Git 2.52 / Codex CLI 0.172.0 / 격리 저장소",
+        "scope": "임시 CLI 설정의 실제 apply_patch에서 운영 Java 무근거 편집을 거부했다.",
+        "evidence": "work/records/harness/issue-106/artifacts/task-002-execution.md#work-hooks"
+      },
+      "sourceDigest": "08d66539e947a76178304a68df1dd9a49ddecaf02eef23210e8f1a3035be87a2"
     },
     {
       "id": "git:commit-msg",
@@ -145,6 +142,7 @@
         "backend/gradlew",
         "backend/gradlew.bat",
         "backend/settings.gradle",
+        "docs/details/development/java-policy.json",
         "harness/examples/issue-body-example-42.md",
         "harness/examples/task-body-example-43-002.md",
         "harness/examples/task-body-example-db-method.md",
@@ -153,11 +151,14 @@
         "harness/rule-comments.json",
         "harness/templates/issue.md",
         "harness/templates/task-execution.md",
+        "harness/templates/task-plan.md",
+        "harness/templates/task-with-plan.md",
         "harness/templates/task.md",
         "package-lock.json",
         "package.json",
         "scripts/check-harness-inventory.py",
         "scripts/check-issue-rule-comments.py",
+        "scripts/check-java.py",
         "scripts/check-rule-comments.py",
         "scripts/check-work-records.py",
         "scripts/harness_inventory.py",
@@ -165,6 +166,7 @@
         "scripts/install-harness-hooks.py",
         "scripts/install-hooks.py",
         "scripts/issue_rule_comments.py",
+        "scripts/java_guard.py",
         "scripts/quality/format.mjs",
         "scripts/quality/paths.mjs",
         "scripts/quality/process.mjs",
@@ -172,16 +174,16 @@
         "scripts/tdd-check.py",
         "scripts/tdd_core.py"
       ],
-      "sourceDigest": "d4885a4cf42333361e758103e1c67e61f8c9e33739732a60184e976493afbedf",
-      "title": "제출 TDD·품질·현황·기록·주석 검사 · Git pre-commit",
-      "purpose": "기존 hook을 먼저 실행하고 현황·기록·품질·공통 주석/상태를 확인; 고정 기존 기록 보존",
-      "when": "Git 커밋 전; 연결된 기존 사용자/TDD hook 성공 후",
+      "sourceDigest": "86256e2d18657f006c0e1177143a26b41d455d189281669a858161fb09fd8101",
+      "title": "현황·기록·공통 주석·Java 검사 · Git pre-commit",
+      "purpose": "기존 훅에 이어 현황·기록·스테이징 포맷·공통 주석·Java 배치와 근거를 검증",
+      "when": "Git 커밋 전; 기존 사용자 hook 성공 후",
       "verification": {
         "status": "stale",
-        "sourceDigest": "e48a90f4511bdc12f3adb48f10f35ae49027485af092804b30be259693318222",
-        "environment": "Windows / Node 24.22.3 / Python 3.14.2 / current apply_patch and isolated hook/index fixtures",
-        "scope": "DB Markdown 포맷/수집·CI 분류 3건과 기존 품질 fixture 20건 통과·파일 symlink 1건 skip. 실제 apply_patch DB 문서 포맷을 확인했다. 변경한 경로 분류/수집 외 hook 정의·인덱스 실행·Java 경로는 동일하며 Task 42-004의 기존 실제 hook 근거를 재사용한다. 저장소 실제 인덱스 변경·커밋 실행은 미수행이다.",
-        "evidence": "work/records/phase-001/issue-43/artifacts/task-001-bootstrap-verification.md#database-documents"
+        "sourceDigest": "4ab1875a39a894e672489df5c7dff8c55687754fdcb5e0eb144390ad530918dc",
+        "environment": "Windows / Python 3.14 / Git 2.52 / 격리 저장소",
+        "scope": "경로 표기 보완 후 격리 Git 실제 커밋으로 기존 훅 선행과 실제 인덱스의 Java 위반 차단·정상 통과를 재확인했다.",
+        "evidence": "work/records/harness/issue-106/artifacts/task-002-execution.md#work-verification"
       }
     },
     {
@@ -224,6 +226,59 @@
         "environment": "Windows / Python 3.14.2 / Git 2.52.0.windows.1 / 격리 저장소와 실제 로컬 공용 훅",
         "scope": "격리 검증 후 실제 공용 훅 설치와 정상 참조 트랜잭션의 준비·중단, 금지 이름과 백업 삭제 거부를 확인했다. 기본 Git 이름 변경의 제한과 검사 명령 검증은 수행 기록에 연결했다.",
         "evidence": "work/records/harness/issue-81/artifacts/task-002-execution.md#work-branch-hook-live-install"
+      }
+    },
+    {
+      "id": "codex:.codex/hooks.json:PostToolUse:0:0",
+      "kind": "codex",
+      "definition": ".codex/hooks.json",
+      "files": [
+        ".codex/hooks.json",
+        ".prettierrc.json",
+        "backend/build.gradle",
+        "backend/gradle/wrapper/gradle-wrapper.jar",
+        "backend/gradle/wrapper/gradle-wrapper.properties",
+        "backend/gradlew",
+        "backend/gradlew.bat",
+        "backend/settings.gradle",
+        "package-lock.json",
+        "package.json",
+        "scripts/quality/format.mjs",
+        "scripts/quality/paths.mjs",
+        "scripts/quality/post-edit.mjs",
+        "scripts/quality/process.mjs"
+      ],
+      "sourceDigest": "45a451591490d939fa84f9d38720aa69aacb132873a434bf0913cf4014d1139d",
+      "title": "변경 파일 포맷 · Codex PostToolUse",
+      "purpose": "허용 변경 파일만 포맷; 실패는 제출 미확인으로 보존",
+      "when": "PostToolUse / ^apply_patch$; 도구 사전 설치·정의 신뢰 필요",
+      "verification": {
+        "status": "stale",
+        "sourceDigest": "53386923de8863ae35e9ffdbeea95c39412407e85419759deac8fc8698daf9b6",
+        "environment": "Windows / current Codex apply_patch / Node 24.22.3 / prepared Gradle 9.9.1 / JDK 21",
+        "scope": "사용자 검토·신뢰 후 실제 apply_patch 네 호출로 JSON/Java 생성·수정·포맷된 입력 반복을 확인했다. 패치 밖 두 대조 파일 바이트 유지·새 event receipt 4개·실패 marker 불변·기존 TDD 실제 거부와 probe 제거를 확인했다.",
+        "evidence": "work/records/phase-001/issue-42/artifacts/task-004-implementation.md#host-verification"
+      }
+    },
+    {
+      "id": "codex:.codex/hooks.json:PreToolUse:1:0",
+      "kind": "codex",
+      "definition": ".codex/hooks.json",
+      "files": [
+        ".codex/hooks.json",
+        "scripts/tdd-check.py",
+        "scripts/tdd_core.py"
+      ],
+      "sourceDigest": "0e46737abe8716dec9f2b37ae329a770dd25c1efb5d79cb5fcc375ea6adba9ec",
+      "title": "편집 TDD 검사 · Codex PreToolUse",
+      "purpose": "운영 Java를 전용 검사에 위임하고 나머지 변경에서 유효한 Red 또는 예외를 확인",
+      "when": "PreToolUse / ^apply_patch$; 프로젝트·hook 신뢰 필요",
+      "verification": {
+        "status": "stale",
+        "sourceDigest": "83e810f55efc694b6cd24ee19ec99d4d00c5500785387c385a4293e3a52b466c",
+        "environment": "Windows / Python 3.14.2 / actual apply_patch",
+        "scope": "같은 PreToolUse handler와 TDD 의존을 보존했다. 현재 Task의 실제 apply_patch를 무효한 예외 spec으로 거부하고, 새 유효한 예외를 등록·활성화한 뒤 허용했다. 기존 Red/Green 거부 의미는 동일 handler의 Task 002 근거와 현재 전체 fixture로 확인한다.",
+        "evidence": "work/records/phase-001/issue-42/artifacts/task-004-implementation.md#verification"
       }
     }
   ]
