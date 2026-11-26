@@ -2,14 +2,14 @@
   "version": 1,
   "bootstrap": true,
   "source": {
-    "path": "work/records/harness/issue-106/issue.md",
-    "anchor": "java-ci-bootstrap"
+    "path": "work/records/phase-001/issue-43/issue.md",
+    "anchor": "java-ci-db-approval"
   },
   "inputChanges": [
     {
       "path": ".github/workflows/java-contract.yml",
       "before": null,
-      "after": "a6fbb670efd5e809fbe670f7741a8a1df477a71e5dec54453d88ca9dd8caeda8"
+      "after": "d8c0681b1487654c457ee1c85a366f3220393753f75594a0ea26526292dad24b"
     },
     {
       "path": "scripts/java-contract/backend-input.gradle",
