@@ -10,7 +10,7 @@
 - 상태: 진행 중
 - 현재 진행 위치: Task 001의 공통 8개 표/Java·격리/로컬 검증 결과를 [PR #71](https://github.com/Mi-no-Kim/LumiaWiki/pull/71)로 이 Issue 브랜치에 반영했고 전용 Task 브랜치를 정리했다. 단위 30·통합 11건의 [생성/검증 결과](artifacts/task-001-creation.md#current)와 PR CI 8개 통과를 확인했다. [Task 43-002](task-002.md#result)는 아이템·능력치·스킬 저장·조회 구현, 격리 DB 검증과 계약 인계를 완료했고 [PR #79](https://github.com/Mi-no-Kim/LumiaWiki/pull/79)의 부모 통합과 병합 후 CI를 확인했다. [Task 43-003](task-003.md#summary)은 [PR #91](https://github.com/Mi-no-Kim/LumiaWiki/pull/91)로 V4·V5를 병합했고 [기존 개발 DB의 V2~V5 적용](artifacts/task-003-execution.md#development-db-v5)을 마쳤다. 004는 예정이다. 실제 자료 작업은 보류한다.
 - 허용 범위: 승인한 PR #91 부모 병합과 기존 개발 DB `lumiawiki/public`의 V2~V5 적용을 마쳤다. 실제 자료 조사·등록·교정은 보류한다.
-- 다음 판단/행동: [43-005 정정 PR #126](https://github.com/Mi-no-Kim/LumiaWiki/pull/126)을 부모에 병합했다. [테스트 조립 위치 정정](#java-ci-foundation-fixture)을 먼저 검증하고 [Java CI 승인 범위](#java-ci-db-approval)의 최초 설치 후보를 임시 브랜치에서 확인한다. 43-003 저장 합의와 실제 자료 작업 보류를 유지한다.
+- 다음 판단/행동: [43-005 정정 PR #126](https://github.com/Mi-no-Kim/LumiaWiki/pull/126)을 부모에 병합했다. [테스트 조립 위치 정정](#java-ci-foundation-fixture)을 반영하고 [Java CI 승인 범위](#java-ci-db-approval)의 최초 설치를 검증한다. [#43의 Java CI 실행](https://github.com/Mi-no-Kim/LumiaWiki/actions/workflows/java-contract.yml?query=branch%3Aissue%2F43-item-persistence)에서 결과를 확인한다. 43-003 저장 합의와 실제 자료 작업 보류를 유지한다.
 - 작성 근거: [Task 005](../issue-15/task-005.md#summary) · [전체 실행 순서](../issue-15/artifacts/task-005-issue-outline.md#sequence). 실제 자료 작업 보류를 유지한다.
 
 <a id="parent-integration"></a>
@@ -46,6 +46,13 @@
 - [최초 검증 실행](https://github.com/Mi-no-Kim/LumiaWiki/actions/runs/45787965374)에서 승인과 계약 회귀는 통과했다. 공유 `fixture`에서 `common.api`와 `dev`의 구현체 네 개를 직접 가져오는 기존 구성은 모듈 검사에서 차단됐고, Spring HTTP 및 격리 DB 단계는 실행되지 않았다.
 - [사용자 승인](codex://threads/01a213c4-8310-7650-848d-186d61ec6962)에 따라 네 빈의 연결을 루트 테스트의 명시적 `@TestConfiguration`으로 옮긴다. 두 테스트의 명시적 입력을 갱신하고, `fixture` 패키지의 자동 설정과 전용 마이그레이션을 유지한다.
 - [검증 근거](artifacts/parent-integration-tdd.md)와 GitHub Quality의 기존 통합 테스트를 확인한다. 그 결과에 이어 최초 Java CI에서 모듈 경계, Spring 실행과 V1~V5를 확인한다.
+
+<a id="java-ci-db-activation"></a>
+
+### #43 Java CI 검증
+
+- [테스트 정정의 Quality 실행](https://github.com/Mi-no-Kim/LumiaWiki/actions/runs/45789357619)은 기존 격리 통합 테스트를 포함한다. 직계 Phase의 Java 계약 도구 11개와 이전에 승인된 #43 워크플로를 적용한다. 워크플로는 Spring HTTP 검사에 #43의 Compose PostgreSQL과 기존 역할 초기화를 연결한다.
+- [로컬 회귀 근거](artifacts/parent-integration-tdd.md)는 최초 설치 승인과 검사 선택을 다룬다. Java CI에서 모듈 의존 관계, Spring 네 프로필 기동, V1~V5의 설치자와 런타임 권한 및 일회용 볼륨 정리를 확인한다.
 
 <a id="goal"></a>
 
