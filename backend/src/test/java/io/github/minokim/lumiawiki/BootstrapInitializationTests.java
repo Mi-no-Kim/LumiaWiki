@@ -2,6 +2,7 @@ package io.github.minokim.lumiawiki;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import io.github.minokim.lumiawiki.fixture.FoundationTestApplication;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -119,7 +120,7 @@ class BootstrapInitializationTests {
 
       var app =
           new SpringApplication(
-              io.github.minokim.lumiawiki.fixture.FoundationTestApplication.class);
+              FoundationTestApplication.class, LumiawikiApiApplicationTests.FoundationBeans.class);
       var isolatedEnvironment = new StandardEnvironment();
       isolatedEnvironment
           .getPropertySources()

@@ -3,6 +3,11 @@ package io.github.minokim.lumiawiki;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
+import io.github.minokim.lumiawiki.common.api.ApiExceptionAdvice;
+import io.github.minokim.lumiawiki.common.api.RequestIdFilter;
+import io.github.minokim.lumiawiki.dev.FoundationController;
+import io.github.minokim.lumiawiki.dev.FoundationService;
+import io.github.minokim.lumiawiki.fixture.FoundationTestApplication;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +22,14 @@ import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.postgresql.PostgreSQLContainer;
 
 @SpringBootTest(
-    classes = io.github.minokim.lumiawiki.fixture.FoundationTestApplication.class,
+    classes = FoundationTestApplication.class,
     properties = "spring.flyway.locations=classpath:db/test-migration")
 @ActiveProfiles("test")
 @Tag("integration")
-@Import(LumiawikiApiApplicationTests.Database.class)
+@Import({
+  LumiawikiApiApplicationTests.Database.class,
+  LumiawikiApiApplicationTests.FoundationBeans.class
+})
 class LumiawikiApiApplicationTests {
 
   @TestConfiguration(proxyBeanMethods = false)
@@ -36,6 +44,15 @@ class LumiawikiApiApplicationTests {
           .withReuse(false);
     }
   }
+
+  @TestConfiguration(proxyBeanMethods = false)
+  @Import({
+    FoundationController.class,
+    FoundationService.class,
+    ApiExceptionAdvice.class,
+    RequestIdFilter.class
+  })
+  static class FoundationBeans {}
 
   @Autowired JdbcTemplate jdbc;
 
