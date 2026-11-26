@@ -1,0 +1,73 @@
+{
+  "schema": 1,
+  "cycles": [
+    {
+      "id": "withdraw-unapproved-catalog",
+      "kind": "behavior",
+      "targets": [
+        "backend/src/main/java/io/github/minokim/lumiawiki/catalog/AcquisitionMethod.java",
+        "backend/src/main/java/io/github/minokim/lumiawiki/catalog/CatalogErrors.java",
+        "backend/src/main/java/io/github/minokim/lumiawiki/catalog/CatalogReferenceCheck.java",
+        "backend/src/main/java/io/github/minokim/lumiawiki/catalog/CatalogRow.java",
+        "backend/src/main/java/io/github/minokim/lumiawiki/catalog/CatalogViews.java",
+        "backend/src/main/java/io/github/minokim/lumiawiki/catalog/CommonCatalogService.java",
+        "backend/src/main/java/io/github/minokim/lumiawiki/catalog/CommonCatalogStore.java",
+        "backend/src/main/java/io/github/minokim/lumiawiki/catalog/EquipmentCategoryRole.java",
+        "backend/src/main/java/io/github/minokim/lumiawiki/catalog/EquipmentSlot.java",
+        "backend/src/main/java/io/github/minokim/lumiawiki/catalog/GamePatch.java",
+        "backend/src/main/java/io/github/minokim/lumiawiki/catalog/HuntingAcquisitionCheck.java",
+        "backend/src/main/java/io/github/minokim/lumiawiki/catalog/Item.java",
+        "backend/src/main/java/io/github/minokim/lumiawiki/catalog/ItemAcquisition.java",
+        "backend/src/main/java/io/github/minokim/lumiawiki/catalog/ItemAcquisitionReferenceCheck.java",
+        "backend/src/main/java/io/github/minokim/lumiawiki/catalog/ItemCatalogService.java",
+        "backend/src/main/java/io/github/minokim/lumiawiki/catalog/ItemCategory.java",
+        "backend/src/main/java/io/github/minokim/lumiawiki/catalog/ItemGrade.java",
+        "backend/src/main/java/io/github/minokim/lumiawiki/catalog/ItemPatchPlan.java",
+        "backend/src/main/java/io/github/minokim/lumiawiki/catalog/ItemSkillDefinition.java",
+        "backend/src/main/java/io/github/minokim/lumiawiki/catalog/ItemSkillDefinitionVersion.java",
+        "backend/src/main/java/io/github/minokim/lumiawiki/catalog/ItemSkillReferenceCheck.java",
+        "backend/src/main/java/io/github/minokim/lumiawiki/catalog/ItemStat.java",
+        "backend/src/main/java/io/github/minokim/lumiawiki/catalog/ItemStatCache.java",
+        "backend/src/main/java/io/github/minokim/lumiawiki/catalog/ItemVersion.java",
+        "backend/src/main/java/io/github/minokim/lumiawiki/catalog/ItemVersionSkillLink.java",
+        "backend/src/main/java/io/github/minokim/lumiawiki/catalog/Region.java",
+        "backend/src/main/java/io/github/minokim/lumiawiki/catalog/RegionMapMember.java",
+        "backend/src/main/java/io/github/minokim/lumiawiki/catalog/RegionMapVersion.java",
+        "backend/src/main/java/io/github/minokim/lumiawiki/catalog/Season.java",
+        "backend/src/main/java/io/github/minokim/lumiawiki/catalog/StatType.java",
+        "backend/src/main/java/io/github/minokim/lumiawiki/catalog/WeaponType.java",
+        "backend/src/test/java/io/github/minokim/lumiawiki/catalog/CommonCatalogIntegrationTests.java",
+        "backend/src/test/java/io/github/minokim/lumiawiki/catalog/CommonCatalogServiceTests.java",
+        "backend/src/test/java/io/github/minokim/lumiawiki/catalog/CommonCatalogStoreTests.java",
+        "backend/src/test/java/io/github/minokim/lumiawiki/catalog/ItemCatalogServiceTests.java",
+        "backend/src/test/java/io/github/minokim/lumiawiki/catalog/ItemStorageMigrationTests.java",
+        "backend/src/main/java/io/github/minokim/lumiawiki/common/api/ApiFailure.java"
+      ],
+      "tests": [
+        "work/records/phase-001/issue-43/artifacts/task_005_withdrawal_check.py"
+      ],
+      "settings": [],
+      "adapter": "unittest",
+      "command": [
+        "python",
+        "-B",
+        "-X",
+        "utf8",
+        "scripts/test-python.py",
+        "--report",
+        "{report}",
+        "--run-id",
+        "{run_id}",
+        "--",
+        "discover",
+        "-s",
+        "work/records/phase-001/issue-43/artifacts",
+        "-p",
+        "task_005_withdrawal_check.py"
+      ],
+      "expectedFailures": [
+        "task_005_withdrawal_check.CatalogWithdrawalTest.test_catalog_sources_are_absent_and_common_error_remains"
+      ]
+    }
+  ]
+}

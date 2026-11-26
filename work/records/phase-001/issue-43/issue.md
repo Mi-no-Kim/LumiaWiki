@@ -10,7 +10,7 @@
 - 상태: 진행 중
 - 현재 진행 위치: Task 001의 공통 8개 표/Java·격리/로컬 검증 결과를 [PR #71](https://github.com/Mi-no-Kim/LumiaWiki/pull/71)로 이 Issue 브랜치에 반영했고 전용 Task 브랜치를 정리했다. 단위 30·통합 11건의 [생성/검증 결과](artifacts/task-001-creation.md#current)와 PR CI 8개 통과를 확인했다. [Task 43-002](task-002.md#result)는 아이템·능력치·스킬 저장·조회 구현, 격리 DB 검증과 계약 인계를 완료했고 [PR #79](https://github.com/Mi-no-Kim/LumiaWiki/pull/79)의 부모 통합과 병합 후 CI를 확인했다. [Task 43-003](task-003.md#summary)은 [PR #91](https://github.com/Mi-no-Kim/LumiaWiki/pull/91)로 V4·V5를 병합했고 [기존 개발 DB의 V2~V5 적용](artifacts/task-003-execution.md#development-db-v5)을 마쳤다. 004는 예정이다. 실제 자료 작업은 보류한다.
 - 허용 범위: 승인한 PR #91 부모 병합과 기존 개발 DB `lumiawiki/public`의 V2~V5 적용을 마쳤다. 실제 자료 조사·등록·교정은 보류한다.
-- 다음 판단/행동: [43-003 구현 범위 수용 검수](artifacts/task-003-execution.md#acceptance-review)를 마쳤다. [43-003 종료 잔여](task-003.md#result)를 대조한다. 43-002 제출용 브랜치 정리는 별도 후속이다. 실제 자료 보류와 신규 표 생성 직전 전체 구조·정확한 대상 확인을 유지한다.
+- 다음 판단/행동: 선행 기준을 반영했다. [Task 43-005](task-005.md#summary)의 정정 후보를 검수해 부모 PR로 제출한다. 43-003 저장 합의와 실제 자료 작업 보류를 유지한다.
 - 작성 근거: [Task 005](../issue-15/task-005.md#summary) · [전체 실행 순서](../issue-15/artifacts/task-005-issue-outline.md#sequence). 실제 자료 작업 보류를 유지한다.
 
 <a id="parent-integration"></a>
@@ -53,14 +53,24 @@
 
 ### 보유 Task
 
-로컬 Task 4개를 이 Issue에 등록하고 GitHub sub-issue로 연결했다. 각 Task의 번호·URL·상태와 실행·검증 계획은 해당 Task 원본에서 관리한다.
+로컬 Task 5개를 이 Issue에 등록하고 GitHub sub-issue 관계를 확인했다. 각 Task의 번호·URL·상태와 실행·검증 계획은 해당 Task 원본에서 관리한다.
 
-| Task                                                                   | 맡는 결과                                      | 상태    |
-| ---------------------------------------------------------------------- | ---------------------------------------------- | ------- |
-| [Task 43-001: 공통 식별·시즌/패치·지역·분류](task-001.md#summary)      | 공유 관계 선행 검토와 공통 참조·정렬·분류 기반 | 완료    |
-| [Task 43-002: 아이템·능력치·스킬 저장/조회](task-002.md#summary)       | 아이템/스킬 버전과 원본·캐시의 저장/조회       | 완료    |
-| [Task 43-003: 제작·획득·배달 관계 저장/조회](task-003.md#summary)      | 같은 패치의 제작·획득·배달 관계와 상태         | 진행 중 |
-| [Task 43-004: 유효 버전 조회·참조 일치·갱신 처리](task-004.md#summary) | 관계 결합의 유효 이력 조회·기본 수정·일치 검증 | 예정    |
+| Task                                                                       | 맡는 결과                                         | 상태    |
+| -------------------------------------------------------------------------- | ------------------------------------------------- | ------- |
+| [Task 43-001: 공통 식별·시즌/패치·지역·분류](task-001.md#summary)          | 공유 관계 선행 검토와 공통 참조·정렬·분류 기반    | 완료    |
+| [Task 43-002: 아이템·능력치·스킬 저장/조회](task-002.md#summary)           | 아이템/스킬 버전과 원본·캐시의 저장/조회          | 완료    |
+| [Task 43-003: 제작·획득·배달 관계 저장/조회](task-003.md#summary)          | 같은 패치의 제작·획득·배달 관계와 상태            | 진행 중 |
+| [Task 43-004: 유효 버전 조회·참조 일치·갱신 처리](task-004.md#summary)     | 관계 결합의 유효 이력 조회·기본 수정·일치 검증    | 예정    |
+| [Task 43-005: catalog 구현 철회와 V1~V5 DB 기반 보존](task-005.md#summary) | `catalog` 철회·기존 공통 API와 V1~V5 DB 기반 보존 | 진행 중 |
+
+<a id="assignment-005"></a>
+
+### Task 43-005 catalog 구현 철회 배정
+
+- 확정 근거: [이 대화에서의 사용자 결정과 Task 생성 요청](codex://threads/01a20764-c112-72f3-9e64-9b461020cf7a). 사용자는 현재 `catalog` 작성을 허용한 적이 없다고 확인했고, 구현 철회와 V1~V5 DB 기반 보존을 하나의 #43 하위 Task로 정했다. [#95 인계](../issue-95/artifacts/task-005-execution.md#catalog-handoff)를 배정 근거로 사용한다.
+- 전달사항: [확정 전달사항](artifacts/task-005-assignment.md) (`r001`).
+- 식별·등록: `43-005`, [Task 본문](task-005.md#summary). 부모 보유 목록과 추적·작업 파일, 등록 전 실제 GitHub 하위 목록의 43-001~004를 대조했고 005와 충돌하는 기존 Task가 없음을 확인했다. [GitHub #125](https://github.com/Mi-no-Kim/LumiaWiki/issues/125)의 부모는 #43이고 milestone은 #1이다.
+- 수용과 의존: 43-001·002·003의 `catalog` 변경 영향을 맡되 기존 SQL·공통 API 및 합의한 저장 결과를 보존한다. 연결 파일별 처리와 제출 순서는 실행 전에 확정한다. 이번 결정은 Task 생성과 등록까지다.
 
 <a id="acceptance"></a>
 
