@@ -15,10 +15,10 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #125](https://github.c
 
 ## 현재 요약
 
-- 상태: 진행 중
-- 현재 진행 위치: [기록 정정과 제출 판단](artifacts/task-005-plan.md#stage-submit)
-- 다음 행동: #43 선행 기준에 구성한 정정 후보의 검사와 검수를 완료하고 실제 #43 대상 PR을 확인한다.
-- 막힌 조건: #43 선행 Quality는 통과했다. 실제 정정 PR의 범위와 검사 결과를 확인한 뒤 부모에 반영한다.
+- 상태: 완료
+- 현재 진행 위치: [완료 결과](#result)
+- 다음 행동: Task 범위의 후속 작업은 없다. 종료 상태는 [GitHub #125](https://github.com/Mi-no-Kim/LumiaWiki/issues/125)에서 확인한다. 부모 Issue의 후속 계획은 [#43 기록](issue.md#summary)을 따른다.
+- 막힌 조건: 없음.
 
 <a id="assignment"></a>
 
@@ -47,5 +47,5 @@ GitHub sub-issue(실제 연결 시): [Mi-no-Kim/LumiaWiki #125](https://github.c
 
 ## 결과
 
-- 판정: 로컬 정정 및 격리 검증 기준 충족. #43 선행 기준에서 재구성한 정정 후보의 원격 제출 확인이 남았다.
+- 판정: [정정 PR #126](https://github.com/Mi-no-Kim/LumiaWiki/pull/126)으로 승인 범위를 #43에 반영했고, 실제 차이와 격리 검증 근거를 대조해 Task의 수용 조건을 충족했다.
 - 근거·한계·잔여: [정정과 격리 검증](artifacts/task-005-execution.md#work-verify) 및 [제출 조건](artifacts/task-005-execution.md#work-submit)을 따른다. V1 백업은 제품 0행이었다.

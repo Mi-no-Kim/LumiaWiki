@@ -10,7 +10,7 @@
 - 상태: 진행 중
 - 현재 진행 위치: Task 001의 공통 8개 표/Java·격리/로컬 검증 결과를 [PR #71](https://github.com/Mi-no-Kim/LumiaWiki/pull/71)로 이 Issue 브랜치에 반영했고 전용 Task 브랜치를 정리했다. 단위 30·통합 11건의 [생성/검증 결과](artifacts/task-001-creation.md#current)와 PR CI 8개 통과를 확인했다. [Task 43-002](task-002.md#result)는 아이템·능력치·스킬 저장·조회 구현, 격리 DB 검증과 계약 인계를 완료했고 [PR #79](https://github.com/Mi-no-Kim/LumiaWiki/pull/79)의 부모 통합과 병합 후 CI를 확인했다. [Task 43-003](task-003.md#summary)은 [PR #91](https://github.com/Mi-no-Kim/LumiaWiki/pull/91)로 V4·V5를 병합했고 [기존 개발 DB의 V2~V5 적용](artifacts/task-003-execution.md#development-db-v5)을 마쳤다. 004는 예정이다. 실제 자료 작업은 보류한다.
 - 허용 범위: 승인한 PR #91 부모 병합과 기존 개발 DB `lumiawiki/public`의 V2~V5 적용을 마쳤다. 실제 자료 조사·등록·교정은 보류한다.
-- 다음 판단/행동: [43-005 정정 PR #126](https://github.com/Mi-no-Kim/LumiaWiki/pull/126)을 부모에 병합했다. [테스트 조립 위치 정정](#java-ci-foundation-fixture)을 반영하고 [Java CI 승인 범위](#java-ci-db-approval)의 최초 설치를 검증한다. [#43의 Java CI 실행](https://github.com/Mi-no-Kim/LumiaWiki/actions/workflows/java-contract.yml?query=branch%3Aissue%2F43-item-persistence)에서 결과를 확인한다. 43-003 저장 합의와 실제 자료 작업 보류를 유지한다.
+- 다음 판단/행동: [Task 43-005](task-005.md#summary)의 승인된 정정과 자체 수용을 확인했다. [#43 Java CI](https://github.com/Mi-no-Kim/LumiaWiki/actions/runs/45790577768)가 통과했다. [Task 43-004](task-004.md#summary)는 43-001~003의 확정 계약을 대조하고 조회·기본 수정의 남은 설계 선택을 논의한다. 43-003 저장 합의와 #69 수용·종료 및 #45 실제 자료 작업 보류를 유지한다.
 - 작성 근거: [Task 005](../issue-15/task-005.md#summary) · [전체 실행 순서](../issue-15/artifacts/task-005-issue-outline.md#sequence). 실제 자료 작업 보류를 유지한다.
 
 <a id="parent-integration"></a>
@@ -54,6 +54,8 @@
 - [테스트 정정의 Quality 실행](https://github.com/Mi-no-Kim/LumiaWiki/actions/runs/45789357619)은 기존 격리 통합 테스트를 포함한다. 직계 Phase의 Java 계약 도구 11개와 이전에 승인된 #43 워크플로를 적용한다. 워크플로는 Spring HTTP 검사에 #43의 Compose PostgreSQL과 기존 역할 초기화를 연결한다.
 - [로컬 회귀 근거](artifacts/parent-integration-tdd.md)는 최초 설치 승인과 검사 선택을 다룬다. Java CI에서 모듈 의존 관계, Spring 네 프로필 기동, V1~V5의 설치자와 런타임 권한 및 일회용 볼륨 정리를 확인한다.
 
+- 최초 설치 결과: [#43 Quality](https://github.com/Mi-no-Kim/LumiaWiki/actions/runs/45790577710)와 [Java CI](https://github.com/Mi-no-Kim/LumiaWiki/actions/runs/45790577768)가 통과했다. Java 회귀 작업은 Maven Central 요청 제한 후 세 번째 실행에서 통과했다. 실제 Spring 네 프로필, V1~V5 설치자와 역할 권한, 일회용 볼륨 정리를 확인했다.
+
 <a id="goal"></a>
 
 ## 목표와 범위
@@ -84,7 +86,7 @@
 | [Task 43-002: 아이템·능력치·스킬 저장/조회](task-002.md#summary)           | 아이템/스킬 버전과 원본·캐시의 저장/조회          | 완료    |
 | [Task 43-003: 제작·획득·배달 관계 저장/조회](task-003.md#summary)          | 같은 패치의 제작·획득·배달 관계와 상태            | 진행 중 |
 | [Task 43-004: 유효 버전 조회·참조 일치·갱신 처리](task-004.md#summary)     | 관계 결합의 유효 이력 조회·기본 수정·일치 검증    | 예정    |
-| [Task 43-005: catalog 구현 철회와 V1~V5 DB 기반 보존](task-005.md#summary) | `catalog` 철회·기존 공통 API와 V1~V5 DB 기반 보존 | 진행 중 |
+| [Task 43-005: catalog 구현 철회와 V1~V5 DB 기반 보존](task-005.md#summary) | `catalog` 철회·기존 공통 API와 V1~V5 DB 기반 보존 | 완료    |
 
 <a id="assignment-005"></a>
 
